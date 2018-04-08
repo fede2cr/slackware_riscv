@@ -1,0 +1,11 @@
+aaa_base: aaa_base (Basic Linux filesystem package)
+aaa_base:
+aaa_base: Sets up the empty directory tree for Slackware and adds an email to
+aaa_base: root's mailbox welcoming them to Linux. :)  This package should be
+aaa_base: installed first, and never uninstalled.
+aaa_base:
+aaa_base:
+aaa_base:
+aaa_base:
+aaa_base:
+aaa_base:
