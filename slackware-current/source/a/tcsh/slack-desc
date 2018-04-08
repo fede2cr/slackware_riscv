@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+tcsh: tcsh (C shell)
+tcsh:
+tcsh: tcsh is an enhanced but completely compatible version of the Berkeley
+tcsh: UNIX C shell, csh(1). It is a command language interpreter usable both
+tcsh: as an interactive login shell and a shell script command processor. It
+tcsh: includes a command-line editor, programmable word completion, spelling
+tcsh: correction, a history mechanism, job control, and a C-like syntax.
+tcsh:
+tcsh:
+tcsh:
+tcsh:

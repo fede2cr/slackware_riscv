@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+  |-----handy-ruler------------------------------------------------------|
+xz: xz (compression utility based on the LZMA algorithm)
+xz:
+xz: LZMA is a general purpose compression algorithm designed by Igor
+xz: Pavlov as part of 7-Zip. It provides high compression ratio while
+xz: keeping the decompression speed fast. XZ Utils are an attempt to make
+xz: LZMA compression easy to use on free (as in freedom) operating
+xz: systems.
+xz:
+xz: The people most responsible for xz are Igor Pavlov, Ville Koskinen,
+xz: and Lasse Collin. For more info: http://tukaani.org/xz/
+xz:

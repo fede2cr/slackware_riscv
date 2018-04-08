@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+aaa_base: aaa_base (Basic Linux filesystem package)
+aaa_base:
+aaa_base: Sets up the empty directory tree for Slackware and adds an email to
+aaa_base: root's mailbox welcoming them to Linux. :)  This package should be
+aaa_base: installed first, and never uninstalled.
+aaa_base:
+aaa_base:
+aaa_base:
+aaa_base:
+aaa_base:
+aaa_base:

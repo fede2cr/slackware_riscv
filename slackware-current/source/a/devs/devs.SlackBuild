@@ -1,0 +1,72 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=devs
+VERSION=2.3.1
+ARCH=noarch
+BUILD=${BUILD:-25}
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-devs
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+# Explode the package framework:
+cd $PKG
+explodepkg $CWD/_devs.tar.gz
+
+cd $TMP
+rm -r MAKEDEV-${VERSION}
+tar xzvf $CWD/makedev_${VERSION}.orig.tar.gz
+cd MAKEDEV-${VERSION}
+zcat $CWD/makedev_2.3.1-46.2.diff.gz | patch -p1 -E
+#zcat $CWD/makedev_.slack.diff.gz | patch -p1 -E
+# Add many more IDE devices:
+zcat $CWD/makedev_2.3.1.hd.diff.gz | patch -p1 -E
+# Still not enough:
+zcat $CWD/makedev.hd.diff.gz | patch -p1 -E
+cat MAKEDEV > $PKG/dev/MAKEDEV
+cat README > $PKG/dev/README.MAKEDEV
+gzip -9c MAKEDEV.man > $PKG/usr/man/man8/MAKEDEV.8.gz
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg -l y -c n $TMP/devs-$VERSION-$ARCH-$BUILD.txz
+
+# Clean up the extra stuff:
+if [ "$1" = "--cleanup" ]; then
+  rm -rf $TMP/MAKEDEV-${VERSION}
+  rm -rf $PKG
+fi

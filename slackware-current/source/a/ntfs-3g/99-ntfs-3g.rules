@@ -1,0 +1,2 @@
+# Use ntfs-3g rather than regular ntfs for devices detected through udev:
+ENV{ID_FS_TYPE}=="ntfs", ENV{ID_FS_TYPE}="ntfs-3g"

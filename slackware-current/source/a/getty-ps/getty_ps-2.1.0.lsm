@@ -1,0 +1,26 @@
+Begin4
+Title: 		getty-ps
+Version: 	2.1.0
+Entered-date: 	27SEP02
+Description:	A versatile getty/uugetty program designed to allow easy
+		use of a modem for incoming/outgoing data/fax/voice calls.
+		It also allows easy set-up of regular login ports.  Unlike
+		agetty, it stores most of it's configuration and port
+		initialization information in up to 2 files.  This usually
+		results in slightly more involved initial installation, but
+		easier	maintenance than agetty.  It also leaves the
+		inittab entries looking uncluttered.  Supports 57600 and
+		faster speeds, and is compatible with uucp and efax-0.9[a].
+		Ringback is provided as an optional feature.
+Keywords:	getty uugetty serial modem ringback efax uucp
+Author:		Paul Sutcliffe, Jr.
+Maintained-by:	Christine Jamison <getty-info@nwmagic.net>
+Primary-site:	ftp.ibiblio.org:/pub/Linux/system/serial/getty_ps-2.1.0.tar.gz
+Alternate-site:	ftp.nwmagic.net:/pub/sources/getty_ps-2.1.0.tar.gz
+Original-site:	Unknown
+Platforms: 	Linux (tested on 1.0.x-2.4.5, Slackware 4.0 thru 8.1); should
+		compile and work on almost any Unix, after library
+		compatibility is resolved and paths are checked in tune.h;
+		compiles clean with gcc 2.7.2.3 & 2.95.3.
+Copying-policy: FRS
+End

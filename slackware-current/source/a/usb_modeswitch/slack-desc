@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+              |-----handy-ruler------------------------------------------------------|
+usb_modeswitch: usb_modeswitch (mode switching tool for multiple mode USB devices)
+usb_modeswitch:
+usb_modeswitch: USB-ModeSwitch is (surprise!) a small mode switching tool for
+usb_modeswitch: controlling "flip flop" (multiple device) USB gear. These devices
+usb_modeswitch: initially appear to be USB storage, typically containing the MS
+usb_modeswitch: Windows drivers for whatever the real purpose of the device is, such
+usb_modeswitch: as a wireless USB modem. To use these devices with Linux, they need
+usb_modeswitch: to be told to switch out of storage mode, which is the purpose of the
+usb_modeswitch: USB-ModeSwitch utility.
+usb_modeswitch:
+usb_modeswitch: Homepage: http://www.draisberghof.de/usb_modeswitch

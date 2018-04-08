@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+aaa_terminfo: aaa_terminfo (a basic collection of terminfo entries)
+aaa_terminfo:
+aaa_terminfo: This is a starter set of files from the terminfo database, which
+aaa_terminfo: should be enough in most cases. The complete set (from which this
+aaa_terminfo: is derived) can be found in the ncurses package.
+aaa_terminfo:
+aaa_terminfo: The terminfo database describes the characteristics of terminals, so
+aaa_terminfo: don't try to log in without this package. :-)
+aaa_terminfo:
+aaa_terminfo:
+aaa_terminfo:

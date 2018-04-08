@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+bash: bash (sh-compatible shell)
+bash:
+bash: The GNU Bourne-Again SHell. Bash is a sh-compatible command
+bash: interpreter that executes commands read from the standard input or
+bash: from a file. Bash also incorporates useful features from the Korn
+bash: and C shells (ksh and csh). Bash is ultimately intended to be a
+bash: conformant implementation of the IEEE Posix Shell and Tools
+bash: specification (IEEE Working Group 1003.2).
+bash:
+bash: Bash must be present for the system to boot properly.
+bash:

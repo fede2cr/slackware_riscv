@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+bin: bin (some command-line utilities)
+bin:
+bin: The bin package is a collection of miscellaneous command-line 
+bin: utilities. Some of these (such as 'tempfile') are used in system
+bin: scripts.
+bin:
+bin:
+bin:
+bin:
+bin:
+bin:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+jfsutils: jfsutils (IBM JFS utilities)
+jfsutils:
+jfsutils: Utilities for managing IBM's Journaled File System (JFS) under Linux:
+jfsutils:  jfs_debugfs - shell-type JFS file system editor.
+jfsutils:  jfs_fsck - check and repair a JFS formatted device.
+jfsutils:  jfs_fscklog - extract a JFS fsck service log into a file.
+jfsutils:  jfs_logdump - dump a JFS formatted device's journal log.
+jfsutils:  jfs_mkfs - create a JFS formatted partition.
+jfsutils:  jfs_tune - adjust tunable file system parameters on JFS.
+jfsutils:
+jfsutils:

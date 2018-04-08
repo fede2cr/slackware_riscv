@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+acpid: acpid (ACPI daemon)
+acpid:
+acpid: Most modern computers support the Advanced Configuration and Power
+acpid: Interface (ACPI) standard to allow intelligent power management.
+acpid: This package contains acpid, which is the user-space daemon needed in
+acpid: order to make the Linux ACPI support completely functional.
+acpid:
+acpid: ACPI must be compiled into the kernel to run acpid.
+acpid:
+acpid: Homepage: http://sourceforge.net/projects/acpid2/ 
+acpid:

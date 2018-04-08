@@ -1,0 +1,12 @@
+Tue Mar 13 18:42:23 UTC 2018
+  btrfs-progs: patched to build with latest e2fsprogs. Thanks to nobodino.
++--------------------------+
+Tue Feb 13 00:25:47 UTC 2018
+  Fix all packages that fail to build from source:
+  xfsprogs: patch to fix name collision with copy_file_range and glibc-2.27
++--------------------------+
+Sat Feb  3 21:16:09 UTC 2018
+  Fix all packages that fail to build from source:
+  efibootmgr: add -fgnu89-inline to CFLAGS
+  gpm: fix missing includes and fix gcc7 issues
+  sysklogd: union wait was removed from glibc, use int instead as recommended

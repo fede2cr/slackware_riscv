@@ -1,0 +1,125 @@
+#!/bin/sh
+
+# Copyright 2005-2009, 2010  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=bzip2
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+SOLIB=1.0.6
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-bzip2
+
+if [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX="64"
+else
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf bzip2-$VERSION
+tar xzvf $CWD/bzip2-$VERSION.tar.gz || exit 1
+cd bzip2-$VERSION || exit 1
+chown -R root:root .
+# This should be ok, since libbz2.so.1.0 will still exist.
+zcat $CWD/bzip2.saneso.diff.gz | patch -p1 || exit
+make -f Makefile-libbz2_so || exit 1
+make -j3 || make || exit 1
+mkdir -p $PKG/usr/include
+cp -a bzlib.h $PKG/usr/include
+chown root:root $PKG/usr/include/bzlib.h
+chmod 644 $PKG/usr/include/bzlib.h
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}
+cp -a libbz2.a $PKG/usr/lib${LIBDIRSUFFIX}/libbz2.a
+mkdir -p $PKG/lib${LIBDIRSUFFIX}
+cp -a libbz2.so.$SOLIB $PKG/lib${LIBDIRSUFFIX}/libbz2.so.$SOLIB
+chmod 644 $PKG/usr/lib${LIBDIRSUFFIX}/libbz2.a
+chmod 755 $PKG/lib${LIBDIRSUFFIX}/libbz2.so.$SOLIB
+mkdir -p $PKG/bin
+cat bzip2-shared > $PKG/bin/bzip2
+cat bzip2recover > $PKG/bin/bzip2recover
+mkdir -p $PKG/usr/man/man1
+cat bzip2.1 | gzip -9c > $PKG/usr/man/man1/bzip2.1.gz
+echo '.so man1/bzip2.1' | gzip -9c > $PKG/usr/man/man1/bzip2recover.1.gz
+mkdir -p $PKG/usr/doc/bzip2-$VERSION
+cp -a CHANGES LICENSE README* \
+  bzip2.txt *.html $PKG/usr/doc/bzip2-$VERSION
+chmod 644 $PKG/usr/doc/bzip2-$VERSION/*
+# Link up them links
+( cd $PKG
+  ( cd lib${LIBDIRSUFFIX}
+    rm -f libbz2.so.1.0 libbz2.so.1
+    ln -sf libbz2.so.$SOLIB libbz2.so.1.0
+    ln -sf libbz2.so.1.0 libbz2.so.1
+  )
+  ( cd usr/lib${LIBDIRSUFFIX}
+    ln -sf ../../lib${LIBDIRSUFFIX}/libbz2.so.1 libbz2.so
+  )
+  ( cd bin ; ln -sf bzip2 bunzip2 )
+  ( cd bin ; ln -sf bzip2 bzcat )
+  mkdir -p usr/bin
+  ( cd usr/bin
+    ln -sf ../../bin/bzip2 .
+    ln -sf ../../bin/bzip2 bunzip2
+    ln -sf ../../bin/bzip2 bzcat
+    ln -sf bzmore bzless
+  )
+)
+# Here are some optional scripts:
+for file in bzdiff bzgrep bzmore ; do
+  cat $file > $PKG/usr/bin/$file
+  cat ${file}.1 | gzip -9c > $PKG/usr/man/man1/${file}.1.gz
+done
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+chmod 755 $PKG/bin/* $PKG/usr/bin/*
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg -l y -c n $TMP/bzip2-$VERSION-$ARCH-$BUILD.txz
+

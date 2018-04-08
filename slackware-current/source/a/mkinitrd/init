@@ -1,0 +1,353 @@
+#!/bin/ash
+#
+# /init:  init script to load kernel modules from an initramfs
+#         This requires that your kernel supports initramfs!!!
+#
+# Copyright 2004  Slackware Linux, Inc., Concord, CA, USA
+# Copyright 2007, 2008, 2009, 2010, 2012  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+##################################################################################
+# With a generic kernel, you need to load the modules needed to mount the
+# root partition.  This might mean a SCSI, RAID, or other drive controller
+# module, as well as the module to support the root filesystem.  Once the
+# root partition is mounted all the other modules will be available so you
+# don't need to load them here.
+#
+# Config files used by this script:
+#
+# /rootdev        Contains the name of the root device, such as: /dev/hda1 
+#
+# /rootfs         Contains the root filesystem type, such as: xfs
+#
+# /initrd-name    Contains the name of the initrd file.
+#
+# /resumedev      Contains the name of the device to resume from hibernation.
+#
+# /luksdev        Contains colon separated list of luks encrypted devices to
+#                 be unlocked.
+#
+# /lukstrim       Contains colon separated list of luks encrypted devices to
+#                 pass '--allow-discards' when unlocking
+#
+# /lukskey        Contains the path to a LUKS key-file for automatic unlock
+#                 Format: LABEL=<partition_label>:/path/to/file
+#                         UUID=<partition_uuid>:/path/to/file
+#
+# /wait-for-root  Contains a number - the init script will wait this amount
+#                 of seconds before creating device nodes.
+#
+# /keymap         Contains the name for a custom keyboard map 
+#
+# Optional:
+#
+# /load_kernel_modules
+#                 A script that uses modprobe to load the desired modules.
+#
+#                 There's an example in here.  To actually use it, you'll
+#                 need to make it executable:  
+#
+#                     chmod 755 load_kernel_modules
+##################################################################################
+# Changelog
+# 10-Dec-2012 <mozes@slackware.com>
+#  * Added support for the official Kernel parameters to select root filesystem
+#    type ('rootfstype') and pause before attempting to mount the root filesystem
+#    ('rootdelay').  The original parameters may continue to be used.
+##################################################################################
+
+INITRD=$(cat /initrd-name)
+ROOTDEV=$(cat /rootdev)
+ROOTFS=$(cat /rootfs)
+LUKSDEV=$(cat /luksdev)
+LUKSTRIM=$(cat /lukstrim 2>/dev/null)
+LUKSKEY=$(cat /lukskey)
+RESUMEDEV=$(cat /resumedev)
+WAIT=$(cat /wait-for-root)
+KEYMAP=$(cat /keymap)
+INIT=/sbin/init
+
+PATH="/sbin:/bin:/usr/sbin:/usr/bin"
+
+# Mount /proc and /sys:
+mount -n proc /proc -t proc
+mount -n sysfs /sys -t sysfs
+mount -n tmpfs /run -t tmpfs -o mode=0755,size=32M,nodev,nosuid,noexec
+
+if grep devtmpfs /proc/filesystems 1>/dev/null 2>/dev/null ; then
+  DEVTMPFS=1
+  mount -n devtmpfs /dev -t devtmpfs -o size=8M
+fi	
+
+# Parse command line
+for ARG in $(cat /proc/cmdline); do
+  case $ARG in
+    0|1|2|3|4|5|6|S|s|single)
+      RUNLEVEL=$ARG
+    ;;
+    init=*)
+      INIT=$(echo $ARG | cut -f2 -d=)
+    ;;
+    luksdev=/dev/*)
+      LUKSDEV=$(echo $ARG | cut -f2 -d=)
+    ;;
+    lukskey=*)
+      LUKSKEY=$(echo $ARG | cut -f2- -d=)
+    ;;
+    rescue)
+      RESCUE=1
+    ;;
+    resume=*)
+      RESUMEDEV=$(echo $ARG | cut -f2- -d=)
+    ;;
+    root=/dev/*)
+      ROOTDEV=$(echo $ARG | cut -f2 -d=)
+    ;;
+    root=LABEL=*)
+      ROOTDEV=$(echo $ARG | cut -f2- -d=)
+    ;;
+    root=UUID=*)
+      ROOTDEV=$(echo $ARG | cut -f2- -d=)
+    ;;
+    rootfs=*|rootfstype=*)
+      ROOTFS=$(echo $ARG | cut -f2 -d=)
+    ;;
+    rootflags=*)
+      ROOTFLAGS=$(echo $ARG | cut -f2- -d=)
+    ;;
+    waitforroot=*|rootdelay=*)
+      WAIT=$(echo $ARG | cut -f2 -d=)
+    ;;
+  esac
+done
+
+# If udevd is available, use it to generate block devices
+# else use mdev to read sysfs and generate the needed devices 
+if [ -x /sbin/udevd -a -x /sbin/udevadm ]; then
+  /sbin/udevd --daemon --resolve-names=never
+  /sbin/udevadm trigger --subsystem-match=block --action=add
+  /sbin/udevadm settle --timeout=10
+else
+  [ "$DEVTMPFS" != "1" ] && mdev -s
+fi
+
+# Load kernel modules (ideally this was already done by udev):
+if [ ! -d /lib/modules/$(uname -r) ]; then
+  echo "No kernel modules found for Linux $(uname -r)."
+elif [ -x ./load_kernel_modules ]; then # use load_kernel_modules script:
+  echo "${INITRD}:  Loading kernel modules from initrd image:"
+  . ./load_kernel_modules
+else # load modules (if any) in order:
+  if ls /lib/modules/$(uname -r)/*.*o 1> /dev/null 2> /dev/null ; then
+    echo "${INITRD}:  Loading kernel modules from initrd image:"
+    for module in /lib/modules/$(uname -r)/*.*o ; do
+      /sbin/modprobe $module
+    done
+    unset module
+  fi
+fi
+
+# Sometimes the devices need extra time to be available.
+# A root filesystem on USB is a good example of that.
+sleep $WAIT
+
+# Load a custom keyboard mapping:
+if [ -n "$KEYMAP" ]; then
+  echo "${INITRD}:  Loading '$KEYMAP' keyboard mapping:"
+  tar xzOf /etc/keymaps.tar.gz ${KEYMAP}.bmap | loadkmap
+fi
+
+if [ "$RESCUE" = "" ]; then 
+  # Initialize RAID:
+  if [ -x /sbin/mdadm ]; then
+    # If /etc/mdadm.conf is present, udev should DTRT on its own;
+    # If not, we'll make one and go from there:
+    if [ ! -r /etc/mdadm.conf ]; then
+      /sbin/mdadm -E -s >/etc/mdadm.conf
+      /sbin/mdadm -S -s
+      /sbin/mdadm -A -s
+      # This seems to make the kernel see partitions more reliably:
+      fdisk -l /dev/md* 1> /dev/null 2> /dev/null
+    fi
+  fi
+
+  # Unlock any encrypted partitions necessary to access the
+  # root filesystem, such as encrypted LVM Physical volumes, disk
+  # partitions or mdadm arrays.
+  # Unavailable devices such as LVM Logical Volumes will need to be
+  # deferred until they become available after the vgscan.
+
+  if [ -x /sbin/cryptsetup ]; then
+
+    # Determine if we have to use a LUKS keyfile:
+    if [ ! -z "$LUKSKEY" ]; then
+      mkdir  /mountkey
+      KEYPART=$(echo $LUKSKEY |cut -f1 -d:)
+      KEYNAME=$(echo $KEYPART |cut -f2 -d=)
+      LUKSPATH="/mountkey$(echo $LUKSKEY |cut -f2 -d:)"
+      # Catch possible mount failure:
+      if blkid |grep "TYPE=\"vfat\"" |grep $KEYNAME 1>/dev/null 2>&1 ; then
+        MOUNTOPTS="-t vfat -o shortname=mixed"
+      else
+        MOUNTOPTS="-t auto"
+      fi
+      mount $MOUNTOPTS $(findfs $KEYPART) /mountkey 2>/dev/null
+      # Check if we can actually use this file:
+      if [ ! -f $LUKSPATH ]; then
+        LUKSKEY=""
+      else
+        echo ">>> Using LUKS key file: '$LUKSKEY'"
+        LUKSKEY="-d $LUKSPATH"
+      fi
+    fi
+
+    LUKSLIST_DEFERRED=""
+    LUKSLIST=$(echo $LUKSDEV | tr -s ':' ' ')
+    for LUKSDEV in $LUKSLIST ; do
+      if /sbin/cryptsetup isLuks ${LUKSDEV} 1>/dev/null 2>/dev/null ; then
+        if echo $ROOTDEV | grep -q "LABEL=" || echo $ROOTDEV | grep -q "UUID=" ; then
+          CRYPTDEV="luks$(basename $LUKSDEV)"
+        elif [ "x$ROOTDEV" = "x$(basename $ROOTDEV)" ]; then
+          CRYPTDEV="$ROOTDEV"
+        else
+          CRYPTDEV="luks$(basename $LUKSDEV)"
+        fi
+        if echo $LUKSTRIM | grep -wq $LUKSDEV 2>/dev/null ; then 
+          LUKSOPTS="--allow-discards"
+        else
+          LUKSOPTS=""
+        fi
+        if [ -z "${LUKSOPTS}" ]; then
+          echo "Unlocking LUKS encrypted device '${LUKSDEV}' as luks mapped device '$CRYPTDEV':"
+        else
+          echo "Unlocking LUKS encrypted device '${LUKSDEV}' as luks mapped device '$CRYPTDEV' with '$LUKSOPTS':"
+        fi
+        /sbin/cryptsetup ${LUKSOPTS} ${LUKSKEY} luksOpen ${LUKSDEV} ${CRYPTDEV} </dev/tty0 >/dev/tty0 2>&1
+        if [ "$ROOTDEV" = "$LUKSDEV" -o "$ROOTDEV" = "$CRYPTDEV" ] ; then
+          ROOTDEV="/dev/mapper/$CRYPTDEV"
+        fi
+      else
+        LUKSLIST_DEFERRED="${LUKSLIST_DEFERRED} ${LUKSDEV}"
+      fi
+    done
+  fi
+
+  # Initialize LVM:
+  if [ -x /sbin/vgchange ]; then
+    mkdir -p /var/lock/lvm	# this avoids useless warnings
+    /sbin/vgchange -ay --ignorelockingfailure 2>/dev/null
+    /sbin/udevadm settle --timeout=10
+  fi
+  
+  # Unlock any LUKS encrypted devices that were deferred above but have now
+  # become available due to the vgscan (i.e. filesystems on LVM Logical Volumes)
+
+  if [ -x /sbin/cryptsetup -a -n "${LUKSLIST_DEFERRED}" ]; then
+    for LUKSDEV in ${LUKSLIST_DEFERRED} ; do
+      if /sbin/cryptsetup isLuks ${LUKSDEV} 1>/dev/null 2>/dev/null ; then
+        if echo $ROOTDEV | grep -q "LABEL=" || echo $ROOTDEV | grep -q "UUID=" ; then
+          CRYPTDEV="luks$(basename $LUKSDEV)"
+        elif [ "x$ROOTDEV" = "x$(basename $ROOTDEV)" ]; then
+          CRYPTDEV="$ROOTDEV"
+        else
+          CRYPTDEV="luks$(basename $LUKSDEV)"
+        fi
+        echo "Unlocking LUKS encrypted device '${LUKSDEV}' as luks mapped device '$CRYPTDEV':"
+        /sbin/cryptsetup ${LUKSKEY} luksOpen ${LUKSDEV} ${CRYPTDEV} </dev/tty0 >/dev/tty0 2>&1
+        if [ "$ROOTDEV" = "$LUKSDEV" -o "$ROOTDEV" = "$CRYPTDEV" ] ; then
+          ROOTDEV="/dev/mapper/$CRYPTDEV"
+        fi
+      else
+        echo "LUKS device '${LUKSDEV}' unavailable for unlocking!"
+      fi
+    done
+    /sbin/udevadm settle --timeout=10
+  fi
+
+  # Scan for btrfs multi-device filesystems:
+  if [ -x /sbin/btrfs ]; then
+    /sbin/btrfs device scan
+  fi
+  
+  # Find root device if a label or UUID was given:
+  if echo $ROOTDEV | grep -q "LABEL=" || \
+     echo $ROOTDEV | grep -q "UUID=" ; then
+    ROOTDEV=$(findfs $ROOTDEV)
+  fi
+
+  # Clean up after LUKS unlock using a keyfile:
+  if grep -q mountkey /proc/mounts 2>/dev/null ; then
+    umount -l /mountkey
+    rmdir /mountkey 2>/dev/null
+  fi
+  
+  # Resume state from swap
+  if [ "$RESUMEDEV" != "" ]; then
+    # Find resume device if a label or UUID was given:
+    if echo $RESUMEDEV | grep -q "LABEL=" || \
+       echo $RESUMEDEV | grep -q "UUID=" ; then
+      RESUMEDEV=$(findfs $RESUMEDEV)
+    elif ls -l $RESUMEDEV | grep -q "^l" ; then
+      RESUMEDEV=$(readlink -f $RESUMEDEV)
+    fi
+    echo "Trying to resume from $RESUMEDEV"
+    RESMAJMIN=$(ls -l $RESUMEDEV | tr , : | awk '{ print $5$6 }')
+    echo $RESMAJMIN > /sys/power/resume
+  fi
+
+  # Switch to real root partition:
+  /sbin/udevadm settle --timeout=10
+  echo 0x0100 > /proc/sys/kernel/real-root-dev
+  mount -o ro${ROOTFLAGS:+,$ROOTFLAGS} -t $ROOTFS $ROOTDEV /mnt
+  
+  if [ ! -r /mnt/sbin/init ]; then
+    echo "ERROR:  No /sbin/init found on rootdev (or not mounted).  Trouble ahead."
+    echo "        You can try to fix it. Type 'exit' when things are done." 
+    echo
+    /bin/sh
+  fi
+else
+  echo
+  echo "RESCUE mode"
+  echo
+  echo "        You can try to fix or rescue your system now. If you want"
+  echo "        to boot into your fixed system, mount your root filesystem"
+  echo "        read-only under /mnt:"
+  echo
+  echo "            # mount -o ro -t filesystem root_device /mnt"
+  echo
+  echo "        Type 'exit' when things are done."
+  echo
+  /bin/sh
+fi
+
+# Need to make sure OPTIONS+="db_persist" exists for all dm devices
+# That should be handled in /sbin/mkinitrd now
+/sbin/udevadm info --cleanup-db
+/sbin/udevadm control --exit
+
+unset ERR
+mount -o move /proc /mnt/proc
+mount -o move /sys /mnt/sys
+mount -o move /run /mnt/run
+
+[ "$DEVTMPFS" = "1" ] && mount -o move /dev /mnt/dev
+echo "${INITRD}:  exiting"
+exec switch_root /mnt $INIT $RUNLEVEL

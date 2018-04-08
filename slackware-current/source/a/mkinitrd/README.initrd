@@ -1,0 +1,99 @@
+
+Slackware initrd mini HOWTO
+by Patrick Volkerding, volkerdi@slackware.com
+@DATE@
+
+This document describes how to create and install an initrd, which may be 
+required to use some features of the kernel.  Also see "man mkinitrd".
+
+1.  What is an initrd?
+2.  Why to I need an initrd?
+3.  How do I build the initrd?
+4.  Now that I've built an initrd, how do I use it?
+
+
+1.  What is an initrd?
+
+Initrd stands for "initial ramdisk".  An initial ramdisk is a very small 
+Linux filesystem that is loaded into RAM and mounted as the kernel boots, 
+and before the main root filesystem is mounted.
+
+2.  Why do I need an initrd?
+
+The usual reason to use an initrd is because you need to load kernel 
+modules before mounting the root partition.  Usually these modules are 
+required to support the filesystem used by the root partition (ext3, 
+reiserfs, xfs), or perhaps the controller that the hard drive is attached 
+to (SCSI, RAID, etc).  Essentially, there are so many different options 
+available in modern Linux kernels that it isn't practical to try to ship 
+many different kernels to try to cover everyone's needs.  It's a lot more 
+flexible to ship a generic kernel and a set of kernel modules for it.
+
+3.  How do I build the initrd?
+
+The easiest way to make the initrd is to use the mkinitrd script included 
+in Slackware's mkinitrd package.  We'll walk through the process of 
+upgrading to the generic @KERNEL_VERSION@ Linux kernel using the packages
+found in Slackware's slackware/a/ directory.
+
+First, make sure the kernel, kernel modules, and mkinitrd package are 
+installed (the current version numbers might be a little different, so 
+this is just an example):
+
+  installpkg kernel-generic-@KERNEL_VERSION@-@ARCH@-@BUILD@.tgz
+  installpkg kernel-modules-@KERNEL_VERSION@-@ARCH@-@BUILD@.tgz
+  installpkg mkinitrd-@MKINITRD_VERSION@-@ARCH@-@BUILD@.tgz
+
+Change into the /boot directory:
+
+  cd /boot
+
+Now you'll want to run "mkinitrd".  I'm using ext4 for my root
+filesystem, and since mkinitrd should figure out any other modules
+it requires, I shouldn't need to specify any others:
+
+  mkinitrd -c -k @KERNEL_VERSION@ -m ext4
+
+This should do two things.  First, it will create a directory
+/boot/initrd-tree containing the initrd's filesystem.  Then it will
+create an initrd (/boot/initrd.gz) from this tree.  If you wanted to,
+you could make some additional changes in /boot/initrd-tree/ and
+then run mkinitrd again without options to rebuild the image.  That's
+optional, though, and only advanced users will need to think about that.
+
+Here's another example:  Build an initrd image using Linux @KERNEL_VERSION@
+kernel modules for a system with an ext3 root partition on /dev/sdb3:
+
+  mkinitrd -c -k @KERNEL_VERSION@ -m ext3 -f ext3 -r /dev/sdb3
+
+
+4.  Now that I've built an initrd, how do I use it?
+
+Now that you've got an initrd (/boot/initrd.gz), you'll want to load
+it along with the kernel at boot time.  If you use LILO for your boot
+loader you'll need to edit /etc/lilo.conf and add a line to load the
+initrd.  Here's an example section of lilo.conf showing how this is
+done:
+
+# Linux bootable partition config begins
+image = /boot/vmlinuz-generic-@KERNEL_VERSION@
+  initrd = /boot/initrd.gz
+  root = /dev/sda6
+  label = @LILO_KERNEL_NAME@
+  read-only
+# Linux bootable partition config ends
+
+The initrd is loaded by the "initrd = /boot/initrd.gz" line.
+Just add the line right below the line for the kernel image you use.
+Save the file, and then run LILO again ('lilo' at the command line).
+You'll need to run lilo every time you edit lilo.conf or rebuild the
+initrd.
+
+Other bootloaders such as syslinux also support the use of an initrd.
+See the documentation for those programs for details on using an
+initrd with them.
+
+
+---------
+
+Have fun!

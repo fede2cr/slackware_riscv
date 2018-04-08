@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+getty-ps: getty-ps (console or terminal login)
+getty-ps:
+getty-ps: /sbin/getty and /sbin/uugetty. 
+getty-ps: These control the process of logging into your system, and may be used
+getty-ps: instead of 'agetty', which is the default getty included with the
+getty-ps: util-linux package. getty-ps supports a number of enhancements such as
+getty-ps: ringback support.
+getty-ps:
+getty-ps: getty-ps was originally written by Paul Sutcliffe, Jr, and is
+getty-ps: currently maintained by Christine Jamison.
+getty-ps:

@@ -1,0 +1,212 @@
+#!/bin/sh
+
+# Copyright 2005-2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=coreutils
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:--j6}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "arm" ]; then
+  SLKCFLAGS="-O2 -march=armv4 -mtune=xscale"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armel" ]; then
+  SLKCFLAGS="-O2 -march=armv4t"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.xz || exit 1
+cd $PKGNAM-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+# Patch uname to correctly display CPU information:
+zcat $CWD/$PKGNAM.uname.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+
+# Revert change to ls quoting style introduced in coreutils-8.25:
+zcat $CWD/no_ls_quoting.patch.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+
+# Compilation with glibc version later than 2.3.2 needs the environment
+# variable DEFAULT_POSIX2_VERSION set to 199209.
+# Without that line, the coreutils will start complaining about 'obsolete'
+# command switches, like "tail -20" will be considered obsolete.
+# This behaviour breaks many other packages... the 'obsolete' parameters are
+# too commonly used to disregard them.  Better to stick with the older more
+# widely accepted standards until things begin to demand the new way.
+
+FORCE_UNSAFE_CONFIGURE=1 \
+CFLAGS="$SLKCFLAGS" \
+DEFAULT_POSIX2_VERSION=199209 \
+./configure \
+  --prefix=/usr \
+  --bindir=/bin \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --sysconfdir=/etc \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --without-gmp \
+  --enable-install-program=arch \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# We have had the mktemp from debianutils included with Slackware for quite a
+# long time, and certain options are changed here, like changing -u to mean a
+# dry-run rather than to unlink the tempfile when finished.  Since this could
+# break existing scripts, unless someone can tell me a good reason why we
+# should start using a new version of mktemp, we will continue to use the
+# one we've been using.  If the new one starts to become expected, let me know.
+# We'll figure out what the best options are and go from there.
+mv $PKG/bin/mktemp $PKG/bin/mktemp-gnu
+mv $PKG/usr/man/man1/mktemp.1 $PKG/usr/man/man1/mktemp-gnu.1
+
+# This seems wrong, and it stomps on files in the ksh93 package, though I'm
+# not sure the placement of those is correct, either...  The ksh93 package
+# installs them as flat text files, while coreutils installs empty directories
+# Oh well, this is what we've done for years, and nobody's complained...
+rm -rf $PKG/usr/share/locale/*/LC_TIME
+
+# Move "arch" to /bin
+mv $PKG/usr/bin/arch $PKG/bin
+
+# These are important enough that they should probably all go into /bin at this
+# point...   Having some of them unavailable when /usr isn't mounted is just a
+# source of unending bug reports for various third party applications.
+# Time to end those reports.  :-)
+mkdir -p $PKG/bin $PKG/usr/bin
+( cd $PKG/usr/bin
+  for file in ../../bin/* ; do
+    ln --verbose -sf $file .
+  done
+)
+
+# Add some defaults, although a very slack-like set of default options are built
+# into /bin/ls now anyway:
+mkdir -p $PKG/etc
+zcat $CWD/DIR_COLORS.gz > $PKG/etc/DIR_COLORS.new
+
+# Since dircolors no longer provides any default aliases these scripts
+# will be needed for ls to act as expected:
+mkdir -p $PKG/etc/profile.d
+zcat $CWD/coreutils-dircolors.csh.gz > $PKG/etc/profile.d/coreutils-dircolors.csh
+zcat $CWD/coreutils-dircolors.sh.gz > $PKG/etc/profile.d/coreutils-dircolors.sh
+chmod 755 $PKG/etc/profile.d/*
+
+# Remove things that are provided by other Slackware packages:
+for dupe in hostname kill su uptime ; do
+  rm -f $PKG/bin/${dupe} $PKG/usr/bin/${dupe} \
+    $PKG/usr/sbin/${dupe} $PKG/usr/man/man?/${dupe}.* ;
+done
+
+# Add ginstall links (there's still a lot of stuff that needs this to compile):
+( cd $PKG/bin ; ln -sf install ginstall )
+( cd $PKG/usr/bin ; ln -sf ../../bin/ginstall ginstall )
+( cd $PKG/usr/man/man1 ; ln -sf install.1 ginstall.1 )
+
+# Compress and link manpages, if any:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+rm -f $PKG/usr/info/dir
+gzip -9 $PKG/usr/info/*
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a \
+  AUTHORS COPYING* NEWS README* THANKS THANKS-to-translators TODO \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+

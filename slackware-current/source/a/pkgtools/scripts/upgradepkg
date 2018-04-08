@@ -1,0 +1,348 @@
+#!/bin/bash
+# Copyright 1999  Patrick Volkerding, Moorhead, Minnesota, USA 
+# Copyright 2001, 2002, 2003  Slackware Linux, Inc., Concord, California, USA
+# Copyright 2009, 2015  Patrick J. Volkerding, Sebeka, MN, USA
+# Copyright 2015  Michal Nazarewicz <mina86@mina86.com>
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Modified to handle either old 8.3 or new package-version-arch-build.tgz
+# packages, Sat Nov 17 14:25:58 PST 2001 volkerdi
+#
+# Rewritten to clean out _all_ old packages of a given basename, not just
+# the first one found, Thu Apr  4 01:01:05 PST 2002 volkerdi
+#
+# Added --install-new and --reinstall, Fri May 31 14:11:14 PDT 2002 volkerdi
+# Added --dry-run, Sat Apr 26 18:13:29 PDT 2003
+#
+# Sat Apr 25 21:18:53 UTC 2009
+# Support new compression types and package extensions.
+# Converted to use new pkgbase() function to remove pathname and
+# valid package extensions.
+#
+# Sat 17 Jan 16:21:32 UTC 2015  mina86
+# Various optimisation mostly resolving around avoiding having to fork
+# and call cut, basename and other helper commands.  Slight
+# refactoring of code calling removepkg.
+
+# Return a package name that has been stripped of the dirname portion
+# and any of the valid extensions (only):
+pkgbase() {
+  PKGRETURN=${1##*/}
+  case "$PKGRETURN" in *.t[gblx]z)
+    PKGRETURN=${PKGRETURN%.*}
+  esac
+  echo "$PKGRETURN"
+}
+
+usage() {
+ cat << EOF
+
+Usage: upgradepkg newpackage [newpackage2 ... ]
+       upgradepkg oldpackage%newpackage [oldpackage2%newpackage2 ... ]
+
+Upgradepkg upgrades a Slackware package (.tgz, .tbz, .tlz, .txz) from an
+older version to a newer one.  It does this by INSTALLING the new package
+onto the system, and then REMOVING any files from the old package that
+aren't in the new package.  If the old and new packages have the same
+name, a single argument is all that is required.  If the packages have
+different names, supply the name of the old package followed by a percent
+symbol (%), then the name of the new package.  Do not add any extra
+whitespace between pairs of old/new package names.
+
+Before upgrading a package, save any configuration files (such as in /etc)
+that you wish to keep.  Sometimes these will be preserved, but it depends
+on the package.  If you want to force new versions of the config files
+to be installed, remove the old ones manually prior to running upgradepkg.
+
+To upgrade in a directory other than / (such as /mnt):  
+
+   ROOT=/mnt upgradepkg package.tgz (or .tbz, .tlz, .txz)
+
+EOF
+}
+
+# Make sure there's a proper temp directory:
+TMP=$ROOT/var/log/setup/tmp
+# If the $TMP directory doesn't exist, create it:
+if [ ! -d $TMP ]; then
+  rm -rf $TMP # make sure it's not a symlink or something stupid
+  mkdir $TMP
+  chmod 700 $TMP # no need to leave it open
+fi
+
+# This script expects an 022 umask:
+umask 022
+
+# $ROOT defined?
+if [ -d "$ROOT" ]; then
+  export ROOT
+else
+  unset ROOT
+fi
+
+# --help or no args?
+if [ "$1" = "" -o "$1" = "--help" -o "$1" = "-?" ]; then
+  usage;
+  exit 1;
+fi
+
+# Arg processing loop.  These must come before any packages are listed.
+while [ 0 ]; do
+  if [ "$1" = "--no-paranoia" ]; then
+    # Enable --no-paranoia mode.  This is so not-recommended that we're
+    # not even going to document it. ;)   If a file used to be directly
+    # managed and now is moved into place, using --no-paranoia will cause
+    # it to improperly disappear.  It does slightly speed things up, though.
+    # Don't use it.
+    NOT_PARANOID="true"
+    shift 1
+  elif [ "$1" = "--install-new" ]; then
+    # Install packages that do not already have an installed version.
+    # The usual default is to skip them.
+    INSTALL_NEW="yes"
+    shift 1
+  elif [ "$1" = "--reinstall" ]; then
+    # Reinstall packages even if the installed one is the same version.
+    REINSTALL="true"
+    shift 1
+  elif [ "$1" = "--verbose" -o "$1" = "-v" ]; then
+    # We're adding a --verbose mode that doesn't filter removepkg as much
+    VERBOSE="verbose"
+    shift 1
+  elif [ "$1" = "--dry-run" ]; then
+    # Output a report about which packages would be installed or upgraded
+    # but don't actually perform the upgrades.
+    DRY_RUN="true"
+    shift 1
+  else # no more args
+    break;
+  fi
+done # processing args
+
+# Here's a function to figure out the package name from one of those
+# new long filenames.  We'll need this to double check the name of the
+# old package.
+
+package_name() {
+  STRING=$(pkgbase "$1")
+  case "$STRING" in
+  *-*-*-*)
+    # At least four segments, strip version arch and build and return name:
+    echo "${STRING%-*-*-*}"
+    # cruft for later ;)
+    # BUILD=${STRING##*-}
+    # STRING=${STRING%*-}
+    # ARCH=${STRING##*-}
+    # STRING=${STRING%*-}
+    # VER=${STRING%*-}
+    ;;
+  *)
+    # Old style package name with one segment or we don't have four
+    # segments: return the old-style (or out of spec) package name.
+    echo $STRING
+  esac
+}
+
+ERRCODE=0
+
+# Main processing loop:
+for ARG; do
+  OLD=${ARG%'%'*}  # first segment, = $ARG if no %
+  NEW=${ARG#*'%'}  # second segment, = $ARG if no %
+
+  # Simple package integrity check:
+  if ! [ -f "$NEW" ]; then
+    ERRCODE=4
+    echo "Cannot install $ARG:  file not found"
+    continue;
+  fi
+
+  # Figure out the names of the old and new packages:
+  INCOMINGDIR=$(dirname $NEW)
+  # These are the package names with the extension:
+  NNAME=${NEW##*/}
+  ONAME=${OLD##*/}
+  # These are the package names without the extension:
+  OLD=$(pkgbase $OLD)
+  NEW=$(pkgbase $NEW)
+
+  # Make sure the extension is valid:
+  if [ "$NNAME" = "$NEW" ]; then
+    # We won't throw an ERRCODE for this, but the package is skipped:
+    echo "Cannot install $OLD:  invalid package extension"
+    continue;
+  fi
+
+  # Check and fix the old package name:
+  SHORT="$(package_name $OLD)"
+  if [ ! -r $ROOT/var/log/packages/$OLD ]; then
+    if ls $ROOT/var/log/packages/$SHORT* 1> /dev/null 2> /dev/null ; then
+      for installed_package in $ROOT/var/log/packages/$SHORT* ; do
+        if [ "$(package_name $installed_package)" = "$SHORT" ]; then # found one
+          OLD="${installed_package##*/}"
+          break
+        fi
+      done
+    fi
+  fi
+
+  # Test to see if both the old and new packages are where we expect them
+  # to be -- skip to the next package (or package pair) if anything's wrong:
+
+  if [ ! -r $ROOT/var/log/packages/$OLD ]; then
+    if [ ! "$INSTALL_NEW" = "yes" ]; then
+      if [ "$DRY_RUN" = "true" ]; then
+        echo "$OLD would not be upgraded (no installed package named $SHORT)."
+      else
+        echo
+        echo "Error:  there is no installed package named $OLD."
+        echo "        (looking for $ROOT/var/log/packages/$OLD)"
+        echo
+      fi
+      ERRCODE=1
+    else # --install-new was given, so install the new package:
+      if [ "$DRY_RUN" = "true" ]; then
+        echo "$NEW would be installed (new package)."
+      else
+        cat << EOF
+
++==============================================================================
+| Installing new package $INCOMINGDIR/$NNAME
++==============================================================================
+
+EOF
+        /sbin/installpkg $INCOMINGDIR/$NNAME
+      fi
+    fi
+    continue;
+  elif [ ! -r "$INCOMINGDIR/$NNAME" ]; then
+    if [ "$DRY_RUN" = "true" ]; then
+      echo "$NEW incoming package not found (command line)."
+    else
+      echo
+      echo "Error:  incoming package $INCOMINGDIR/$NNAME not found."
+      echo
+    fi
+    ERRCODE=1
+    continue;
+  fi
+
+  # Unless --reinstall was given, compare the package names
+  # and skip any exact matches:
+  if [ ! "$REINSTALL" = "true" ]; then
+    if [ "$OLD" = "$NEW" ]; then
+      if [ "$DRY_RUN" = "true" ]; then
+        echo "$NEW would be skipped (already installed)."
+      else
+        cat << EOF
+
++==============================================================================
+| Skipping package $NEW (already installed)
++==============================================================================
+
+EOF
+      fi
+      continue;
+    fi
+  fi
+
+  # Showtime.  Let's do the upgrade.  First, we will rename all the
+  # installed packages with this basename to make them easy to remove later:
+
+  TIMESTAMP=$(date +%Y-%m-%d,%T)
+  SHORT="$(package_name $OLD)"
+  if [ "$DRY_RUN" = "true" ]; then
+    echo -n "$NEW would upgrade: "
+    for installed_package in $ROOT/var/log/packages/$SHORT* ; do
+    if [ "$(package_name $installed_package)" = "$SHORT" ]; then
+      echo -n "$(pkgbase $installed_package)"
+    fi
+    done
+    echo
+    continue
+  fi
+  for installed_package in $ROOT/var/log/packages/$SHORT* ; do
+    if [ "$(package_name $installed_package)" = "$SHORT" ]; then
+      mv $installed_package ${installed_package}-upgraded-$TIMESTAMP
+    fi
+  done
+  for installed_script in $ROOT/var/log/scripts/$SHORT* ; do
+    if [ "$(package_name $installed_script)" = "$SHORT" ]; then
+      if [ -r $installed_script ]; then
+        mv $installed_script ${installed_script}-upgraded-$TIMESTAMP
+      fi
+    fi
+  done
+
+  # Print a banner for the current upgrade:
+  cat << EOF
+
++==============================================================================
+| Upgrading $OLD package using $INCOMINGDIR/$NNAME
++==============================================================================
+
+EOF
+
+  # Next, the new package is pre-installed:
+  if [ "$VERBOSE" = "verbose" ]; then
+    /sbin/installpkg $INCOMINGDIR/$NNAME
+    RETCODE=$?
+  else
+    echo "Pre-installing package $NEW..."
+    /sbin/installpkg $INCOMINGDIR/$NNAME 1> /dev/null
+    RETCODE=$?
+  fi
+  # Make sure that worked:
+  if [ ! $RETCODE = 0 ]; then
+    echo "ERROR:  Package $INCOMINGDIR/$NNAME did not install"
+    echo "correctly.  You may need to reinstall your old package"
+    echo "to avoid problems.  Make sure the new package is not"
+    echo "corrupted."
+    sleep 30
+    # Skip this package, but still try to proceed.  Good luck...
+    continue;
+  fi
+
+  # Now, the leftovers from the old package(s) can go.  Pretty simple, huh? :)
+  for rempkg in "$ROOT/var/log/packages/"*"-$TIMESTAMP"; do
+    if [ "$VERBOSE" = "verbose" ]; then
+      /sbin/removepkg "${rempkg##*/}"
+    else
+      /sbin/removepkg "${rempkg##*/}" | grep -v 'Skipping\.\|Removing files:'
+    fi
+  done
+  echo
+
+  # Again!  Again!
+  # Seriously, the reinstalling of a package can be crucial if any files
+  # shift location, so we should always reinstall as the final step:
+  if [ ! "$NOT_PARANOID" = "true" ]; then
+    /sbin/installpkg $INCOMINGDIR/$NNAME
+  fi
+
+  echo "Package $OLD upgraded with new package $INCOMINGDIR/$NNAME."
+  ERRCODE=0
+done
+
+if [ ! "$DRY_RUN" = "true" ]; then
+  echo
+fi
+exit $ERRCODE
+

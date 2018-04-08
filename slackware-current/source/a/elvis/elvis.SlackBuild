@@ -1,0 +1,123 @@
+#!/bin/sh
+
+# Copyright 2005-2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=elvis
+VERSION=2.2_0
+BUILD=${BUILD:-3}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-elvis
+
+rm -rf $PKG
+mkdir -p $TMP $PKG/usr
+cd $TMP
+rm -rf elvis-$VERSION
+tar xjvf $CWD/elvis-$VERSION.tar.bz2
+cd elvis-$VERSION
+
+# Fix redefined getline() with glibc > 2.9 by changing the
+# local function to elv_getline():
+zcat $CWD/elvis.ref.c.getline.diff.gz | patch -p1 --verbose || exit 1
+
+chown -R root:root .
+# Time for a kludge (i.e. don't suggest this kind of thing be
+# done as a rule... I don't know why I'm crazy today).
+# First we build and install this with a bogus --prefix, and
+# then build it again and replace the binaries.
+# (to prevent compiling in /tmp/package-elvis/ paths)
+./configure \
+  --without-x \
+  --without-gnome \
+  --bindir=$PKG/usr/bin \
+  --datadir=$PKG/usr/share/elvis-$VERSION \
+  --docdir=$PKG/usr/share/elvis-$VERSION/doc \
+  --verbose
+make
+make install
+# Now we make the real binaries:
+make clean
+./configure \
+  --without-x \
+  --without-gnome \
+  --bindir=/usr/bin \
+  --datadir=/usr/share/elvis-$VERSION \
+  --docdir=/usr/share/elvis-$VERSION/doc \
+  --verbose
+make
+# And install them:
+cat elvis > $PKG/usr/bin/elvis
+cat elvtags > $PKG/usr/bin/elvtags
+cat ref > $PKG/usr/bin/ref
+# Turn off color highlighting by default.  I can't imagine editing files like
+# that all day...  (this coming from the inventor of /etc/(DIR|LS)_COLORS ;-)
+cp -a $CWD/elvis.clr* $PKG/usr/share/elvis-$VERSION
+chown root:root $PKG/usr/share/elvis-$VERSION/elvis.clr*
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+# Install the man pages:
+mkdir -p $PKG/usr/man/man1
+( cd doc
+  cat ctags.man | gzip -9c > $PKG/usr/man/man1/elvtags.1.gz
+  cat elvfmt.man | gzip -9c > $PKG/usr/man/man1/elvfmt.1.gz
+  cat elvis.man | gzip -9c > $PKG/usr/man/man1/elvis.1.gz
+  cat ref.man | gzip -9c > $PKG/usr/man/man1/ref.1.gz
+)
+cp -a \
+  BUGS COPYING INSTALL README.html \
+  $PKG/usr/share/elvis-$VERSION
+# If this is actually useful for anything, fill me in on what it's for:
+rm -f $PKG/usr/share/elvis-$VERSION/tags
+rm -f $PKG/usr/share/elvis-$VERSION/doc/*.man
+rm -f $PKG/usr/share/elvis-$VERSION/doc/printdoc.bat
+
+# Add /usr/bin/ex and /usr/bin/vi symlinks.
+( cd $PKG/usr/bin ; ln -sf elvis ex ; ln -sf elvis vi )
+mkdir $PKG/usr/doc
+( cd $PKG/usr/doc ; ln -sf /usr/share/elvis-$VERSION . )
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+makepkg -l y -c n $TMP/elvis-$VERSION-$ARCH-$BUILD.txz
+

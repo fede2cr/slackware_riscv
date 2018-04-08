@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+cpufrequtils: cpufrequtils (Kernel CPUfreq utilities)
+cpufrequtils:
+cpufrequtils: The cpufrequtils package makes access to the Linux kernel CPUfreq
+cpufrequtils: subsystem easier for users and cpufreq userspace tools. It contains
+cpufrequtils: a library used by other programs (libcpufreq), and command line tools
+cpufrequtils: to determine current CPUfreq settings and to modify them.
+cpufrequtils:
+cpufrequtils: Dominik Brodowski is the cpufrequtils maintainer.
+cpufrequtils: The cpufrequtils page is hosted on kernel.org:
+cpufrequtils: http://www.kernel.org/pub/linux/utils/kernel/cpufreq/cpufreq.html
+cpufrequtils:

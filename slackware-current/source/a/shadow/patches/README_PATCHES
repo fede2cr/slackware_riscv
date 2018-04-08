@@ -1,0 +1,10 @@
+
+r3054.diff: Fixed wrong format string
+r3055.diff: Help output to stderr not stdout.
+r3060.diff: Fix memory leaks
+r3062.diff: Avoid memzero() on a possibly NULL pointer.
+r3096.diff: Fix parsing of gshadow entries. 
+r3090.diff: Fix improper sanitizing of locale variables.
+r3160.diff: Fixed limits support (non PAM enabled versions only)
+r3194.diff: shell's name must be -su when a su fakes a login.
+r3299.diff: man/ru/Makefile.am: Remove double inclusion of $(man_nopam) 

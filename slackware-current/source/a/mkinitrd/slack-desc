@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+mkinitrd: mkinitrd (make an initial ramdisk)
+mkinitrd:
+mkinitrd: mkinitrd is a script to create an initial ramdisk that is loaded at
+mkinitrd: the same time as the kernel. The initial ramdisk may be responsible
+mkinitrd: for loading kernel modules (such a filesystem or SCSI controller
+mkinitrd: module) that are needed to mount the root filesystem.
+mkinitrd:
+mkinitrd: The "initrd" is implemented as an initramfs. See the kernel
+mkinitrd: documentation for more information on this, if you are interested.
+mkinitrd:
+mkinitrd:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+acl: acl (tools for using POSIX Access Control Lists)
+acl:
+acl: This package contains a set of tools and libraries for manipulating
+acl: POSIX Access Control Lists. POSIX Access Control Lists (defined in
+acl: POSIX 1003.1e draft standard 17) are used to define more fine-grained
+acl: discretionary access rights for files and directories.
+acl:
+acl:
+acl:
+acl: Homepage: http://savannah.nongnu.org/projects/acl
+acl:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+mtx: mtx (Controls tape autochangers)
+mtx:
+mtx: The MTX program controls the robotic mechanism in autoloaders and
+mtx: tape libraries such as the HP SureStore DAT 40x6, Exabyte EZ-17, and
+mtx: Exabyte 220. 
+mtx:
+mtx: This program is also reported to work with a variety of other tape
+mtx: libraries and autochangers from Tandberg/Overland, Breece Hill, HP, 
+mtx: Seagate, Dell and Quantum.
+mtx:
+mtx:

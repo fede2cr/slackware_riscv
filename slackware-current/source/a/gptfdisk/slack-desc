@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+gptfdisk: gptfdisk (GPT fdisk utilities)
+gptfdisk:
+gptfdisk: GPT fdisk (consisting of the gdisk, cgdisk, sgdisk, and fixparts
+gptfdisk: programs) is a set of text-mode partitioning tools for using a GPT
+gptfdisk: (GUID Partition Table), rather than the traditional MBR (Master Boot
+gptfdisk: Record) partition tables. It features several partitioning tools,
+gptfdisk: recovery tools to help you deal with corrupt partition tables, and the
+gptfdisk: ability to convert MBR disks to GPT format.
+gptfdisk:
+gptfdisk: gptfdisk home: http://sourceforge.net/projects/gptfdisk/
+gptfdisk:

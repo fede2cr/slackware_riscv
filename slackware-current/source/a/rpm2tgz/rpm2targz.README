@@ -1,0 +1,18 @@
+
+This package contains 'rpm2targz', a simple utility to convert Red Hat-style
+RPM packages into standard tar.gz archives.  Converted binary packages can then
+be installed/removed using the 'installpkg/removepkg' commands, or 'pkgtool'. 
+
+It's advisable to at least examine the converted package with 'less' to make
+sure it won't do anything too crazy to your system.  If it does, Patrick
+Volkerding and David Cantrell are not responsible, so use this at your own
+risk.  :-)
+
+By default, rpm2targz will attempt to use "file" to detect source RPMS, and will
+put the contents into a subdirectory in the resulting package.  This may not be
+portable to other operating systems -- if you're trying to run rpm2targz on an
+OS that doesn't have a file that knows RPM types, and you care about this source
+RPM feature, you can compile and install David Cantrell's standalone getrpmtype
+utility.  The getrpmtype.tar.gz source archive can be found in Slackware's
+source tree in source/a/rpm2tgz/.
+

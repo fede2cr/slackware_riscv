@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+  |-----handy-ruler------------------------------------------------------|
+ed: ed (text editor)
+ed:
+ed: GNU ed is an 8-bit clean, more or less POSIX-compliant implementation
+ed: of the standard Unix line editor. These days, full-screen editors
+ed: have rendered 'ed' mostly of historical interest. Nonetheless, it
+ed: appeals to a handful of aging programmers who still believe that
+ed: "Small is Beautiful".
+ed:
+ed:
+ed:
+ed:

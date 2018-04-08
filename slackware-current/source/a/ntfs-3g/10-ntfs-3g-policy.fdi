@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Theoretically, this file should ship with ntfs-3g -->
+
+<deviceinfo version="0.2">
+  <device>
+    <match key="/org/freedesktop/Hal/devices/computer:system.kernel.name" string="Linux">
+      <match key="volume.fstype" string="ntfs">
+
+        <!-- "Register" ntfs-3g as a valid alternative handler -->
+  	<append key="volume.fstype.alternative" type="strlist">ntfs-3g</append>
+
+        <!-- "Register" ntfs-3g as the preferred alternative handler -->
+  	<merge key="volume.fstype.alternative.preferred" type="string">ntfs-3g</merge>
+
+        <!-- Set valid mount options -->
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">ro</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">sync</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">dirsync</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">noatime</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">nodiratime</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">noexec</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">quiet</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">remount</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">exec</append>
+	<append key="volume.mount.ntfs-3g.valid_options" type="strlist">locale=</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">uid=</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">gid=</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">umask=</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">dmask=</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">fmask=</append>
+        <append key="volume.mount.ntfs-3g.valid_options" type="strlist">utf8</append>
+
+      </match>
+    </match>
+  </device>
+</deviceinfo>
+

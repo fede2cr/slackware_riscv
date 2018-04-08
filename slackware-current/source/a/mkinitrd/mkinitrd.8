@@ -1,0 +1,279 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH MKINITRD 8 "27 March 2010" "Slackware Version 13.1"
+.SH NAME
+mkinitrd \- create or rebuilt an initrd (initial ramdisk) using initramfs (simple cpio+gzip).
+.SH SYNOPSIS
+.B mkinitrd
+[
+.B \-F
+]
+[
+.B \-c
+]
+[
+.B \-f filesystem
+]
+[
+.B \-h hibernate_partition
+]
+[
+.B \-k kernel_version
+]
+[
+.B \-m module1:module2:module3...
+]
+[
+.B \-o output_file
+]
+[
+.B \-r root_device
+]
+[
+.B \-s source_tree
+]
+[
+.B \-u
+]
+[
+.B \-w wait_time
+]
+[
+.B \-C device1:device2:device3...
+]
+[
+.B \-K luks_keyfile
+]
+[
+.B \-P microcode_archive
+]
+[
+.B \-B
+]
+[
+.B \-L
+]
+[
+.B \-R
+]
+[
+.B \-V
+]
+.SH DESCRIPTION
+.B mkinitrd
+is used to build an initial ramdisk.  An initial ramdisk is a very small
+set of files that are loaded into RAM and "mounted" (as initramfs doesn't
+actually use a filesystem) as the kernel boots (before the main root
+filesystem is mounted).  The usual reason to use an initrd is because
+you need to load kernel modules before mounting the root partition.
+Usually these modules are required to support the filesystem used by the
+root partition (ext3, reiserfs, xfs), or perhaps the controller that the
+hard drive is attached to (SCSI, RAID, etc).  Essentially, there are so many
+different options available in modern Linux kernels that it isn't practical
+to try to ship many different kernels to try to cover everyone's needs.
+It's a lot more flexible to ship a generic kernel and a set of kernel
+modules for it.
+.SH OPTIONS
+.TP
+.B \-F
+Use the contents of /etc/mkinitrd.conf as options to mkinitrd (optional).
+If this is used in conjunction with any other options passed on the command 
+line, the command-line options will override the config file options.  
+.br
+See mkinitrd.conf(5) for details.
+.TP
+.B \-c
+Clear the existing initrd tree (by default in /boot/initrd-tree/) first.
+If this is not done, running mkinitrd will add additional modules to the
+existing initrd.
+.TP
+.B \-f filesystem
+Specify the filesystem to use for the root partition.  If this isn't given,
+mount will usually figure it out.  This option must be used together with the
+\-r option in order to be beneficial.
+.TP
+.B \--help
+Display a help summary.
+.TP
+.B \-h hibernate_partition
+Specify the swap partition holding the hibernation image.
+.TP
+.B \-k kernel version
+Use kernel modules from the specified kernel version.  mkinitrd will look
+for them in /lib/modules/(kernel version).
+.TP
+.B \-l keymap
+Load an alternative keyboard mapping. All supported keyboard mappings
+can be found in /usr/share/mkinitrd/keymaps.tar.gz
+Leave the '.bmap' out when you supply this parameter. E.g. '-l nl' will 
+add support for dutch keyboard mapping to the initrd.
+.TP
+.B \-m module list
+This is a list of colon-delimited modules to build into the initrd.
+Any dependencies of requested modules will also be added to the initrd.
+Additional options may be added to use when loading the kernel modules
+(but in this case the entire list must be wrapped with double quotes). 
+.TP
+.B \-o output image
+The file to write the initrd to.  (default: /boot/initrd.gz)
+.TP
+.B \-r root partition
+Specify the device to be used as the root partition.  If this isn't given, the
+kernel default will be used (which is usually fine).  This option must be used
+together with the \-f option in order to be beneficial.
+.TP
+.B \-s source tree
+The directory to use as the source for the initrd.  (default: /boot/initrd-tree/)
+.TP
+.B \-u
+Include udev in the initrd.
+.TP
+.B \-w
+The -w option specifies how long to wait in seconds before assuming that all the
+drives are spun up and ready to go.
+.TP
+.B \-C device list
+A colon (:) delimited list of luks encrypted block devices to be unlocked by
+the initrd using cryptsetup.  All devices that must be unlocked in order to
+access the root filesystem must be specified. e.g.
+
+  -C /dev/sda2:/dev/sda3
+
+Each unlocked device will be assigned an automatically generated luks device
+name of the form luks<device> where '<device>' will be the basename of the
+encrypted device.  e.g.
+
+  /dev/mapper/lukssda2
+
+As a convenience to users, where -r specifies one of the device names listed
+on the -C option it will be automatically adjusted to use the correct luks
+device name. i.e.
+
+  "-C /dev/sda2 -r /dev/sda2" and
+  "-C /dev/sda2 -r /dev/mapper/lukssda2"
+
+are equivalent.
+.br
+(Use with '-r' option).
+.TP
+.B \-K luks_keyfile
+When using cryptsetup to encrypt your partition, you can use a keyfile instead
+of a passphrase to unlock the LUKS volume.  The LUKSKEY variable holds the
+filename of a keyfile, as well as the label (or uuid) of the partition this
+file is on.  This way, you can unlock your computer automatically if you have a
+USB stick with your LUKS key inserted at boot. A passphrase will still be asked
+if the LUKS key can not be found.
+.br
+For example, if your USB thumb drive has a FAT partition with label
+"TRAVELSTICK" and the actual keyfile is called "/keys/alien.luks", then
+you need to set:
+
+  -K LABEL=TRAVELSTICK:/keys/alien.luks
+.TP
+.B \-T device list
+A colon (:) delimited list of luks encrypted block devices to be passed the
+"--allow-discards" option when unlocked by the initrd using cryptsetup, e.g.
+
+  -T /dev/sda2:/dev/sda4
+
+This has the effect of allowing TRIM on SSD drives. Be sure your SSD supports 
+this feature (correctly) before enabling it.  See fstrim(8) for more information.
+.TP
+.B \-P microcode_archive
+This option specifies a cpio archive containing updated microcode for your CPU.
+CPU manufacturers occasionally release such updates to fix bugs in the microcode
+currently embedded in the CPU. The microcode archive will be prepended to the
+output initrd, where the kernel will find it for early patching:
+
+  -P /boot/intel-ucode.cpio
+
+.TP
+.B \-B
+This option adds the btrfs utility to the initrd so that multi-device filesystems
+will be picked up by a scan (/sbin/btrfs device scan).  This is needed if the
+root filesystem is a Btrfs multi-device filesystem.
+.TP
+.B \-L
+This option adds LVM support to the initrd, if the tools are
+available on the system.
+.TP
+.B \-R
+This option adds RAID support to the initrd, if a static mdadm binary is
+available on the system.
+.TP
+.B \-V
+Display version information and exit.
+.SH EXAMPLES
+A simple example:  Build an initrd for a reiserfs root partition:
+
+  mkinitrd -c -m reiserfs
+
+Another example:  Build an initrd image using Linux 2.6.33.1 kernel
+modules for a system with an ext3 root partition on /dev/sdb3:
+
+  mkinitrd -c -k 2.6.33.1 -m ext3 -f ext3 -r /dev/sdb3
+
+An example of a single encrypted partition setup:
+.br
+As a user convenience, the value for the "-r" option may also be specified as
+"/dev/sda2" in this example:
+
+  mkinitrd -c -k 2.6.33.1 \\
+           -m ext4:ehci-hcd:uhci-hcd:usbhid \\
+           -f ext4 -r /dev/mapper/lukssda2 \\
+           -C /dev/sda2 \\
+           -l uk
+
+Finally, A more complex example:
+.br
+This one is for a LVM Volume Group (rootvg) comprising of two LVM Physical
+Volumes, each of which is on a LUKS encrypted partition that will need to be
+unlocked before the root filesystem (/dev/rootvg/lvroot) can be accessed.
+
+  mkinitrd -c -k 2.6.29.6 \\
+           -m ext4:ehci-hcd:uhci-hcd:usbhid \\
+           -f ext4 -r /dev/rootvg/lvroot \\
+           -L -C /dev/sda2:/dev/sdb2 \\
+           -l uk
+
+If run without options, mkinitrd will rebuild an initrd image using
+the contents of the $SOURCE_TREE directory, or, if that directory
+does not exist it will be created and populated, and then mkinitrd
+will exit.  These options are handy for building an initrd mostly
+by hand.  After creating /boot/initrd-tree/, you can add modules and
+edit files by hand, and then rerun mkinitrd to create the initrd.
+
+Once the initrd is created, you'll need to tell your boot loader
+to load it.  If you boot with LILO, you will need to add an initrd
+line to /etc/lilo.conf.  Here's a section of lilo.conf that shows
+how to set this up:
+
+ # Linux bootable partition config begins
+ image = /boot/vmlinuz-generic-2.6.33.1
+   initrd = /boot/initrd.gz
+   root = /dev/sda3
+   label = Linux26331
+   read-only
+ # Linux bootable partition config ends
+
+Note that the line "root = /dev/sda3" is not needed if the root device
+has been configured in the initrd image.
+
+Once you've created the initrd and editing /etc/lilo.conf, you will
+need to run 'lilo' to write out the changed boot block.  The next
+time you reboot the initrd should be loaded along with the kernel.
+
+Have fun!
+
+.SH SEE ALSO
+mkinitrd.conf (5)
+
+.SH AUTHOR
+Patrick J. Volkerding <volkerdi@slackware.com>

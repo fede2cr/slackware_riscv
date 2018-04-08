@@ -1,0 +1,3 @@
+#!/bin/sh
+#BLURB="Set up LILO to boot Linux (and other OSes) from your hard drive"
+sh sbin/liloconfig $*

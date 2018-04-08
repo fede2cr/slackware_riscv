@@ -1,0 +1,248 @@
+.\" mkinitrd.5   Robby Workman <rworkman@slackware.com>
+.\" 28 August 2010 "
+
+.TH MKINITRD.CONF 5 "27 March 2010" "Slackware 13.1"
+.SH NAME 
+.B mkinitrd.conf(5)
+.SH SYNOPSIS
+.B mkinitrd.conf - optional configuration file for 
+.I mkinitrd(8)
+
+.SH DESCRIPTION
+The
+.I mkinitrd.conf
+file contains options to be passed to
+.I mkinitrd(8)
+on every run if mkinitrd is executed with the -F flag.  
+.br 
+It is intended as a fast and easy way for the system administrator to
+pass options to mkinitrd without having to type them on each execution.
+
+Options passed to 
+.I mkinitrd(8)
+on the command line will override any
+values set in the config file.
+
+.SH OPTIONS AND SYNTAX
+
+All options are in the format of OPTION="value"
+.br
+Unset variables have no effect.
+
+.TP 5
+.I SOURCE_TREE
+This is the location for the initrd's source tree.
+.br
+Defaults to "/boot/initrd-tree"
+
+.TP 5
+.I CLEAR_TREE
+This option specifies whether to clear the initrd source tree prior to
+creating the initrd. 
+.br
+This requires a value of either "0" or "1" where 0=no and 1=yes
+.br
+Examples:
+.br
+CLEAR_TREE="0"		# Do not clear initrd tree first
+.br
+CLEAR_TREE="1"		# Clear initrd tree first
+
+It is recommended to leave this unset and pass "-c" on the command line
+when clearing the tree is desired.  Clearing the tree is not desirable
+if you wish to build support for more than one kernel into the initrd
+image.
+
+.TP 5
+.I OUTPUT_IMAGE
+This is the location for the initrd image that is created.
+.br
+Defaults to "/boot/initrd.gz"
+.br
+If %KVER% and/or %SLACKVER% are present in the string, they will be replaced 
+with $KERNEL_VERSION (e.g. "4.4.75-smp") and Slackware Version (e.g. "14.2") 
+respectively in the name of the generated file.
+
+.TP 5
+.I KERNEL_VERSION
+This is the kernel version for which the initrd should be created.
+.br
+Defaults to "$(uname -r)"
+
+.TP 5
+.I KEYMAP
+This is the custom keyboard map that should be loaded instead of the
+default 'us' keymap.
+.br
+The file /usr/share/mkinitrd/keymaps.tar.gz contains all possible keymaps
+to choose from (omit the '.bmap' extension in the mkinitrd command)
+.br
+Example: KEYMAP="nl"
+
+.TP 5
+.I MODULE_LIST
+This should be a colon-separated list of modules you wish to be included
+in the initrd image.  
+.br
+Example: MODULE_LIST="ext3:mbcache:jbd"
+
+If you have loadtime options that you need to specify when loading kernel
+modules, those can be added here as well.
+.br
+Example: MODULE_LIST="module1:module2 option=1:module3"
+
+.TP 5
+.I LUKSDEV
+Contains a colon (:) delimited list of luks encrypted block devices to be
+unlocked by the initrd using cryptsetup.  All devices that must be unlocked
+in order to access the root filesystem must be specified.
+.br
+Example: LUKSDEV="/dev/sda2:/dev/sda3"
+
+Each unlocked device will be assigned an automatically generated luks device
+name of the form luks<device> where '<device>' will be the basename of the
+encrypted device.  e.g.
+
+  /dev/mapper/lukssda2
+
+As a convenience to users, if
+.I ROOTDEV
+(see below) specifies one of the device names listed in the
+.I LUKSDEV
+option, then it will be automatically adjusted to use the correct luks
+device name. i.e. when specifying
+.I "LUKSDEV=/dev/sda2"
+then
+.I "ROOTDEV=/dev/sda2"
+and
+.I "ROOTDEV=/dev/mapper/lukssda2"
+are equivalent.
+
+.TP 5
+.I LUKSKEY
+When using cryptsetup to encrypt your partition, you can use a keyfile instead
+of a passphrase to unlock the LUKS volume.  The LUKSKEY variable holds the
+filename of a keyfile, as well as the label (or uuid) of the partition this
+file is on.  This way, you can unlock your computer automatically if you have a
+USB stick with your LUKS key inserted at boot. A passphrase will still be asked
+if the LUKS key can not be found.
+.br
+For example, if your USB thumb drive has a FAT partition with label
+"TRAVELSTICK" and the actual keyfile is called "/keys/alien.luks", then
+you need to set:
+.br
+LUKSKEY="LABEL=TRAVELSTICK:/keys/alien.luks"
+
+.TP 5
+.I LUKSTRIM
+Contains a colon (:) delimited list of luks encrypted block devices to be
+passed the "--allow-discards" option when unlocked by the initrd using
+cryptsetup. This has the effect of allowing TRIM on SSD drives. Be sure
+your SSD supports this feature (correctly) before enabling it.
+.br
+See fstrim(8) for more information.
+.br
+Example: LUKSTRIM="/dev/sda2:/dev/sda4"
+
+.TP 5
+.I ROOTDEV
+The device on which your root filesystem is located.
+.br
+Example: ROOTDEV="/dev/sda2"
+
+If you are using cryptsetup and an encrypted root filesystem, be sure to
+read the option above for LUKSDEV or Bad Things will happen.
+
+.TP 5
+.I ROOTFS
+The filesystem type of your root filesystem
+.br
+Example: ROOTFS="ext3"
+
+.TP 5
+.I RAID
+This option adds the mdadm binary to the initrd to support RAID.
+Additional modules may be required, depending on your kernel
+configuration.  If you wish to add LVM support to the initrd, then
+set this to 1; otherwise, leave it unset or set it to 0.
+.br
+Examples:
+.br
+RAID="0"          # Do not add RAID support to initrd
+.br
+RAID="1"          # Add RAID support to initrd
+
+.TP 5
+.I LVM
+This option adds support for LVM partitions into the initrd.
+If you wish to add LVM support to the initrd, then set this to 1;
+otherwise, leave it unset or set it to 0.
+.br
+Examples:
+.br
+LVM="0"          # Do not add LVM support to initrd
+.br
+LVM="1"          # Add LVM support to initrd
+
+.TP 5
+.I UDEV
+Use UDEV in the initrd.
+.br
+Examples:
+.br
+UDEV="0"	# Do not use udev in the initrd
+.br
+UDEV="1"	# Use udev in the initrd (this is the default)
+
+.TP 5
+.I WAIT
+This defines the time to wait, in seconds, until all disks are detected.
+.br
+This is useful for allowing extra time that might be needed for slow usb disks or systems with large amounts of storage to become ready.
+.br
+If not defined, the default is 1 second.
+
+.TP 5
+.I RESUMEDEV
+The swap partition holding your hibernation image.
+.br
+Example: RESUMEDEV="/dev/sda2"
+
+.TP 5
+.I MODCONF
+This option defines whether to copy the module-init-tools config files
+from /etc/modprobe.d/ into the initrd.  This will not usually be necessary,
+but if you need certain modules to be loaded with special options, and you
+have this configured in a file in /etc/modprobe.d/, this is one way to 
+accomplish the desired goal.
+.br
+Examples:
+.br
+MODCONF="0"	# Do not add /etc/modprobe.d/* to the initrd
+.br
+MODCONF="1"	# Add /etc/modprobe.d/* to the initrd
+
+.TP 5
+.I MICROCODE_ARCH
+This option specifies a cpio archive containing updated microcode for your CPU.
+CPU manufacturers occasionally release such updates to fix bugs in the microcode
+currently embedded in the CPU. The microcode archive will be prepended to the
+output initrd, where the kernel will find it for early patching.
+.br
+Examples:
+.br
+MICROCODE_ARCH="/boot/intel-ucode.cpio"
+
+.SH FILES
+.I /etc/mkinitrd.conf
+.br
+See /etc/mkinitrd.conf.sample
+
+.SH "SEE ALSO"
+.BR mkinitrd "(8)"
+
+.SH BUGS
+None known :-)
+
+.SH MISCELLANEOUS
+Support for mkinitrd.conf was added in mkinitrd-1.3.0

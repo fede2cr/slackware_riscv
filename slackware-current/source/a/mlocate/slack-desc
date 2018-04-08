@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+mlocate: mlocate (locate/updatedb implementation)
+mlocate:
+mlocate: mlocate is a locate/updatedb implementation. It keeps a database of
+mlocate: all existing files and allows you to lookup files by name. The 'm'
+mlocate: stands for "merging": updatedb reuses the existing database to avoid
+mlocate: rereading most of the file system, which makes updatedb faster and
+mlocate: does not trash the system caches as much as traditional locate
+mlocate: implementations. The locate(1) utility is intended to be completely
+mlocate: compatible to slocate. It also attempts to be compatible to GNU
+mlocate: locate, when it does not conflict with slocate compatibility.
+mlocate:

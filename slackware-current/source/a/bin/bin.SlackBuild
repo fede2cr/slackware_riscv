@@ -1,0 +1,157 @@
+#!/bin/sh
+
+# Copyright 2005-2009, 2010, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=bin
+VERSION=11.1
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-bin
+
+# These don't need to be real recent, as we only require a couple
+# of things such as 'mktemp' and 'tempfile'.
+DUTILS=2.7
+
+# The fbset package
+FBSET=2.1
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+echo "+=============+"
+echo "| debianutils |"
+echo "+=============+"
+cd $TMP
+rm -rf debianutils-$DUTILS
+tar xzvf $CWD/debianutils_$DUTILS.tar.gz
+cd debianutils-$DUTILS
+chown -R root:root .
+./configure --prefix=/usr
+make || exit 1
+## We use our own very simple run-parts script
+## in the dcron package instead.
+#cat run-parts > $PKG/usr/bin/run-parts
+#cat run-parts.8 | gzip -9c > $PKG/usr/man/man8/run-parts.8.gz
+mkdir -p $PKG/usr/bin $PKG/usr/man/man{1,8}
+cat mktemp > $PKG/usr/bin/mktemp
+cat mktemp.1 | gzip -9c > $PKG/usr/man/man1/mktemp.1.gz
+cat savelog > $PKG/usr/bin/savelog
+cat savelog.8 | gzip -9c > $PKG/usr/man/man8/savelog.8.gz
+cat tempfile > $PKG/usr/bin/tempfile
+cat tempfile.1 | gzip -9c > $PKG/usr/man/man1/tempfile.1.gz
+chmod 755 $PKG/usr/bin/*
+mkdir -p $PKG/usr/doc/debianutils-$DUTILS
+cp -a debian/copyright $PKG/usr/doc/debianutils-$DUTILS
+
+echo "+===========+"
+echo "| fbset-${FBSET} |"
+echo "+===========+"
+cd $TMP
+rm -rf fbset-${FBSET}
+tar xzvf $CWD/fbset-${FBSET}.tar.gz
+cd fbset-${FBSET}
+chown -R root:root .
+make || exit 1
+mkdir -p $PKG/usr/sbin
+cat fbset > $PKG/usr/sbin/fbset
+chmod 755 $PKG/usr/sbin/fbset
+mkdir -p $PKG/etc
+cat etc/fb.modes.ATI > $PKG/etc/fb.modes
+mkdir -p $PKG/usr/man/man5
+cat fb.modes.5 | gzip -9c > $PKG/usr/man/man5/fb.modes.5.gz
+mkdir -p $PKG/usr/man/man8
+cat fbset.8 | gzip -9c > $PKG/usr/man/man8/fbset.8.gz
+mkdir -p $PKG/usr/doc/fbset-${FBSET}
+cp -a \
+  INSTALL etc/* \
+  $PKG/usr/doc/fbset-${FBSET}
+rm -r $PKG/usr/doc/fbset-${FBSET}/CVS
+
+echo "+=========+"
+echo "| banners |"
+echo "+=========+"
+cd $TMP
+rm -rf banners
+tar xzvf $CWD/banners.tar.gz
+cd banners
+chown -R root:root .
+make || exit 1
+cat bban > $PKG/usr/bin/bban
+cat sysvbanner > $PKG/usr/bin/sysvbanner
+chmod 755 $PKG/usr/bin/{bban,sysvbanner}
+
+echo "+===============+"
+echo "| todos/fromdos |"
+echo "+===============+"
+cd $TMP
+rm -rf todos
+tar xzvf $CWD/todos.tar.gz
+cd todos
+chown -R root:root .
+make || exit 1
+mkdir -p $PKG/usr/bin
+cat todos > $PKG/usr/bin/todos
+cat fromdos > $PKG/usr/bin/fromdos
+chmod 755 $PKG/usr/bin/*dos
+mkdir -p $PKG/usr/man/man1
+cat todos.1.gz > $PKG/usr/man/man1/todos.1.gz
+cat fromdos.1.gz > $PKG/usr/man/man1/fromdos.1.gz
+
+# These are a couple of really old scripts that might still
+# be useful for a couple more years.  :-)
+zcat $CWD/scripts/diskcopy.gz > $PKG/usr/bin/diskcopy
+zcat $CWD/scripts/xx.gz > $PKG/usr/bin/xx
+chmod 755 $PKG/usr/bin/diskcopy
+chmod 755 $PKG/usr/bin/xx
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg -l y -c n $TMP/bin-$VERSION-$ARCH-$BUILD.txz
+

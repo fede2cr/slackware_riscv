@@ -1,0 +1,117 @@
+#!/bin/sh
+
+# Copyright 2005-2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=sysklogd
+VERSION=1.5.1
+BUILD=${BUILD:-2}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:--j6}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-sysklogd
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf sysklogd-$VERSION
+tar xvf $CWD/sysklogd-$VERSION.tar.gz || exit 1
+cd sysklogd-$VERSION
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Use memmove() instead of strcpy() in syslogd.c
+zcat $CWD/use_memmove_not_strcpy.diff.gz | patch -p1 --verbose || exit 1
+
+# Allow -c option to log all (even repeated) messages:
+zcat $CWD/sysklogd.allow.repeated.messages.diff.gz | patch -p1 --verbose || exit 1
+
+# union wait removed in glibc, use int instead:
+zcat $CWD/sysklogd.union.wait.int.diff.gz | patch -p1 --verbose || exit 1
+
+make all syslog_tst $NUMJOBS || make || exit 1
+
+mkdir -p $PKG/usr/sbin
+cat klogd > $PKG/usr/sbin/klogd
+cat syslog_tst > $PKG/usr/sbin/syslog_tst
+cat syslogd > $PKG/usr/sbin/syslogd
+chmod 0755 $PKG/usr/sbin/*
+
+mkdir -p $PKG/usr/man/man{5,8}
+cat syslog.conf.5 | gzip -9c > $PKG/usr/man/man5/syslog.conf.5.gz
+cat klogd.8 | gzip -9c > $PKG/usr/man/man8/klogd.8.gz
+cat sysklogd.8 | gzip -9c > $PKG/usr/man/man8/sysklogd.8.gz
+( cd $PKG/usr/man/man8 ; ln -s sysklogd.8.gz syslogd.8.gz )
+
+mkdir -p $PKG/etc
+cat $CWD/config/syslog.conf.new > $PKG/etc/syslog.conf.new
+
+mkdir -p $PKG/etc/logrotate.d
+cat $CWD/config/syslog.logrotate > $PKG/etc/logrotate.d/syslog.new
+
+mkdir -p $PKG/etc/rc.d
+cat $CWD/config/rc.syslog.new > $PKG/etc/rc.d/rc.syslog.new
+chmod 0755 $PKG/etc/rc.d/rc.syslog.new
+
+mkdir -p $PKG/var/log
+for i in cron debug maillog messages secure spooler syslog ; do
+  touch $PKG/var/log/$i.new
+  chmod 640 $PKG/var/log/$i.new
+done
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/usr/doc/sysklogd-$VERSION
+cp -a \
+  ANNOUNCE CHANGES COPYING INSTALL MANIFEST NEWS README.1st README.linux \
+  $PKG/usr/doc/sysklogd-$VERSION
+chmod 0644 $PKG/usr/doc/sysklogd-$VERSION/*
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/sysklogd-$VERSION-$ARCH-$BUILD.txz
+

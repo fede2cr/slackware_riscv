@@ -1,0 +1,187 @@
+'\" t
+.\"     Title: mkinitrd_command_generator
+.\"    Author: Eric Hameleers
+.\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
+.\"      Date: 2016-02-07
+.\"    Manual: Slackware Tools
+.\"    Source: http://www.slackware.com 1.40
+.\"  Language: English
+.\"
+.TH "MKINITRD_COMMAND_GEN" "8" "2016-02-07" "http://www\&.slackware\&.com" "Slackware Tools"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+mkinitrd_command_generator \- mkinitrd the easy way
+.SH "SYNOPSIS"
+.sp
+.nf
+mkinitrd_command_generator\&.sh [ \fIoptions\fR ] [ \fIkernel_filename\fR ]
+.fi
+.SH "OPTIONS"
+.PP
+\fB\-a \fR\fB\fIadditional params\fR\fR
+.RS 4
+Additional parameters to pass to mkinitrd\&.
+.RE
+.PP
+\fB\-c | \-\-conf\fR
+.RS 4
+Show a suitable mkinitrd configuration file\&.
+.RE
+.PP
+\fB\-h | \-\-help\fR
+.RS 4
+Show this help\&.
+.RE
+.PP
+\fB\-i | \-\-interactive\fR
+.RS 4
+Navigate through menus instead of using commandline arguments\&.
+.RE
+.PP
+\fB\-\-longhelp\fR
+.RS 4
+Show more detailed information/examples\&.
+.RE
+.PP
+\fB\-k \fR\fB\fIkernelversion\fR\fR
+.RS 4
+Use specific kernel version\&.
+.RE
+.PP
+\fB\-m \fR\fB\fIadditional mods\fR\fR
+.RS 4
+Additional modules to pass to mkinitrd, separated by colons (:)\&.
+.RE
+.PP
+\fB\-l | \-\-lilo\fR
+.RS 4
+Only show lilo\&.conf section (requires a kernel_filename)\&.
+.RE
+.PP
+\fB\-r | \-\-run\fR
+.RS 4
+Only show
+\fImkinitrd\fR
+command\&.
+.RE
+.SH "DESCRIPTION"
+.sp
+This script is useful in situations where you require an initrd image to boot your computer\&.
+.sp
+For instance, when booting a kernel that does not have support for your storage or root filesystem built in (such as the Slackware \fIgeneric\fR kernels)\&.
+.sp
+When you run the script without parameters, it will examine your running system, your current kernel version and will output an example of a \fImkinitrd\fR commandline that you can use to generate an initrd image containing enough driver support to boot the computer\&.
+.sp
+You can make it more specific: when you add the filename of a kernel as parameter to the script, it will determine the kernel version from that kernel, and also give an example of the lines that you should add to your \fI/etc/lilo\&.conf\fR file\&.
+.sp
+If you want your initrd image to have a custom name instead of the default \fI/boot/initrd\&.gz\fR you can add it as another parameter to the script, as follows:
+.sp
+mkinitrd_command_generator\&.sh \-a "\-o \fI/boot/custom\&.gz\fR"
+.sp
+The arguments to the \fI\-a\fR parameter will be used as additional arguments to the \fImkinitrd\fR command\&.
+.sp
+If you need additional modules in the initrd image, apart from what the script determines, you can pass then to the script using the \fI\-m\fR parameter as follows:
+.sp
+mkinitrd_command_generator\&.sh \-m "uhci\-hcd:usbhid:hid:hid\-generic"
+.sp
+The above example adds support for USB keyboards to the initrd \- you may need that if you have encrypted your root partition and need to enter a passphrase using a USB keyboard\&.
+.sp
+Instead of copying and pasting the script\(cqs output, you can create an initrd by directly executing the output, like in this example:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+$(mkinitrd_command_generator\&.sh \-\-run /boot/vmlinuz\-generic\-4\&.4\&.1)
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+That used the \fI\-r\fR or \fI\-\-run\fR switch to make the script only write the \fImkinitrd\fR commandline to the terminal\&.
+.sp
+When you want to add a section for a specific kernel to \fI/etc/lilo\&.conf\fR directly, use the \fI\-l\fR or \fI\-\-lilo\fR switch and use a command like in this example:
+.sp
+mkinitrd_command_generator\&.sh \-\-lilo /boot/vmlinuz\-generic\-smp\-4\&.4\&.1 >>/etc/lilo\&.conf
+.sp
+That command will result in the following lines being added to your \fI/etc/lilo\&.conf\fR file (example for my hardware):
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+\fI# Linux bootable partition config begins\fR
+\fI# initrd created with \*(Aqmkinitrd \-c \-k 4\&.4\&.1 \-m mbcache:jbd2:ext4 \-f ext4 \-r /dev/sda7 \-u \-o /boot/initrd\&.gz\fR\*(Aq
+image = /boot/vmlinuz\-generic\-4\&.4\&.1
+initrd = /boot/initrd\&.gz
+root = /dev/sda7
+label = 4\&.4\&.1
+read\-only
+\fI# Linux bootable partition config ends\fR
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+The last two examples show how easy it is to configure your computer for the use of an initrd if you need one\&. The only thing left to do afterwards is running \fIlilo\fR\&.
+.SH "EXIT STATUS"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+\fB0\fR Success
+\fB1\fR Failure
+.fi
+.if n \{\
+.RE
+.\}
+.SH "FILES"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+/usr/share/mkinitrd/mkinitrd_command_generator\&.sh
+.fi
+.if n \{\
+.RE
+.\}
+.SH "BUGS"
+.sp
+Report bugs to Eric Hameleers <alien@slackware\&.com>
+.SH "SEE ALSO"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+mkinitrd(1), lilo\&.conf(1)
+.fi
+.if n \{\
+.RE
+.\}
+.SH "AUTHOR"
+.PP
+\fBEric Hameleers\fR
+.RS 4
+Author.
+.RE

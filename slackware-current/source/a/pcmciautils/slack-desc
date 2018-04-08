@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+           |-----handy-ruler-------------------------------------------------------|
+pcmciautils: pcmciautils (Utilities for using PCMCIA cards with 2.6+ kernels)
+pcmciautils:
+pcmciautils: This package provides PCMCIA tools that replace the pcmcia-cs tools
+pcmciautils: used with the 2.4.x Linux kernel. PCMCIA cards are commonly used
+pcmciautils: in laptops to provide expanded capabilities such as network
+pcmciautils: connections, modems, increased memory, and more.
+pcmciautils:
+pcmciautils:
+pcmciautils:
+pcmciautils:
+pcmciautils:

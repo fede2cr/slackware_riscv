@@ -1,0 +1,102 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2010, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=rpm2tgz
+VERSION=1.2.2
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-rpm2tgz
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+echo "+===========+"
+echo "| rpm2targz |"
+echo "+===========+"
+cd $TMP
+mkdir -p $PKG/usr/bin
+cc -o $PKG/usr/bin/rpmoffset $CWD/rpmoffset.c
+cat $CWD/rpm2targz > $PKG/usr/bin/rpm2targz
+
+# Apply some patches:
+( cd $PKG/usr/bin
+  # These are all against "rpm2tgz", so mv it until we are done patching:
+  mv rpm2targz rpm2tgz
+  zcat $CWD/patches/0001-fix-d-handling.patch.gz | patch -p1 || exit 1
+  zcat $CWD/patches/0002-fix-spurious-path-to-rpm-file-with-n-option.patch.gz | patch -p1 || exit 1
+  zcat $CWD/patches/0003-allow-every-user-to-use-rpm2tgz.patch.gz | patch -p1 || exit 1
+  zcat $CWD/patches/0004-produce-more-compliant-slack-desc.patch.gz | patch -p1 || exit 1
+  # Not applied.  Rationale:  We do not want to alter the files in the RPM.
+  #zcat $CWD/patches/0005-gzip-man-info-pages.patch.gz | patch -p1 || exit 1
+  # Not applied.  Rationale:  .tgz works with all versions of Slackware.
+  # Translated RPMs may be targeting systems with no .txz support.
+  #zcat $CWD/patches/0006-should-we-use-.txz-format-in-slackware-current.patch.gz | patch -p1 || exit 1
+  # OK, I will take this version of the patch, as it doesn't change the
+  # default behaviour of rpm2tgz.
+  # mv the script back (wow, this is rather random ;-)
+  mv rpm2tgz rpm2targz
+  zcat $CWD/patches/0007-Add-support-for-.txz-packages-and-rpm2txz-symlink.patch.gz | patch -p1 || exit 1
+  zcat $CWD/patches/0008-Avoid-none-values-in-slack-desc.patch.gz | patch -p1 || exit 1
+  zcat $CWD/patches/0009-Add-c-option-just-as-makepkg-c-y.patch.gz | patch -p1 || exit 1
+) || exit 1
+
+( cd $PKG/usr/bin ; ln -sf rpm2targz rpm2tgz )
+( cd $PKG/usr/bin ; ln -sf rpm2targz rpm2txz )
+
+chmod 755 $PKG/usr/bin/{rpmoffset,rpm2targz}
+mkdir -p $PKG/usr/doc/rpm2targz
+cp -a $CWD/rpm2targz.README $PKG/usr/doc/rpm2targz/rpm2targz.README
+chown root:root $PKG/usr/doc/rpm2targz/rpm2targz.README
+chmod 644 $PKG/usr/doc/rpm2targz/rpm2targz.README
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg -l y -c n $TMP/rpm2tgz-$VERSION-$ARCH-$BUILD.txz
+

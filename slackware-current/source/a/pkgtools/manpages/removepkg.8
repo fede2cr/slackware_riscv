@@ -1,0 +1,108 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH REMOVEPKG 8 "23 Nov 2001" "Slackware Version 8.1.0"
+.SH NAME
+removepkg \- remove Slackware packages.
+.SH SYNOPSIS
+.B removepkg
+.BI packagename
+.LP
+[
+.B ROOT=/mnt
+]
+.B removepkg
+[
+.B \-copy
+]
+[
+.B \-keep
+]
+[
+.B \-preserve
+]
+[
+.B \-warn
+]
+.BI packagename
+.SH DESCRIPTION
+.B removepkg
+removes a previously installed Slackware package, while writing a progress
+report to the standard output.  A package may be specified either by the
+full package name (as you'd see listed in /var/log/packages/), or by the
+base package name.  For example, the package foo-1.0-i486-1.tgz may be removed
+with any of the following commands:
+
+removepkg foo-1.0-i486-1.tgz (also recognized: .tbz, .tlz, .txz)
+
+removepkg foo-1.0-i486-1
+
+removepkg foo.tgz
+
+removepkg foo
+
+When deleting files,
+.B removepkg
+will analyze the contents of the other packages installed on your system, and
+will only delete the files that are unique to the package being removed. 
+Similarly, the installation scripts for all the other packages will be 
+considered when deciding whether or not to delete symbolic links from the
+package.
+.LP
+Removing a package (as well as installing one) can be a dangerous undertaking.
+For this reason, there is the
+.B \-warn
+option available. When you use this,
+.B removepkg
+will not actually remove any files or links, but will output a detailed report
+of what it would do if you actually did remove the package. It's suggested that
+you do this (and maybe pipe the output to 
+.B less
+) before removing packages to make sure you've backed up anything that might
+be important.
+.LP
+When removing a package, it's original file index will be moved from 
+/var/log/packages to /var/log/removed_packages. Likewise, it's installation
+script will be moved from /var/log/scripts to /var/log/removed_scripts.
+.SH OPTIONS
+.TP
+.B \-warn packagename
+Generate a report to the standard output about which files and directories
+would be removed, but does not actually remove the package.
+.TP
+.B \-preserve packagename
+If specified, the complete package subtree is reconstructed in 
+/var/log/setup/tmp/preserved_packages/packagename.
+.TP
+.B \-copy packagename
+Construct a copy of the package under /var/log/setup/tmp/preserved_packages/packagename,
+but don't remove it.  (same effect as \-warn \-preserve)
+.TP
+.B \-keep
+Save the intermediate files created by removepkg (delete_list, 
+required_files, uniq_list, del_link_list, required_links, 
+required_list).  Mostly useful for debugging purposes.
+.SH " "
+It's possible to remove a package from a filesystem
+other than / by supplying
+.B removepkg
+with a
+.B ROOT
+environment variable:
+.TP
+.B ROOT=/mnt removepkg package
+
+.SH AUTHORS
+Patrick J. Volkerding <volkerdi@slackware.com>,
+with enhancements by Christian Franke <c.franke@acm.org>
+.SH "SEE ALSO"
+.BR installpkg(8),
+.BR makepkg(8),
+.BR pkgtool(8), 
+.BR upgradepkg(8)

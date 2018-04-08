@@ -1,0 +1,7 @@
+# This file lists shared library symlinks for libraries we would
+# like to keep copies of temporarily until we can recompile
+# everything that's still using them.  Once that happens, they'll
+# be dropped from this package.
+
+/lib/libudev.so.0
+/lib/libudev.so.1

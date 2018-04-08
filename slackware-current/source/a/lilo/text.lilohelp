@@ -1,0 +1,100 @@
+
+Slackware LILO Installation HELP file
+
+WARNING: As they say in the LILO docs, installing boot 
+loaders is inherently dangerous. Be careful out there!
+
+These are the options you can use at the Slackware LILO
+install menu:
+
+1. Start LILO configuration with a new LILO header.
+
+   This choice allows you to start a new configuration 
+   file, /etc/lilo.conf, with no OS's entered into it 
+   (yet).
+
+   You'll first be asked if you want to use an optional
+   append="...." line. If you didn't need to use extra 
+   parameters at the bootkernel prompt, then you can
+   probably just hit ENTER here.
+
+   You will be asked where you want to install LILO. This
+   can be your Master Boot Record, your root partition's
+   superblock (for OS/2's Boot Manager), or to a 
+   formatted floppy disk. 
+   
+   Next, you'll be asked if you want a delay before 
+   booting the first OS in your lilo.conf file. This delay
+   allows you to hit left-shift and boot any OS in the 
+   lilo.conf file by typing in the label you've given it.
+
+   Once you've started a new lilo.conf, you must add at 
+   least one OS to it before you can install LILO.
+
+2. Menu choices to add Linux, OS/2, and DOS to the lilo.conf.
+
+   These all pretty much work the same way. You'll be asked 
+   which partition you want to make bootable (answer 
+   /dev/hda1 or whatever partition you wish to use), and 
+   you'll also be asked to assign a label to the partition.
+   The label can be any short word such as "Linux" or "OS/2"
+   that you'll type in later to boot that partition. The boot
+   prompt is not case-sensitive, so the user can type LINUX or
+   os/2 later on and it will match the labels Linux and OS/2.
+
+3. Install LILO
+   
+   Once you've looked at your new config file and are 
+   satisfied with the way it looks, pick this choice to 
+   install LILO and leave the LILO installation menu.
+
+
+Other options:
+
+  -- Recycle (Reinstall) using your original /etc/lilo.conf.
+
+   If you already have an /etc/lilo.conf, and you just need to
+   refresh lilo then you don't need to reconstruct your 
+   lilo.conf.  Just use this menu choice to reinstall LILO 
+   using the existing /etc/lilo.conf.
+
+
+  -- View your current /etc/lilo.conf
+
+   If you haven't begun building a new lilo.conf, this choice
+   will let you take a look at the existing one in /etc on your
+   root Linux partition. 
+
+   If you have begun constructing a new lilo.conf, this option
+   will let you view the progress on that.
+
+
+ -- Skip LILO installation and exit this menu
+
+  This option skips LILO installation. Use this if you don't 
+  want to install LILO, or if you've already installed it and 
+  don't need to reinstall. You have to reinstall LILO whenever
+  you change your Linux kernel.
+
+ -- Help - Read the Linux Loader HELP file 
+ 
+  I hope you found it helpful! :^)
+
+
+-----------
+
+Other LILO information:
+
+  LILO on the Master Boot Record can be removed easily. 
+  MS-DOS's fdisk has a /MBR option that restores the master
+  boot record. You can actually restore your original boot 
+  sector from the copy LILO makes in /boot, as well. This is
+  the best way to go about it. See the LILO docs for more 
+  information. There is also a '-u' flag to LILO that restores
+  the boot sector from the backup copy.  Again, see the LILO
+  docs for detailed info.
+
+Good luck!
+
+--- end of LILO help
+

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------------|
+sysfsutils: sysfsutils (Utilities for the sysfs filesystem)
+sysfsutils:
+sysfsutils: The purpose of this package is to provide a set of utilities for
+sysfsutils: interfacing with sysfs, a virtual filesystem in Linux kernel versions
+sysfsutils: 2.6+ that provides a tree of system devices. While a filesystem is a
+sysfsutils: very useful interface, a library (libsysfs) is also included that
+sysfsutils: will hopefully make it easier for applications to query system
+sysfsutils: devices and their attributes.
+sysfsutils:
+sysfsutils:
+sysfsutils:

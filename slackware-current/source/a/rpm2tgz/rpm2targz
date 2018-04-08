@@ -1,0 +1,232 @@
+#!/bin/sh
+# Copyright 1997, 1998  Patrick Volkerding, Moorhead, MN USA
+# Copyright 2002, 2004  Slackware Linux, Inc., Concord, CA USA
+# Copyright 2006, 2009  Patrick Volkerding, Sebeka, MN USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+CWD=$(pwd)
+
+# Breaking the help out into it's own deal
+usage() {
+  echo "$0:  Converts RPM format to standard GNU tar + GNU zip format."
+  echo "            (view converted packages with \"less\", install and remove"
+  echo "            with \"installpkg\", \"removepkg\", \"pkgtool\", or manually"
+  echo "            with \"tar\")"
+  echo
+  if [ "$(basename $0)" = "rpm2tgz" ]; then
+    echo "Usage:      $0 [OPTION] <file.rpm>"
+    echo "            (Outputs \"file.tgz\")"
+    echo
+    echo "  -s    extract the install scripts to /usr/doc/\$PRGNAM-\$VERSION/"
+    echo "          for review."
+    echo "  -S    extracts the install scripts to be executed on package installation"
+    echo "          (only pre-install and post-install scripts used)"
+    echo "          USE WITH CAUTION! "
+    echo "  -n    name the output package using the rpm's metadata"
+    echo "  -r    extract what the rpm's \"requires\" (dependencies)"
+    echo "          as documention to /usr/doc/\$PRGNAM-\$VERSION/"
+    echo "  -d    attempt a wellformed slack-desc from the rpm meta data"
+    echo
+  else
+    echo "Usage:      $0 <file.rpm>"
+    echo "            (Outputs \"file.tar.gz\")"
+  fi
+  exit 1;
+}
+
+# Create a new temporary directory with a secure filename:
+make_temp_dir() {
+  if [ -x "$(which mcookie)" ]; then
+    tempd=/tmp/tmp.$(mcookie)
+    mkdir -p -m 0755 $tempd
+  elif [ -x "$(which openssl)" ]; then
+    tempd=/tmp/tmp.$(dd if=/dev/urandom bs=1k count=1 2> /dev/null | openssl dgst -md5)
+    mkdir -p -m 0755 $tempd
+  elif [ -x "$(which md5)" ]; then
+    tempd=/tmp/tmp.$(dd if=/dev/urandom bs=1k count=1 2> /dev/null | md5)
+    mkdir -p -m 0755 $tempd
+  elif [ -x "$(which mktemp)" ]; then
+    tempd=$(mktemp -d)
+    chmod 755 $tempd
+  ## Uncomment for insecure use, but don't blame me:
+  #else
+  #  tempd=/tmp/tmp.$$
+  #  mkdir -p -m 0755 $tempd
+  fi
+  if [ -d $tempd ]; then # success, return the name of the directory:
+    echo $tempd
+  else
+    echo "ERROR:  Could not find mcookie, openssl, or md5."
+    echo "        Exiting since a secure temporary directory could not be made."
+    exit 1
+  fi
+}
+
+# Get the meta data off of the rpm
+get_meta_data() {
+  RPM=$1
+  PRGNAM=$(rpm -qp --qf %{NAME} $RPM )
+  ARCH=$(rpm -qp --qf %{ARCH} $RPM )
+  VERSION=$(rpm -qp --qf %{VERSION} $RPM )
+  BUILD=$(rpm -qp --qf %{RELEASE} $RPM )
+}
+
+if [ "$1" = "" ]; then
+  usage
+fi
+
+ARGS=$(getopt "hsSndr" $* )
+set -- ${ARGS}
+for i; do
+  case "$1" in
+    -s)
+      DOC_SCRIPTS="true"
+      shift
+      ;;
+    -S)
+      INSTALL_SCRIPTS="true"
+      shift
+      ;;
+    -r)
+      DOC_REQUIRES="true"
+      shift
+      ;;
+    -d)
+      DESC="true"
+      shift
+      ;;
+    -n)
+      META_NAME="true"
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+  esac
+done
+
+
+for i in $* ; do
+  
+  # Determine if this is a source or binary RPM.
+  # If we have getrpmtype, use that.  Otherwise, try "file".
+  if which getrpmtype 1> /dev/null 2> /dev/null; then
+    if getrpmtype -n $i | grep source 1> /dev/null 2> /dev/null ; then
+      isSource=1
+    else
+      isSource=0
+    fi
+  else # use file.  This works fine on Slackware, and is the default.
+    if file $i | grep RPM | grep -w src 1> /dev/null 2> /dev/null ; then
+      isSource=1
+    else
+      isSource=0
+    fi
+  fi
+
+  # Create a temporary directory:
+  TMPDIR=$(make_temp_dir)
+
+  # Extract the RPM:
+  ofn=$TMPDIR/$(basename $i .rpm).cpio
+  if which rpm2cpio 1> /dev/null 2> /dev/null ; then
+    rpm2cpio $i > $ofn 2> /dev/null
+    if [ ! $? = 0 ]; then
+      echo "ERROR:  rpm2cpio failed.  (maybe $i is not an RPM?)"
+      rm -rf $TMPDIR
+      continue
+    fi
+  else # less reliable than rpm2cpio...
+    ( dd ibs=$(rpmoffset < $i) skip=1 if=$i 2> /dev/null | gzip -dc > $ofn 2>/dev/null ) || \
+    ( dd ibs=$(rpmoffset < $i) skip=1 if=$i 2> /dev/null | bzip2 -dc > $ofn 2>/dev/null )
+  fi
+  DEST=$TMPDIR
+  if [ "$isSource" = "1" ]; then
+     DEST=$DEST/$(basename $(basename $i .rpm) .src)
+  fi
+  mkdir -p $DEST
+  ( cd $DEST
+    cpio -i -m -d < $ofn 1> /dev/null 2> /dev/null
+    rm -f $ofn
+    find . -type d -perm 700 -exec chmod 755 {} \;
+  )
+
+  # Save the scripts in the rpm as documentation
+  if [ "$DOC_SCRIPTS" = "true" ]; then
+    get_meta_data $i
+    mkdir -p $TMPDIR/usr/doc/$PRGNAM-$VERSION/
+    for state in PREIN POSTIN PREUN POSTUN ; do
+      if [ "$(rpm -qp --qf %{$state} $i )" != '(none)' ] ; then
+        rpm -qp --qf %{$state} $i > $TMPDIR/usr/doc/$PRGNAM-$VERSION/$state.script
+      fi
+    done
+  fi
+
+  # Save the scripts in the rpm to be installed
+  if [ "$INSTALL_SCRIPTS" = "true" ]; then
+    mkdir -p $TMPDIR/install
+    echo '#!/bin/sh' > $TMPDIR/install/doinst.sh
+    for state in PREIN POSTIN ; do
+      if [ "$(rpm -qp --qf %{$state} $i )" != '(none)' ] ; then
+        rpm -qp --qf %{$state} $i > $TMPDIR/install/doinst.sh
+        echo "" >> $TMPDIR/install/doinst.sh
+      fi
+    done
+  fi
+
+  # Save the rpm's requires (dependencies) as documentation
+  if [ "$DOC_REQUIRES" = "true" ]; then
+    get_meta_data $i
+    mkdir -p $TMPDIR/usr/doc/$PRGNAM-$VERSION/
+    rpm -qp --qf %{REQUIRES} $i  > $TMPDIR/usr/doc/$PRGNAM-$VERSION/README-$PRGNAM-rpm-dependencies.txt
+  fi
+
+  # Save the rpm's summary and description as the slack-desc
+  if [ "$DESC" = "true" ]; then
+    mkdir -p $TMPDIR/install
+    rpm -qp --qf %{SUMMARY} $i | sed -l 70 -r "s/^(.*)/$PRGNAM: $PRGNAM - \1\n/" > $TMPDIR/install/slack-desc
+    rpm -qp --qf %{DESCRIPTION} $i | sed -l 70 -r "s/^/$PRGNAM: /" >> $TMPDIR/install/slack-desc
+  fi
+
+  # If this program was called as "rpm2targz", then repack as a plain
+  # tar+gz archive.  If it was called as "rpm2tgz", use Slackware's
+  # makepkg to produce the .tgz:
+  if [ "$(basename $0)" = "rpm2tgz" ]; then
+    ( 
+      cd $TMPDIR
+      if [ "$META_NAME" = "true" ]; then
+        get_meta_data $CWD/$i
+        makepkg -l y -c n $CWD/$PRGNAM-$VERSION-$ARCH-${BUILD}.tgz
+      else
+        makepkg -l y -c n $CWD/$(basename $i .rpm).tgz
+      fi
+    )
+  else
+    ( cd $TMPDIR ; tar cf - . ) > $(basename $i .rpm).tar
+    gzip -9 $(basename $i .rpm).tar
+  fi
+
+  # Remove temporary directory:
+  rm -rf $TMPDIR
+
+done
+

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+logrotate: logrotate (system log rotation tool)
+logrotate:
+logrotate: The logrotate utility is designed to simplify the administration
+logrotate: of log files on a system which generates a lot of log files.
+logrotate: Logrotate allows for the automatic rotation compression, removal
+logrotate: and mailing of log files. Logrotate can be set to handle a log
+logrotate: file daily, weekly, monthly or when the log file gets to a certain
+logrotate: size. Normally, logrotate runs as a daily cron job.
+logrotate:
+logrotate: Homepage: https://github.com/logrotate/logrotate
+logrotate:

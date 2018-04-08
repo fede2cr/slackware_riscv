@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler------------------------------------------------------|
+gettext-tools: gettext-tools (internationalization framework tools)
+gettext-tools:
+gettext-tools: The GNU gettext-tools package is useful for authors and maintainers of
+gettext-tools: internationalized software, or for anyone compiling programs that
+gettext-tools: use the gettext functions. This package provides the needed tools and
+gettext-tools: library functions for the handling of messages in different languages.
+gettext-tools: Some other GNU packages use the gettext program (included in this
+gettext-tools: package) to internationalize the messages given by shell scripts.
+gettext-tools:
+gettext-tools:
+gettext-tools:

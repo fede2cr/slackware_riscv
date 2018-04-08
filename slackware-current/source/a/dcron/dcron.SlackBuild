@@ -1,0 +1,131 @@
+#!/bin/sh
+
+# Copyright 2009, 2010, 2012, 2016, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=dcron
+VERSION=${VERSION:-$(echo dcron-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-5}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-dcron
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf dcron
+tar xvf $CWD/dcron-$VERSION.tar.?z* || exit 1
+cd dcron-$VERSION
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+# Define TMPDIR as /var/spool/cron instead of /tmp
+zcat $CWD/defs.h.TMPDIR.diff.gz | patch -p1 --verbose || exit 1
+
+# Fix problem where user creates /var/spool/cron/crontabs/<user>.new 
+# using 'crontab -', exits with control-c, and then crontab refuses to
+# overwrite the junk file.  It would be better if dcron would wipe
+# the junk file in the event it were not closed correctly, but oh well.
+zcat $CWD/crontab.c.O_EXCL.diff.gz | patch -p1 --verbose || exit 1
+
+# Running jobs should not block cron.update:
+zcat $CWD/dcron.update.during.long.running.jobs.diff.gz | patch -p1 --verbose || exit 1
+
+# Change _BSD_SOURCE to _DEFAULT_SOURCE for recent glibc:
+zcat $CWD/defs.h._DEFAULT_SOURCE.diff.gz | patch -p1 --verbose || exit 1
+
+CFLAGS+="$SLKCFLAGS" make || exit 1
+strip --strip-unneeded crond crontab
+
+mkdir -p $PKG/usr/{bin,sbin}
+cat crond > $PKG/usr/sbin/crond
+cat crontab > $PKG/usr/bin/crontab
+zcat $CWD/run-parts.gz > $PKG/usr/bin/run-parts
+chmod 0755 $PKG/usr/sbin/crond
+chmod 4711 $PKG/usr/bin/crontab
+chmod 0755 $PKG/usr/bin/run-parts
+
+mkdir -p $PKG/usr/man/man{1,8}
+cat crontab.1 | gzip -9c > $PKG/usr/man/man1/crontab.1.gz
+cat crond.8 | gzip -9c > $PKG/usr/man/man8/crond.8.gz
+cat $CWD/run-parts.8.gz > $PKG/usr/man/man8/run-parts.8.gz
+
+# Create some other stuff we need
+mkdir -p $PKG/etc/cron.{hourly,daily,weekly,monthly}
+mkdir -p $PKG/var/spool/cron/crontabs
+mkdir -p $PKG/var/spool/cron/cronstamps
+chmod 0751 $PKG/var/spool/cron
+chmod 0750 $PKG/var/spool/cron/crontabs $PKG/var/spool/cron/cronstamps
+zcat $CWD/crontab.root > $PKG/var/spool/cron/crontabs/root.new
+chmod 0600 $PKG/var/spool/cron/crontabs/root.new
+# dcron will whine about "unable to scan" this directory, so we'll create it
+mkdir -p $PKG/etc/cron.d
+
+mkdir -p $PKG/usr/doc/dcron-$VERSION
+cp -a \
+  CHANGELOG README \
+  extra \
+  $PKG/usr/doc/dcron-$VERSION
+chown -R root:root $PKG/usr/doc/dcron-$VERSION/*
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/dcron-$VERSION-$ARCH-$BUILD.txz
+

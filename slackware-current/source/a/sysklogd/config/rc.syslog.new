@@ -1,0 +1,60 @@
+#!/bin/sh
+# Start/stop/restart the system logging daemons.
+#
+# Written for Slackware Linux by Patrick J. Volkerding <volkerdi@slackware.com>.
+
+# Uncomment the following line to use the -c option to syslogd.  This will
+# disable suppressing repeated messages, which may be useful with tools that
+# parse the logs, such as fail2ban:
+#SYSLOGD_OPTIONS="-c "
+
+# Options for klogd:
+# '-c 3' = display level 'error' or higher messages on console
+# '-x' = turn off broken EIP translation
+KLOGD_OPTIONS="-c 3 -x"
+
+syslogd_start() {
+  if [ -x /usr/sbin/syslogd -a -x /usr/sbin/klogd ]; then
+    echo -n "Starting sysklogd daemons:  "
+    echo -n "/usr/sbin/syslogd ${SYSLOGD_OPTIONS};"
+    /usr/sbin/syslogd $SYSLOGD_OPTIONS
+    # prevent syslogd/klogd race condition on SMP kernels
+    if ps acx | grep -q udevd ; then
+      while [ ! -e /dev/log ] ; do
+        sleep 0
+      done
+    else
+      sleep 1
+    fi
+    # Run klogd, unless we are in a container:
+    if [ -z $container ]; then
+      echo " /usr/sbin/klogd $KLOGD_OPTIONS"
+      /usr/sbin/klogd $KLOGD_OPTIONS
+    fi
+  fi
+}
+
+syslogd_stop() {
+  killall syslogd 2> /dev/null
+  killall klogd 2> /dev/null
+}
+
+syslogd_restart() {
+  syslogd_stop
+  sleep 1
+  syslogd_start
+}
+
+case "$1" in
+'start')
+  syslogd_start
+  ;;
+'stop')
+  syslogd_stop
+  ;;
+'restart')
+  syslogd_restart
+  ;;
+*)
+  echo "usage $0 start|stop|restart"
+esac

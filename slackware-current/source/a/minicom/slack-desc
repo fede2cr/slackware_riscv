@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+minicom: minicom (communications package)
+minicom:
+minicom: Minicom - a full featured menu-driven communications package similar
+minicom: to the DOS program 'Telix'. Also includes sz/rz - utilities used to
+minicom: upload and download files using the Zmodem protocol.
+minicom:
+minicom: Homepage: http://alioth.debian.org/projects/minicom
+minicom:
+minicom:
+minicom:
+minicom:

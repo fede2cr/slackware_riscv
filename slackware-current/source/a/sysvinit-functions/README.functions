@@ -1,0 +1,17 @@
+
+If you're reading this in /etc/init.d/, Slackware's real init directory is
+/etc/rc.d/.  Maybe you already knew this, but it never hurts to say.  :-)
+
+This script was taken from Fedora (and is presumably licensed under the GPL).
+While I don't see Slackware init scripts making much use of it (but use it
+if you wish), some third party init scripts (such as for commercial software
+designed to run on Red Hat based systems) expect this script and use it in
+their own init scripts, so it's a good idea to make it available here.
+
+These functions are provided solely for commercial (or other) software that
+expects to find "Red Hat-isms".  I wouldn't use them to write new init
+scripts (personally), but if you've had experience with them in the past
+and like them, by all means feel free.
+
+It's planned to continue support for them.
+

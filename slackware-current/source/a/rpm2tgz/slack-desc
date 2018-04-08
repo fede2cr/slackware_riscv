@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+rpm2tgz: rpm2tgz (a tool for converting an RPM archive into a tar+gz one)
+rpm2tgz:
+rpm2tgz: Converts RPM format to Slackware's GNU tar + GNU zip format. (view
+rpm2tgz: converted packages with "less", install and remove with "installpkg",
+rpm2tgz: "removepkg", "pkgtool", or manually with "tar").
+rpm2tgz:
+rpm2tgz: Converted packages come with no warranty. ;-)
+rpm2tgz:
+rpm2tgz:
+rpm2tgz:
+rpm2tgz:

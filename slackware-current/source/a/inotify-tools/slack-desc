@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler------------------------------------------------------|
+inotify-tools: inotify-tools (command line utilities for inotify)
+inotify-tools:
+inotify-tools: inotify-tools is a set of command-line programs for Linux providing a
+inotify-tools: simple interface to inotify. These programs can be used to monitor
+inotify-tools: and act upon filesystem events.
+inotify-tools:
+inotify-tools: For more information see the inotifywait and inotifywatch man pages.
+inotify-tools:
+inotify-tools: inotify-tools home: http://inotify-tools.sourceforge.net/
+inotify-tools:
+inotify-tools:

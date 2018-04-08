@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+hostname: hostname (Linux hostname utility)
+hostname:
+hostname: The hostname utility is used to set or read the system hostname,
+hostname: domainname, dnsdomainname, nisdomainname, or ypdomainname.
+hostname: This package is required unless you want all of these set to (null),
+hostname: which you don't.
+hostname:
+hostname: The hostname utility was written by Peter Tobias, Bernd Eckenfels,
+hostname: and Michael Meskes.
+hostname:
+hostname:

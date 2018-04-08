@@ -1,0 +1,7 @@
+#
+# generated companion file to:
+#
+bitmap = slack.bmp
+bmp-table = 60,6;1,16,16,4
+bmp-colors = 255,0,;0,255,
+bmp-timer = 65,28;255,0,

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+zoo: zoo (archiving and compressing utility)
+zoo:
+zoo: Zoo is used to create and maintain collections of files in compressed
+zoo: form. It uses a Lempel-Ziv compression algorithm that gives space
+zoo: savings in the range of 20% to 80% depending on the type of file data.
+zoo: Zoo can store and selectively extract multiple generations of the same
+zoo: file. Data can be recovered from damaged archives by skipping the
+zoo: damaged portion and locating undamaged data with the help of fiz(1).
+zoo:
+zoo: Zoo was written by Rahul Dhesi.
+zoo:

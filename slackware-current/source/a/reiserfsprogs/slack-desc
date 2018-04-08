@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler------------------------------------------------------|
+reiserfsprogs: reiserfsprogs (Reiserfs filesystem utilities)
+reiserfsprogs:
+reiserfsprogs: These utilities are used for Reiserfs. Reiserfs is a file system
+reiserfsprogs: based on balanced tree algorithms.
+reiserfsprogs:
+reiserfsprogs: Reiserfs is the work of Hans Reiser and many others. See the file
+reiserfsprogs: /usr/doc/reiserfs*/README for full credits.
+reiserfsprogs:
+reiserfsprogs:
+reiserfsprogs:
+reiserfsprogs:

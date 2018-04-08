@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+quota: quota (Linux disk quota utilities)
+quota:
+quota: An implementation of the diskquota system for the Linux operating
+quota: system to keep those greedy users from gobbling up 100% of the hard
+quota: drive space. Works with ext2, ext3, reiserfs, and xfs filesystems.
+quota: This system is based on the Melbourne quota system by Robert Elz.
+quota: Edvard Tuinder and Marco van Wieringen ported this code to Linux.
+quota: Jan Kara added support for the new Linux quota format and the XFS
+quota: filesystem.
+quota:
+quota: Homepage: http://sourceforge.net/projects/linuxquota/
