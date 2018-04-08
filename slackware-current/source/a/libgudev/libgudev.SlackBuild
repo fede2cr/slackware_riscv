@@ -46,11 +46,17 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
   exit 0
 fi
 
-if [ "$ARCH" = "x86_64" ]; then
+if [ "$ARCH" = "x86_64" ] || [ "$ARCH" = "riscv64" ]; then
   LIBDIRSUFFIX="64"
 else
   LIBDIRSUFFIX=""
 fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    riscv64) TARGET=$ARCH-unknown-elf ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
 
 TMP=${TMP:-/tmp}
 PKG=$TMP/package-$PKGNAM
@@ -81,7 +87,7 @@ LDFLAGS="$LDFLAGS -lrt" \
   --docdir=/usr/doc/$PKGNAM-$VERSION \
   --enable-static \
   --disable-umockdev \
-  --build=$ARCH-slackware-linux || exit 1
+  --build=$TARGET || exit 1
 
 make $NUMJOBS || make || exit 1
 make install DESTDIR=$PKG || exit 1

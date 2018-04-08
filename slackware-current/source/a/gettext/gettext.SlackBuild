@@ -61,10 +61,18 @@ elif [ "$ARCH" = "s390" ]; then
 elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"
   LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "riscv64" ]; then
+  LIBDIRSUFFIX="64"
 else
   SLKCFLAGS="-O2"
   LIBDIRSUFFIX=""
 fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    riscv64) TARGET=$ARCH-unknown-elf ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
 
 rm -rf $PKG
 mkdir -p $TMP $PKG
@@ -89,7 +97,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --mandir=/usr/man \
   --docdir=/usr/doc/gettext-$VERSION \
   --disable-static \
-  --build=$ARCH-slackware-linux || exit 1
+  --build=$TARGET || exit 1
 
 make $NUMJOBS || make || exit 1
 make install DESTDIR=$PKG

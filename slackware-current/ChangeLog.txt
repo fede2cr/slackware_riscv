@@ -1,3 +1,31 @@
+Sun  8 abr 18:27:36 UTC 2018
+a/acl-2.2.52-riscv64-1.txz: Ported.
+a/attr-2.4.47-riscv64-1.txz: Ported.
+a/bzip2-1.0.6-riscv64-1.txz: Ported.
+a/cpio-2.12-riscv64-1.txz: Ported.
+a/cryptsetup-1.7.5-riscv64-1.txz: Ported.
+a/dcron-4.5-riscv64-5.txz: Ported.
+a/dialog-1.3_20170509-riscv64-1.txz: Ported.
+a/dosfstools-4.1-riscv64-1.txz: Ported.
+a/e2fsprogs-1.44.1-riscv64-1.txz: Ported.
+a/ed-1.14.2-riscv64-1.txz: Ported.
+a/elvis-2.2_0-riscv64-1.txz: Ported.
+a/file-5.32-riscv64-1.txz: Ported.
+a/gawk-4.2.1-riscv64-1.txz: Ported.
+a/getty-ps-2.1.0b-riscv64-1.txz: Ported.
+a/gptfdisk-1.0.3-riscv64-1.txz: Ported.
+a/grep-3.1-riscv64-1.txz: Ported.
+a/hostname-3.18-riscv64-1.txz: Ported.
+a/infozip-6.0-riscv64-1.txz: Ported.
+a/less-530-riscv64-1.txz: Ported.
+a/lha-114i-riscv64-1.txz: Ported.
+a/logrotate-3.14.0-riscv64-1.txz: Ported.
+a/util-linux-2.32-riscv64-1.txz: Ported.
+a/libcgroup-0.41-riscv64-1.txz: Ported.
+a/libgudev-232-riscv64-1.txz: Ported.
+y/bsd-games-2.13-riscv64-12.txz: Ported.
+a/gettext-0.19.8.1-riscv64-4.txz: Ported.
++--------------------------+
 Fri Apr  6 23:19:17 UTC 2018
 Starting a RISC-V port using Fedora as a bootstrap. All binary packages will
 be recomplied once a Slackware dev stage4 is ready.
@@ -7,10 +35,10 @@ full Linux capable processors will be ready in the following months.
 Please enjoy.
 
 a/ Remove the i[456]86 packages and keep the noarch ones.
-a/aaa_base-14.2-riscv64-1.txz: Added.
-a/aaa_elflibs-14.2-riscv64-1.txz: Added, with libs from the Fedora stage4.
-a/aaa_terminfo-6.1-riscv64-1.txz: Added.
-a/bash-4.4.019-riscv64-1.txz: Added.
+a/aaa_base-14.2-riscv64-1.txz: Ported.
+a/aaa_elflibs-14.2-riscv64-1.txz: Ported, with libs from the Fedora stage4.
+a/aaa_terminfo-6.1-riscv64-1.txz: Ported.
+a/bash-4.4.019-riscv64-1.txz: Ported.
 ap/ Remove the i[3456]86 packages and keep the noarch ones.
 d/ Remove the i[456]86 packages and keep the noarch ones.
 e/ Copied the base files, no packages yet.
@@ -23,5 +51,4 @@ tcl/ Copied the base files, no packages yet.
 y/ Copied the base files, no packages yet.
 kde/ kdei/ x/ xap/ xfce/ Removed for now. Will add them back as soon as cli
   stuff is mostly done.
-
 +--------------------------+

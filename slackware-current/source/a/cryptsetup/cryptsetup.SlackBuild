@@ -65,10 +65,19 @@ elif [ "$ARCH" = "s390" ]; then
 elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"
   LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "riscv64" ]; then
+  LIBDIRSUFFIX="64"
 else
   SLKCFLAGS="-O2"
   LIBDIRSUFFIX=""
 fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    riscv64) TARGET=$ARCH-unknown-elf ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
+
 
 TMP=${TMP:-/tmp}
 PKG=$TMP/package-cryptsetup
@@ -97,7 +106,7 @@ CFLAGS="$SLKCFLAGS" \
   --enable-cryptsetup-reencrypt \
   --mandir=/usr/man \
   --docdir=/usr/doc/cryptsetup-$VERSION \
-  --build=$ARCH-slackware-linux || exit 1
+  --build=$TARGET || exit 1
 
 make || exit 1
 make DESTDIR=$PKG install || exit 1

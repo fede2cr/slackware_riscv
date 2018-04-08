@@ -47,11 +47,18 @@ fi
 TMP=${TMP:-/tmp}
 PKG=$TMP/package-attr
 
-if [ "$ARCH" = "x86_64" ]; then
+if [ "$ARCH" = "x86_64" ] || [ "$ARCH" = "riscv64" ]; then
   LIBDIRSUFFIX="64"
 else
   LIBDIRSUFFIX=""
 fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    riscv64) TARGET=$ARCH-unknown-elf ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
+
 
 rm -rf $PKG
 mkdir -p $TMP $PKG
@@ -78,7 +85,7 @@ find . \
   --mandir=/usr/man \
   --datadir=/usr/share \
   --docdir=/usr/doc/attr-$VERSION \
-  --build=$ARCH-slackware-linux
+  --build=$TARGET
 
 make PKG_DOC_DIR=/usr/doc/attr-$VERSION || exit 1
 make install PKG_DOC_DIR=/usr/doc/attr-$VERSION DESTDIR=$PKG

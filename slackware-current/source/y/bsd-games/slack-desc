@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+bsd-games: bsd-games (Classic BSD text games collection)
+bsd-games: 
+bsd-games: Games that go in /usr/games: adventure arithmetic atc backgammon
+bsd-games:  banner battlestar bcd caesar canfield cfscores countmail cribbage
+bsd-games:  factor fish fortune gomoku hangman hunt mille monop morse number
+bsd-games:  phantasia pig pom ppt primes quiz rain random robots rot13 sail
+bsd-games:  snake snscore teachgammon trek wargames worm worms wump
+bsd-games:
+bsd-games: Adds a call to 'fortune' to /etc/profile.d/ so that users will get a
+bsd-games: fortune message when they log in.
+bsd-games:

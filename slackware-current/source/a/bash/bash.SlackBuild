@@ -63,6 +63,7 @@ fi
 
 case "$ARCH" in
     arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    riscv64) TARGET=$ARCH-unknown-elf ;;
     *)    TARGET=$ARCH-slackware-linux ;;
 esac
 

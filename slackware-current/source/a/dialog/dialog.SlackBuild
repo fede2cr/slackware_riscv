@@ -63,10 +63,18 @@ elif [ "$ARCH" = "x86_64" ]; then
 elif [ "$ARCH" = "armv7hl" ]; then
   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
   LIBDIRSUFFIX=""
+elif [ "$ARCH" = "riscv64" ]; then
+  LIBDIRSUFFIX="64"
 else
   SLKCFLAGS="-O2"
   LIBDIRSUFFIX=""
 fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    riscv64) TARGET=$ARCH-unknown-elf ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
 
 cd $TMP
 rm -rf ${PKGNAM}-${VERSION}
@@ -93,7 +101,7 @@ CFLAGS="$SLKCFLAGS" \
   --enable-nls \
   --with-ncursesw \
   --enable-widec \
-  --build=$ARCH-slackware-linux
+  --build=$TARGET
 
 # Build and install:
 make -j4 || exit 1
