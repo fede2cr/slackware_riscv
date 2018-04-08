@@ -1,0 +1,11 @@
+sharutils: sharutils (GNU shell archive packing utilities)
+sharutils:
+sharutils: `shar' makes so-called shell archives out of many files, preparing
+sharutils: them for transmission by electronic mail services.  `unshar' helps
+sharutils: unpacking shell archives after reception.  `uuencode' prepares a file
+sharutils: for transmission over an electronic channel which ignores or otherwise
+sharutils: mangles the eight bit (high order bit) of bytes.  `uudecode' does the
+sharutils: converse transformation.  `remsync' allows for remote synchronization
+sharutils: of directory trees using electronic mail. 
+sharutils:
+sharutils:

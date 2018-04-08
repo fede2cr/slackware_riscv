@@ -1,0 +1,11 @@
+pkgtools: pkgtools (The Slackware package maintenance system)
+pkgtools:
+pkgtools: This package contains utilities for handling Slackware packages.
+pkgtools: Included are the command line utilities 'installpkg', 'removepkg',
+pkgtools: 'makepkg', 'explodepkg', and 'upgradepkg' that install, remove,
+pkgtools: build, examine, and upgrade software packages. Also included are 
+pkgtools: 'pkgtool', a menu based program for installing packages, removing
+pkgtools: packages, or viewing the packages that are installed on the system,
+pkgtools: documentation (man pages), and a few other system admin scripts.
+pkgtools:
+pkgtools:

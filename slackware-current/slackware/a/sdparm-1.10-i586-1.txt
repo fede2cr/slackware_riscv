@@ -1,0 +1,11 @@
+sdparm: sdparm (fetch and change SCSI attributes)
+sdparm:
+sdparm: sdparm is a utility for listing and potentially changing SCSI disk
+sdparm: parameters.  More generally it can be used on any device that uses
+sdparm: a SCSI command set.  Apart from SCSI disks, examples of devices that
+sdparm: use SCSI command sets are ATAPI CD/DVD drives, SCSI and ATAPI tape
+sdparm: drives and SCSI enclosures.
+sdparm:
+sdparm: sdparm was written by Douglas Gilbert.
+sdparm:
+sdparm:

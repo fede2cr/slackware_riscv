@@ -1,0 +1,11 @@
+glibc-solibs: glibc-solibs (shared GNU C libraries)
+glibc-solibs:
+glibc-solibs: This package contains the shared libraries, binaries, and support
+glibc-solibs: files required to run most Linux applications linked with glibc.
+glibc-solibs:
+glibc-solibs:
+glibc-solibs:
+glibc-solibs:
+glibc-solibs:
+glibc-solibs:
+glibc-solibs:

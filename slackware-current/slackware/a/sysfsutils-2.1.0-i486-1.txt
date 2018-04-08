@@ -1,0 +1,11 @@
+sysfsutils: sysfsutils (Utilities for the sysfs filesystem)
+sysfsutils:
+sysfsutils: The purpose of this package is to provide a set of utilities for
+sysfsutils: interfacing with sysfs, a virtual filesystem in Linux kernel versions
+sysfsutils: 2.6+ that provides a tree of system devices.  While a filesystem is a
+sysfsutils: very useful interface, a library (libsysfs) is also included that
+sysfsutils: will hopefully make it easier for applications to query system
+sysfsutils: devices and their attributes.
+sysfsutils:
+sysfsutils:
+sysfsutils:

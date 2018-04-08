@@ -1,0 +1,11 @@
+rpm2tgz: rpm2tgz (a tool for converting an RPM archive into a tar+gz one)
+rpm2tgz:
+rpm2tgz: Converts RPM format to Slackware's GNU tar + GNU zip format.  (view
+rpm2tgz: converted packages with "less", install and remove with "installpkg",
+rpm2tgz: "removepkg", "pkgtool", or manually with "tar").
+rpm2tgz:
+rpm2tgz: Converted packages come with no warranty.  ;-)
+rpm2tgz:
+rpm2tgz:
+rpm2tgz:
+rpm2tgz:

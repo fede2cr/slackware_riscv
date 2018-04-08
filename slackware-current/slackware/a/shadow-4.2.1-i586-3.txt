@@ -1,0 +1,11 @@
+shadow: shadow (shadow password suite)
+shadow:
+shadow: This set of login related programs utilizes an alternate, non-readable
+shadow: file to contain the actual encrypted passwords.  This is presumed to 
+shadow: increase system security by increasing the difficulty with which 
+shadow: system crackers obtain encrypted passwords.  It was written by 
+shadow: Julianne Frances Haugh and the Linux port is maintained by Tomasz
+shadow: Kloczko.
+shadow:
+shadow: This package provides 'login', which is needed to log into the system.
+shadow:

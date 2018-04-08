@@ -1,0 +1,11 @@
+isapnptools: isapnptools (ISA Plug-And-Play tools)
+isapnptools:
+isapnptools: These programs allow ISA Plug-And-Play devices to be configured
+isapnptools: on a Linux machine.
+isapnptools:
+isapnptools:
+isapnptools:
+isapnptools:
+isapnptools:
+isapnptools:
+isapnptools:

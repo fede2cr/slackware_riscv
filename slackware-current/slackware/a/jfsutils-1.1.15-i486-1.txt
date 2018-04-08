@@ -1,0 +1,11 @@
+jfsutils: jfsutils (IBM JFS utilities)
+jfsutils:
+jfsutils: Utilities for managing IBM's Journaled File System (JFS) under Linux:
+jfsutils:   jfs_debugfs - shell-type JFS file system editor.
+jfsutils:   jfs_fsck - check and repair a JFS formatted device.
+jfsutils:   jfs_fscklog - extract a JFS fsck service log into a file.
+jfsutils:   jfs_logdump - dump a JFS formatted device's journal log.
+jfsutils:   jfs_mkfs - create a JFS formatted partition.
+jfsutils:   jfs_tune - adjust tunable file system parameters on JFS.
+jfsutils:
+jfsutils:

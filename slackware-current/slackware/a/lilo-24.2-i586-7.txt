@@ -1,0 +1,11 @@
+lilo: lilo (Linux Loader)
+lilo:
+lilo: Generic Boot Loader for Linux ('LInux LOader') by Werner Almesberger.
+lilo: LILO boots Linux from your hard drive. It can also boot other
+lilo: operating systems such as MS-DOS and OS/2, and can even boot DOS from
+lilo: the second hard drive. LILO comes with utilities and documentation
+lilo: that make it easier to install, such as 'liloconfig' and 'QuickStart'.
+lilo: NOTE: Installing boot loaders is inherently dangerous. Be sure to have
+lilo: some means to boot your system from a different media if you install
+lilo: LILO on your hard disk.
+lilo:

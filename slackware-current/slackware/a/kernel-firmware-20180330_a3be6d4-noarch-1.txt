@@ -1,0 +1,11 @@
+kernel-firmware: kernel-firmware (Firmware for the kernel)
+kernel-firmware:
+kernel-firmware: These are firmware files for the Linux kernel.
+kernel-firmware:
+kernel-firmware: You'll need these to use certain hardware drivers with Linux.
+kernel-firmware:
+kernel-firmware: Upstream site: 
+kernel-firmware:
+kernel-firmware: git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
+kernel-firmware:
+kernel-firmware:

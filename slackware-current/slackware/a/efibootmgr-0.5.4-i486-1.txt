@@ -1,0 +1,11 @@
+efibootmgr: efibootmgr (tool to modify UEFI boot entries)
+efibootmgr:
+efibootmgr: efibootmgr is a Linux userspace application to modify the Intel
+efibootmgr: Extensible Firmware Interface (EFI) Boot Manager.  This application
+efibootmgr: can create and destroy boot entries, change the boot order, change
+efibootmgr: the next running boot option, and more.
+efibootmgr:
+efibootmgr: Homepage:  http://linux.dell.com/efibootmgr
+efibootmgr:
+efibootmgr:
+efibootmgr:

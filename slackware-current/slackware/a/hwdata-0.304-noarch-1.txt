@@ -1,0 +1,11 @@
+hwdata: hwdata (hardware identification and configuration data)
+hwdata:
+hwdata: hwdata contains various hardware identification and configuration
+hwdata: data, such as the pci.ids database and MonitorsDB databases.
+hwdata:
+hwdata: Homepage: https://github.com/vcrhonek/hwdata
+hwdata:
+hwdata:
+hwdata:
+hwdata:
+hwdata:

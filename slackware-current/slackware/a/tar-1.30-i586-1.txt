@@ -1,0 +1,11 @@
+tar: tar (archiving utility)
+tar:
+tar: This is the GNU version of tar, an archiving program designed to store
+tar: and extract files from an archive file known as a tarfile.  A tarfile
+tar: may be made on a tape drive, however, it is also common to write a
+tar: tarfile to a normal file.
+tar:
+tar: Slackware's package system uses tarfiles compressed with GNU gzip.
+tar:
+tar:
+tar:

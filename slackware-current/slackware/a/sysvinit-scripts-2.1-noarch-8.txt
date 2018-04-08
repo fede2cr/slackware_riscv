@@ -1,0 +1,11 @@
+sysvinit-scripts: sysvinit-scripts (the basic scripts used to boot your machine)
+sysvinit-scripts:
+sysvinit-scripts: These are the Slackware boot scripts, which are needed to start the
+sysvinit-scripts: machine. Sysvinit looks for these in /etc/rc.d/.
+sysvinit-scripts:
+sysvinit-scripts:
+sysvinit-scripts:
+sysvinit-scripts:
+sysvinit-scripts:
+sysvinit-scripts:
+sysvinit-scripts:

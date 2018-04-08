@@ -1,0 +1,11 @@
+kernel-huge: kernel-huge (a fully-loaded single processor Linux kernel)
+kernel-huge:
+kernel-huge: This is a Linux kernel with built-in support for most disk controllers
+kernel-huge: and filesystems. If you're looking for a more stripped down kernel
+kernel-huge: (this one contains everything but the kitchen sink ;-), then install
+kernel-huge: the kernel-generic from the /boot directory along with an initrd to
+kernel-huge: load support for your boot device and filesystem. For instructions
+kernel-huge: on the initrd, see README.initrd in the /boot directory.
+kernel-huge:
+kernel-huge:
+kernel-huge:

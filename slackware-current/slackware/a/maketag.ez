@@ -1,0 +1,149 @@
+#!/bin/sh
+#item   ####description                                      ###on off ###
+TMP=/var/log/setup/tmp
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP
+fi
+cat /dev/null > $TMP/SeTnewtag
+dialog --title "SELECTING PACKAGES FROM SERIES A (BASE LINUX SYSTEM)" \
+       --checklist "Please confirm the packages you wish to install \
+from series A. Use the UP/DOWN keys to scroll through the list, and \
+the SPACE key to deselect any packages don't want installed. You are \
+cautioned against unselecting REQUIRED packages. However, it's your \
+system. :^) Press ENTER when you are done."  21 76 10 \
+"aaa_base" "Basic filesystem, shell, and utils - REQUIRED" "on" \
+"aaa_elflibs" "Various ELF libraries -- REQUIRED" "on" \
+"aaa_terminfo" "A subset of the terminfo database from ncurses" "on" \
+"acl" "POSIX Access Control List tools -- REQUIRED" "on" \
+"acpid" "ACPI Power Management daemon" "on" \
+"attr" "Tools for fs extended attributes -- REQUIRED" "on" \
+"bash" "GNU bash shell - REQUIRED" "on" \
+"bin" "Various system utilities - REQUIRED" "on" \
+"btrfs-progs" "Utilities for btrfs filesystems" "on" \
+"bzip2" "bzip2 compression utility" "on" \
+"coreutils" "The core GNU command-line utilities - REQUIRED" "on" \
+"cpio" "The GNU cpio backup/archiving utility" "on" \
+"cpufrequtils" "Kernel CPUfreq utilities" "on" \
+"cryptsetup" "Utilities for encrypting partitions" "on" \
+"dbus" "Message bus daemon - REQUIRED" "on" \
+"dcron" "Cron daemon - REQUIRED" "on" \
+"devs" "Device files found in /dev - REQUIRED" "on" \
+"dialog" "The program that generates these menus :-)" "on" \
+"dosfstools" "Tools for working with FAT filesystems" "on" \
+"e2fsprogs" "Utilities for ext2/ext3 filesystems - REQUIRED" "on" \
+"ed" "A clone of the old, original UN*X line editor" "on" \
+"efibootmgr" "Tool to modify UEFI boot entries" "on" \
+"elilo" "Linux Loader for EFI-based platforms" "on" \
+"elvis" "elvis text editor (vi clone) - REQUIRED" "on" \
+"etc" "System config files & utilities - REQUIRED" "on" \
+"eudev" "Manages /dev and modules - REQUIRED" "on" \
+"file" "Determines what file format data is in" "on" \
+"findutils" "GNU file finding utilities" "on" \
+"floppy" "Utilities for using DOS floppies" "on" \
+"gawk" "GNU awk pattern scanning language" "on" \
+"genpower" "UPS monitoring daemon" "on" \
+"gettext" "Programs used to internationalize scripts" "on" \
+"getty-ps" "Getty_ps serial login support - OPTIONAL" "on" \
+"glibc-solibs" "Runtime glibc support libraries - REQUIRED" "on" \
+"glibc-zoneinfo" "Configures your time zone" "on" \
+"gpm" "Cut and paste text with your mouse" "on" \
+"gptfdisk" "GPT fdisk utilities" "on" \
+"grep" "GNU grep searching tool - REQUIRED" "on" \
+"grub" "GNU GRUB, the GRand Unified Bootloader" "on" \
+"gzip" "GNU zip compression utility - REQUIRED" "on" \
+"hdparm" "Get/Set IDE hard drive parameters" "on" \
+"hostname" "Linux hostname utility - REQUIRED" "on" \
+"hwdata" "Hardware identification and config data" "on" \
+"infozip" "zip/unzip archive utilities" "on" \
+"inotify-tools" "Command-line tools for using inotify." "on" \
+"isapnptools" "Plug'n'Play configuration tool" "on" \
+"jfsutils" "Utilities for IBM's Journaled Filesystem" "on" \
+"kbd" "Change keyboard and console mappings" "on" \
+"kernel-firmware" "Linux kernel firmware -- REQUIRED" "on" \
+"kernel-generic" "Generic 4.14.32 kernel (needs an initrd)" "on" \
+"kernel-generic-smp" "Generic SMP 4.14.32 kernel (needs an initrd)" "on" \
+"kernel-huge" "Loaded 4.14.32 Linux kernel" "on" \
+"kernel-huge-smp" "Loaded SMP 4.14.32 Linux kernel" "on" \
+"kernel-modules" "Linux 4.14.32 kernel modules -- REQUIRED" "on" \
+"kernel-modules-smp" "Linux 4.14.32 SMP kernel modules -- REQUIRED" "on" \
+"kmod" "Kernel module utilities -- REQUIRED" "on" \
+"less" "A text pager utility - REQUIRED" "on" \
+"lha" "LHA archive utility" "on" \
+"libcgroup" "Tools for using kernel control groups" "on" \
+"libgudev" "udev GObject bindings library - REQUIRED" "on" \
+"lilo" "Boot loader for Linux, DOS, OS/2, etc." "on" \
+"logrotate" "System log rotation utility" "on" \
+"lrzip" "Long Range ZIP" "on" \
+"lvm2" "Tools for creating logical volumes" "on" \
+"lzip" "A lossless data compressor" "on" \
+"lzlib" "lzip compression library" "on" \
+"mcelog" "Machine Check Event logger" "on" \
+"mdadm" "Utilities for managing MD (RAID) devices" "on" \
+"minicom" "Serial transfer and modem comm package" "on" \
+"mkinitrd" "Tool for building an initial ramdisk" "on" \
+"mlocate" "Locates files on the system" "on" \
+"mt-st" "mt ported from BSD - controls tape drive" "on" \
+"mtx" "Controls tape autochangers" "on" \
+"ncompress" "The historic compress utility" "on" \
+"ntfs-3g" "FUSE-based NTFS read-write mount program" "on" \
+"openssl-solibs" "OpenSSL shared libraries -- REQUIRED" "on" \
+"os-prober" "A tool for finding bootable OS partitions" "on" \
+"patch" "Applies a diff file to an original file" "on" \
+"pciutils" "Linux PCI utilities" "on" \
+"pcmciautils" "PCMCIA card services for the Linux kernel" "on" \
+"pkgtools" "Slackware package management tools - REQUIRED" "on" \
+"plzip" "Parallel lzip compressor" "on" \
+"procps-ng" "Displays process info - REQUIRED" "on" \
+"quota" "User disk quota utilities" "on" \
+"reiserfsprogs" "Tools for the ReiserFS journaling filesystem" "on" \
+"rpm2tgz" "A simple script to convert an RPM to a tgz" "on" \
+"sdparm" "Get/Set SCSI hard drive parameters" "on" \
+"sed" "GNU stream editor -- REQUIRED" "on" \
+"shadow" "Shadow password suite -- REQUIRED" "on" \
+"sharutils" "GNU shell archive utilities - REQUIRED" "on" \
+"smartmontools" "Hard drive monitoring utilities" "on" \
+"splitvt" "Split a screen into sections (use screen ;-)" "on" \
+"sysfsutils" "Utilities for the sysfs filesystem" "on" \
+"sysklogd" "Logs system and kernel messages" "on" \
+"syslinux" "Loader for making Linux boot floppies" "on" \
+"sysvinit" "System V-like INIT programs - REQUIRED" "on" \
+"sysvinit-functions" "Init functions used by some third-party apps" "on" \
+"sysvinit-scripts" "The startup scripts for Slackware - REQUIRED" "on" \
+"tar" "GNU tar archive utility -- REQUIRED" "on" \
+"tcsh" "Extended C shell /bin/tcsh" "on" \
+"time" "Times how long a process takes to run" "on" \
+"tree" "Display a directory in tree form" "on" \
+"udisks" "storage device daemon" "on" \
+"udisks2" "storage device daemon v2" "on" \
+"unarj" "Extract ARJ archives" "on" \
+"upower" "power management abstraction daemon" "on" \
+"usb_modeswitch" "Switching tool for multiple mode USB devices" "on" \
+"usbutils" "Linux USB utilities" "on" \
+"utempter" "Library used for writing to utmp/wtmp" "on" \
+"util-linux" "Util-linux utilities - REQUIRED" "on" \
+"which" "Locate an executable in your \$PATH" "on" \
+"xfsprogs" "Utilities for SGI's XFS filesystem" "on" \
+"xz" "xz (LZMA) compression utility - REQUIRED" "on" \
+"zoo" "Zoo archive utility" "on" \
+2> $TMP/SeTpkgs
+if [ $? = 1 -o $? = 255 ]; then
+ rm -f $TMP/SeTpkgs
+ > $TMP/SeTnewtag
+ for pkg in \
+aaa_base aaa_elflibs aaa_terminfo acl acpid attr bash bin btrfs-progs bzip2 coreutils cpio cpufrequtils cryptsetup dbus dcron devs dialog dosfstools e2fsprogs ed efibootmgr elilo elvis etc eudev file findutils floppy gawk genpower gettext getty-ps glibc-solibs glibc-zoneinfo gpm gptfdisk grep grub gzip hdparm hostname hwdata infozip inotify-tools isapnptools jfsutils kbd kernel-firmware kernel-generic kernel-generic-smp kernel-huge kernel-huge-smp kernel-modules kernel-modules-smp kmod less lha libcgroup libgudev lilo logrotate lrzip lvm2 lzip lzlib mcelog mdadm minicom mkinitrd mlocate mt-st mtx ncompress ntfs-3g openssl-solibs os-prober patch pciutils pcmciautils pkgtools plzip procps-ng quota reiserfsprogs rpm2tgz sdparm sed shadow sharutils smartmontools splitvt sysfsutils sysklogd syslinux sysvinit sysvinit-functions sysvinit-scripts tar tcsh time tree udisks udisks2 unarj upower usb_modeswitch usbutils utempter util-linux which xfsprogs xz zoo \
+  ; do
+  echo "$pkg: SKP" >> $TMP/SeTnewtag
+ done
+ exit
+fi
+cat /dev/null > $TMP/SeTnewtag
+for PACKAGE in \
+aaa_base aaa_elflibs aaa_terminfo acl acpid attr bash bin btrfs-progs bzip2 coreutils cpio cpufrequtils cryptsetup dbus dcron devs dialog dosfstools e2fsprogs ed efibootmgr elilo elvis etc eudev file findutils floppy gawk genpower gettext getty-ps glibc-solibs glibc-zoneinfo gpm gptfdisk grep grub gzip hdparm hostname hwdata infozip inotify-tools isapnptools jfsutils kbd kernel-firmware kernel-generic kernel-generic-smp kernel-huge kernel-huge-smp kernel-modules kernel-modules-smp kmod less lha libcgroup libgudev lilo logrotate lrzip lvm2 lzip lzlib mcelog mdadm minicom mkinitrd mlocate mt-st mtx ncompress ntfs-3g openssl-solibs os-prober patch pciutils pcmciautils pkgtools plzip procps-ng quota reiserfsprogs rpm2tgz sdparm sed shadow sharutils smartmontools splitvt sysfsutils sysklogd syslinux sysvinit sysvinit-functions sysvinit-scripts tar tcsh time tree udisks udisks2 unarj upower usb_modeswitch usbutils utempter util-linux which xfsprogs xz zoo \
+ ; do
+ if grep "\(^\| \)$PACKAGE\( \|$\)" $TMP/SeTpkgs 1> /dev/null 2> /dev/null ; then
+  echo "$PACKAGE: ADD" >> $TMP/SeTnewtag
+ else
+  echo "$PACKAGE: SKP" >> $TMP/SeTnewtag
+ fi
+done
+rm -f $TMP/SeTpkgs

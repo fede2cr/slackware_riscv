@@ -1,0 +1,11 @@
+gpm: gpm (general purpose mouse server)
+gpm:
+gpm: The general purpose mouse server, or gpm, allows you to use the mouse
+gpm: to cut and paste text from the screen.  It also acts as a mouse 
+gpm: server for applications running on the Linux console, such as the
+gpm: Midnight Commander file manager. 
+gpm:
+gpm:
+gpm:
+gpm:
+gpm:

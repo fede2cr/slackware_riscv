@@ -1,0 +1,11 @@
+gptfdisk: gptfdisk (GPT fdisk utilities)
+gptfdisk:
+gptfdisk: GPT fdisk (consisting of the gdisk, cgdisk, sgdisk, and fixparts
+gptfdisk: programs) is a set of text-mode partitioning tools for using a GPT
+gptfdisk: (GUID Partition Table), rather than the traditional MBR (Master Boot
+gptfdisk: Record) partition tables.  It features several partitioning tools,
+gptfdisk: recovery tools to help you deal with corrupt partition tables, and the
+gptfdisk: ability to convert MBR disks to GPT format.
+gptfdisk:
+gptfdisk: gptfdisk home: http://sourceforge.net/projects/gptfdisk/
+gptfdisk:

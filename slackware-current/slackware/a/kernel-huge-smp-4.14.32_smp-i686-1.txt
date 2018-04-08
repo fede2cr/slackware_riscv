@@ -1,0 +1,11 @@
+kernel-huge-smp: kernel-huge-smp (a fully-loaded SMP Linux kernel)
+kernel-huge-smp:
+kernel-huge-smp: This is a Linux kernel with built-in support for most disk
+kernel-huge-smp: controllers. If you're looking for a more stripped down kernel
+kernel-huge-smp: (this one contains everything but the kitchen sink ;-), then install
+kernel-huge-smp: the kernel-generic-smp in the /boot directory along with an initrd to
+kernel-huge-smp: load support for your boot device and filesystem. For instructions
+kernel-huge-smp: on the initrd, see README.initrd in the /boot directory.
+kernel-huge-smp:
+kernel-huge-smp: SMP is "Symmetric multiprocessing", or multiple CPU/core support.
+kernel-huge-smp:

@@ -1,0 +1,11 @@
+minicom: minicom (communications package)
+minicom:
+minicom: Minicom - a full featured menu-driven communications package similar
+minicom: to the DOS program 'Telix'.  Also includes sz/rz - utilities used to
+minicom: upload and download files using the Zmodem protocol.
+minicom:
+minicom: Homepage:  http://alioth.debian.org/projects/minicom
+minicom:
+minicom:
+minicom:
+minicom:

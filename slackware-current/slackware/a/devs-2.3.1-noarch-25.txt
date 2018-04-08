@@ -1,0 +1,11 @@
+devs: devs (system device files)
+devs:
+devs: This package creates special files in the /dev directory that 
+devs: represent your system's hardware, and a tool (/dev/MAKEDEV) for
+devs: creating new device files.  These files are required to access
+devs: hardware on a Linux system.
+devs:
+devs:
+devs:
+devs:
+devs:

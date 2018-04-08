@@ -1,0 +1,11 @@
+grep: grep (print lines matching a pattern)
+grep:
+grep: This is GNU grep, the "fastest grep in the west" (we hope).  Grep
+grep: searches through textual input for lines which contain a match to a
+grep: specified pattern and then prints the matching lines.
+grep:
+grep:
+grep:
+grep:
+grep:
+grep:

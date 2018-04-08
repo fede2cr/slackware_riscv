@@ -1,0 +1,11 @@
+lzip: lzip (a lossless data compressor)
+lzip:
+lzip: Lzip is a lossless data compressor with a user interface similar to
+lzip: the one of gzip or bzip2.  Lzip decompresses almost as fast as gzip
+lzip: and compresses more than bzip2, which makes it well suited for
+lzip: software distribution and data archiving.  Lzip is a clean
+lzip: implementation of the LZMA algorithm.
+lzip:
+lzip: Homepage:  http://www.nongnu.org/lzip/lzip.html
+lzip:
+lzip:

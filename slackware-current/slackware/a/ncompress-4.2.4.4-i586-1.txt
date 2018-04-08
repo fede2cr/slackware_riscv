@@ -1,0 +1,11 @@
+ncompress: ncompress (the classic *nix compression utility)
+ncompress:
+ncompress: Compress reduces the size of the named files using adaptive Lempel-Ziv
+ncompress: coding.  Whenever possible, each file is replaced by one with the
+ncompress: extension .Z, while keeping the same ownership modes, access and
+ncompress: modification times.  If no files are specified, the standard input is
+ncompress: compressed to the standard output.  Compressed files can be restored
+ncompress: to their original form using uncompress or zcat.
+ncompress:
+ncompress:
+ncompress:

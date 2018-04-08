@@ -1,0 +1,11 @@
+dosfstools: dosfstools (tools for working with FAT filesystems)
+dosfstools:
+dosfstools: Utilities for creating FAT filesystems (mkdosfs), and for checking
+dosfstools: and repairing them (dosfsck).
+dosfstools:
+dosfstools: Homepage:  http://daniel-baumann.ch/software/dosfstools
+dosfstools:
+dosfstools:
+dosfstools:
+dosfstools:
+dosfstools:

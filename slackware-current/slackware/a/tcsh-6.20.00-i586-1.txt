@@ -1,0 +1,11 @@
+tcsh: tcsh (C shell)
+tcsh:
+tcsh: tcsh is an enhanced but completely compatible version of the Berkeley
+tcsh: UNIX C shell, csh(1). It is a command language interpreter usable both
+tcsh: as an interactive login shell and a shell script command processor. It
+tcsh: includes a command-line editor, programmable word completion, spelling
+tcsh: correction, a history mechanism, job control, and a C-like syntax.
+tcsh:
+tcsh:
+tcsh:
+tcsh:

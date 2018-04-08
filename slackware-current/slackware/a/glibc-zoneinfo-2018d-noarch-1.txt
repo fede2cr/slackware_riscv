@@ -1,0 +1,11 @@
+glibc-zoneinfo: glibc-zoneinfo (timezone database)
+glibc-zoneinfo:
+glibc-zoneinfo: This package allows you to configure your time zone.
+glibc-zoneinfo:
+glibc-zoneinfo: This timezone database comes from the tzdata and tzcode packages by
+glibc-zoneinfo: Arthur David Olson et.al. The latest version and more information
+glibc-zoneinfo: may be found at: http://www.iana.org/time-zones
+glibc-zoneinfo:
+glibc-zoneinfo: Use the timeconfig utility to set your local time zone.
+glibc-zoneinfo:
+glibc-zoneinfo:

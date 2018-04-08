@@ -1,0 +1,11 @@
+udisks: udisks (storage device daemon)
+udisks:
+udisks: The udisks project provides a storage daemon that implements D-Bus
+udisks: interfaces that can be used to query and manipulate storage devices.
+udisks:
+udisks: It also includes a command-line tool, udisks(1), that can be used to
+udisks: query and control the daemon.
+udisks:
+udisks: Homepage:  http://www.freedesktop.org/wiki/Software/udisks
+udisks:
+udisks:
