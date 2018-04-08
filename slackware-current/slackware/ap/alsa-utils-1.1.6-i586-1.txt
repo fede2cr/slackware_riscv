@@ -1,0 +1,11 @@
+alsa-utils: alsa-utils (Advanced Linux Sound Architecture utilities) 
+alsa-utils:
+alsa-utils: The Advanced Linux Sound Architecture (ALSA) provides audio and MIDI
+alsa-utils: functionality to the Linux operating system. This package contains
+alsa-utils: command line audio utilities for use with ALSA:
+alsa-utils:  alsactl        (manage soundcard settings)
+alsa-utils:  arecord/aplay  (capture and play audio)
+alsa-utils:  amixer         (adjust mixer settings from the command line)
+alsa-utils:  alsamixer      (an ncurses-based console mixer)
+alsa-utils:
+alsa-utils: For more information, see http://alsa-project.org

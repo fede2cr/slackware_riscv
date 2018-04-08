@@ -1,0 +1,101 @@
+#!/bin/sh
+
+# Copyright 2008-2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=man-pages
+VERSION=${VERSION:-$(echo man-pages-4.*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+ARCH=noarch
+BUILD=${BUILD:-1}
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-man-pages
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf man-pages-$VERSION
+tar xf $CWD/man-pages-$VERSION.tar.xz
+tar xf $CWD/man-pages-posix-2013-a.tar.xz
+chown -R root:root man-pages-$VERSION man-pages-posix-2013-a
+chmod -R a-s,u+rw,go+r-w man-pages-$VERSION man-pages-posix-2013-a
+find man-pages-$VERSION \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+find man-pages-posix-2013-a \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+mkdir -p $PKG/usr/man
+cp -a man-pages-$VERSION/* $PKG/usr/man
+
+# The pthread manpages are the only POSIX ones that anyone
+# has requested saving.  If I missed anything important, let me know.
+mv man-pages-posix-2013-a/man0p/pthread.h.0p $PKG/usr/man/man3/pthread.h.3p
+mv man-pages-posix-2013-a/man3p/pthread_* $PKG/usr/man/man3
+cp man-pages-posix-2013-a/POSIX-COPYRIGHT $PKG/usr/man
+# Are these other POSIX manpages of any real usefulness here?
+# Granted there may be some historical interest, and it's nice
+# to have them in the source package for that reason, but it
+# seems to me that installing them on the system by default 
+# isn't likely to help most people and may lead to confusion.
+
+# Also probably not needed in the package
+rm -rf $PKG/usr/man/scripts
+rm -f $PKG/usr/man/Makefile
+rm -f $PKG/usr/man/Changes.old
+
+# Compress the pages:
+gzip -9 $PKG/usr/man/man*/*.*
+
+# If a man page exists in some other package, assume that's the
+# newer, better version:
+( cd $PKG
+  for file in usr/man/man*/*.gz ; do
+    if grep -l $file /var/log/packages/* | grep -v var/log/packages/man-pages ; then
+      rm -f --verbose $file
+    fi
+  done
+)
+
+# Some of the posix pages don't display correctly without this
+( cd $PKG/usr/man ; ln -s man3 man3p )
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/man-pages-$VERSION-$ARCH-$BUILD.txz
+

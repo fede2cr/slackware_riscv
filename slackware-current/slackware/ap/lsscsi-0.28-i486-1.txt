@@ -1,0 +1,11 @@
+lsscsi: lsscsi (list SCSI devices or hosts, and their attributes)
+lsscsi:
+lsscsi: Uses information in sysfs to list scsi devices (or hosts) currently
+lsscsi: attached to the system.  Options can be used to control the amount
+lsscsi: and form of information provided for each device.
+lsscsi:
+lsscsi: lsscsi was written by Doug Gilbert.
+lsscsi:
+lsscsi:
+lsscsi:
+lsscsi:

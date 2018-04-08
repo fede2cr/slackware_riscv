@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler--------------------------------------------------|
+libx86: libx86 (hardware-independent library for x86 code execution)
+libx86: 
+libx86: libx86 is a hardware-independent library for executing
+libx86: real-mode x86 code, such as bios calls, from userspace.
+libx86: 
+libx86: Homepage: http://www.codon.org.uk/~mjg59/libx86/
+libx86: 
+libx86: 
+libx86: 
+libx86: 
+libx86: 

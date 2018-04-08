@@ -1,0 +1,20 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+normalize: normalize (adjusts volume levels of audio files)
+normalize:
+normalize: normalize is a tool for adjusting the volume of audio files to a
+normalize: standard level. This is useful for things like creating mix CDs
+normalize: from mp3 collections, where different recording levels on
+normalize: different albums can cause the volume to vary greatly from song
+normalize: to song. The package also contains an XMMS plugin.
+normalize:
+normalize: Chris Vaill is the author of normalize.
+normalize:
+normalize:
+

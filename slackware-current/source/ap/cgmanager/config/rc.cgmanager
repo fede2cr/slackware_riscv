@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# /etc/rc.d/rc.cgmanager - start/stop the cgroup manager
+
+if [ -f /etc/default/cgmanager ]; then
+  # get cgmanager options if specified
+  . /etc/default/cgmanager
+fi
+
+start_cgmanager() {
+  # Kill any existing cgproxy
+  /bin/sh /etc/rc.d/rc.cgproxy stop >/dev/null 2>&1 || true
+  # check whether to start cgproxy or cgmanager
+  if /usr/sbin/cgproxy --check-master; then
+    if [ -x /etc/rc.d/rc.cgproxy -a ! -r /run/cgmanager.pid ]; then
+      NESTED=yes /etc/rc.d/rc.cgproxy start || true && { exit 0; }
+    else
+      # If we are here, either cgmanager is already running (in which case
+      # we don't want to run it again), or rc.cgproxy is not executable
+      # (in which case we don't want to run it).
+      echo "Error:  rc.cgproxy is not executable, or attempting to start multiple instances of cgmanager"
+      exit 1
+    fi
+  fi
+  echo "Starting cgmanager:  /usr/sbin/cgmanager --daemon"
+  /usr/sbin/cgmanager --daemon
+}
+
+stop_cgmanager() {
+  # If the cgmanager stops, the proxy must also stop
+  /bin/sh /etc/rc.d/rc.cgproxy stop >/dev/null 2>&1 || true
+  echo "Stopping cgmanager."
+  /bin/kill $(cat /run/cgmanager.pid 2>/dev/null) 2>/dev/null
+  /usr/bin/pkill --exact /usr/sbin/cgmanager 2>/dev/null
+  rm -f /run/cgmanager.pid
+}
+
+restart_cgmanager() {
+  stop_cgmanager
+  sleep 1
+  start_cgmanager
+}
+
+case "$1" in
+'start')
+  start_cgmanager
+  ;;
+'stop')
+  stop_cgmanager
+  ;;
+'restart')
+  restart_cgmanager
+  ;;
+*)
+  echo "usage $0 start|stop|restart"
+esac

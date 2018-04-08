@@ -1,0 +1,116 @@
+======================================================
+Version 2.12.3
+Fix scheduler bug.
+======================================================
+Version 2.12.2
+Fixed some options that were zeroing out if 'back' was
+pressed.
+======================================================
+Version 2.12.1
+Fixed missing output devices bug.
+======================================================
+Version 2.12.0
+
+Stations added:
+Kisstory
+ABC Classic FM
+Heart
+Radio X
+Capital
+CapitalXtra
+
+New options:
+New options menu item in main menu. This is to edit
+the config variables and then reread the config.
+'t' shortcut to change theme from status window.
+'o' shortcut to go to options menu.
+The 'Theme' option lists everything in ~/.soma/themes
+Added tfonz's turbo theme.
+
+Removed:
+TERM environment setting. Now soma overrides this.
+Took out the initial typing of device detection because it
+starts up so fast now that you just see a flicker.
+
+Enhancements:
+A vast improvement in loading speed due to new method
+of loading station list.
+======================================================
+Version 2.11.3
+Added:
+ABC Oldies,http://orion.shoutca.st:8569
+ABC 60s,http://149.56.23.7:20314/stream
+ABC 70s,http://149.56.23.7:20258/stream
+ABC 80s,http://cabhs31.sonixcast.com:20168
+Flower Power Radio,http://50.7.129.122:8433/stream
+KZRO,http://war.str3am.com:7930
+Morcegão FM,http://69.64.34.198:8000/morcegao
+Floyd,http://archlinux.uk:9001
+Floyd Too,http://cirrus.turtil.net:9001
+
+Major code overhaul.
+Added more themes + themes directory.
+======================================================
+Version 2.11.2
+Added:
+Radio Swing
+1920s Radio
+Smooth Jazz
+Big Blue
+KCEA
+WITR 89.7
+KKJZ FM
+4625 KHz
+The Buzzer
+======================================================
+Version 2.11.1
+Add 3WK and Krypton stations.
+======================================================
+Version 2.11.0
+Add SAVE_LIST_AT_QUIT option.
+======================================================
+Version 2.10.8
+Set default CACHE is blank..
+======================================================
+Version 2.10.7
+Add CACHE option.
+======================================================
+Version 2.10.6
+Add HD BBC stations.
+Support for .m3u8 URLs.
+======================================================
+Version 2.10.5
+Add function to add SETVOL to config.
+======================================================
+Version 2.10.4
+Clean up Name finding code.
+======================================================
+Version 2.10.3
+Fix Names containing colons.
+=======================================================
+Version 2.10.2
+Tidy menu.
+=======================================================
+Version 2.10.1
+Fix bug in mixer selection.
+========================================================
+Version 2.10.0
+Changed dialog theme back to original way.
+Added a 'greenrc' theme.
+========================================================
+Version 2.9.2
+Update stations URLS. Remove dead.
+========================================================
+Version 2.9.1
+Better station parsing.
+========================================================
+Version 2.9.0
+Add keyboard sortcuts for volume:
+keys 1-0 = 10% 20% ... 100%
+This volume is saved and reapplied on startup.
+Added a few new somafm stations and a couple of talk radio stations
+=========================================================
+Version 2.8.9
+Use ~/.soma/dialogrc-$VERSION.
+Some fixes to the station 'tuner' function.
+=========================================================

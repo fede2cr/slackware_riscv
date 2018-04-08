@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+most: most (another pager, like 'more' and 'less')
+most:
+most: most is a paging program that displays, one windowful at a time,  the
+most: contents of a file on a terminal. Unlike other well-known paging
+most: programs, most supports multiple windows and can scroll left and
+most: right. Why settle for less?
+most:
+most: 'most' was written by John E. Davis.
+most:
+most:
+most:

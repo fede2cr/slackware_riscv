@@ -1,0 +1,11 @@
+soma: Soma - a command line/dialog internet radio player
+soma:
+soma: Soma is a frontend for mplayer to play radio playlists pls,m3u and 
+soma: ram. More will be added as it progresses.
+soma:
+soma: Homepage: http://www.dawoodfall.net/slackbuilds/noversion/soma
+soma:
+soma:
+soma:
+soma:
+soma:

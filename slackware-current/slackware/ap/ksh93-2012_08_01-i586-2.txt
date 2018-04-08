@@ -1,0 +1,11 @@
+ksh93: ksh (AT&T Korn Shell 93)
+ksh93:
+ksh93: The KornShell language and interactive shell were designed by
+ksh93: David G. Korn at AT&T Bell Laboratories.  Besides offering a powerful
+ksh93: interactive shell, it also offers a robust programming language with
+ksh93: such features as associative arrays and built in integer math
+ksh93: operations.  ksh is an excellent choice for system administration
+ksh93: scripts and for everyday interactive use.
+ksh93: 
+ksh93: The official site for the Korn Shell is http://www.kornshell.com/
+ksh93:

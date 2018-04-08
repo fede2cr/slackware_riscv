@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+  |-----handy-ruler------------------------------------------------------|
+bc: bc (An arbitrary precision calculator language)
+bc:
+bc: bc is an arbitrary precision numeric processing language. Syntax is
+bc: similar to C, but differs in many substantial areas. It supports
+bc: interactive execution of statements. bc is a utility included in the
+bc: POSIX P1003.2/D11 draft standard.
+bc:
+bc: The GNU version of bc was written by Philip A. Nelson.
+bc:
+bc:
+bc:

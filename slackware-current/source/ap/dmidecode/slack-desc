@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+dmidecode: dmidecode (DMI table decoder)
+dmidecode:
+dmidecode: dmidecode is a tool for dumping a computer's DMI table (some say
+dmidecode: SMBIOS) contents in a human-readable format. This table contains a
+dmidecode: description of the system's hardware components, as well as other
+dmidecode: useful pieces of information such as serial numbers and BIOS
+dmidecode: revision.
+dmidecode:
+dmidecode: dmidecode was written by Alan Cox and Jean Delvare.
+dmidecode:
+dmidecode:

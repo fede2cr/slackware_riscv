@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+man-pages: man-pages (system documentation)
+man-pages:
+man-pages: Man pages are online documentation for Linux. This package includes
+man-pages: many section 1, 2, 3, 4, 5, 7, and 8 man pages for Linux.
+man-pages:
+man-pages: The man-pages distribution is maintained by Michael Kerrisk with
+man-pages: the help of more writers, editors, and other contributors than we
+man-pages: can name here.
+man-pages:
+man-pages: For more information, see http://www.kernel.org/doc/man-pages/
+man-pages:

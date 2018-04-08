@@ -1,0 +1,11 @@
+madplay: madplay (MPEG audio decoder and player)
+madplay:
+madplay: madplay is a command-line MPEG audio decoder and player based on the
+madplay: MAD library (libmad).  For details about MAD, see the libmad package
+madplay: distributed separately.
+madplay:
+madplay: madplay was written by Robert Leslie.
+madplay:
+madplay:
+madplay:
+madplay:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+a2ps: a2ps (any to PostScript filter)
+a2ps:
+a2ps: GNU a2ps is an Any to PostScript filter. Of course it processes plain
+a2ps: text files, but also pretty prints quite a few popular programming
+a2ps: languages.
+a2ps:
+a2ps: Homepage: https://www.gnu.org/software/a2ps/
+a2ps:
+a2ps:
+a2ps:
+a2ps:

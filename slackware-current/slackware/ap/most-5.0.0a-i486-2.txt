@@ -1,0 +1,11 @@
+most: most (another pager, like 'more' and 'less')
+most:
+most: most is a paging program that displays, one windowful at a time,  the
+most: contents of a file on a terminal.  Unlike other well-known paging
+most: programs, most supports multiple windows and can scroll left and
+most: right.  Why settle for less?
+most:
+most: 'most' was written by John E. Davis.
+most:
+most:
+most:

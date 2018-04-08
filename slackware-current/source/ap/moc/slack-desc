@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler-------------------------------------------------------|
+moc: moc (console audio player)
+moc:
+moc: MOC is a console audio player with a simple ncurses interface.
+moc: It supports OGG, FLAC, WAV, and MP3 formats. Just run mocp, go to some
+moc: directory using the menu, select a file, and press enter to play it.
+moc: MOC will continue playing the rest of the files in the directory.
+moc:
+moc: MOC was written by Damian Pietras.
+moc:
+moc: Homepage: http://moc.daper.net
+moc:

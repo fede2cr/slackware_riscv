@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+amp: amp (An MP3 player)
+amp:
+amp: amp (Audio Mpeg Player) is a command-line MPEG audio decoder (MP3
+amp: player). It works with both MPEG1 and MPEG2 audio streams (except for
+amp: the multichannel extensions defined in MPEG2), layers 2 and 3.
+amp:
+amp:
+amp:
+amp:
+amp:
+amp:

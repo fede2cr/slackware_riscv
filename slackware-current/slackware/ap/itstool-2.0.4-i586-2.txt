@@ -1,0 +1,11 @@
+itstool: itstool (Translate XML documents with PO files)
+itstool:
+itstool: ITS Tool allows you to translate your XML documents with PO
+itstool: files, using rules from the W3C Internationalization Tag Set
+itstool: (ITS) to determine what to translate and how to separate it
+itstool: into PO file messages.
+itstool:
+itstool: Homepage: http://itstool.org/
+itstool:
+itstool:
+itstool:

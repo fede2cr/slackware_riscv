@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+bpe: bpe (Binary Patch Editor)
+bpe:
+bpe: bpe is a simple, screen-oriented editor for searching and editing
+bpe: ordinary files in either ASCII or hexadecimal modes.
+bpe:
+bpe: bpe was written by Andreas Pleschutznig. Bill Davidsen contributed
+bpe: additional features, as did Ralphe Neill (the current maintainer).
+bpe:
+bpe:
+bpe:
+bpe:

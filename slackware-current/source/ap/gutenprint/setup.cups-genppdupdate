@@ -1,0 +1,4 @@
+#!/bin/sh
+#BLURB="Update Gutenprint PPD files for CUPS."
+
+chroot . /usr/sbin/cups-genppdupdate 1> /dev/null 2> /dev/null

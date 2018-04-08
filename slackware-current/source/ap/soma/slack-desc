@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+soma: Soma - a command line/dialog internet radio player
+soma:
+soma: Soma is a frontend for mplayer to play radio playlists pls,m3u and 
+soma: ram. More will be added as it progresses.
+soma:
+soma: Homepage: http://www.dawoodfall.net/slackbuilds/noversion/soma
+soma:
+soma:
+soma:
+soma:
+soma:

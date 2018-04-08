@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+jove: jove (Jonathan's Own Version of Emacs)
+jove:
+jove: A mostly Emacs compatible text editor, with man pages and the 
+jove: 'teachjove' tutorial program. If you'd rather have the real thing, 
+jove: the actual Emacs editor/environment is available in series 'E'.
+jove:
+jove: JOVE was written by Jonathan Payne.
+jove:
+jove:
+jove:
+jove:

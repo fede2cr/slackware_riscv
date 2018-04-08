@@ -1,0 +1,284 @@
+#!/bin/sh
+# Copyright 2001 BSDi, Inc. Concord, CA, USA
+# Copyright 2004 Slackware Linux, Inc.  Concord, CA, USA
+# Copyright 2007, 2008, 2009, 2010, 2013, 2016, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=ksh93
+VERSION=2012-08-01
+PKGVER=2012_08_01
+# Not packaged?
+# Seems to conflict with locations already used by glibc.
+#KSHLOCALE=2010-02-02
+BUILD=${BUILD:-2}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$PKGVER-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+# ast considers this an i386 arch, so we'll humor it
+# but package with our real arch label...
+if [ "$ARCH" = "x86_64" ]; then
+  SARCH=i386-64
+else
+  SARCH=i386
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=/tmp/build-ksh93
+PKG=/tmp/package-ksh93
+
+rm -rf $TMP $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+
+mkdir -p ast-base/lib/package/tgz
+cp $CWD/*.tgz ast-base/lib/package/tgz
+cd ast-base/
+
+tar xf lib/package/tgz/INIT.$VERSION.tgz || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+/bin/ksh bin/package read || exit 1
+
+zcat $CWD/patches/ksh-20070328-builtins.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20100826-fixregr.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20080202-manfix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20100202-pathvar.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20100621-fdstatus.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-rmdirfix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-cdfix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-cdfix2.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-tabfix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20130214-fixkill.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-kshmfix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-memlik.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-forkbomb.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-macro.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20130628-longer.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-mlikfiks.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-covsfix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20100621-manfix3.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-nomulti.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-mtty.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-fd2lost.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-argvfix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-memlik3.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-lexfix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-filecomsubst.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-crash.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-sufix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20140301-fikspand.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-roundit.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-heresub.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20140415-hokaido.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-tpstl.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-manfix4.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-fununset.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-cdfix3.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-locking.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20130613-cdfix4.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-retfix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-cdfork.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20140801-arraylen.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20140801-diskfull.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-xufix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-alarmifs.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20140929-safefd.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-trapcom.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-nohupfork.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-parserfix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-oldenvinit.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-emptyarrayinit.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-typeset.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-dotdoublefree.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-subshell-leak.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-assoc-unset-leak.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-unset-param.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-badgcc.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-mb-after-argvar.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-F_dupfd_cloexec.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-kia.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-iso8859.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-syntax-error.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-glibc-build-fix.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-jobwait-sigstop.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-subshell-jobwait.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-posix-exit.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-sh_iovalidfd.patch.gz | patch -p1 --verbose || exit 1
+
+# Slackware patches for missing needed include file:
+zcat $CWD/patches/ksh-20120801-path.c.missing.dlfcn.h.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/ksh-20120801-typeset.c.missing.dlfcn.h.diff.gz | patch -p1 --verbose || exit 1
+
+#/dev/fd test does not work because of mock
+sed -i 's|ls /dev/fd|ls /proc/self/fd|' src/cmd/ksh93/features/options
+
+# sh/main.c was not using CCFLAGS
+sed -i '/-c sh\/main.c/s|${mam_cc_FLAGS} |${mam_cc_FLAGS} ${CCFLAGS} |p' src/cmd/ksh93/Mamfile
+
+# disable register for debugging
+sed -i 1i"#define register" src/lib/libast/include/ast.h
+
+/bin/ksh ./bin/package
+/bin/ksh ./bin/package make mamake ||:
+/bin/ksh ./bin/package make mamake ||:
+
+CFLAGS="$SLKCFLAGS -std=c99 -fno-strict-aliasing -Wno-unknown-pragmas -Wno-missing-braces -Wno-unused-result -Wno-return-type -Wno-int-to-pointer-cast -Wno-parentheses -Wno-unused -Wno-unused-but-set-variable -Wno-cpp -P"
+export CC=clang
+
+/bin/ksh ./bin/package make -S || exit 1
+
+mkdir -p $PKG/bin
+cp arch/linux.$SARCH/bin/ksh $PKG/bin/ksh.new
+strip --strip-unneeded $PKG/bin/ksh.new
+
+#cp arch/linux.$SARCH/lib/libshell.so.1.1 /usr/lib
+#cp arch/linux.$SARCH/lib/libshell.a /usr/lib
+#cp arch/linux.$SARCH/lib/libast.so.5.4 /usr/lib
+#cp arch/linux.$SARCH/lib/libast.a /usr/lib
+#cp arch/linux.$SARCH/src/cmd/ksh93/cc-g,-fpic/libshell.so.1.1 /usr/lib
+#cp arch/linux.$SARCH/src/cmd/ksh93/cc-g,-fpic/libshell.a /usr/lib
+#cp arch/linux.$SARCH/src/lib/libast/libast.so.5.4 /usr/lib
+#cp arch/linux.$SARCH/src/cmd/ksh93/cc-g,-fpic/libast.a /usr/lib
+#strip /usr/lib/libast.so.5.4 /usr/lib/libshell.so.1.1
+
+mkdir -p $PKG/usr/man/man1
+sed -e "s#\.nr Z 0#\.nr Z 1#g" src/cmd/ksh93/sh.1 > \
+       $PKG/usr/man/man1/ksh.1
+#mkdir -p $PKG/usr/man/man1
+#cp src/cmd/ksh93/shell.3 $PKG/usr/man/man3
+#cp src/cmd/ksh93/nval.3 $PKG/usr/man/man3
+gzip -9 $PKG/usr/man/man?/*
+
+# Install locale files:
+mkdir -p $PKG/usr/share
+cp -a share/lib/locale $PKG/usr/share
+chown -R root:root $PKG/usr/share
+( cd $PKG/usr/share
+  find . -type d -exec chmod 755 {} \;
+  find . -type f -exec chmod 644 {} \;
+)
+
+#cp src/cmd/ksh93/include/shell.h /usr/include
+
+# If anyone is actually using the ksh libraries, drop me some mail
+# and explain which libs you use and what they're for.  As it is, I
+# don't see a compeling reason to include them, as ksh itself doesn't
+# use them.
+#( cd /usr/lib ; ln -sf libshell.so.1.1 libshell.so )
+#( cd /usr/lib rm -rf libast.so ; ln -sf libast.so.5.4 libast.so )
+
+( cd $PKG/bin ; ln -sf ksh rksh )
+( cd $PKG/usr/man/man1 ; ln -sf ksh.1.gz rksh.1.gz )
+
+mkdir -p $PKG/usr/doc/ksh93-$VERSION
+( cd src/cmd/ksh93
+  cp -a COMPATIBILITY DESIGN OBSOLETE PROMO.mm README RELEASE* TYPES \
+     $PKG/usr/doc/ksh93-$VERSION
+)
+( cd /tmp/build-ksh93/ast-base
+  mkdir -p $PKG/usr/doc/ksh93-$VERSION/LICENSE
+  cp -a README $PKG/usr/doc/ksh93-$VERSION/LICENSE
+  cp -a $CWD/EPL-1.0 $PKG/usr/doc/ksh93-$VERSION
+  chmod 644 $PKG/usr/doc/ksh93-$VERSION/EPL-1.0
+  # ast-ksh-locale is still covered by the CPL:
+  cp -a $CWD/CPL $PKG/usr/doc/ksh93-$VERSION
+  chmod 644 $PKG/usr/doc/ksh93-$VERSION/CPL
+  chown root:root $PKG/usr/doc/ksh93-$VERSION/CPL
+  #cp -a lib/package/LICENSES/ast $PKG/usr/doc/ksh93-$VERSION/LICENSE/LICENSE.ast
+  cp -a lib/package/*.lic $PKG/usr/doc/ksh93-$VERSION/LICENSE/LICENSE.ast )
+
+chown -R root:root $PKG/usr/doc/ksh93-$VERSION
+find $PKG/usr/doc/ksh93-$VERSION -type f -exec chmod 644 "{}" \;
+find $PKG/usr/doc/ksh93-$VERSION -type d -exec chmod 755 "{}" \;
+
+#chmod 755 $PKG/usr/lib/libshell.so.1.1
+#chmod 755 $PKG/usr/lib/libast.so.5.4
+
+mkdir -p $PKG/install
+cat <<EOF >> $PKG/install/doinst.sh
+# Backup the old copy if we find one, move the new one in place
+if [ -f bin/ksh ]; then
+   mv bin/ksh bin/ksh.old
+fi
+mv bin/ksh.new bin/ksh
+if [ -f bin/ksh.old ]; then
+  rm -f bin/ksh.old
+fi
+
+# Add entries to /etc/shells if we need them
+if [ ! -r etc/shells ] ; then
+   touch etc/shells
+   chmod 644 etc/shells
+fi
+ 
+if ! grep -q "/bin/ksh" etc/shells ; then
+   echo "/bin/ksh" >> etc/shells
+fi
+EOF
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n /tmp/ksh93-$PKGVER-$ARCH-$BUILD.txz
+

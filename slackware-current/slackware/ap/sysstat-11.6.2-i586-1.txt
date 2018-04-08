@@ -1,0 +1,11 @@
+sysstat: sysstat (System performance monitoring tools)
+sysstat:
+sysstat: The sysstat utilities are a collection of performance monitoring
+sysstat: tools for Linux.  These include the iostat, mpstat, pidstat, sadf,
+sysstat: and sar tools.
+sysstat:
+sysstat: The sysstat utilities were written by Sebastien Godard.
+sysstat:
+sysstat: For more information, see the sysstat web site:
+sysstat:   http://pagesperso-orange.fr/sebastien.godard/
+sysstat:

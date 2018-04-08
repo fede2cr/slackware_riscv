@@ -1,0 +1,59 @@
+#!/bin/sh
+# rc.lxc init script
+# Written by Matteo Bernardini <ponce@slackbuilds.org>
+#
+# This script checks for the presence of the parameter lxc.start.auto
+# in the available container configurations: if it's set to 1 the
+# container is started (in an auto-detached screen session if
+# screen is available) when rc.lxc is called with the "start" param.
+#
+# To stop the container it uses lxc-attach to execute /sbin/halt
+# inside of it.
+
+. /usr/share/lxc/lxc.functions
+
+start_lxc() {
+  for CONTAIN in $(/usr/bin/lxc-ls); do
+    if [ "$(lxc-info -n $CONTAIN -c lxc.start.auto)" = "lxc.start.auto = 1"  ]; then
+      if [ "$(/usr/bin/lxc-info -s -n $CONTAIN | grep STOPPED$)" ]; then
+        echo "Starting LXC container ${CONTAIN}."
+        /usr/bin/lxc-start -n $CONTAIN
+        /usr/bin/lxc-wait -n $CONTAIN -s RUNNING
+        if [ $? -gt 0 ]; then
+          return 2
+        fi
+      fi
+    fi
+  done
+}
+
+stop_lxc() {
+  for CONTAIN in $(/usr/bin/lxc-ls --active); do
+    echo "Stopping LXC container ${CONTAIN}."
+    /usr/bin/lxc-stop -n $CONTAIN
+    /usr/bin/lxc-wait -n $CONTAIN -s STOPPED
+    if [ $? -gt 0 ]; then
+      return 2
+    fi
+  done
+}
+
+restart_lxc() {
+  stop_lxc
+  sleep 2
+  start_lxc
+}
+
+case "$1" in
+'start')
+  start_lxc
+  ;;
+'stop')
+  stop_lxc
+  ;;
+restart)
+  restart_lxc
+  ;;
+*)
+  echo "usage $0 start|stop|restart"
+esac

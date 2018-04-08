@@ -1,0 +1,11 @@
+ddrescue: ddrescue (automatic data recovery tool)
+ddrescue:
+ddrescue: GNU ddrescue is a data recovery tool.  It copies data from one file or
+ddrescue: block device (hard disc, cdrom, etc) to another, trying hard to rescue
+ddrescue: data in case of read errors.  Every time you run it on the same output
+ddrescue: file, it tries to fill in the gaps.
+ddrescue:
+ddrescue:
+ddrescue:
+ddrescue: ddrescue home: http://www.gnu.org/software/ddrescue/ddrescue.html
+ddrescue:

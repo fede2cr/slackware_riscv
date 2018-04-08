@@ -1,0 +1,42 @@
+amp MPEG audio decoder readme file (version 0.7.5)
+(C) Tomislav Uzelac  1996,1997
+
+amp is free software and can be _used_ freely by anyone. If you want to
+do anything else with it, be sure to check the Legal section of this
+document for legal issues.
+
+THERE IS NO WARRANTY FOR THIS PROGRAM. Please check out the Legal section
+of this document.
+
+
+[snip]
+
+
+6. Legal
+
+This software can be used freely for any purpose. It can be distributed
+freely, as long as it is not sold commercially without permission from
+Tomislav Uzelac <tuzelac@rasip.fer.hr>. However, including this software
+on CD_ROMs containing other free software is explicitly permitted even
+when a modest distribution fee is charged for the CD, as long as this
+software is not a primary selling argument for the CD.
+
+Building derived versions of this software is permitted, as long as they
+are not sold commercially without permission from Tomislav Uzelac
+<tuzelac@rasip.fer.hr>. Any derived versions must be clearly marked as
+such, and must be called by a name other than amp. Any derived versions
+must retain this copyright notice.
+
+/* This license is itself copied from Tatu Ylonen's ssh package. It does
+ * not mention being copyrighted itself :)
+ */
+
+THERE IS NO WARRANTY FOR THIS PROGRAM - whatsoever. You use it entirely
+at your risk, and neither Tomislav Uzelac, nor FER will be liable for
+any damages that might occur to your computer, software, etc. in
+consequence of you using this freeware program.
+
+
+Tomislav Uzelac
+<tuzelac@rasip.fer.hr>
+

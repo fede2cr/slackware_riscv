@@ -1,0 +1,7 @@
+Mon Feb 12 23:18:35 UTC 2018
+  All AP packages tested and found to build properly.
++--------------------------+
+Sat Feb  3 19:07:00 UTC 2018
+  Fix all packages that fail to build from source:
+  cdrdao: fix build with lame present
+  ksh93: ksh hates gcc, switch to clang

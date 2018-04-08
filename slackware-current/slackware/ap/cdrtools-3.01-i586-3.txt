@@ -1,0 +1,11 @@
+cdrtools: cdrtools (CD-R, ISO and related tools)
+cdrtools:
+cdrtools: Tools for mastering and writing compact discs.
+cdrtools:
+cdrtools: cdda2wav -- CD audio sampling utility.
+cdrtools: cdrecord -- burn discs in most ATAPI and SCSI CD-R drives.
+cdrtools: mkisofs  -- create ISO9660/HFS/Joliet CD-ROM images.
+cdrtools: mkzftree -- compress a file tree to make a compressed CD-ROM.
+cdrtools:
+cdrtools:
+cdrtools:

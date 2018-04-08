@@ -1,0 +1,11 @@
+libx86: libx86 (hardware-independent library for x86 code execution)
+libx86: 
+libx86: libx86 is a hardware-independent library for executing
+libx86: real-mode x86 code, such as bios calls, from userspace.
+libx86: 
+libx86: Homepage: http://www.codon.org.uk/~mjg59/libx86/
+libx86: 
+libx86: 
+libx86: 
+libx86: 
+libx86: 

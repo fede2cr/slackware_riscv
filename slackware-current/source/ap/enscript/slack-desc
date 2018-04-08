@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+enscript: enscript (converts text files to PostScript and other formats)
+enscript:
+enscript: Enscript converts text files to PostScript and spools the generated
+enscript: output to a printer or saves it to a file. If no input files are
+enscript: given, enscript processes standard input. Enscript can be extended to
+enscript: handle different output media and it has many options for customizing
+enscript: printouts. 
+enscript:
+enscript:
+enscript:
+enscript:

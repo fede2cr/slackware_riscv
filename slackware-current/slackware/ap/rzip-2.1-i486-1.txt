@@ -1,0 +1,11 @@
+rzip: rzip (a large-file compression program)
+rzip:
+rzip: rzip is a file compression program designed to do particularly well
+rzip: on very large files containing long distance redundancy.
+rzip:
+rzip: rzip was written by Andrew Tridgell.
+rzip:
+rzip:
+rzip:
+rzip:
+rzip:

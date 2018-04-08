@@ -1,0 +1,58 @@
+#!/bin/sh
+
+# /etc/rc.d/rc.cgproxy - start/stop the cgroup proxy manager
+
+if [ -f /etc/default/cgproxy ]; then
+  # get cgproxy options if specified
+  . /etc/default/cgproxy
+fi
+
+start_cgproxy() {
+  # cgproxy should only run on container unless on older kernel
+  if [ -e /proc/self/ns/pid ] && [ "$NESTED" != "yes" ]; then
+    echo "Error:  cgproxy should only run inside containers"
+    exit 0
+  fi
+  echo "Starting cgproxy:  /usr/sbin/cgproxy --daemon"
+  /usr/sbin/cgproxy --daemon
+}
+
+stop_cgproxy() {
+  if ps -C cgproxy | grep -q cgproxy 2>/dev/null ; then
+    echo "Stopping cgproxy."
+    if ! /bin/kill $(cat /run/cgproxy.pid 2>/dev/null) 2>/dev/null ; then
+      sleep 1
+      echo "Sending cgproxy the TERM signal."
+      if ! /usr/bin/pkill --exact -TERM /usr/sbin/cgproxy ; then
+        sleep 5
+        echo "Sending cgproxy the KILL signal."
+        /usr/bin/pkill --exact -KILL /usr/sbin/cgproxy
+        sleep 5
+        if ps -C cgproxy | grep -q cgproxy 2>/dev/null ; then
+          echo "Error:  couldn't stop cgproxy."
+        fi
+      fi
+    fi
+    rm -f /run/cgproxy.pid
+  fi
+}
+
+restart_cgproxy() {
+  stop_cgproxy
+  sleep 1
+  start_cgproxy
+}
+
+case "$1" in
+'start')
+  start_cgproxy
+  ;;
+'stop')
+  stop_cgproxy
+  ;;
+'restart')
+  restart_cgproxy
+  ;;
+*)
+  echo "usage $0 start|stop|restart"
+esac

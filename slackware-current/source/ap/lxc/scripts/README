@@ -1,0 +1,11 @@
+These are modified versions of some sysvinit-scripts and network-scripts for
+Slackware for use in a container (although they should also work for a regular
+non-container system as well).
+
+Versions ending in .lxc are the scripts to be used in a container.
+Versions ending in .orig are the scripts from the sysvinit-scripts and
+network-scripts packages that the .lxc scripts are based on.
+
+Any changes made to the original scripts in sysvinit-scripts or network-scripts
+*may* need to be ported to these versions.
+

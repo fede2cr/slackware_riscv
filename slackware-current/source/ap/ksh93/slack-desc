@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+ksh93: ksh (AT&T Korn Shell 93)
+ksh93:
+ksh93: The KornShell language and interactive shell were designed by
+ksh93: David G. Korn at AT&T Bell Laboratories. Besides offering a powerful
+ksh93: interactive shell, it also offers a robust programming language with
+ksh93: such features as associative arrays and built in integer math
+ksh93: operations. ksh is an excellent choice for system administration
+ksh93: scripts and for everyday interactive use.
+ksh93: 
+ksh93: The official site for the Korn Shell is http://www.kornshell.com/
+ksh93:

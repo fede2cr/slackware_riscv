@@ -1,0 +1,11 @@
+groff: groff (document formatting system)
+groff:
+groff: The GNU groff package provides versions of troff, nroff, eqn, tbl, and 
+groff: other Unix text-formatting utilities.  Groff is used to 'compile' man
+groff: pages stored in groff/nroff format into a form which can be printed or
+groff: displayed on the screen.  These man pages are stored in compressed
+groff: form in the /usr/man/man? directories.
+groff:
+groff:
+groff:
+groff:

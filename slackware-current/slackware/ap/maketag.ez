@@ -1,0 +1,115 @@
+#!/bin/sh
+#item   ####description                                      ###on off ###
+TMP=/var/log/setup/tmp
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP
+fi
+cat /dev/null > $TMP/SeTnewtag
+dialog --title "SELECTING PACKAGES FROM SERIES AP (APPLICATIONS)" \
+       --checklist "Please confirm the packages you wish to install \
+from series AP. Use the UP/DOWN keys to scroll through the list, and \
+the SPACE key to deselect any items you don't want to install. \
+Press ENTER when you are \
+done." 22 72 12 \
+"a2ps" "Any to .ps filter (required by APSfilter)" "on" \
+"acct" "Process accounting utilities" "on" \
+"alsa-utils" "ALSA sound utilities" "on" \
+"amp" "A command-line MP3 player" "on" \
+"at" "Schedule commands to execute at a later time" "on" \
+"bc" "GNU bc - arbitrary precision math language" "on" \
+"bpe" "Binary Patch (file) Editor" "on" \
+"cdparanoia" "Cdparanoia CD audio ripper" "on" \
+"cdrdao" "Tool for burning audio CDRs" "on" \
+"cdrtools" "CD-R/RW mastering/burning tools" "on" \
+"cgmanager" "Control Group manager daemons" "on" \
+"cups" "CUPS - printer spooling system" "on" \
+"cups-filters" "Backends and filters for CUPS" "on" \
+"dash" "A fast and small POSIX-compliant /bin/sh" "on" \
+"dc3dd" "Enhanced dd for computer forensics" "on" \
+"ddrescue" "Data recovery utility" "on" \
+"diffstat" "Generate diff statistics" "on" \
+"diffutils" "GNU diffutils - find file differences" "on" \
+"dmapi" "Data Management API library for xfsdump" "on" \
+"dmidecode" "DMI table decoder (displays hardware info)" "on" \
+"dvd+rw-tools" "DVD+/-R/RW mastering/burning tools" "on" \
+"enscript" "A text to PostScript utility" "on" \
+"flac" "Free Lossless Audio Codec" "on" \
+"ghostscript" "Ghostscript PS/PDF interpreter" "on" \
+"ghostscript-fonts-std" "Ghostscript Type1 fonts" "on" \
+"gphoto2" "A command-line camera client for libgphoto2" "on" \
+"groff" "GNU groff document formatting system" "on" \
+"gutenprint" "Additional printer drivers for gs and CUPS" "on" \
+"hplip" "HP printing and scanning software" "on" \
+"htop" "An ncurses-based process viewer" "on" \
+"ispell" "The International version of ispell" "on" \
+"itstool" "Translate XML documents with PO files" "on" \
+"jed" "JED programmer's editor" "on" \
+"joe" "joe text editor" "on" \
+"jove" "Jonathan's Own Version of Emacs text editor" "on" \
+"ksh93" "KornShell language and interactive shell" "on" \
+"libx86" "Real-mode x86 code execution library" "on" \
+"linuxdoc-tools" "Utilities for DocBook/SGML documents" "on" \
+"lm_sensors" "Hardware monitoring package" "on" \
+"lsof" "A tool to list open files" "on" \
+"lsscsi" "Display infomation about SCSI devices" "on" \
+"lxc" "Linux Containers tools" "on" \
+"madplay" "MPEG audio player" "on" \
+"man-db" "Primary tool for reading online documentation" "on" \
+"man-pages" "Online documentation (requires groff)" "on" \
+"mariadb" "An enhanced, drop-in replacement for MySQL" "on" \
+"mc" "The Midnight Commander file manager" "on" \
+"moc" "A music player for the console" "on" \
+"most" "A pager, like 'more' or 'less'" "on" \
+"mpg123" "A command-line MP3 player" "on" \
+"nano" "A simple editor with the look and feel of Pico" "on" \
+"normalize" "Normalize audio file volume" "on" \
+"opus-tools" "Tools for the Opus audio codec" "on" \
+"pamixer" "PulseAudio command line mixer" "on" \
+"pm-utils" "Power management utilities" "on" \
+"powertop" "PowerTOP system energy usage utility" "on" \
+"qpdf" "Command-line tools and library for PDF files" "on" \
+"radeontool" "Utility for laptops with a Radeon chipset" "on" \
+"rpm" "RPM package tool (unsupported)" "on" \
+"rzip" "A large file compression utility" "on" \
+"sc" "The 'sc' spreadsheet" "on" \
+"screen" "ANSI/vt100 virtual terminal emulator" "on" \
+"seejpeg" "An SVGAlib image viewer" "on" \
+"slackpkg" "Slackware package updating tool" "on" \
+"soma" "A dialog-based Internet radio player" "on" \
+"sox" "Sound utilities" "on" \
+"sqlite" "A small SQL database server and library" "on" \
+"squashfs-tools" "Squashed read-only filesystem for Linux" "on" \
+"sudo" "Allow special users limited root access" "on" \
+"sysstat" "System performance monitoring tools" "on" \
+"terminus-font" "a clean fixed width font" "on" \
+"texinfo" "GNU texinfo documentation system" "on" \
+"tmux" "terminal multiplexer" "on" \
+"usbmuxd" "iOS USB connection daemon" "on" \
+"vbetool" "Video BIOS execution tool" "on" \
+"vim" "Improved vi clone" "on" \
+"vorbis-tools" "Ogg Vorbis encoder, player, and utilities" "on" \
+"xfsdump" "Backup/restore tools for the XFS filesystem" "on" \
+"xorriso" "ISO-9660 and Rock Ridge manipulation tool" "on" \
+"zsh" "Zsh - a custom *nix shell" "on" \
+2> $TMP/SeTpkgs
+if [ $? = 1 -o $? = 255 ]; then
+ rm -f $TMP/SeTpkgs
+ > $TMP/SeTnewtag
+ for pkg in \
+a2ps acct alsa-utils amp at bc bpe cdparanoia cdrdao cdrtools cgmanager cups cups-filters dash dc3dd ddrescue diffstat diffutils dmapi dmidecode dvd+rw-tools enscript flac ghostscript ghostscript-fonts-std gphoto2 groff gutenprint hplip htop ispell itstool jed joe jove ksh93 libx86 linuxdoc-tools lm_sensors lsof lsscsi lxc madplay man-db man-pages mariadb mc moc most mpg123 nano normalize opus-tools pamixer pm-utils powertop qpdf radeontool rpm rzip sc screen seejpeg slackpkg soma sox sqlite squashfs-tools sudo sysstat terminus-font texinfo tmux usbmuxd vbetool vim vorbis-tools xfsdump xorriso zsh \
+  ; do
+  echo "$pkg: SKP" >> $TMP/SeTnewtag
+ done
+ exit
+fi
+cat /dev/null > $TMP/SeTnewtag
+for PACKAGE in \
+a2ps acct alsa-utils amp at bc bpe cdparanoia cdrdao cdrtools cgmanager cups cups-filters dash dc3dd ddrescue diffstat diffutils dmapi dmidecode dvd+rw-tools enscript flac ghostscript ghostscript-fonts-std gphoto2 groff gutenprint hplip htop ispell itstool jed joe jove ksh93 libx86 linuxdoc-tools lm_sensors lsof lsscsi lxc madplay man-db man-pages mariadb mc moc most mpg123 nano normalize opus-tools pamixer pm-utils powertop qpdf radeontool rpm rzip sc screen seejpeg slackpkg soma sox sqlite squashfs-tools sudo sysstat terminus-font texinfo tmux usbmuxd vbetool vim vorbis-tools xfsdump xorriso zsh \
+ ; do
+ if grep "\(^\| \)$PACKAGE\( \|$\)" $TMP/SeTpkgs 1> /dev/null 2> /dev/null ; then
+  echo "$PACKAGE: ADD" >> $TMP/SeTnewtag
+ else
+  echo "$PACKAGE: SKP" >> $TMP/SeTnewtag
+ fi
+done
+rm -f $TMP/SeTpkgs

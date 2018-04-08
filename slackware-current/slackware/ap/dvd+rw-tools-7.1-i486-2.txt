@@ -1,0 +1,11 @@
+dvd+rw-tools: dvd+rw-tools (DVD+-RW tools)
+dvd+rw-tools:
+dvd+rw-tools: A collection of tools to master DVD+RW/+R/-R/-RW media.  For further
+dvd+rw-tools: information see http://fy.chalmers.se/~appro/linux/DVD+RW/.
+dvd+rw-tools:
+dvd+rw-tools: The DVD+RW tools were written by Andy Polyakov.
+dvd+rw-tools:
+dvd+rw-tools:
+dvd+rw-tools:
+dvd+rw-tools:
+dvd+rw-tools:

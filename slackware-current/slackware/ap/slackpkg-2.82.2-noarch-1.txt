@@ -1,0 +1,11 @@
+slackpkg: slackpkg 
+slackpkg:
+slackpkg: Slackpkg is a package manager for Slackware. It can download,
+slackpkg: upgrade, install and remove selected packages. With it, you
+slackpkg: can search in the Slackware Package database and find which
+slackpkg: package has the selected file.
+slackpkg:
+slackpkg: Slackpkg DOESN'T replace pkgtool. Actually, Slackpkg uses pkgtool
+slackpkg: for all install|upgrade|remove functions.
+slackpkg:
+slackpkg:

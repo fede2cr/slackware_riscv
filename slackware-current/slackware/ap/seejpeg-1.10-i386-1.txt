@@ -1,0 +1,11 @@
+seejpeg: seejpeg (console JPEG viewer)
+seejpeg:
+seejpeg: Seejpeg is an image viewer which uses SVGAlib.  In spite of the name,
+seejpeg: it understands the JPEG, GIF, PPM, BMP and TARGA formats.  One nice
+seejpeg: feature of seejpeg is that it automatically decides on the best video
+seejpeg: mode to use based on the image being displayed and the video card
+seejpeg: being used.  
+seejpeg:
+seejpeg: Evan Harris is the author of seejpeg.
+seejpeg:
+seejpeg:

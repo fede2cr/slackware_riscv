@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+dmapi: dmapi (Data Management API library)
+dmapi:
+dmapi: A library required to use the Data Management API (DMAPI).
+dmapi: This interface is defined in the X/Open document 'Systems Management:
+dmapi: Data Storage Management (XDSM) API' dated February 1997.
+dmapi:
+dmapi: The DMAPI library is used by the xfsdump utility.
+dmapi:
+dmapi:
+dmapi:
+dmapi:

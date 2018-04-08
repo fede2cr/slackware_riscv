@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+  |-----handy-ruler------------------------------------------------------|
+mc: mc (Midnight Commander file manager)
+mc:
+mc: The Midnight Commander is a Norton Commander clone, a program that
+mc: manipulates and manages files and directories. Useful, fast, and has
+mc: color displays on the Linux console. Mouse support is provided
+mc: through the gpm mouse server. This is a lightweight compilation of
+mc: mc for use on the text console or in an xterm.
+mc:
+mc: mc was written by Miguel de Icaza and Mauricio Plaza.
+mc:
+mc:

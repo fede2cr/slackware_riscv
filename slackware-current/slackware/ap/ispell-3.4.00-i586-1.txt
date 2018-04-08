@@ -1,0 +1,11 @@
+ispell: ispell (spelling checker)
+ispell:
+ispell: Ispell is a fast screen-oriented spelling checker that shows you your
+ispell: errors in the context of the original file, and suggests possible 
+ispell: corrections when it can figure them out.  Compared to UNIX spell, it
+ispell: is faster and much easier to use.  Ispell can also handle languages
+ispell: other than English.  Ispell has a long history, and many people have
+ispell: contributed to the current version -- some of the major contributors
+ispell: include R. E. Gorin, Pace Willisson, Walt Buehring, and Geoff 
+ispell: Kuenning. 
+ispell:

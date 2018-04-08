@@ -1,0 +1,11 @@
+joe: joe (Joe text editor)
+joe:
+joe: Joseph H. Allen's easy to use text editor, similar to WordStar[tm].
+joe:
+joe: Homepage:  http://joe-editor.sourceforge.net
+joe:
+joe:
+joe:
+joe:
+joe:
+joe:

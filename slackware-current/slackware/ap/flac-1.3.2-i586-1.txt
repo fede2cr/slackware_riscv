@@ -1,0 +1,11 @@
+flac: flac (Free Lossless Audio Codec)
+flac:
+flac: FLAC stands for Free Lossless Audio Codec. Grossly oversimplified,
+flac: FLAC is similar to MP3, but lossless.  "Free" means that the
+flac: specification of the stream format is in the public domain, and that
+flac: neither the FLAC format nor any of the implemented encoding/decoding
+flac: methods are covered by any patent. It also means that the sources for
+flac: libFLAC and libFLAC++ are available under the LGPL and the sources for
+flac: flac, metaflac, and the plugins are available under the GPL.
+flac:
+flac: FLAC was developed by Josh Coalson.

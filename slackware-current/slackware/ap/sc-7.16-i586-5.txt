@@ -1,0 +1,11 @@
+sc: sc (spreadsheet calculator)
+sc:
+sc: This is a simple curses-based spreadsheet program.
+sc:
+sc:
+sc:
+sc:
+sc:
+sc:
+sc:
+sc:

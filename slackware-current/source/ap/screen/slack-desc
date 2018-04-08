@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+screen: screen (screen manager with VT100/ANSI terminal emulation)
+screen:
+screen: Screen is a full-screen window manager that multiplexes a physical
+screen: terminal between several processes (typically interactive shells).
+screen: Each virtual terminal provides the functions of a DEC VT100 terminal
+screen: and several control functions from the ISO 6492 (ECMA 48, ANSI X3.64)
+screen: and ISO 2022 standards (e.g. insert/delete line and support for
+screen: multiple character sets). There is a scrollback history buffer for
+screen: each virtual terminal and a copy-and-paste mechanism that allows
+screen: moving text regions between windows.
+screen:

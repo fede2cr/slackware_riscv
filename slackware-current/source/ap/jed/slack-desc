@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+jed: jed (programmer's editor)
+jed:
+jed: JED (by John E. Davis) is an extremely powerful but small emacs-like
+jed: programmer's editor that is extensible in a C-like macro language and
+jed: can do color syntax highlighting. Among the many features:
+jed:    Emacs, wordstar, EDT emulation;
+jed:    C, Fortran, TeX, text editing modes; Full undo;
+jed:    GNU Emacs compatible info reader, and lots more.
+jed:
+jed: JED is also 8 bit clean, so you can even edit binary files! 
+jed:

@@ -1,0 +1,11 @@
+ghostscript-fonts-std: ghostscript-fonts-std (fonts for the Ghostscript interpreter)
+ghostscript-fonts-std:
+ghostscript-fonts-std: These fonts are used by the GhostScript interpreter.
+ghostscript-fonts-std:
+ghostscript-fonts-std:
+ghostscript-fonts-std:
+ghostscript-fonts-std:
+ghostscript-fonts-std:
+ghostscript-fonts-std:
+ghostscript-fonts-std:
+ghostscript-fonts-std:

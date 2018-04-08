@@ -1,0 +1,11 @@
+opus-tools: opus-tools (Opus audio codec tools)
+opus-tools:
+opus-tools: Opus-tools provides command-line utilities to encode, inspect, and
+opus-tools: decode .opus files.
+opus-tools:
+opus-tools: Homepage:  https://opus-codec.org/
+opus-tools:
+opus-tools:
+opus-tools:
+opus-tools:
+opus-tools:

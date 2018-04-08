@@ -1,0 +1,134 @@
+README.SLACKWARE
+20130512 - rworkman@slackware.com
+
+===============================================================================
+PLEASE READ THIS ENTIRE FILE BEFORE REPORTING PROBLEMS OR ASKING FOR HELP!
+===============================================================================
+
+One of these routines should tell you whether any of the operations
+are supported by your current kernel/userspace at all:
+
+  for i in hibernate suspend suspend-hybrid ; do
+    pm-is-supported --$i \
+      && echo "$i is supported" \
+      || echo "$i is not supported" ;
+  done
+
+  *OR*
+
+  cat /sys/power/state
+
+Assuming they are supported, running "pm-suspend" as root should do a suspend
+to ram, and "pm-hibernate" should suspend to disk. Note that you must have a 
+swap partition (or file, but partition is easier) which is large enough 
+(2x ram is good here) and the relevant initrd lines and such for this to work. 
+If you're not familiar with all of that, don't test pm-hibernate.
+I don't have hardware which supports suspend-hybrid, so I have no idea if/how
+it works at all.
+
+Here's the short version of using suspend to disk:
+
+Stanza in /etc/lilo.conf should look something like this:
+  image = /boot/vmlinuz-generic-smp-3.8.13-smp
+    initrd = /boot/initrd.gz
+    append = "resume=/dev/sda2"
+    root = /dev/sda1
+    label = genericsmp.s
+    read-only
+
+/etc/mkinitrd.conf should look something like this:
+  MODULE_LIST="ext4"
+  ROOTDEV="/dev/sda1"
+  ROOTFS="ext4"
+  RESUMEDEV="/dev/sda2"
+
+mkinitrd command invocation would be this:
+  mkinitrd -c -k 3.8.13-smp -F
+
+All of the above assumes at least a cursory understanding of what those
+commands and parameters do. If it's not clear, don't attempt it on a
+system that you can't easily reinstall without concern.
+
+==============================================================================
+
+Once you confirm that a suspend and resume cycle works as expected, you might
+automate the process with some acpi magic, but a better option is to use the 
+power manager daemon included with your choice of desktop environment (both 
+kde and xfce have one).
+
+==============================================================================
+
+/* TODO: these links are now dead.  That's mostly okay, because the vast 
+   majority of the hardware out there these days doesn't require any quirks
+   at all any more.  Hopefully you won't be in the minority :-)
+   Addendum: it's now been about three years since the above text was
+   written, and I've had zero reports of hardware requiring additional
+   quirks.  Just FYI.  :-)
+*/
+
+If it doesn't work by default for you, consider having a look at
+  http://people.freedesktop.org/~hughsient/quirk/quirk-suspend-index.html
+for some debugging hints.  Pay particular attention to this page:
+  http://people.freedesktop.org/~hughsient/quirk/quirk-suspend-try.html
+
+If you are able to get your machine to suspend/resume correctly by passing
+additional quirks on the command line, then I would like to know about it so
+that upstream hal-info can get the correct information to use.  Please email
+the make/model and other relevant information about your machine along with
+the full output of "lshal" and "lspci" attached, and what extra quirks you
+needed to add for successful suspend/resume to rworkman@slackware.com
+
+==============================================================================
+
+If you need the system to do certain operations before going to sleep and
+then undo them (or perhaps do something new) when waking back up, pm-utils
+supports something called "hooks."  The hooks installed by packages (not only
+pm-utils itself) should be in /usr/lib(64)/pm-utils/sleep.d/, while any hooks 
+installed by the local system administrator (e.g. things that are only an
+issue on that one machine) should be in /etc/pm/sleep.d/.
+
+Looking at some of the existing hooks should give you a decent idea of their
+capabilities; as a head start, the functions used in the hooks are declared 
+in /usr/lib(64)/pm-utils/functions, which is inherited elsewhere by 
+/usr/lib(64)/pm-utils/pm-functions.  Note that an error exit code on any hook
+will cause the sleep operation to fail, so if you don't care whether your
+hook executes successfully, be sure to return an exit code of 0 (success) if
+you don't want the suspend operation to fail.  Some other exit codes are 
+also available; none of these will cause the suspend to fail:
+  $NA (not applicable), $NX (hook not executable), and $DX (hook disabled)
+
+==============================================================================
+
+The default powersave hooks are in /usr/lib(64)/pm-utils/power.d/ -- if you
+need to override any parameters set in those, you can do so with same-named
+files in /etc/pm/power.d/  As an example, if you wanted to change the hdparm 
+setting for your hard drive's power management setting, you would copy the 
+entire file at /usr/lib(64)/pm-utils/power.d/harddrive to /etc/pm/power.d/ 
+and edit the copy to reflect your needs, e.g.:
+
+  DRIVE_POWER_MGMT_BAT=128	# edit value as desired
+  DRIVE_POWER_MGMT_AC=128	# edit value as desired
+
+Also note that any files in the /etc/pm/ hierarchy must be executable (use 
+chmod +x) in order to be used by pm-utils; otherwise, they will be ignored.
+
+==============================================================================
+
+KNOWN ISSUES
+
+****  If you encounter either of these, mail rworkman@slackware.com ****
+
+If your alsa drivers don't correctly save and restore state across a sleep /
+resume cycle (due to a buggy driver), then you will need to add the drivers
+to a custom file named /etc/pm/config.d/defaults (create the file if it does
+not exist already) in a variable named "SUSPEND_MODULES" - see the file at
+/usr/lib(64)/pm-utils/defaults for proper format.
+
+The /usr/lib(64)/pm-utils/sleep.d/90clock does not run by default.  It added
+over a second to suspend, and the vast majority of hardware does not need it 
+to keep the clocks in sync.  If you need this hook, you can set the 
+NEED_CLOCK_SYNC environment variable in a custom /etc/pm/config.d/defaults 
+file. 
+
+==============================================================================
+

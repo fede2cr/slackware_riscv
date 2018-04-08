@@ -1,0 +1,11 @@
+vorbis-tools: vorbis-tools (Ogg Vorbis Tools)
+vorbis-tools:
+vorbis-tools: The vorbis-tools package contains several basic tools for working with
+vorbis-tools: compressed audio files in the Ogg Vorbis (.ogg) format:
+vorbis-tools:
+vorbis-tools:   oggenc (an .ogg encoder), ogg123 (a playback tool), vorbiscomment
+vorbis-tools:   (add comments to vorbis files), ogginfo (show information about an
+vorbis-tools:   ogg file), oggdec (a command line decoder), and vcut (a tool for
+vorbis-tools:   splitting vorbis files).
+vorbis-tools:
+vorbis-tools: These tools require the libao, libogg, and libvorbis libraries.

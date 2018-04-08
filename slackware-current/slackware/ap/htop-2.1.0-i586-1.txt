@@ -1,0 +1,11 @@
+htop: htop (ncurses-based interactive process viewer)
+htop:
+htop: htop is a free (GPL) ncurses-based process viewer that is similar to
+htop: the well-known "top" program, but allows to scroll the list vertically
+htop: and horizontally to see all processes and their full command lines.
+htop: Tasks related to processes (killing, renicing) can be done without
+htop: entering their PIDs.
+htop:
+htop: htop is developed by Hisham Muhammad.
+htop: Homepage:  http://hisham.hm/htop/
+htop:

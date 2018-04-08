@@ -1,0 +1,11 @@
+jove: jove (Jonathan's Own Version of Emacs)
+jove:
+jove: A mostly Emacs compatible text editor, with man pages and the 
+jove: 'teachjove' tutorial program.  If you'd rather have the real thing, 
+jove: the actual Emacs editor/environment is available in series 'E'.
+jove:
+jove: JOVE was written by Jonathan Payne.
+jove:
+jove:
+jove:
+jove:

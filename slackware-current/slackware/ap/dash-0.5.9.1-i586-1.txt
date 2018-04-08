@@ -1,0 +1,11 @@
+dash: dash (fast and small POSIX-compliant /bin/sh)
+dash:
+dash: DASH is a POSIX-compliant implementation of /bin/sh that aims to be
+dash: as small as possible. It does this without sacrificing speed. In fact,
+dash: it is significantly faster than bash (the GNU Bourne-Again SHell) for
+dash: most tasks. DASH is a direct descendant of the NetBSD version of ash
+dash: (Kenneth Almquist's Almquist shell), ported to Linux by Herbert Xu.
+dash:
+dash: Homepage: http://gondor.apana.org.au/~herbert/dash
+dash: Repository: http://git.kernel.org/?p=utils/dash/dash.git;a=summary
+dash:

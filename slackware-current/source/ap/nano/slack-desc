@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+nano: nano (Nano's ANOther editor, an enhanced free Pico clone)
+nano:
+nano: nano is a small, free, and friendly editor. It aims to copy Pico's
+nano: look and feel while providing additional (or disabled by default)
+nano: features that are missing from Pico, such as "search and replace" or
+nano: "go to line and column number".
+nano:
+nano: Chris Allegretta is Nano's author.
+nano:
+nano: Homepage: http://www.nano-editor.org
+nano:

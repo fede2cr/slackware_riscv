@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+cgmanager: cgmanager (Control Group manager daemons)
+cgmanager:
+cgmanager: CGManager manages all your cgroups for you through a simple DBus API.
+cgmanager: It's designed to work with nested LXC containers as well as accepting
+cgmanager: unprivileged requests including resolving user namespaces UIDs/GIDs.
+cgmanager:
+cgmanager: The package contains two daemons: cgmanager (which runs on the host),
+cgmanager: and cgproxy (which runs in containers).
+cgmanager:
+cgmanager: Homepage: https://linuxcontainers.org/cgmanager/
+cgmanager:

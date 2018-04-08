@@ -1,0 +1,11 @@
+dmapi: dmapi (Data Management API library)
+dmapi:
+dmapi: A library required to use the Data Management API (DMAPI).
+dmapi: This interface is defined in the X/Open document 'Systems Management:
+dmapi: Data Storage Management (XDSM) API' dated February 1997.
+dmapi:
+dmapi: The DMAPI library is used by the xfsdump utility.
+dmapi:
+dmapi:
+dmapi:
+dmapi:

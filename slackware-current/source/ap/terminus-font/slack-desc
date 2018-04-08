@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler------------------------------------------------------|
+terminus-font: terminus-font (a clean fixed width font)
+terminus-font:
+terminus-font: Terminus Font is designed for long (8 and more hours per day)
+terminus-font: work with computers. It is a good choice if you run a Unicode-enabled
+terminus-font: console but the package also contains a non-scalable Unicode-enabled
+terminus-font: font for use in X terminal applications.
+terminus-font:
+terminus-font:
+terminus-font:
+terminus-font: terminus-font home: http://terminus-font.sourceforge.net
+terminus-font:

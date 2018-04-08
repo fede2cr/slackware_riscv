@@ -1,0 +1,11 @@
+bpe: bpe (Binary Patch Editor)
+bpe:
+bpe: bpe is a simple, screen-oriented editor for searching and editing
+bpe: ordinary files in either ASCII or hexadecimal modes.
+bpe:
+bpe: bpe was written by Andreas Pleschutznig.  Bill Davidsen contributed
+bpe: additional features, as did Ralphe Neill (the current maintainer).
+bpe:
+bpe:
+bpe:
+bpe:

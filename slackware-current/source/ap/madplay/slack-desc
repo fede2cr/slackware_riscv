@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+madplay: madplay (MPEG audio decoder and player)
+madplay:
+madplay: madplay is a command-line MPEG audio decoder and player based on the
+madplay: MAD library (libmad). For details about MAD, see the libmad package
+madplay: distributed separately.
+madplay:
+madplay: madplay was written by Robert Leslie.
+madplay:
+madplay:
+madplay:
+madplay:

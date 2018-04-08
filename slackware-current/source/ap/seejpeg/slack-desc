@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+seejpeg: seejpeg (console JPEG viewer)
+seejpeg:
+seejpeg: Seejpeg is an image viewer which uses SVGAlib. In spite of the name,
+seejpeg: it understands the JPEG, GIF, PPM, BMP and TARGA formats. One nice
+seejpeg: feature of seejpeg is that it automatically decides on the best video
+seejpeg: mode to use based on the image being displayed and the video card
+seejpeg: being used. 
+seejpeg:
+seejpeg: Evan Harris is the author of seejpeg.
+seejpeg:
+seejpeg:
