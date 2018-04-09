@@ -1,0 +1,11 @@
+gettext: gettext (internationalization framework)
+gettext:
+gettext: The GNU gettext package contains "gettext" and "ngettext", programs
+gettext: that are used to internationalize the messages given by shell scripts.
+gettext:
+gettext:
+gettext:
+gettext:
+gettext:
+gettext:
+gettext:

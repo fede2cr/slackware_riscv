@@ -1,0 +1,11 @@
+gawk: gawk (pattern scanning and processing language)
+gawk:
+gawk: Gawk is the GNU Project's implementation of the AWK programming
+gawk: language.  It conforms to the definition of the language in the POSIX
+gawk: 1003.2 Command Language And Utilities Standard.  This version in turn
+gawk: is based on the description in The AWK Programming Language, by Aho,
+gawk: Kernighan, and Weinberger, with the additional features found in the
+gawk: System V Release 4 version of UNIX awk.  Gawk also provides more
+gawk: recent Bell Labs awk extensions, and some GNU-specific extensions.
+gawk:
+gawk:
