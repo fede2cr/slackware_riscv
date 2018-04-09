@@ -1,0 +1,402 @@
+
+This is the Slackware COPYRIGHT file.  This file provides documentation
+about many of the licenses used by components included in Slackware, as
+well as some acknowledgements (some required, some freely given).
+
+This is not meant to be a list of all copyrights and contributors.
+For complete information about all copyrights and licenses, refer to
+the package documentation installed under /usr/doc/ and to the
+included source code.
+
+----------------
+
+The Linux(R) kernel is licensed under the GPL version 2, which can
+be found in the file COPYING.  Linus offers his interpretation of how
+the GPL applies to the kernel at the top of the COPYING file found in
+the kernel sources.  Here's the quote:
+
+  "NOTE! This copyright does *not* cover user programs that use kernel
+ services by normal system calls - this is merely considered normal use
+ of the kernel, and does *not* fall under the heading of "derived work".
+ Also note that the GPL below is copyrighted by the Free Software
+ Foundation, but the instance of code that it refers to (the Linux
+ kernel) is copyrighted by me and others who actually wrote it.
+
+ Also note that the only valid version of the GPL as far as the kernel
+ is concerned is _this_ particular version of the license (ie v2, not
+ v2.2 or v3.x or whatever), unless explicitly otherwise stated.
+
+                        Linus Torvalds"
+
+Linux is a Registered Trademark of Linus Torvalds.
+
+(see COPYING in /usr/src/linux)
+
+----------------
+
+Many other software packages included in Slackware are licensed under the GNU
+General Public License v2, which is included in the file COPYING.
+
+----------------
+
+Some software packages included in Slackware are licensed under the GNU
+General Public License v3, which is included in the file COPYING3.
+
+----------------
+
+This product includes software developed by The XFree86 Project, Inc
+(http://www.xfree86.org/) and its contributors.
+
+----------------
+
+ This product includes software developed by the University of
+ California, Berkeley and its contributors:
+
+ Copyright (c) 1980,1983,1985,1986,1988,1990,1991 The Regents of the University
+ of California.  All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. All advertising materials mentioning features or use of this software
+    must display the following acknowledgment:
+    This product includes software developed by the University of
+    California, Berkeley and its contributors.
+ 4. Neither the name of the University nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+----------------
+
+Copyright (c) 2000,2001,2002,2003 The Regents of the Unviersity of Michigan
+(kernel code, no stated license, presumed GPLv2)
+
+----------------
+
+  Copyright (c) 1999-2003 Ralf S. Engelschall <rse@engelschall.com>
+  Copyright (c) 1999-2003 The OSSP Project <http://www.ossp.org/>
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the
+     distribution.
+
+  3. All advertising materials mentioning features or use of this
+     software must display the following acknowledgment:
+     "This product includes software developed by
+      Ralf S. Engelschall <rse@engelschall.com>."
+
+  4. Redistributions of any form whatsoever must retain the following
+     acknowledgment:
+     "This product includes software developed by
+      Ralf S. Engelschall <rse@engelschall.com>."
+
+  THIS SOFTWARE IS PROVIDED BY RALF S. ENGELSCHALL ``AS IS'' AND ANY
+  EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL RALF S. ENGELSCHALL OR
+  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+  OF THE POSSIBILITY OF SUCH DAMAGE.
+
+----------------
+
+/* ====================================================================
+ * Copyright (c) 1998-2007 The OpenSSL Project.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * 3. All advertising materials mentioning features or use of this
+ *    software must display the following acknowledgment:
+ *    "This product includes software developed by the OpenSSL Project
+ *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
+ *
+ * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+ *    endorse or promote products derived from this software without
+ *    prior written permission. For written permission, please contact
+ *    openssl-core@openssl.org.
+ *
+ * 5. Products derived from this software may not be called "OpenSSL"
+ *    nor may "OpenSSL" appear in their names without prior written
+ *    permission of the OpenSSL Project.
+ *
+ * 6. Redistributions of any form whatsoever must retain the following
+ *    acknowledgment:
+ *    "This product includes software developed by the OpenSSL Project
+ *    for use in the OpenSSL Toolkit (http://www.openssl.org/)"
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE OpenSSL PROJECT ``AS IS'' AND ANY
+ * EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE OpenSSL PROJECT OR
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ * ====================================================================
+ *
+ * This product includes cryptographic software written by Eric Young
+ * (eay@cryptsoft.com).  This product includes software written by Tim
+ * Hudson (tjh@cryptsoft.com).
+ *
+ */
+
+
+ Original SSLeay License
+ -----------------------
+
+/* Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
+ * All rights reserved.
+ *
+ * This package is an SSL implementation written
+ * by Eric Young (eay@cryptsoft.com).
+ * The implementation was written so as to conform with Netscapes SSL.
+ *
+ * This library is free for commercial and non-commercial use as long as
+ * the following conditions are aheared to.  The following conditions
+ * apply to all code found in this distribution, be it the RC4, RSA,
+ * lhash, DES, etc., code; not just the SSL code.  The SSL documentation
+ * included with this distribution is covered by the same copyright terms
+ * except that the holder is Tim Hudson (tjh@cryptsoft.com).
+ *
+ * Copyright remains Eric Young's, and as such any Copyright notices in
+ * the code are not to be removed.
+ * If this package is used in a product, Eric Young should be given attribution
+ * as the author of the parts of the library used.
+ * This can be in the form of a textual message at program startup or
+ * in documentation (online or textual) provided with the package.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    "This product includes cryptographic software written by
+ *     Eric Young (eay@cryptsoft.com)"
+ *    The word 'cryptographic' can be left out if the rouines from the library
+ *    being used are not cryptographic related :-).
+ * 4. If you include any Windows specific code (or a derivative thereof) from
+ *    the apps directory (application code) you must include an acknowledgement:
+ *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *
+ * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ * The licence and distribution terms for any publically available version or
+ * derivative of this code cannot be changed.  i.e. this code cannot simply be
+ * copied and put under another distribution licence
+ * [including the GNU Public Licence.]
+ */
+
+----------------
+
+The Slackware distribution contains Info-ZIP's compression utilities. 
+Info-ZIP's software (Zip, UnZip and related utilities) is free and can be 
+obtained as source code or executables from various sites,
+including http://www.info-zip.org.  This software is provided free -
+there are no extra or hidden charges resulting from the use of this 
+compression code.  Thanks Info-ZIP! :^)
+
+Zip/Unzip source can also be found in the source/a/infozip directory.
+
+----------------
+
+The Slackware Installation scripts are:
+
+ Copyright 1993, 1994, 1995, 1996, 1997, 1998, 1999  Patrick Volkerding, Moorhead, Minnesota, USA.
+ Copyright 2001, 2002, 2003, 2004, 2005  Slackware Linux, Inc.  Concord, CA, USA.
+ Copyright 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016  Patrick J. Volkerding, Sebeka, MN, USA.
+ All rights reserved.
+
+ Redistribution and use of this software, with or without modification, is
+ permitted provided that the following conditions are met:
+
+ 1. Redistributions of this software must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+----------------
+
+Slackware is a registered trademark of Patrick Volkerding and Slackware Linux, Inc.
+Permission to use the Slackware trademark to refer to the Slackware distribution
+of Linux is hereby granted if the following conditions are met:
+
+1.  In order to be called "Slackware", the distribution may not be altered
+    from the way it appears on the central FTP site (ftp.slackware.com).  This
+    is to protect the integrity, reliability, and reputation of the Slackware
+    distribution.  (Note that moving entire directories like "source" or
+    "contrib" to a second CD-ROM is allowable, but leaving them out and 
+    distributing a single source-free disc is *not*, as indicated below)
+    Anyone wishing to distribute an altered version must have the changes
+    approved by volkerdi@slackware.com (i.e. certified to be reasonably
+    bug-free).  If the changed distribution meets the required standards for
+    quality, then written permission to use the Slackware trademark may be
+    provided.
+
+2.  All related source code must be included.  (This is also required by the
+    GNU General Public License, and other licenses)
+
+3.  Except by written permission from Slackware Linux, Inc., the Slackware
+    trademark may not be used as (or as part of) a product name, company
+    name, or registered domain name.
+
+4.  Any approved use of "Slackware" must be followed by a circle-R, and must
+    acknowledge our ownership of the mark.
+
+Note that you can still redistribute a distribution that doesn't meet these
+criteria, you just can't call it "Slackware".  Personally, I hate restricting
+things in any way, but these restrictions are not designed to make life
+difficult for anyone.  I just want to make sure that bugs are not added to
+commercial redistributions of Slackware.  They have been in the past, and
+the resulting requests for help have flooded my mailbox!  I'm just trying to
+make sure that I have some recourse when something like that happens.
+
+Any questions about this policy should be directed to:
+    Patrick Volkerding <volkerdi@slackware.com>
+
+----------------
+
+This product includes software that is based in part of the work of the
+FreeType Team ( http://www.freetype.org ).
+
+----------------
+
+This product includes software developed by Christopher G. Demetriou.
+
+----------------
+
+This product includes software developed by the NetBSD Foundation,
+Inc. and its contributors.
+
+----------------
+
+This product includes software developed by
+X-Oz Tehnologies ( http://www.x-oz.com/ ).
+
+----------------
+
+$File: LEGAL.NOTICE,v 1.15 2006/05/03 18:48:33 christos Exp $
+Copyright (c) Ian F. Darwin 1986, 1987, 1989, 1990, 1991, 1992, 1994, 1995.
+Software written by Ian F. Darwin and others;
+maintained 1994- Christos Zoulas.
+
+This software is not subject to any export provision of the United States
+Department of Commerce, and may be exported to any country or planet.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+   notice immediately at the beginning of the file, without modification,
+   this list of conditions, and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+----------------
+
+Although every effort has been made to provide a complete source tree for this
+project, it's possible that something may have been forgotten.  If you discover
+anything is missing, we will provide copies - just ask!
+
+NOTE: We are required to provide any missing source to GPLv2'ed software for
+3 years, per this section of the GNU General Public License:
+
+    b) Accompany it with a written offer, valid for at least three
+    years, to give any third party, for a charge no more than your
+    cost of physically performing source distribution, a complete
+    machine-readable copy of the corresponding source code, to be
+    distributed under the terms of Sections 1 and 2 above on a medium
+    customarily used for software interchange; or,
+
+We are also required to do the above, or provide access to copy the source that
+corresponds to your binaries from a network server in the case of materials
+which are licensed under the GPLv3 (see COPYING3 for the complete license).
+
+If you find something is missing online (even if you don't need a copy),
+please point it out to volkerdi@slackware.com so it can be fixed.
+
+If some source code falling under this or a similar license is missing from
+a commercial Slackware release obtained from or manufactured by us, and you
+want a copy, just ask volkerdi@slackware.com and we will be happy to arrange
+for you to get a copy in compliance with the terms of the specific license.
+

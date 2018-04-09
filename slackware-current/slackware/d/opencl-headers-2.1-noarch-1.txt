@@ -1,0 +1,11 @@
+opencl-headers: opencl-headers (OpenCL header files)
+opencl-headers:
+opencl-headers: OpenCL (Open Computing Language) header files.
+opencl-headers:
+opencl-headers: Homepage: https://www.khronos.org/registry/cl/
+opencl-headers:
+opencl-headers:
+opencl-headers:
+opencl-headers:
+opencl-headers:
+opencl-headers:

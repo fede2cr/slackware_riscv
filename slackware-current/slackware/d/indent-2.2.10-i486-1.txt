@@ -1,0 +1,11 @@
+indent: indent (changes the appearance of a C program)
+indent:
+indent: GNU indent changes the appearance of a C program by inserting or
+indent: deleting whitespace according to a plethora of options.  Some canned
+indent: styles of formatting (like the GNU style, Kernighan & Ritchie style,
+indent: and original Berkeley style) are supported as well.
+indent:
+indent: GNU indent is a descendant of BSD indent.
+indent:
+indent:
+indent:

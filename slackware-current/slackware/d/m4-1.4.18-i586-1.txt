@@ -1,0 +1,11 @@
+m4: m4 (an implementation of the UNIX macro processor)
+m4:
+m4: This is GNU m4, a program which copies its input to the output,
+m4: expanding macros as it goes.  m4 has built-in functions for including
+m4: named files, running commands, doing integer arithmetic, manipulating
+m4: text in various ways, recursion, etc...  Macros can also be user-
+m4: defined, and can take any number of arguments.
+m4:
+m4: GNU 'm4' was originally written by Rene Seindal, from Denmark.
+m4:
+m4:

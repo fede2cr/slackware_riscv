@@ -1,0 +1,11 @@
+python: python (object-oriented interpreted programming language)
+python:
+python: Python is an interpreted, interactive, object-oriented programming
+python: language that combines remarkable power with very clear syntax.  
+python: Python's basic power can be extended with your own modules written in
+python: C or C++.  Python is also adaptable as an extension language for
+python: existing applications. 
+python:
+python:
+python:
+python:

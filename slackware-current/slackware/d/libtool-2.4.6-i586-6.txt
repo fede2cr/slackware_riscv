@@ -1,0 +1,11 @@
+libtool: libtool (a generic library support script)
+libtool:
+libtool: This is GNU Libtool, a generic library support script. Libtool hides
+libtool: the complexity of using shared libraries behind a consistent, portable
+libtool: interface.  To use libtool, add the new generic library building
+libtool: commands to your Makefile, Makefile.in, or Makefile.am.  See the
+libtool: documentation for details.
+libtool:
+libtool: You must install the "m4" package to be able to use libtool.
+libtool:
+libtool:

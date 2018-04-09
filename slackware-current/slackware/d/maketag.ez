@@ -1,0 +1,95 @@
+#!/bin/sh
+#item   ####description                                      ###on off ###
+TMP=/var/log/setup/tmp
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP
+fi
+cat /dev/null > $TMP/SeTnewtag
+dialog --title "SELECTING PACKAGES FROM SERIES D (PROGRAM DEVELOPMENT)" \
+       --checklist "Please confirm the packages you wish to install \
+from series D. Use the UP/DOWN keys to scroll through the list, and \
+the SPACE key to deselect any items you don't want to install. \
+Press ENTER when you are \
+done." 22 72 12 \
+"Cython" "C bindings for Python" "on" \
+"autoconf" "GNU source autoconfig system" "on" \
+"automake" "GNU makefile generator" "on" \
+"binutils" "GNU C compiler utilities" "on" \
+"bison" "GNU bison parser generator" "on" \
+"ccache" "Fast Compiler Cache" "on" \
+"clisp" "CLISP Common Lisp" "on" \
+"cmake" "Cross platform make utility" "on" \
+"cscope" "Source code browser" "on" \
+"cvs" "Concurrent Versions System" "on" \
+"dev86" "8086 assembler/loader" "on" \
+"distcc" "gcc frontend to use networked machines" "on" \
+"doxygen" "Source code documentation generator" "on" \
+"flex" "Fast lexical analyzer generator" "on" \
+"gcc" "GNU C compiler" "on" \
+"gcc-brig" "GNU BRIG (HSA IL) front-end for gcc" "on" \
+"gcc-g++" "GNU C++ compiler for gcc" "on" \
+"gcc-gfortran" "GNU Fortran 95/2003/2008 compiler for gcc" "on" \
+"gcc-gnat" "GNU Ada83/95/2005/2012 compiler for gcc" "on" \
+"gcc-go" "GNU Go compiler for gcc" "on" \
+"gcc-objc" "GNU Objective-C compiler for gcc" "on" \
+"gdb" "The GNU debugger" "on" \
+"gettext-tools" "GNU internationalization devel package" "on" \
+"git" "A directory content manager" "on" \
+"gnucobol" "open source COBOL compiler" "on" \
+"gperf" "Generates hash functions" "on" \
+"guile" "GNU extension language library" "on" \
+"help2man" "Automatic man page generator" "on" \
+"indent" "Change the indenting style of a C program" "on" \
+"intltool" "Internationalization utilities" "on" \
+"kernel-headers" "Linux kernel include files" "on" \
+"libtool" "GNU libtool library support script" "on" \
+"llvm" "LLVM compiler toolkit" "on" \
+"m4" "GNU m4 macro processor" "on" \
+"make" "GNU make" "on" \
+"mercurial" "Distributed source management system" "on" \
+"meson" "A high performance build system" "on" \
+"nasm" "NASM assembler" "on" \
+"ninja" "build system with a focus on speed" "on" \
+"opencl-headers" "OpenCL (Open Computing Language) header files" "on" \
+"oprofile" "System profiling tool" "on" \
+"p2c" "A Pascal to C translator" "on" \
+"patchelf" "tool to modify ELF binaries/libraries" "on" \
+"perl" "Larry Wall's systems language" "on" \
+"pkg-config" "A tool for managing library information" "on" \
+"pmake" "Parallel make from BSD" "on" \
+"python" "An interpreted object-oriented language" "on" \
+"python-pip" "tool for installing Python packages" "on" \
+"python-setuptools" "Enhancements to Python distutils" "on" \
+"python3" "An interpreted object-oriented language, v3" "on" \
+"rcs" "GNU revision control system" "on" \
+"re2c" "regular expressions to C/C++ conversion tool" "on" \
+"ruby" "Interpreted object-oriented script language" "on" \
+"rust" "a safe, concurrent, practical language" "on" \
+"scons" "A software construction tool" "on" \
+"slacktrack" "Tracks a source installation to make a package" "on" \
+"strace" "Traces program execution" "on" \
+"subversion" "Subversion version control system" "on" \
+"swig" "Simplified Wrapper and Interface Generator" "on" \
+"yasm" "The Yasm Modular Assembler" "on" \
+2> $TMP/SeTpkgs
+if [ $? = 1 -o $? = 255 ]; then
+ rm -f $TMP/SeTpkgs
+ > $TMP/SeTnewtag
+ for pkg in \
+Cython autoconf automake binutils bison ccache clisp cmake cscope cvs dev86 distcc doxygen flex gcc gcc-brig gcc-g++ gcc-gfortran gcc-gnat gcc-go gcc-objc gdb gettext-tools git gnucobol gperf guile help2man indent intltool kernel-headers libtool llvm m4 make mercurial meson nasm ninja opencl-headers oprofile p2c patchelf perl pkg-config pmake python python-pip python-setuptools python3 rcs re2c ruby rust scons slacktrack strace subversion swig yasm \
+  ; do
+  echo "$pkg: SKP" >> $TMP/SeTnewtag
+ done
+ exit
+fi
+cat /dev/null > $TMP/SeTnewtag
+for PACKAGE in \
+Cython autoconf automake binutils bison ccache clisp cmake cscope cvs dev86 distcc doxygen flex gcc gcc-brig gcc-g++ gcc-gfortran gcc-gnat gcc-go gcc-objc gdb gettext-tools git gnucobol gperf guile help2man indent intltool kernel-headers libtool llvm m4 make mercurial meson nasm ninja opencl-headers oprofile p2c patchelf perl pkg-config pmake python python-pip python-setuptools python3 rcs re2c ruby rust scons slacktrack strace subversion swig yasm \
+ ; do
+ if grep "\(^\| \)$PACKAGE\( \|$\)" $TMP/SeTpkgs 1> /dev/null 2> /dev/null ; then
+  echo "$PACKAGE: ADD" >> $TMP/SeTnewtag
+ else
+  echo "$PACKAGE: SKP" >> $TMP/SeTnewtag
+ fi
+done
+rm -f $TMP/SeTpkgs

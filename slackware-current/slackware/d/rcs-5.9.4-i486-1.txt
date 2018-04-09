@@ -1,0 +1,11 @@
+rcs: rcs (Revision Control System)
+rcs:
+rcs: RCS, the Revision Control System, manages multiple revisions of files.
+rcs:
+rcs: RCS can store, retrieve, log, identify, and merge revisions.  It is
+rcs: useful for files that are revised frequently, e.g. programs,
+rcs: documentation, graphics, and papers.
+rcs:
+rcs:
+rcs:
+rcs:

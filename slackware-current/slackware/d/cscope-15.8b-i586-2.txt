@@ -1,0 +1,11 @@
+cscope: cscope (source code browsing tool)
+cscope:
+cscope: Cscope is a text screen based source browsing tool.  Although it is
+cscope: primarily designed to search C code (including lex and yacc files),
+cscope: it can also be used for C++ code.
+cscope:
+cscope: For more information, see http://cscope.sourceforge.net.
+cscope:
+cscope:
+cscope:
+cscope:

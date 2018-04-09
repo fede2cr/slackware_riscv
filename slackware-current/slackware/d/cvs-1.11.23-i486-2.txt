@@ -1,0 +1,11 @@
+cvs: cvs (Concurrent Versions System)
+cvs:
+cvs: CVS is a version control system, which allows you to keep old versions
+cvs: of files (usually source code), keep a log of who, when, and why
+cvs: changes occurred, etc., like RCS or SCCS.  It handles multiple
+cvs: developers, multiple directories, triggers to enable/log/control
+cvs: various operations, and can work over a wide area network.
+cvs:
+cvs: Some of the people who have worked on CVS include:  Dick Grune,
+cvs: Brian Berliner, Jeff Polk, and others too numerous to mention.
+cvs:

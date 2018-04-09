@@ -1,0 +1,11 @@
+intltool: intltool (Utilities for translation support)
+intltool:
+intltool: This package contains scripts and autoconf files for
+intltool: internationalizing data.
+intltool:
+intltool: Homepage:  https://edge.launchpad.net/intltool
+intltool:
+intltool:
+intltool:
+intltool:
+intltool:

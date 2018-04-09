@@ -1,0 +1,11 @@
+sysklogd: sysklogd (Linux system logging utilities)
+sysklogd:
+sysklogd: Dr. Greg Wettstein and Stephen Tweedie's syslogd/klogd.
+sysklogd:
+sysklogd: This package contains a modified version of syslogd for the Linux
+sysklogd: environment.  An additional utility, klogd, is included which allows
+sysklogd: kernel logging to be directed through the syslogd facility.
+sysklogd: Syslogd and klogd are started when your system boots.
+sysklogd:
+sysklogd:
+sysklogd:

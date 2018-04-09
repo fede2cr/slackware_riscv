@@ -1,0 +1,11 @@
+gcc-brig: gcc-brig (BRIG support for GCC)
+gcc-brig:
+gcc-brig: BRIG support for the GNU Compiler Collection.
+gcc-brig:
+gcc-brig: BRIG is the binary form of the Heterogeneous System Architecture
+gcc-brig: Intermediate Language (HSA IL), which is a virtual instruction set for
+gcc-brig: parallel programs. While similar in some ways to OpenCL or CUDA, HSA
+gcc-brig: is designed to ease the burden on the programmer by automatically
+gcc-brig: handling the offloading of tasks and moving of data.
+gcc-brig:
+gcc-brig:

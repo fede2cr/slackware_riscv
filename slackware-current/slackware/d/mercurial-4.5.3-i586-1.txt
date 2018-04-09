@@ -1,0 +1,11 @@
+mercurial: mercurial (a distributed source management system)
+mercurial:
+mercurial: Mercurial is a cross-platform, distributed source management tool for
+mercurial: software developers. It is written in Python, with a binary diff
+mercurial: implementation written in C. Its major features include high-
+mercurial: performance; serverless, fully distributed collaborative development;
+mercurial: robust handling of both plain text and binary files; advanced
+mercurial: branching and merging capabilities; and full source code available
+mercurial: under the terms of the LGPL.
+mercurial:
+mercurial: Mercurial was written by Matt Mackall and other contributors.

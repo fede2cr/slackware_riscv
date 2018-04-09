@@ -1,0 +1,11 @@
+clisp: clisp (a Common Lisp implementation)
+clisp:
+clisp: Common Lisp is a high-level, general-purpose programming language.
+clisp: GNU CLISP is a Common Lisp implementation by Bruno Haible of Karlsruhe
+clisp: University and Michael Stoll of Munich University, both in Germany.
+clisp: It mostly supports the Lisp described in the ANSI Common Lisp standard.
+clisp: The user interface comes in German, English, French, Spanish, Dutch
+clisp: and Russian.  GNU CLISP includes an interpreter, a compiler, a
+clisp: debugger, a large subset of CLOS, a foreign language interface and a
+clisp: socket interface.  An X11 interface is available through CLX and
+clisp: Garnet.

@@ -1,0 +1,11 @@
+gcc-gnat: gcc-gnat (Ada support for GCC)
+gcc-gnat:
+gcc-gnat: Ada support for the GNU Compiler Collection.
+gcc-gnat:
+gcc-gnat: This package contains those parts of the compiler collection needed to
+gcc-gnat: compile Ada code.  GNAT implements Ada 95, Ada 2005 and Ada 2012, and
+gcc-gnat: it may also be invoked in Ada 83 compatibility mode.  By default, GNAT
+gcc-gnat: assumes Ada 2012.  The base gcc package is also required.
+gcc-gnat:
+gcc-gnat:
+gcc-gnat:

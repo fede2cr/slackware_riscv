@@ -1,0 +1,11 @@
+scons: scons (A software construction tool)
+scons:
+scons: This is SCons, a tool for building software (and other files). SCons
+scons: is implemented in Python, and its "configuration files" are actually
+scons: Python scripts, allowing you to use the full power of a real
+scons: scripting language to solve build problems. You do not, however, need
+scons: to know Python to use SCons effectively.
+scons:
+scons: Homepage: http://www.scons.org/
+scons:
+scons:

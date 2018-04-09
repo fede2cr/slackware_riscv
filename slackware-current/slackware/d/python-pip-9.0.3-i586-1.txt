@@ -1,0 +1,11 @@
+python-pip: python-pip (tool for installing Python packages)
+python-pip:
+python-pip: The PyPA recommended tool for installing Python packages.
+python-pip:
+python-pip: Homepage: https://pip.pypa.io/
+python-pip:
+python-pip:
+python-pip:
+python-pip:
+python-pip:
+python-pip:

@@ -24,7 +24,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=patch
 VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -71,6 +71,13 @@ find . \
   -exec chmod 755 {} \; -o \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \;
+
+# Patch CVE-2018-1000156, arbitrary shell command execution by (obsolete)
+# ed patch format:
+zcat $CWD/0001-Refuse-to-apply-ed-scripts-by-default.patch.gz | patch -p1 --verbose || exit 1
+
+# This avoids failure in tests/ expecting an old automake:
+autoreconf -vif
 
 CFLAGS="$SLKCFLAGS" \
 ./configure \

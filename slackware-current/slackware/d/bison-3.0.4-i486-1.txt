@@ -1,0 +1,11 @@
+bison: bison (parser generator similar to yacc)
+bison:
+bison: GNU "Bison" is a general-purpose parser generator that converts a
+bison: grammar description for an LALR(1) context-free grammar into a C
+bison: program to parse that grammar.
+bison:
+bison: Bison is upward compatible with Yacc:  all properly-written Yacc
+bison: grammars ought to work with Bison with no change.  Anyone familiar
+bison: with Yacc should be able to use Bison with little trouble.
+bison:
+bison:

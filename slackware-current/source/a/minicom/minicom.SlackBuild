@@ -58,6 +58,11 @@ elif [ "$ARCH" = "x86_64" ]; then
 else
   SLKCFLAGS="-O2"
 fi
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    riscv64) TARGET=$ARCH-unknown-elf ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
 
 rm -rf $PKG
 mkdir -p $TMP $PKG
@@ -81,7 +86,7 @@ CFLAGS="$SLKCFLAGS" \
   --prefix=/usr \
   --sysconfdir=/etc \
   --mandir=/usr/man \
-  --build=$ARCH-slackware-linux || exit 1
+  --build=$TARGET || exit 1
 
 make $NUMJOBS || make || exit 1
 make install DESTDIR=$PKG || exit 1
@@ -124,7 +129,7 @@ for i in debian/patches/* ; do patch -p1 < $i || exit 1 ; done
 ./configure \
   --prefix=/usr \
   --mandir=/usr/man \
-  --build=$ARCH-slackware-linux
+  --build=$TARGET
 
 touch stamp-h.in # to stop autoheader from running
 touch -d yesterday aclocal.m4 # to stop automake from running

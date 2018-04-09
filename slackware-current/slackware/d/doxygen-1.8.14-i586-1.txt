@@ -1,0 +1,11 @@
+doxygen: doxygen (documentation generator)
+doxygen:
+doxygen: Doxygen is a documentation system for C++, C, Java, IDL, and to some
+doxygen: extent PHP and C#.  Doxygen generates project documentation using
+doxygen: special documentation blocks in the source code, easing the process of
+doxygen: keeping docs and code in sync.  Doxygen produces documentation in
+doxygen: several output formats, including HTML, LaTeX, man pages, RTF, XML,
+doxygen: compressed HTML, PostScript, and PDF.
+doxygen:
+doxygen:
+doxygen:

@@ -1,3 +1,19 @@
+Mon Apr  9 20:20:08 UTC 2018
+a/lzip-1.20-riscv64-1.txz: Ported.
+a/lzlib-1.10-riscv64-1.txz: Ported.
+a/mcelog-153-riscv64-1.txz: Ported.
+a/mdadm-4.0-riscv64-1.txz: Ported.
+a/minicom-2.7.1-riscv64-1.txz: Ported.
+a/mt-st-1.3-riscv64-1.txz: Ported.
+a/ncompress-4.2.4.4-riscv64-1.txz: Ported.
+a/mtx-1.3.12-riscv64-1.txz: Ported.
+a/mlocate-0.26-riscv64-1.txz: Ported.
+a/shadow-4.2.1-riscv64-1.txz: Ported.
+a/sysklogd-1.5.1-riscv64-2.txz: Ported.
+a/sed-4.5-riscv64-1.txz: Ported.
+a/mlocate-0.26-riscv64-1.txz: Ported.
+a/patch-2.7.6-riscv64-1.txz: Sync from -current, Ported.
++--------------------------+
 Sun  8 abr 18:27:36 UTC 2018
 a/acl-2.2.52-riscv64-1.txz: Ported.
 a/attr-2.4.47-riscv64-1.txz: Ported.
