@@ -1,3 +1,12 @@
+Wed Apr 11 02:19:23 UTC 2018
+d/Cython-0.28.1-riscv64-1.txz:Ported.
+d/flex-2.6.4-riscv64-1.txz: Ported.
+d/libtool-2.4.6-riscv64-1.txz: Ported.
+d/ccache-3.4.1-riscv64-1.txz: Ported.
+a/which-2.21-riscv64-1.txz: Ported.
+a/xz-5.2.3-riscv64-1.txz: Ported.
+a/tar-1.30-riscv64-1.txz: Ported.
++--------------------------+
 Mon Apr  9 20:20:08 UTC 2018
 a/lzip-1.20-riscv64-1.txz: Ported.
 a/lzlib-1.10-riscv64-1.txz: Ported.
@@ -50,7 +59,7 @@ full Linux capable processors will be ready in the following months.
 
 Please enjoy.
 
-a/ Remove the i[456]86 packages and keep the noarch ones.
+a/ Remove the i[3456]86 packages and keep the noarch ones.
 a/aaa_base-14.2-riscv64-1.txz: Ported.
 a/aaa_elflibs-14.2-riscv64-1.txz: Ported, with libs from the Fedora stage4.
 a/aaa_terminfo-6.1-riscv64-1.txz: Ported.

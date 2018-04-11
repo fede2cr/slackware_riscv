@@ -11,7 +11,7 @@ Once a working Slackware stage4 is completed:
 
 The graphical packages will be the last to get into the tree.
 
-Feel free to submit any issues of parches/pull requests.
+Feel free to submit any issues of parches/pull requests, excluding any binaries or complete packages (just changes in source/).
 
 -- 
 *Alvaro Figueroa*
