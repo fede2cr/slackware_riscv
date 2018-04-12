@@ -1,3 +1,0 @@
-#!/bin/sh
-#BLURB="Set up ELILO (EFI LILO) to boot Linux from your hard drive"
-sh usr/sbin/eliloconfig $*
