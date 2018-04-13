@@ -1,0 +1,11 @@
+meson: meson (A high performance build system)
+meson:
+meson: Meson is a cross-platform build system designed to be both as fast
+meson: and as user friendly as possible. It supports many languages and
+meson: compilers, including GCC and Clang. Its build definitions are written
+meson: in a simple non-turing complete domain specific language.
+meson:
+meson: Homepage: http://mesonbuild.com/
+meson:
+meson:
+meson:

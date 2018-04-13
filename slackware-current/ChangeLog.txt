@@ -1,3 +1,15 @@
+Fri Apr 13 18:24:24 UTC 2018
+d/binutils-2.30-riscv64-1.txz: Ported.
+d/gdb-8.1-riscv64-1.txz: Ported.
+d/git-2.17.0-riscv64-1.txz: Ported.
+d/meson-0.45.1-riscv64-1.txz: Ported.
+d/nasm-2.13.03-riscv64-1.txz: Ported.
+d/ninja-1.8.2-riscv64-1.txz: Ported.
+d/python-2.7.14-riscv64-1.txz: Ported.
+d/python3-3.6.5-riscv64-1.txz: Ported.
+d/swig-3.0.12-riscv64-1.txz: Ported.
+ap/dash-0.5.9.1-riscv64-1.txz: Ported.
++--------------------------+
 Thu Apr 12 05:05:01 UTC 2018
 d/distcc-3.3-riscv64-1.txz: Ported.
 d/intltool-0.51.0-riscv64-1.txz: Ported.

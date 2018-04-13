@@ -1,0 +1,11 @@
+gdb: gdb (the GNU symbolic debugger)
+gdb: GDB, the GNU Project debugger, allows you to see what is going on 
+gdb: inside another program while it executes -- or what another program
+gdb: was doing at the moment it crashed.  GDB can do four main kinds of
+gdb: things to help you catch bugs in the act:   1) Start your program,
+gdb: specifying anything that might affect its behavior.  2) Make your
+gdb: program stop on specified conditions.  3) Examine what has happened,
+gdb: when your program has stopped.  4) Change things in your program, so
+gdb: you can experiment with correcting the effects of one bug and go on
+gdb: to learn about another.  The program being debugged can be written in
+gdb: Ada, C, C++, Objective-C, Pascal and many other languages.
