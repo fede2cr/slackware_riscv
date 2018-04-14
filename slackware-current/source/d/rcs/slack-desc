@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+rcs: rcs (Revision Control System)
+rcs:
+rcs: RCS, the Revision Control System, manages multiple revisions of files.
+rcs:
+rcs: RCS can store, retrieve, log, identify, and merge revisions. It is
+rcs: useful for files that are revised frequently, e.g. programs,
+rcs: documentation, graphics, and papers.
+rcs:
+rcs:
+rcs:
+rcs:

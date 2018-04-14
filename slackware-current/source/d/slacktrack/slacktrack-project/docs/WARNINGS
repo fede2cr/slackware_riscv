@@ -1,0 +1,38 @@
+1.  Do not Use on production servers
+    ---------------------------------
+
+    Do NOT run slacktrack on production servers.  
+
+    It should only be run on a development box.
+   
+    This is because slacktrack version 2.0 and upwards install onto
+    the filesystem of the server, rather than into a pseudo root.
+
+2.  Slackware versions
+    ------------------
+
+    slacktrack has been tested on:
+    - Slackware 12.0, 12.1, 12.2, 13.0
+    - ARMedslack, all versions.
+
+    It may works on previous releases of Slackware, it may not.
+
+3.  slacktrack default working space
+    --------------------------------
+
+    By default, slacktrack puts its work space in 
+    /var/tmp/<randomnumber>slacktrack
+
+    It is essential that you have enough disk space on the
+    partition on which /var/tmp resides - particularly if you use
+    ${SLACKTRACKSCRATCHDIR}
+
+    If you do not have enough space in /var/tmp then you can
+    pass --tempdir to slacktrack to change the base temporary directory.
+
+    eg you may do
+    # slacktrack --tempdir /tmp/slacktrack -Qp "foobar-4.1-sparc-2.tgz" "/bin/sh foobar.build"
+
+
+Stuart Winter <mozes@slackware.com>
+

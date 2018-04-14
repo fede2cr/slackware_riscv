@@ -1,0 +1,11 @@
+network-scripts: network-scripts (Scripts to configure a network)
+network-scripts:
+network-scripts: These are the basic scripts and files used to define a network and
+network-scripts: configure network interfaces on Linux.  Most of the original
+network-scripts: /etc files were written by Fred N. van Kempen, or borrowed from BSD.
+network-scripts: The rc.inet1 and rc.inet2 scripts were mostly written by Patrick
+network-scripts: Volkerding, with suggestions and fixes from hundreds of contributors
+network-scripts: over the years.
+network-scripts:
+network-scripts:
+network-scripts:

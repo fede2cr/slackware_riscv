@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------------|
+pkg-config: pkg-config (system for managing library compile/link flags)
+pkg-config:
+pkg-config: pkg-config is a system for managing library compile/link flags
+pkg-config: that works with automake and autoconf. It replaces the ubiquitous
+pkg-config: *-config scripts you may have seen with a single tool. See the man
+pkg-config: page that comes with pkg-config for full documentation.
+pkg-config:
+pkg-config:
+pkg-config:
+pkg-config:
+pkg-config:

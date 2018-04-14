@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+    |-----handy-ruler------------------------------------------------------|
+re2c: re2c (regular expressions to C/C++ conversion tool)
+re2c:
+re2c: re2c is a tool for writing very fast and very flexible scanners.
+re2c: re2c focuses on generating high efficient code for regular expression
+re2c: matching. As a result this allows a much broader range of use than any
+re2c: traditional lexer offers. And last but not least, re2c generates
+re2c: warning free code that is equal to hand written code in terms of size,
+re2c: speed and quality.
+re2c:
+re2c: Homepage: http://re2c.org
+re2c:

@@ -1,0 +1,11 @@
+ca-certificates: ca-certificates (PEM Files of CA Certificates)
+ca-certificates:
+ca-certificates: This package includes PEM files of CA certificates to allow SSL-based
+ca-certificates: applications to check for the authenticity of SSL connections.
+ca-certificates:
+ca-certificates: Homepage: http://packages.qa.debian.org/c/ca-certificates.html
+ca-certificates:
+ca-certificates:
+ca-certificates:
+ca-certificates:
+ca-certificates:

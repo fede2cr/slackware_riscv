@@ -1,0 +1,383 @@
+#!/bin/sh
+
+# Copyright 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# originally by:  David Cantrell <david@slackware.com>
+# maintained by:  <volkerdi@slackware.com>
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=perl
+VERSION=5.26.1
+BUILD=${BUILD:-4}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+# Set to "yes" to run tests:
+MAKETEST=${MAKETEST:-no}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-perl
+
+# Additional required modules:
+DBDMYSQL=4.044
+DBI=1.640
+GETTEXT=1.07
+TERMREADKEY=2.37
+URI=1.73
+XMLPARSER=2.44
+XMLSIMPLE=2.24
+AUTHENSASL=2.16
+MIMEBASE64=3.15
+LIBNET=3.11
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mcpu=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+fi
+
+if [ -x /usr/bin/perl ]; then
+  echo "Perl detected."
+  echo
+  echo "The perl package needs to be removed before building to ensure that"
+  echo "the perl modules are included in the new package."
+  echo
+  echo "Removing the perl package in 15 seconds, and then continuing with the build."
+  sleep 15
+  removepkg perl
+fi
+
+# Clear build location:
+rm -rf $PKG
+mkdir -p $PKG
+
+# Extract the source code:
+cd $TMP
+rm -rf perl-$VERSION
+tar xvf $CWD/perl-$VERSION.tar.?z* || exit 1
+
+# Change into the source directory:
+cd perl-$VERSION
+
+# Adjust owner/perms to standard values:
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# If after all this time you still don't trust threads, comment
+# out the variable below:
+#
+USE_THREADS="-Dusethreads -Duseithreads"
+
+if [ "$ARCH" = "x86_64" ]; then # adopted from "Cross Linux From Scratch"
+  # Configure must be told to also use lib64:
+  zcat $CWD/perl.configure.multilib.patch.gz | patch -p1 --verbose || exit 1
+  # "perl -V" should report that libc is in /lib64
+  sed -i -e '/libc/s#/lib/#/lib64/#' hints/linux.sh
+  # make perl use lib64:
+  echo 'installstyle="lib64/perl5"' >>hints/linux.sh
+fi
+
+# We no longer include suidperl.  To quote the INSTALL file:
+#
+#   Because of the buggy history of suidperl, and the difficulty
+#   of properly security auditing as large and complex piece of
+#   software as Perl, we cannot recommend using suidperl and the feature
+#   should be considered deprecated.
+#   Instead use for example 'sudo': http://www.courtesan.com/sudo/
+
+# Configure perl:
+./Configure -de \
+  -Dprefix=/usr \
+  -Dsiteprefix=/usr/local \
+  -Dsitelib="/usr/local/share/perl5" \
+  -Dsitearch="/usr/local/lib${LIBDIRSUFFIX}/perl5" \
+  -Darchlib="/usr/lib${LIBDIRSUFFIX}/perl5" \
+  -Dvendorprefix=/usr \
+  -Dprivlib="/usr/share/perl5" \
+  -Dvendorlib="/usr/share/perl5/vendor_perl" \
+  -Dvendorarch="/usr/lib${LIBDIRSUFFIX}/perl5/vendor_perl" \
+  -Dscriptdir='/usr/bin' \
+  -Dcccdlflags='-fPIC' \
+  -Dinstallprefix=/usr \
+  -Dlibpth="/usr/local/lib${LIBDIRSUFFIX} /usr/lib${LIBDIRSUFFIX} /lib${LIBDIRSUFFIX}" \
+  -Doptimize="$SLKCFLAGS" \
+  $USE_THREADS \
+  -Duseshrplib \
+  -Ubincompat5005 \
+  -Uversiononly \
+  -Dpager='/usr/bin/less -isr' \
+  -Darchname=$ARCH-linux || exit 1
+
+# -Duseshrplib creates libperl.so
+# -Ubincompat5005 helps create DSO -> libperl.so
+
+# Build perl
+make $NUMJOBS || exit 1
+if [ "$MAKETEST" = "yes" ]; then
+  make test
+fi
+
+# Install perl (needed to build modules):
+make install
+( cd /usr/bin
+  ln -sf perl$VERSION perl
+)
+
+# Install perl package:
+make install DESTDIR=$PKG || exit 1
+
+# Add additional modules:
+( cd ext
+  ( tar xzvf $CWD/DBI-${DBI}.tar.gz
+    cd DBI-${DBI}
+    chown -R root:root .
+    perl Makefile.PL INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test
+    fi
+    make install
+    make install DESTDIR=$PKG
+    mkdir -p $PKG/usr/doc/perl-$VERSION/DBI-${DBI}
+    cp -a README* $PKG/usr/doc/perl-$VERSION/DBI-${DBI}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/DBI-${DBI}/README*
+  ) || exit 1
+  ( tar xzvf $CWD/DBD-mysql-${DBDMYSQL}.tar.gz
+    cd DBD-mysql-${DBDMYSQL}
+    zcat $CWD/DBD-mysql-4.043-Fix-build-failures-for-MariaDB-10.2.patch.gz | patch -p1 --verbose || exit 1
+    chown -R root:root .
+    perl Makefile.PL INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test
+    fi
+    make install
+    make install DESTDIR=$PKG
+    mkdir -p $PKG/usr/doc/perl-$VERSION/DBD-mysql-${DBDMYSQL}
+    cp -a INSTALL.html README* TODO $PKG/usr/doc/perl-$VERSION/DBD-mysql-${DBDMYSQL}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/DBD-mysql-${DBDMYSQL}/*
+  ) || exit 1
+  ( tar xzvf $CWD/XML-Parser-${XMLPARSER}.tar.gz
+    cd XML-Parser-${XMLPARSER}
+    chown -R root:root .
+    perl -I . Makefile.PL INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test
+    fi
+    make install
+    make install DESTDIR=$PKG
+    mkdir -p $PKG/usr/doc/perl-$VERSION/XML-Parser-${XMLPARSER}
+    cp -a README* $PKG/usr/doc/perl-$VERSION/XML-Parser-${XMLPARSER}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/XML-Parser-${XMLPARSER}/*
+  ) || exit 1
+  ( tar xzvf $CWD/XML-Simple-${XMLSIMPLE}.tar.gz
+    cd XML-Simple-${XMLSIMPLE}
+    chown -R root:root .
+    perl Makefile.PL INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test
+    fi
+    make install
+    make install DESTDIR=$PKG
+    mkdir -p $PKG/usr/doc/perl-$VERSION/XML-Simple${XMLSIMPLE}
+    cp -a README* $PKG/usr/doc/perl-$VERSION/XML-Simple${XMLSIMPLE}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/XML-Simple${XMLSIMPLE}/*
+  ) || exit 1
+  ( tar xzvf $CWD/URI-${URI}.tar.gz
+    cd URI-${URI}
+    chown -R root:root .
+    perl Makefile.PL INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test
+    fi
+    make install
+    make install DESTDIR=$PKG
+    mkdir -p $PKG/usr/doc/perl-$VERSION/URI-${URI}
+    cp -a README* $PKG/usr/doc/perl-$VERSION/URI-${URI}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/URI-${URI}/*
+  )
+  ( tar xzvf $CWD/gettext-${GETTEXT}.tar.gz
+    cd Locale-gettext-${GETTEXT}
+    chown -R root:root .
+    perl Makefile.PL INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test
+    fi
+    make install
+    make install DESTDIR=$PKG
+    mkdir -p $PKG/usr/doc/perl-$VERSION/gettext-${GETTEXT}
+    cp -a README* $PKG/usr/doc/perl-$VERSION/gettext-${GETTEXT}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/gettext-${GETTEXT}/*
+  ) || exit 1
+  ( tar xzvf $CWD/TermReadKey-${TERMREADKEY}.tar.gz
+    cd TermReadKey-${TERMREADKEY}
+    chown -R root:root .
+    perl Makefile.PL INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test
+    fi
+    make install
+    make install DESTDIR=$PKG
+    mkdir -p $PKG/usr/doc/perl-$VERSION/TermReadKey-${TERMREADKEY}
+    cp -a README* $PKG/usr/doc/perl-$VERSION/TermReadKey-${TERMREADKEY}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/TermReadKey-${TERMREADKEY}/*
+  ) || exit 1
+  ( tar xzvf $CWD/Authen-SASL-${AUTHENSASL}.tar.gz
+    cd Authen-SASL-${AUTHENSASL}
+    chown -R root:root .
+    perl -I . Makefile.PL INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test
+    fi
+    make install
+    make install DESTDIR=$PKG
+    mkdir -p $PKG/usr/doc/perl-$VERSION/Authen-SASL-${AUTHENSASL}
+    cp -a README* META.yml $PKG/usr/doc/perl-$VERSION/Authen-SASL-${AUTHENSASL}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/Authen-SASL-${AUTHENSASL}/*
+  ) || exit 1
+  ( tar xzvf $CWD/MIME-Base64-${MIMEBASE64}.tar.gz
+    cd MIME-Base64-${MIMEBASE64}
+    chown -R root:root .
+    perl Makefile.PL INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test
+    fi
+    make install
+    make install DESTDIR=$PKG
+    mkdir -p $PKG/usr/doc/perl-$VERSION/MIME-Base64-${MIMEBASE64}
+    cp -a README* $PKG/usr/doc/perl-$VERSION/MIME-Base64-${MIMEBASE64}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/MIME-Base64-${MIMEBASE64}/*
+  ) || exit 1
+  ( tar xzvf $CWD/libnet-${LIBNET}.tar.gz
+    cd libnet-${LIBNET}
+    zcat $CWD/libnet-3.08-Do-not-create-Net-libnet.cfg.patch.gz | patch -p1 --verbose || exit 1
+    chown -R root:root .
+    echo | perl Makefile.PL \
+      PREFIX=/usr \
+      INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test
+    fi
+    make install
+    make install DESTDIR=$PKG
+    mkdir -p $PKG/usr/doc/perl-$VERSION/libnet-${LIBNET}
+    cp -a Artistic Changes Copying INSTALL LICENCE README $PKG/usr/doc/perl-$VERSION/libnet-${LIBNET}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/libnet-${LIBNET}/*
+  ) || exit 1
+) || exit 1
+
+# Strip everything:
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+# There are also miniperl and microperl.
+# I haven't had any requests for them, but would be willing
+# to consider adding one or both to the package if anyone
+# actually needs them for some reason.
+#make microperl
+
+# Symlinks that replace hard links
+( cd $PKG/usr/bin
+  ln -sf perl$VERSION perl
+)
+
+# Install documentation
+mkdir -p $PKG/usr/doc/perl-$VERSION
+cp -a \
+  AUTHORS Artistic Changes Copying INSTALL \
+  README* \
+  README.{cn,jp,ko,tw} README.linux \
+  $PKG/usr/doc/perl-$VERSION
+
+# We follow LSB with symlinks in /usr/share:
+( cd $PKG/usr/share
+  mv man ..
+)
+( cd $PKG/usr/man/man1
+  mkdir foo
+  cp *.1 foo
+  rm *.1
+  mv foo/* .
+  rmdir foo
+  gzip -9 *
+)
+( cd $PKG/usr/man/man3
+  gzip -9 *
+)
+
+chmod 755 $PKG/usr/bin/*
+chmod 644 $PKG/usr/man/man?/*
+
+# Don't ship a perllocal.pod populated with vendor_perl additions. The file is
+# meant for locally added perl modules:
+if [ -r $PKG/usr/lib${LIBDIRSUFFIX}/perl5/perllocal.pod ]; then
+  mv $PKG/usr/lib${LIBDIRSUFFIX}/perl5/perllocal.pod $PKG/usr/lib${LIBDIRSUFFIX}/perl5/vendor_perl.pod
+fi
+
+# Insert the slack-desc:
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/perl-$VERSION-$ARCH-$BUILD.txz
+

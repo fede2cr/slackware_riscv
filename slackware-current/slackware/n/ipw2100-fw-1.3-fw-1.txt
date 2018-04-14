@@ -1,0 +1,11 @@
+ipw2100-fw: ipw2100-fw (Intel ipw2100 wireless firmware)
+ipw2100-fw:
+ipw2100-fw: This firmware is used by the ipw2100 kernel module for the Intel
+ipw2100-fw: PRO/Wireless 2100 Network Connection mini PCI adapter.
+ipw2100-fw: Your use of this firmware is governed by this Intel license:
+ipw2100-fw:   /usr/doc/ipw2100-fw-1.3/LICENSE
+ipw2100-fw:
+ipw2100-fw: Visit Intel's Linux wireless website at this address:
+ipw2100-fw:   http://intellinuxwireless.org/
+ipw2100-fw:
+ipw2100-fw:

@@ -1,0 +1,595 @@
+##############################################################################
+# Document: OVERVIEW
+# Purpose : Provide an overview of the Slackware package system incorporating
+#           the use of 'slacktrack'
+#           Please note that this is *not* a guide to the use of slacktrack;
+#           the man page and SlackBuild scripts in the 'examples' directory
+#           aim to fulfill that requirement.
+# Date....: 15-May-2009
+# Author..: Stuart Winter <mozes@slackware.com>
+# Homepage: http://www.slackware.com/~mozes
+##############################################################################
+
+
+CONTENTS:
+---------
+1.0 Preamble
+2.0  Slackware packages
+     2.0.1 Format of official Slackware packages
+          2.0.1.1 Package names
+          2.0.1.2 Version numbers
+          2.0.1.3 Architectures
+          2.0.1.4 Build numbers
+  2.1  An overview of the creation of official Slackware packages
+       2.1.1 'Clean' and 'dirty' builds
+            2.1.1.1 Clean builds
+            2.1.1.2 Dirty builds
+       2.1.1 SlackBuild and .build scripts
+            2.1.1.2  SlackBuild scripts
+            2.1.1.3  .build scripts
+  2.2  slacktrack in the scheme of things
+       2.2.1  Using slacktrack with official .build scripts
+       2.2.2  Writing your own .build scripts for slacktrack
+            2.2.2.1 Making use of slacktrack's environment variables
+3.0  slacktrack in operation
+  3.1  How slacktrack finds which files have been installed
+4.0  Example scripts
+     4.0.1  non-slackware example build scripts
+     4.0.2  slackware example wrapper build scripts
+5.0  Known problems/features of slacktrack
+6.0  New features
+7.0  Licence
+ 
+
+ 
+1.0 Preamble
+    ---------
+
+I used to work for a company that provided web hosting and shell accounts.
+When I started there were a number of shell servers all running various 
+releases of RedHat Linux, in various states of repair.  I managed to convince
+the management to let me try Slackware on there instead because I have a much 
+stronger understanding of how to maintain and build server using the 
+Slackware distribution.  This trial went well and within a few months all 
+servers were converted to Slackware version 8.1.
+
+In order to ease the speed of installation (and to prevent against 
+forgetting to install or configure something critical), I wrote a
+set of post installation scripts that upgraded Slackware packages,
+configured numerous config files and copied pre-compiled software
+(such as courier IMAP) onto the new system.
+For other software that I could not simply copy, I'd compile it on the
+new server.
+
+However, it soon became clear that due to security updates and so on,
+it became incredibly time consuming (not to mention seriously boring)
+to compile PHP, Apache and so on on every server.
+
+At this point, I began to investigate how to create packages for Slackware.
+
+
+2.0  Slackware packages
+     ------------------
+
+    The Slackware Linux distribution consists of a variety of 'packages'
+    that make up the distribution.  
+
+    Traditionally, all packages are in '.tgz' format (a gzipped tar archive).
+    Starting with Slackware v13, new compression formats are supported which
+    are represented by three additional file extensions:
+
+     .tgz - Gzip
+     .tbz - Bzip2
+     .tlz - LZMA
+     .txz - XZ
+   
+    In this document, we use the file extension '.t?z' to represent
+    one of the above file formats.
+
+    Once you have initially installed Slackware from the installer screen,
+    you have the facilities to install, remove or upgrade new or existing
+    packages using the package management tools: 
+
+       installpkg <package.t?z>  - install 'package.t?z'
+
+       upgradepkg <package.t?z>  - upgrade existing 'package' with the
+                                   new version specified at the command line.
+
+       removepkg  <package>      - remove specified package
+
+
+    Whilst the Slackware package system is not especially feature rich,
+    Slackware's user base (including me) like it because it is simple.
+    If we want to write our own package utilities then we can easily do so
+    by examining the existing package tools and querying and amending the
+    package database (text files).
+
+    2.0.1 Format of official Slackware packages
+          -------------------------------------
+
+          In Slackware 8.1 and up, each package file is named as follows:
+
+          packagename-version-architecture-buildnumber.t?z
+
+          2.0.1.1 Package names
+                  -------------
+
+                  The package name is either the name of the single program
+                  or the name of a collection of utilities that fall under
+                  a single umbrella.
+                  For example:
+                    autoconf-2.54-noarch-1.tgz
+
+                  That is the name of the autoconf package I have on my
+                  Slackware 8.1 box.
+                  'autoconf' is the name of the the entire collection of 
+                  binaries and associated documents that are extracted from
+                  the autoconf source distribution archive.
+ 
+                  However, if we consider another example:
+                    tcpip-0.17-i386-15.tgz                  
+
+                  There is no single piece of software called 'tcpip'.  
+                  This package contains a number of associated utilities 
+                  written by different authors but bundled into one single 
+                  'package'.
+
+          2.0.1.2 Version numbers
+                  ---------------
+          
+                  If the package is the name of a particular piece of software
+                  such as 'autoconf' from the example above, then the version
+                  number represents the version number that its authors distribute.
+                 
+                  If the package is a 'bundle' such as 'tcpip' then the version 
+                  number increases as and when you add a new piece of software to 
+                  the package, or upgrade a particular piece of major software 
+                  contained within the package.
+                  For example, with 'tcpip' above, the 0.17 refers to the version of
+                  Linux Netkit.  However, there are other programs included within 
+                  the Slackware tcpip package that are not part of 'Linux netkit'.
+              
+          2.0.1.3 Architectures
+                  -------------
+
+                  The architecture is just that -- it tells you which architecture
+                  the package is for.
+
+                  The current values in use are:
+
+                     ----- [ Official Slackware architecures ]
+
+                     noarch  - Architecture independent files such as config files 
+                     i386    - packages for the x86 (Slackware v8.1 & 9)
+                     i486    - packages for the x86 (Slackware 9.1+)
+                     i586    - packages for the x86 
+                     i686    - packages for the x86 
+                     s390    - packages for the IBM s/390 mainframe
+                     arm     - packages for the ARM architecture
+
+                     Note: Whilst Slackware v10 is primarily built for i486, you may
+                           find that there are some packages whose architecture versions
+                           are higher than i486. This is for two reasons:
+
+                           [a] There is no source for the package - it is a repackaged
+                               binary distribution (SUN's j2sdk is an example).
+
+                           [b] The package is not required or otherwise not suitable for
+                               earlier revisions of the architecture (this is especially
+                               the true with ARM and SPARC).                                
+
+                     ----- [ Unofficial ports of Slackware ]
+
+                     sparc   - packages for the SUN Sparc architecture
+                     powerpc - packages for the PowerPC architecture
+ 
+          2.0.1.4 Build numbers
+                  -------------
+
+                  A build number suplements the version number and is changed
+                  when the *package maintainer* makes a change to the package but
+                  the original source code and version number remains the same.
+
+                  For example, I build a package of 'foo' version 0.14 for the
+                  sparc.  I have never built this package before, thus it becomes
+                     foo-0.14-sparc-1.tgz
+                  However, I realise that I haven't configured 
+                  the 'bar' parameter correctly in /etc/foo.conf.  I fix it 
+                  and re-build the package.  The package is now named
+                     foo-0.14-sparc-2.tgz            
+
+
+  2.1  An overview of the creation of official Slackware packages
+       -----------------------------------------------------------
+
+       This section gives a brief introduction of the two methods of
+       used when building the official Slackware packages.
+      
+
+      2.1.1 'Clean' and 'dirty' builds
+            --------------------------
+                 
+            I am assuming the reader has some experience with Makefiles
+            and has compiled and installed a number of software packages.
+             
+            2.1.1.1 Clean builds
+                    ------------
+
+            I term a 'clean' package one where you can specify a variable
+            to the 'make install' which contains the directory you wish to install
+            the package in, rather than installing it properly over the root file system.
+            For example: 
+            # ./configure --prefix=/usr --sysconfdir=/etc
+            # make
+            # make install DESTDIR=/tmp/package-foo
+
+            With a 'Makefile' that honours the DESTDIR variable, this will
+            install the whole package into /tmp/package-foo.  This directory
+            effectively is the 'root' directory '/' as far as the Makefile
+            is concerned.
+
+            From here you can use the Slackware 'makepkg' program and build
+            a package.
+
+            This is by far the safest and most preferred method by all
+            users that make packages.
+
+            You will find that DESTDIR is called prefix, TOPDIR and other names;
+            you need to examine the Makefile scripts in order to determine whether
+            it contains this functionality and if it does, then discover what 
+            the variable name is.
+
+            2.1.1.2 Dirty builds
+                    ------------
+            
+            A 'dirty' build is the name I give to source distribution archives
+            whose Makefile scripts do not have any provisioning to install
+            in an alternate directory other than root.
+
+            For these type of builds, you will typically do:
+            # ./configure --prefix=/usr --sysconfdir=/etc
+            # make
+            # make install
+
+            The package will then be installed on the root filesystem.
+            
+            So how do you know what files were installed where and
+            even if you did, how do you pull all these files together in order
+            to run makepkg over them ?
+            That's the purpose of slacktrack! :-)
+
+
+      2.1.1 SlackBuild and .build scripts
+            -----------------------------
+            
+            Slackware has a number of packages by a great number of authors.
+            Some of the packages's source Makefiles honour a DESTDIR type
+            variable but others do not.
+             
+            2.1.1.2  SlackBuild scripts
+                     ------------------
+
+                     SlackBuild scripts can be 'interesting'.  They are 
+                     scripts that install into a 'clean' environment (usually /tmp).  
+
+                     Some of the scripts follow the make install DESTDIR=
+                     style, if the Makefile permits.
+
+                     Others have a 'framework' or 'controller tarball' which is
+                     a _packagename.t?z (note the prefixing underscore).
+
+                     The SlackBuild script uses the Slackware 'explodepkg' script
+                     to untar the contents of the _.t?z into the /tmp-package<name> 
+                     directory.
+                     Slackbuild then runs 'make' to compile the binaries
+                     and libraries, but then uses the 'cat' program such as:
+                     # cat foobar > /tmp/package-foobar/usr/bin/foobar
+            
+                     By using 'cat', the *new* version of 'foobar' retains
+                     the original permissions and ownerships that are in the 
+                     controller tar ball.
+
+                     However, you may be wondering how, if the package does not
+                     have a facility to install into somewhere other than root, 
+                     do we get the file names and permissions for the 
+                     controller _.t?z in the first place.
+                     The answer is simple:
+                       [a] find all files on the file system and dump to a file.
+                       [b] compile and install the software
+                       [c] find all files on the file system and compare the file
+                           produced by the first 'find'.  After a little pruning, you
+                           have the list of files for the controller tar ball.
+
+
+             2.1.1.3  .build scripts
+                      ---------------
+
+                      For those software distributions whose Makefile does not hounour
+                      the DESTDIR type system, there are Slackware's .build scripts.
+
+                      These scripts literally ./configure ; make ; make install
+                      and copy docs and other goodies into the root file system.
+
+                      One of the problems with these scripts is that they are 
+                      often incomplete -- they build and install the package but 
+                      do not gzip the man pages or strip the binaries and libraries;
+                      this is done manually afterwards.
+
+                      *These* are the scripts that slacktrack and altertrack were 
+                      written for.
+
+                   *  Note: Whilst some software's Makefiles may appear to honour
+                      the DESTDIR variable, the Makefile *may* be broken which can
+                      result in files missing or corrupt within your new package.
+                      For example: I built Apache v2.0.48 and built a package using
+                      make install DESTDIR.  However, a problem exists in that some of
+                      the Perl scripts it installs have *temporary build paths* 
+                      hard coded into the resulting scripts.
+                      This is why you *may* find a .build instead of a SlackBuild
+                      script within Slackware's source tree.
+
+                      However, the primary reason is because the build script just
+                      hasn't been updated to make use of DESTDIR.                    *
+                       
+
+  2.2  slacktrack in the scheme of things
+       ----------------------------------
+
+       I follow Slackware-current quite closly.  Often I want to 
+       'back port' a -current package to an earlier release of Slackware .
+       I can't simply upgrade with -current's package because it was 
+       compiled for a newer GLIBC than Slackware 8.1's, for example.
+       For packages that use a 'clean' 'SlackBuild' script, this is
+       an easy job -- I simply run 'SlackBuild' on an 8.1 box.
+
+       However, for .build scripts, I needed a way of building packages
+       using Slackware's .build scripts.
+
+       I found a great program called 'CheckInstall' which fulfilled most of my
+       requirements.  However, as time went on and I started building
+       more of Slackware's packages and writing my own build scripts, I found
+       that checkinstall was lacking some features that I required.
+       At this time I was also considering porting Slackware to run on
+       the ARM architecture and helping with the Splack (Slackware on SPARC project),
+       and therefore wanted a robust program that can deal with every .build script
+       I threw at it, and if it can't handle it, I needed to be able to make modifications. 
+       The easiest  way of doing this was to write my own script; thus 
+       'slacktrack' was born.
+
+       slacktrack is based on the *idea* behind 'CheckInstall', but uses
+       only my own code (and contributions from other users), and only contains 
+       Slackware-specific facilities -- it can not build Debian or RedHat packages
+       and never will.
+
+       slacktrack does not have all of the facilities of CheckInstall either,
+       but then these are not required for building Slackware packages
+       from .build scripts.
+
+       Also, slacktrack only works with 'official' Slackware directory locations
+       and /usr/local.
+       For example, if your make install installs binaries in /opt/packagename/bin
+       and the man pages in anywhere other than /usr/man or /usr/local/man, then 
+       slacktrack's relevant options (eg stripping libs, bins, gzman) will 
+       not detect them.
+      
+   
+      2.2.1  Using slacktrack with official .build scripts
+             ---------------------------------------------              
+
+             Building a replicar Slackware package from a .build script is
+             typically fairly trivial with slacktrack.
+
+             If we wanted to build slackware-9.1's elvis, we could do
+             # cd slackware/slackware-9.1/source/a/elvis
+             # chmod 755 elvis.build
+             # slacktrack -jefkzp "elvis-2.1-i386-2.tgz" ./elvis.build
+             
+             The resulting package (by default) be stored in 
+             /tmp/built-slackwarepackages/
+
+             As already mentioned, some of the Slackware .build scripts
+             are incomplete with regard to gzipping man pages, stripping binaries
+             and so on -- fetchmail.build is one of them.
+             Therefore you can specify various options to slacktrack that
+             will take care of this for you.
+             The options in the example above :
+                 j - compress libraries
+                 e - chown root:bin /bin,/sbin,/usr/bin,/usr/sbin directories
+                 f - chown root:bin files in the binary dirs listed above
+                 k - strip binaries found in the binary dirs listed above
+                 z - gzip man pages
+                 p - the resulting Slackware package .t?z name
+
+             The way I re-create the packages is to build a 'trackbuild' script that
+             launches slacktrack with the required options and the name
+             of the Slackware .build script.  You can find examples of such
+             scripts within the docs directory after installing slacktrack:
+
+                /usr/doc/slacktrack*/buildscript-examples/
+
+             You will also find that in Slackware versions 12.0 and upwards,
+             the .build scripts are accompanied by 'trackbuild' scripts because
+             slacktrack is used by the Slackware team to produce the packages.
+ 
+      2.2.2  Writing your own .build scripts for slacktrack
+             ----------------------------------------------
+             
+             There isn't any specific that you have to do to write a build
+             script for use with slacktrack -- the script name specified to
+             slacktrack doesn't even have to be a script - it can be a binary -
+             as long as it is executable, it is acceptable.
+
+             You can see some of my own build scripts that I have written
+             for use with slacktrack by looking in the documents directory
+             after installing slacktrack:
+
+                /usr/doc/slacktrack*/buildscript-examples/
+
+             2.2.2.1 Making use of slacktrack's environment variables
+                     -------------------------------------------------
+                  
+                     slacktrack exports two environment variables:
+                     SLACKTRACKFAKEROOT and SLACKTRACKSCRATCHDIR
+
+                     SLACKTRACKFAKEROOT:
+                     ````````````````````
+
+                     The purpose of this to allow your .build script to access the
+                     'root' directory of the resulting package.
+                     There are two scenarios where you may want to use this
+                     variable:
+
+                     1.  During the build:
+
+                     The reason you may wish to do this is to pre-populate 
+                     the package with files that you may not wish to place directly
+                     onto the root filesystem.
+                     The package contents will only appear inside this directory
+                     once your build script has finished, and slacktrack has determined
+                     what to put into this directory.
+
+                     In previous slacktrack versions which used a pseudo-root filesystem
+                     (where the package contents were populated *during* the build), this
+                     made sense, but in slacktrack v2.00, it is unlikely that you'd want
+                     to use this vairable from the build script.
+
+                     2.  Post-build -- cleanups after the build:
+                     
+                     The most likely use of this script is to perform package cleanup
+                     tasks after the build.  This is mainly to perform tasks that slacktrack
+                     does not handle itself - such as deleting known files/directories that
+                     creep into packages (due to a system daemon such as CUPS), or setting
+                     some file and directory permissions.
+
+                     An example post build script is below.
+                     A post build script can be specified by slacktrack's -R option:
+
+   # Incase you had CUPS running:
+   rm -rf etc/cups etc/printcap
+   # crond:
+   rm -rf var/spool/cron
+   rmdir var/spool
+
+   # perllocal.pod files don't belong in packages.
+   # SGMLSPL creates this:
+   find . -name perllocal.pod -print0 | xargs -0 rm -f
+
+   # Some doc dirs have attracted setuid.
+   # We don't need setuid for anything in this package:
+   chmod -R a-s .
+
+
+                     SLACKTRACKSCRATCHDIR:
+                     `````````````````````
+
+                     The purpose of this variable is to provide some temporary
+                     space to untar your source archives and so on.  slacktrack
+                     will manage the creation and deletion of this directory.
+
+                     For example:
+                     # cd ${SLACKTRACKSCRATCHDIR}
+                     # tar zxvvf ${ORIGPATH}/source/foobar.tar.gz
+                     
+                     You can see in some of the example 'non-slackware' scripts
+                     how I have used these variables
+                     
+
+3.0  slacktrack in operation
+     -----------------------
+     
+     The basic event flow is as follows:
+
+     [1] Parse command line arguments
+         -> Check they are OK, if not bomb out 
+     [2] Launch the supplied build script
+     [3] Run any specified functions (eg gzman, strip bins, chowns) over the
+         package 'root' directory and contents
+     [4] Run Slackware's 'makepkg' program over the package contents
+     [5] Move the .t?z to the specified build store path
+     [6] Scan for any hard links that may be in the package
+         -> If any found, alert the user on screen and also
+            log to a packagename.hardlinks.log file in the build store path
+
+     The slacktrack shell script is fairly simple and well commented; it should be
+     relatively easy for anybody who understands bash to quickly comprehend what 
+     is happening and why.
+
+    3.1  How slacktrack finds which files have been installed
+         ----------------------------------------------------
+         
+         In order to track the files and directories that have been installed
+         or changed, slacktrack follows this ordered process:
+
+         [1] Scans a pre-set list of directories on the filesystem and
+             logs the contents.
+         [2] Launches build script which installs the package onto the
+             filesystem
+         [3] Scans the filesystem once again
+         [4] Compares the differences in the before and after snapshots
+         [5] Copies the differences into a 'package root directory' and
+             runs makepkg over them.
+
+         In slacktrack version 1, we used 'installwatch' which overloaded
+         some of glibc's filesystem calls, creating new files and directories
+         into a pseudo-root filesystem, avoiding the need to install onto
+         the host's filesystem (and also allowing to build as a non-root user).
+         However, this library is ill maintained and even in the early days
+         when it worked well, it still had problems and workarounds were required.
+         
+4.0  Example scripts
+     ---------------
+
+     Included with the slacktrack binary distribution are a number of example
+     scripts that hopefully should provide you with a basis of how to use slacktrack
+     to build from 'dirty' source distributions.
+     
+     The examples are bundled in the documentation directory available 
+     after installing slacktrack:
+
+               /usr/doc/slacktrack*/buildscript-examples/
+
+
+5.0 Known problems/features of slacktrack
+    -------------------------------------
+ 
+     Current problems:
+
+       [1] slacktrack doesn't have sufficient error checking.  
+
+            I'm in two minds about *where* to put error checking, you see.
+            Do I go no further if the supplied build script exits with a non-zero
+            value?  
+            No, that's a bad idea because what if you didn't write the build script?
+            it might be one of these qmail type binary installer programs that
+            you can't (easily without hacking the source) fix.  The author may
+            have their own systems, and the program exits with a value that their
+            own controller script recognises as non-failure.
+   
+            What should I do if makepkg has failed?  You see it on screen
+            and in the logs anyway, plus makepkg is one of the last things
+            that slacktrack calls -- how can you recover?
+       
+  	    That said, version 1.03 now has some error handling.  There's still
+            not enough though, imo.
+
+        [2] No support for a default config file
+
+            I don't see the point.  Each .build script is different
+            and although I typically use the same options to slacktrack
+            for most of my build scripts, I don't see why I'd need a 
+            config file just to save 4 bytes or so in a trackbuild wrapper :-)
+
+        
+6.0  New features
+      -------------
+
+      See the TODO file in the docs directory.
+
+      If you have any specific features you would like to see
+      included, or have found any bugs, please 
+      email me <mozes@slackware.com>
+
+7.0  Licence
+     -------
+   
+     slacktrack is distributed under BSD Licence.

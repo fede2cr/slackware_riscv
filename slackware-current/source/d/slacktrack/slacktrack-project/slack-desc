@@ -1,0 +1,21 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+#
+# I've broken the 11 line rule here but installpkg can handle up to 13.
+# 
+          |-----handy-ruler------------------------------------------------------|
+slacktrack: slacktrack (Slackware package building utilities)
+slacktrack:
+slacktrack: slacktrack tracks the installation of a 'make install' (or similar) 
+slacktrack: and produces a Slackware compliant package from the results.
+slacktrack:
+slacktrack: slacktrack can be used to build packages from Slackware's '.build'
+slacktrack: scripts or your own.
+slacktrack:
+slacktrack: slacktrack tracks installations directly on the host's filesystem.
+slacktrack:
+slacktrack:

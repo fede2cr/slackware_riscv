@@ -1,0 +1,179 @@
+#!/bin/sh
+#item   ####description                                      ###on off ###
+TMP=/var/log/setup/tmp
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP
+fi
+cat /dev/null > $TMP/SeTnewtag
+dialog --title "SELECTING PACKAGES FROM SERIES N (NETWORK/NEWS/MAIL/UUCP)" \
+       --checklist "Please confirm the packages you wish to install \
+from series N. Use the UP/DOWN keys to scroll through the list, and \
+the SPACE key to deselect any items you don't want to install. \
+Press ENTER when you are done." \
+21 72 11 \
+"ModemManager" "mobile broadband modem D-bus API" "on" \
+"NetworkManager" "Networking configuration daemon" "on" \
+"alpine" "Alpine menu-driven mail program" "on" \
+"autofs" "Linux automounter" "on" \
+"biff+comsat" "Announces email delivery" "on" \
+"bind" "Berkeley Internet Name Domain server" "on" \
+"bluez" "Bluetooth userspace (libs/utils) support" "on" \
+"bluez-firmware" "Firmware for Bluetooth(TM) devices" "on" \
+"bootp" "Internet Bootstrap Protocol server" "on" \
+"bridge-utils" "Tools for setting up Ethernet bridges" "on" \
+"bsd-finger" "BSD finger daemon and client" "on" \
+"ca-certificates" "PEM certificates to verify SSL connections" "on" \
+"cifs-utils" "CIFS filesystem utilities" "on" \
+"conntrack-tools" "Connection Tracking System tools" "on" \
+"crda" "Central Regulatory Domain Agent" "on" \
+"curl" "Command-line URL transfer utility" "on" \
+"cyrus-sasl" "SASL email authentication library" "on" \
+"dhcp" "DHCP server (and client) utilities" "on" \
+"dhcpcd" "DHCP client daemon" "on" \
+"dnsmasq" "Small DNS/DHCP server for a LAN" "on" \
+"dovecot" "IMAP and POP3 server" "on" \
+"ebtables" "Bridge filtering utility" "on" \
+"elm" "Menu-driven user mail program" "on" \
+"epic5" "EPIC Internet Relay Chat (IRC) client" "on" \
+"ethtool" "A tool for configuring Ethernet devices" "on" \
+"fetchmail" "Fetch mail from POP/IMAP/ETRN servers" "on" \
+"getmail" "POP3 mail retrieval tool" "on" \
+"gnupg" "GNU Privacy Guard public key encryption" "on" \
+"gnupg2" "GNU Privacy Guard version 2.x" "on" \
+"gnutls" "GNU TLS/SSL (secure communications) library" "on" \
+"gpa" "GNU Privacy Assistant" "on" \
+"gpgme" "GnuPG Made Easy library" "on" \
+"htdig" "Indexing and search engine" "on" \
+"httpd" "Apache WWW (HTTP) server" "on" \
+"icmpinfo" "Dump or log ICMP packets" "on" \
+"iftop" "Display bandwidth usage on an interface" "on" \
+"inetd" "Internet super server daemon" "on" \
+"iproute2" "Kernel routing and traffic control" "on" \
+"ipset" "Kernel IP sets admin tool" "on" \
+"iptables" "Firewall configuration utility" "on" \
+"iptraf-ng" "Network monitoring program" "on" \
+"iputils" "Some common network tools" "on" \
+"ipw2100-fw" "Firmware for Intel ipw2100 wireless." "on" \
+"ipw2200-fw" "Firmware for Intel ipw2200 wireless." "on" \
+"irssi" "IRSSI Internet Relay Chat (IRC) client" "on" \
+"iw" "Utility for mac80211 based wireless devices" "on" \
+"lftp" "Shell-like FTP and HTTP transfer program" "on" \
+"libassuan" "Interprocess Communication Library for GPG" "on" \
+"libgcrypt" "General purpose crypto library" "on" \
+"libgpg-error" "GnuPG Error Definitions Library" "on" \
+"libksba" "X.509 & CMS library for S/MIME and TLS" "on" \
+"libmbim" "Mobile Broadband Interface Model library" "on" \
+"libmilter" "The sendmail Mail Filter API" "on" \
+"libmnl" "Netlink user-space library" "on" \
+"libndp" "Library for Neighbor Discovery Protocol" "on" \
+"libnetfilter_acct" "Netfilter accounting library" "on" \
+"libnetfilter_conntrack" "Netfilter conntrack library" "on" \
+"libnetfilter_cthelper" "Netfilter conntrack helpers library" "on" \
+"libnetfilter_cttimeout" "Netfilter connection tracking timeout library" "on" \
+"libnetfilter_log" "Netfilter packet logging library" "on" \
+"libnetfilter_queue" "Netfilter packet queueing library" "on" \
+"libnfnetlink" "Netfilter kernel/userspace comm library" "on" \
+"libnftnl" "interface to the kernel nf_tables subsystem" "on" \
+"libqmi" "QMI library and utils" "on" \
+"libtirpc" "Transport-Independent RPC library" "on" \
+"links" "Text-based WWW browser (with frames)" "on" \
+"lynx" "Classic text-based WWW browser" "on" \
+"mailx" "A simple user mail program" "on" \
+"mcabber" "Jabber messaging client for the console" "on" \
+"metamail" "Metamail multimedia mail extensions" "on" \
+"mobile-broadband-provider-info" "mobile broadband provider settings" "on" \
+"mtr" "Network diagnosic tool" "on" \
+"mutt" "The Mutt E-Mail Client" "on" \
+"nc" "Netcat network utility" "on" \
+"ncftp" "NcFTP file transfer utilities" "on" \
+"net-snmp" "Simple Network Management Protocol tools" "on" \
+"net-tools" "Utilities required for networking on Linux" "on" \
+"netatalk" "Print/file server for Apple Macs" "on" \
+"netdate" "A simple network time utility" "on" \
+"netkit-bootparamd" "A diskless client server used with Suns" "on" \
+"netkit-ftp" "The BSD FTP client" "on" \
+"netkit-ntalk" "BSD talk daemon/client" "on" \
+"netkit-routed" "An (old) BSD dynamic routing daemon" "on" \
+"netkit-rsh" "BSD rsh suite.  Most people use ssh instead." "on" \
+"netkit-rusers" "BSD utility to see who is logged in on a net" "on" \
+"netkit-rwall" "Write to every user on a system" "on" \
+"netkit-rwho" "See information about users on the local net" "on" \
+"netkit-timed" "BSD time server daemon" "on" \
+"netpipes" "Network pipe utilities" "on" \
+"nettle" "Cryptographic library" "on" \
+"netwatch" "Another network monitoring program" "on" \
+"network-scripts" "Scripts required for networking on Slackware" "on" \
+"netwrite" "Write to users on a remote machine" "on" \
+"newspost" "Posts multipart binaries on USENET" "on" \
+"nfacct" "Tool to manage accounting objects" "on" \
+"nfs-utils" "Network File System daemons" "on" \
+"nftables" "Packet filtering and classification" "on" \
+"nghttp2" "HTTP/2 library" "on" \
+"nmap" "Network scanning utility" "on" \
+"nn" "The NN news reader" "on" \
+"npth" "New GNU Portable Threads" "on" \
+"ntp" "Network Time Protocol" "on" \
+"obexftp" "Object Exchange FTP client/server" "on" \
+"openldap-client" "LDAP authentication libraries" "on" \
+"openobex" "Object Exchange protocol library" "on" \
+"openssh" "OpenSSH Secure Shell" "on" \
+"openssl" "OpenSSL Secure Sockets Layer toolkit" "on" \
+"openvpn" "Secure IP VPN tunnel daemon" "on" \
+"p11-kit" "PKCS 11 public key toolkit" "on" \
+"php" "PHP scripting language for Apache" "on" \
+"pidentd" "TCP/IP IDENT protocol server" "on" \
+"pinentry" "PIN Entry dialogs" "on" \
+"popa3d" "Post Office Protocol v. 3 (POP3) server" "on" \
+"postfix" "The Postfix mail transport agent" "on" \
+"ppp" "Point-to-point protocol" "on" \
+"procmail" "Mail delivery/filtering utility" "on" \
+"proftpd" "The Professional FTP (file transfer) daemon" "on" \
+"pssh" "Parallel versions of the openssh tools" "on" \
+"rdist" "Remote file distribution utility" "on" \
+"rp-pppoe" "Connect to ADSL ISPs that use PPPoE" "on" \
+"rpcbind" "Manages NFS and other RPC connections" "on" \
+"rsync" "Enhanced replacement for rcp" "on" \
+"samba" "SMB print/file server for Windows LANs" "on" \
+"slrn" "slrn (s-lang read news) news reader" "on" \
+"snownews" "Console RSS reader" "on" \
+"sshfs" "FUSE-based SSH filesystem client" "on" \
+"stunnel" "Universal SSL tunnel" "on" \
+"tcp_wrappers" "A daemon and wrapper to increase security" "on" \
+"tcpdump" "Tool for dumping network packets" "on" \
+"telnet" "The telnet client and telnetd daemon" "on" \
+"tftp-hpa" "A TFTP implementation" "on" \
+"tin" "The 'tin' news reader" "on" \
+"traceroute" "Packet tracing utility" "on" \
+"ulogd" "Logging daemon for netfilter/iptables" "on" \
+"uucp" "Taylor UUCP with HDB && Taylor configs" "on" \
+"vlan" "Virtual LAN configuration tool" "on" \
+"vsftpd" "The Very Secure FTP (file transfer) daemon" "on" \
+"wget" "WWW/FTP retrieval tool" "on" \
+"whois" "Enhanced whois client" "on" \
+"wireless-tools" "Tools for wireless networking" "on" \
+"wpa_supplicant" "WPA/WPA2/IEEE 802.1X (wireless) Supplicant" "on" \
+"yptools" "NIS servers and clients" "on" \
+"ytalk" "Multi-user talk program" "on" \
+"zd1211-firmware" "Firmware for zd1211 USB wireless" "on" \
+2> $TMP/SeTpkgs
+if [ $? = 1 -o $? = 255 ]; then
+ rm -f $TMP/SeTpkgs
+ > $TMP/SeTnewtag
+ for pkg in \
+ModemManager NetworkManager alpine autofs biff+comsat bind bluez bluez-firmware bootp bridge-utils bsd-finger ca-certificates cifs-utils conntrack-tools crda curl cyrus-sasl dhcp dhcpcd dnsmasq dovecot ebtables elm epic5 ethtool fetchmail getmail gnupg gnupg2 gnutls gpa gpgme htdig httpd icmpinfo iftop inetd iproute2 ipset iptables iptraf-ng iputils ipw2100-fw ipw2200-fw irssi iw lftp libassuan libgcrypt libgpg-error libksba libmbim libmilter libmnl libndp libnetfilter_acct libnetfilter_conntrack libnetfilter_cthelper libnetfilter_cttimeout libnetfilter_log libnetfilter_queue libnfnetlink libnftnl libqmi libtirpc links lynx mailx mcabber metamail mobile-broadband-provider-info mtr mutt nc ncftp net-snmp net-tools netatalk netdate netkit-bootparamd netkit-ftp netkit-ntalk netkit-routed netkit-rsh netkit-rusers netkit-rwall netkit-rwho netkit-timed netpipes nettle netwatch network-scripts netwrite newspost nfacct nfs-utils nftables nghttp2 nmap nn npth ntp obexftp openldap-client openobex openssh openssl openvpn p11-kit php pidentd pinentry popa3d postfix ppp procmail proftpd pssh rdist rp-pppoe rpcbind rsync samba slrn snownews sshfs stunnel tcp_wrappers tcpdump telnet tftp-hpa tin traceroute ulogd uucp vlan vsftpd wget whois wireless-tools wpa_supplicant yptools ytalk zd1211-firmware \
+  ; do
+  echo "$pkg: SKP" >> $TMP/SeTnewtag
+ done
+ exit
+fi
+cat /dev/null > $TMP/SeTnewtag
+for PACKAGE in \
+ModemManager NetworkManager alpine autofs biff+comsat bind bluez bluez-firmware bootp bridge-utils bsd-finger ca-certificates cifs-utils conntrack-tools crda curl cyrus-sasl dhcp dhcpcd dnsmasq dovecot ebtables elm epic5 ethtool fetchmail getmail gnupg gnupg2 gnutls gpa gpgme htdig httpd icmpinfo iftop inetd iproute2 ipset iptables iptraf-ng iputils ipw2100-fw ipw2200-fw irssi iw lftp libassuan libgcrypt libgpg-error libksba libmbim libmilter libmnl libndp libnetfilter_acct libnetfilter_conntrack libnetfilter_cthelper libnetfilter_cttimeout libnetfilter_log libnetfilter_queue libnfnetlink libnftnl libqmi libtirpc links lynx mailx mcabber metamail mobile-broadband-provider-info mtr mutt nc ncftp net-snmp net-tools netatalk netdate netkit-bootparamd netkit-ftp netkit-ntalk netkit-routed netkit-rsh netkit-rusers netkit-rwall netkit-rwho netkit-timed netpipes nettle netwatch network-scripts netwrite newspost nfacct nfs-utils nftables nghttp2 nmap nn npth ntp obexftp openldap-client openobex openssh openssl openvpn p11-kit php pidentd pinentry popa3d postfix ppp procmail proftpd pssh rdist rp-pppoe rpcbind rsync samba slrn snownews sshfs stunnel tcp_wrappers tcpdump telnet tftp-hpa tin traceroute ulogd uucp vlan vsftpd wget whois wireless-tools wpa_supplicant yptools ytalk zd1211-firmware \
+ ; do
+ if grep "\(^\| \)$PACKAGE\( \|$\)" $TMP/SeTpkgs 1> /dev/null 2> /dev/null ; then
+  echo "$PACKAGE: ADD" >> $TMP/SeTnewtag
+ else
+  echo "$PACKAGE: SKP" >> $TMP/SeTnewtag
+ fi
+done
+rm -f $TMP/SeTpkgs

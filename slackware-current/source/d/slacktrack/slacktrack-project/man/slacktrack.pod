@@ -1,0 +1,949 @@
+=pod
+
+=head1 NAME
+
+slacktrack - build Slackware packages from B<.build> scripts
+
+=head1 SYNOPSIS
+
+B<slacktrack> B<[>optionsB<]> -p B<">packagefilenameB<"> B<">buildscriptB<">
+
+
+=head1 DESCRIPTION
+
+B<slacktrack> is a packaging tool to build Slackware packages 
+from simple B<.build> scripts, some of which can be found in the distribution
+source tree.  B<slacktrack> has many features available to eliminate the
+majority of the manual element involved with producing packages from
+these scripts.  B<slacktrack> uses the standard Slackware B<makepkg> program
+to produce the resulting packages.
+
+
+=head1 OPTIONS - GENERAL
+
+=over 4
+
+=item B<-h>, B<--help>
+
+Show the available options and exit
+
+=item B<-v>, B<--version>
+
+Show the version information and exit
+
+=back
+
+=head1 OPTIONS - SLACKWARE 'makepkg' PACKAGE MAKER 
+
+The values from these options are passed to the Slackware
+B<makepkg> tool.
+
+=over 4
+
+=item B<-p>, B<--package> <package_name>  
+
+Resulting tar file name of the package.  This will be in the format
+of B<name>-B<version>-B<arch>-B<build>.tgz
+
+For example: B<slacktrack>-B<@VERSION@>-B<i386>-B<1>.B<tgz>
+
+=item B<-s>,  B<--nosymlinks>
+
+Tell B<makepkg> not to search for symlinks in the package directory
+
+=item B<-r>,  B<--setrootowner>
+
+Tell B<makepkg> to set permissions on directories to 755 and owners to root.root
+
+See also B<--chown-bdirs-root-bin>
+
+=item B<--mpopts>
+
+Supply additional options to B<makepkg>.  
+
+Example: # B<slacktrack> --mpopts "--prepend" -Qnp foo-1.0-i486-1.tgz ./foo.build
+
+B<Note:> You B<must> include the additional options in either
+quotes (as shown in the example above) or single quotes otherwise slacktrack will take them
+as options to itself.
+
+=back
+
+=head1 OPTIONS - SPECIFIC SLACKTRACK OPTIONS
+
+=over 4
+
+=item B<-t>,  B<--notidy>
+
+Do not delete temporary package directory when slacktrack has finished.
+slacktrack uses a temporary work space directory in /var/tmp (by default).
+This directory contains the package.tgz contents.  This option can be
+useful when you are having difficulties with building the package, or
+for debugging slacktrack.
+slacktrack will inform you of the (randomly named) temporary directory
+when it has finished.
+
+=item B<-b>,  B<--buildstore> <directory> 
+
+Specify the location in which to store the built .tgz packages.
+By default this is B</tmp/built-slackwarepackages>, but you may wish
+to change it to another location.  If this directory does not exist 
+then slacktrack will default to using B</tmp>
+
+This directory also will contain any logs and the package description
+file (if specified).
+
+
+=item B<-l>,  B<--logfile> <filename>
+
+slacktrack logs every element of the compilation and build process
+that the B<build script> outputs along with slacktrack's own on-screen
+output.  The log file is especially useful for debugging a failed build.
+The default log path is B<E<lt>buildstore_pathE<gt>/E<lt>package_nameE<gt>.log>
+
+This option permits the user to specify a different directory for the
+logs rather than storing the .log in the same directory as the .tgz.
+
+=item B<-n>,  B<--nologging>
+
+Do not save the log file when slacktrack has finished.
+See B<--logfile> above for a description of the contents of the log file.
+
+The default is to log.
+
+=item B<-D>,  B<--md5sum>
+
+Create an MD5sum of the resulting package file in the package
+store directory (where the resulting package will be built; usually
+this is F</tmp>).  The MD5sum file will be the same name as the resulting 
+package file but with  B<.md5> suffixed (e.g. foobar-1.0-i486-5.tgz.md5).
+
+This option does nothing if the B<--nocreatetgz> option has been
+specified.
+
+=item B<-G>,  B<--gpg-sign> <key id>
+
+Sign the resulting package file with specified GnuPG key and
+placed the detached, armored signature in the package store directory (where
+the resulting package will be stored; usually this is F</tmp>). The GnuPG
+signature file will have the same name as the resulting package file but with
+an extra B<.asc> suffixed (e.g. foobar-1.0-i486-5.tgz.asc).
+
+This option does nothing if the B<--nocreatetgz> option has been specified.
+
+
+=item B<-z>,  B<--gzman>
+
+Slackware's standard is that all man pages should be gzipped.
+This option makes slacktrack gzip any man pages that exist within the
+directories F</usr/man>, F</usr/local/man> and F</usr/X11R?/man>.
+
+The default is not to gzip man pages.
+
+Also see the B<--gzman-no-symfix>, B<--gzinfo> and B<--gzinfo-no-symfix> options.
+
+=item B<-I>,  B<--gzinfo>
+
+Slackware's standard is that all GNU info pages should be gzipped.
+This option makes slacktrack gzip any info pages that exist within the
+directories F</usr/info> and F</usr/local/info>
+
+The default is not to gzip info pages.
+
+Also see the B<--gzinfo-no-symfix>, B<--gzman> and B<--gzman-no-symfix> options.
+
+=item B<-P>,  B<--delete-perllocalpod>
+
+Delete any B<perllocal.pod> files found in the package's /usr/lib directory.
+
+These files contain information about a system's Perl packages installed
+in addition to the vendor's Perl distribution.   Typically these files are
+created by the installation script of the additional Perl add-on package.
+
+However, they are snapshots of the particular system on which the Slackware
+package is made - and most likely will not reflect the target system's
+environment (the target is unlikely to have an identical set of additional
+Perl modules installed); thus these files should not be present in Slackware packages.
+
+The default is not to delete these files.
+
+=item B<-K>,  B<--delete-usrinfodir>
+
+Delete the package's /usr/info/dir file if it exists.  This file is
+a special file used by the GNU 'info' program to provide the user
+with a list of the info pages present on the system.
+Some software's Makefile will create a new 'dir' page that only contains
+information pertaining to the newly compiled software itself, rather than 
+appending to the existing list of software.
+
+In the main you will want to use this option to avoid replacing the original
+/usr/info/dir file.
+
+However, the default is not to delete this file.
+
+
+=item B<-x>,  B<--exclude> B<pattern for egrep>
+
+slacktrack traverses the filesystem using the UNIX 'find' utility and generates
+a 'snapshot' of the contents.  grep -E (or B<'egrep'>) is then used to remove
+a number of paths and specific files from this snapshot; this is because
+these paths/directories either are locations that should never be installation
+destinations for software, or are system files that are subject to change 
+moment to moment.
+
+This option allows you to replace the entire default pattern.
+
+By default, slacktrack excludes the following:
+
+EXCLUDE_LIST="${PWD}$|${PWD}|/etc/ntp/drift|/var/run/|/var/run$|/var/lib/dhcpcd|/var/lib/dhcpcd$|/etc/dhcpc/|/etc/dhcpc$|/var/cache/|/var/cache$|/run$|/run/|/media$|/media/|/srv$|/srv/|/selinux$|/selinux/|/var/lib/rpm|/var/lib/rpm$|/var/yp$|/var/yp/|/sys$|/sys/|/initrd$|/initrd/|/dev/bus$|/dev/bus/|/dev/char$|/dev/char/|/dev/rfkill|/dev/input$|/dev/input/|/dev/.udev/|/dev/.udev$|/dev/vc$|/dev/vc/|/dev/console|/dev/pts$|/dev/pts/|/dev/ptmx|/dev/tty|/var/log|/etc/mtab|/etc/resolv.conf|/etc/ld.so.cache|/tmp|/root|/proc|/var/tmp|/var/run/utmp|/var/spool/cron/cron|/var/lib/NetworkManager|/var/lib/NetworkManager$|/usr/man/whatis|/usr/local/man/whatis|/var/lib/pgsql$|/var/lib/pgsql|/var/lib/mysql$|/var/lib/mysql"
+
+This is a pattern for grep -E.  Please familiarise yourself with the grep man page
+if you wish to make changes.  
+
+It is recommended that these defaults are unchanged.
+
+In addition, slacktrack excludes the PWD (present working directory) from which slacktrack
+was invoked.  This allows a package's source directory to be in a non-default excluded
+path and receive updates (such as log files) and avoid slacktrack including them in the
+newly created package file.
+
+=item B<-o>,  B<--no-fs-search> B<pattern for find -regex (pre and post file system scans)>
+
+Prior to beginning a build, and post build, slacktrack uses the 'find' command to scan
+the OS' file system, and stores these records.  The difference between the two records are used to
+determine the package's contents.
+
+There are some directory paths that should never be included within packages.  By default
+this list is:
+
+SEARCH_EXCLUDE_LIST='mnt\|sys\|proc\|tmp\|home\|lib/udev/devices'
+
+B<Note:> The list uses escaped pipes and does not have a leading forward slash. The regex is
+applied to the --rootdir argument, so the excluded paths should be relative to that.
+
+This is a good set for a default Slackware installation, but some users have data
+in other directories which should never be included in a package.  Scanning these additional
+directories takes extra time and serves no purpose.
+
+While the B<-x,--exclude> operator is applied to the final package contents list, B<-o, --no-fs-search> is applied
+before and can be used to significantly speed up the searches that build the before/after file lists.
+
+=item B<-d>,  B<--depend> B<'>package1,package2B<'> 
+
+Ensure the given Slackware packages are installed before executing
+the build script.
+
+This is a primative method of build-time dependency checking.
+It simply prevents the build from failing, or a certain feature from
+being compiled out because (at build time) you had not got a certain
+library installed.
+
+The packages are wildcarded by slacktrack, thus you do not have to specify
+version information.  To depend on 'oggutils' being installed, you would
+specify B<-d "oggutils"> and slacktrack would find any installed version of the
+Slackware oggutils package.
+
+No depdendencies are checked by default.
+
+=item B<-j>,  B<--striplib>
+
+The Slackware standard is to run B<strip --strip-unneeded> over any 
+shared objects.  This option causes slacktrack to strip any .so objects in 
+/usr/lib, /usr/lib64, /lib64, /lib, /usr/local/lib and /usr/libexec
+
+Also see option -S, --stripallexec
+
+The default is not to strip.
+
+
+=item B<-A>,  B<--striparchives>
+
+This option causes slacktrack to run the B<strip> program against any
+.a (archive) files that it finds in the package's directory.  
+
+Only debugging symbols are stripped (B<strip -g>).
+
+For information about such files you should read ar(1) and ranlib(1).
+
+B<Note:> This option strips any .a files it finds within the package's directory 
+rather than limiting itself to a pre-set list of directories (as with
+the other strip options that slacktrack provides).
+
+Also see option -S, --stripallexec
+
+The default is not to strip.
+
+
+=item B<-k>,  B<--stripbin>
+
+The Slackware standard is to run B<strip --strip-unneeded> over any 
+binary files.  This option causes slacktrack to strip any binaries found
+in /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin and
+/usr/X11R?/bin.
+
+Also see option -S, --stripallexec
+
+The default is not to strip.
+
+
+=item B<-S>,  B<--stripallexec>
+
+This option performs B<--striplib>, B<--stripbin> and B<--striparchives> but rather than
+limiting itself to a pre-set list of directories, it strips any files (with execute permissions) 
+that the B<file> program reports as being unstripped ELF binaries.  This includes
+B<.a archives>.
+
+The purpose of this command is to strip binaires and shared object files
+that are B<not> in the normal locations.  An example of a known deviations is B</opt>
+
+Using this option is slower (especially when used with packages containing many
+files in deep directory structures) than using B<--striplib>, B<--stripbin> or B<--striparchives> 
+options individually.
+
+If this option is also specified with B<--striplib>, B<--stripbin> or B<--striparchives> then
+those options are dropped in favour of the B<--stripallexec> mode of operation.
+
+The default is not to strip objects of any type.
+
+=item B<-c>,  B<--createdescription>
+
+From Slackware 8.1 and upwards, the package series directories contain
+a B<name>-B<version>-B<arch>-B<build.txt> along with the package.
+
+Using this option causes slacktrack to create such a file in the 
+build store directory (see the B<--buildstore> option)
+
+The default is not to create a description file.
+
+=item B<-e>,  B<--chown-bdirs-root-bin>
+
+Prior to Slackware v11, the standard was to have the /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/sbin, /usr/local/bin and /usr/X11R?/bin directories owned by root:bin.  
+
+Slackware v11 changed binary directory ownerships to 'root:root'. 
+B<If you are building packages for a version of Slackware prior to version 11,
+you should use this operator>.
+
+B<Note:> If you use the B<--setrootowner> option then B<makepkg> will
+reset the directory permissions to root.root
+
+The default is not to set these ownerships.
+
+=item B<-f>,  B<--chown-bfiles-root-bin>
+
+Prior to Slackware v11, the standard was to have binaries contained within 
+the /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/sbin, /usr/local/bin 
+and /usr/X11R?/bin directories owned by root:bin.
+
+B<If you are building packages for a version of Slackware prior to version 11,
+you should use this operator>.
+
+The default is not to set these ownerships.
+
+=item B<-m>,  B<--chown-bins-root-root>
+
+The Slackware standard is to have the /bin, /sbin, /usr/bin, /usr/sbin,
+/usr/local/sbin, /usr/local/bin and /usr/X11R?/bin directories owned by root:root.
+
+If you are intending on building Slackware compliant packages, please use this
+operator.  
+
+B<If you are building packages for Slackware versions prior to 11,
+please see the two operators listed above>.
+
+The default is not to set these ownerships.
+
+=item B<-g>,  B<--chmod644docs>
+
+Often when installing documents, the permissions vary wildly. 
+It is preferable if documents are chmod 644 and owned by
+the user 'root' and group 'root'.
+
+Using this option causes slacktrack to set all files contained
+within F</usr/doc> to chmod 644 and runs chmod -R root.root on the package's
+F</usr/doc> directory.
+
+The default is not to set these permissions.
+
+=item B<-U>,  B<--nousrtmp>
+
+When compiling some programs (such as Apache), slacktrack sometimes picks up
+the /usr/tmp symlink.  This symlink is part of another Slackware package
+and therefore should not be present in other packages.
+
+Using this option causes slacktrack to prevent this symlink from appearing
+in the resulting package.
+
+This behaviour is not the default.
+
+=item B<-Q>, B<--standard>
+
+This option is the combination of the following slacktrack's options:
+B<--gzman> (B<-z>), B<--gzinfo> (B<-I>), B<--delete-usrinfodir> (B<-K>),
+B<--stripallexec> (B<-S>), B<--createdescription> (B<-c>),
+B<--chown-bdirs-root-bin> (B<-m>), B<--chown-bins-root-root> (B<-f>),
+B<--chmod644docs> (B<-g>), B<--delete-perllocalpod> (B<-P>) and B<--nousrtmp> (B<-U>). 
+
+It can be considered the quick way to build a package which follows 
+the Slackware standard without specifying each
+individual command line switch.
+
+You would use this option as follows:
+
+# B<slacktrack> -Qp foo-2.0-i486-1.tgz ./foo.build
+
+
+=item B<-T>,  B<--tempdir> B<'><path>B<'>
+
+slacktrack uses a temporary work space to store the package contents.
+By default, slacktrack will choose one in /var/tmp.  However, you may wish
+to change it to another location should there not be enough space in 
+/var/tmp to hold the temporary files.
+
+Please note that if the temporary directory (either automatically chosen by
+slacktrack or specified using this operator) already exists, slacktrack
+will exit with error code B<6>; the directory should be deleted prior
+to invoking slacktrack.
+
+=item B<-C>,  B<--nocreatetgz>
+
+Do not execute the Slackware B<makepkg> program when the build script
+finishes.  You may wish to use this option if you want to run makepkg
+by hand.
+
+Using this option implies B<--notidy>
+
+The default is to execute B<makepkg>
+
+=item B<-L>,  B<--nologhardlinks>
+
+Some software distribution archive build scripts will use ln (hard link)
+instead of ln -s (soft link).  Hard links which should not be 
+allowed to make their way into a package that is to be distributed.
+
+By default, hard links are logged to screen and an additional 
+.hardlinks.log file will be created in the build store directory.
+
+=item B<-O>,  B<--chmod-og-w>
+
+Run 'chmod -R og-w' over the package directory.
+
+Some packages (such as PHP 4.3.0) install globally writeable files 
+when it should not.  This option runs chmod -R og-w over the entire
+package directory.
+
+This behaviour is not the default.
+
+=item B<-Z>,  B<--gzman-no-symfix>
+
+Do not repair broken man page symlinks caused by the B<--gzman> option
+
+Some man pages are symlinks to other man pages.  When the
+original file is gzipped, its name changes to name.x.gz
+and thus the symlink is broken.  
+
+This option repairs such broken symlinks by renaming the 
+symlink to name.x.gz and pointing it to the new .gz man page file.
+The symlink also has to be named .gz otherwise the B<man> program
+fails because it doesn't know that it is expecting a gzipped file.
+
+The default behaviour is to repair any broken symlinks.
+
+=item B<-F>,  B<--gzinfo-no-symfix>
+
+Do not repair broken info page symlinks caused by the B<--gzinfo> option
+
+Some info pages are symlinks to other info pages.  When the
+original file is gzipped, its name changes to name.gz
+and thus the symlink is broken.
+
+This option repairs such broken symlinks by renaming the
+symlink to name.gz and pointing it to the new .gz info page file.
+
+The GNU B<info> program is capable of working with broken symlinks
+but it is desirable to have the symlink corrected.
+
+The default behaviour is to repair any broken symlinks.
+
+
+=item B<-M>, B<--extra-mandir> <path>
+
+Append additional man page directories to the default list (F</usr/man>, F</usr/local/man>, F</usr/X11R?/man>).
+
+You would want to use this option if you are storing man pages in non-system
+locations such as /opt/kde/man and wish to gzip them using slacktrack's B<--gzman> option.
+
+Extra paths can be comma separated as shown below:
+ B<# slacktrack --extra-mandir /opt/kde/man,/opt/prog/man>
+
+B<Warning:> Do B<not> specify paths other than directories that will
+contain man pages, otherwise normal files will become gzipped !
+
+
+=item B<-W>, B<--extra-infodir> <path>
+
+Append additional info page directories to the default list (F</usr/info>, F</usr/local/info>).
+
+You would want to use this option if you are storing info pages in non-system
+locations such as /opt/kde/info and wish to gzip them using slacktrack's B<--gzinfo> option.
+
+Extra paths can be comma separated as shown below:
+ B<# slacktrack --extra-infodir /opt/kde/info,/opt/prog/info>
+
+B<Warning:> Do B<not> specify paths other than directories that will
+contain info pages, otherwise normal files will become gzipped !
+
+
+=item B<-E>, B<--extra-libdir> <path>
+
+Append additional shared object (library) directories to the default list (/lib, /usr/lib, /usr/local/lib).
+
+You would want to use this option if you are storing shared objects in non-standard locations
+and wish slacktrack to strip them using the B<--striplib> option.
+
+Multiple paths may be supplied by comma separating them.
+
+=item B<-B>, B<--extra-bindir> <path>
+
+Append additional binary directories to the default list 
+(/bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin, /usr/X11R?/bin).
+
+You would want to use this option if you are storing binaries in non-standard locations
+and wish slacktrack to strip them using the B<--stripbin> option.
+
+Multiple paths may be supplied by comma separating them.
+
+=item B<-N>, B<--strip-prog> <path>
+
+Specify a different binary name for the B<strip> program.  You may need
+to use this option if you are cross compiling and wanting to strip
+the resulting binaries.
+
+Example:
+# B<slacktrack> --strip-prog /usr/local/arm/2.95.3/bin/arm-linux-strip -mnzSIP foo-2.0-arm-1.tgz
+
+By default slacktrack will use the version of strip that it finds 
+in the $PATH.
+
+
+=item B<-R>, B<--run-after> <command>
+
+Run the specified command/script after the specified build script has finished
+and prior to creating the package.
+
+The purpose of this is to allow the user to inspect and if required, modify
+the contents of the package before the package file is created.
+
+B<Note:> The CWD (working directory) is changed to the package's root
+directory before the specified command is executed.  This allows you to
+specify (for example) /usr/bin/mc (Midnight Commander) and have
+it automatically display the contents of the package.
+
+Example:
+
+The following slacktrack command would run the Midnight Commander program
+F<mc> prior to creating the package B<foo-2.0-arm-1.tgz>.
+
+# B<slacktrack> -Rmc -mnzSIP foo-2.0-arm-1.tgz
+
+By default slacktrack does not execute any commands prior to creating
+the package.
+
+=item B<--run-after-withlog> <command>
+
+This option is the same as B<-R>, B<--run-after>, with the only difference being that
+any output from that script is logged to the slacktrack build log.
+
+If any of your post build scripts perform any checks that should be inspected
+manually after the package build completes, you'd be best choosing this option; but
+note that logging may not work properly for any scripts that require keyboard
+input or use curses based applications (such as 'dialog').
+
+=item B<--showdeps>
+
+This option lists the B<installed> Slackware packages (those that appear in 
+F</var/log/packages>) that contain shared libraries upon which your new 
+package depends.  
+
+The purpose of this option for interest only but you may 
+find it useful to ensure that you haven't built a package on a box that 
+Xfree86 (for example) installed but intend to install and use the package 
+on a box that does not, when the package has become linked against X's 
+libraries.
+
+Using this option will also flag up 'orphaned' libraries (ones that 
+do not belong to an installed package, which is especially handy 
+if you're going to be distributing a package).
+
+The package dependencies (and orphans, if any) will be logged (regardless 
+of whether logging is turned off) in text files that will be stored 
+in the package build store (usually /tmp) under the following names:
+
+packagename.orphaned_ld_deps.log
+
+packagename.ld_deps.log
+
+B<Note:> Slackware does not have any form of dependency checking and
+as such any file you produce will not be considered by
+pkgtools.  However, third parties have developed a standard that uses
+a single file to assist with the handling of automated dependency checking 
+(when the package is installed via 3rd party package managers such as 
+swaret, slapt-get et al).  This file resides within the package as 
+F</install/slack-required>. You may like to use this feature of 
+slacktrack to help you generate such a file.
+
+The default behaviour is not to display dependencies.
+
+=item B<-X>, B<--delete-overlapping>
+
+After the filesystem comparison has been completed, slacktrack determines whether there
+are any files that overlap between the new package and those already installed on the
+running system.  Normally there should be no overlapping files; however, some packages
+that provide additional Python or Perl libraries often re-process or re-compile some parts
+of the vendor-supplied package contents, causing slacktrack to correctly identify that
+the files have changed after the package build process has finished.
+
+It is undesirable for packages to have overlapping files because it is not
+possible to identify which is the master package.  One of the side effects may be that
+the end user has problems with the installation order of the packages.
+
+slacktrack will identify any overlapping files and match them with the package(s) to which the file also belongs.
+Using this operator, slacktrack will erase any overlapping files from the content of the newly
+created package.
+
+The best practice is to review the package build log and investigate any overlapping files.  
+It is the responsibility of the package builder (you) to determine why the file is overlapping
+and decide what to do with them.
+
+=item B<--allow-overlapping>
+
+Allow the package to contain files that overlap with packages that are already installed
+on the system.  This is the default behaviour, if if you like to use slacktrack's -Q option to build
+an otherwise Slackware standards compliant package, you will need to supply this option afterwards
+to permit files to overlap.
+
+=item B<--touch-filesystem-first>
+
+Use the UNIX touch(1) tool to touch (set the objects' time stamps to the current system time) 
+a pre-defined list of directories and their contents prior to generating the
+snapshot of the filesystem.
+
+The pre-defined paths are:
+    /opt /bin /boot /dev /etc /install /lib /sbin /usr /var
+
+It B<excludes> by default '/lib/udev/devices' since this contains
+live device data that doesn't take kindly to being touched.
+You may see errors from 'touch' about certain binaries, including
+/sbin/vol_id because this is a symlink into /lib/udev/devices.
+
+This is intended to be used on a throwaway development installation
+that's reinstalled daily or more often. 
+
+The reason behind this is that if you run slacktrack and your build
+partially fails, then it will leave some data on the filesystem.
+You then fix the problem and re-try: this time the build may succeed.
+However, if the original data on the filesystem from the first
+part-failed build has *not* changed (for example, if it was some static data that
+was copied with cp -a (preserved time stamp & ownership)) between
+the first part-failed build and second successful build, slacktrack
+will miss this data from the final package file.
+
+This option updates the file stamps contained within standard package
+directories, therefore allowing slacktrack to detect changes
+(even if the data contains an *old* time stamp from 1982, it will still
+detect the difference).
+
+B<Note:> This is an expert option and is not recommended for use unless
+you are working on a throw-away development installation.
+
+=item B<--touch-filesystem-faster>
+
+This operator performs the same function as B<--touch-filesystem-first> except
+that it uses a faster method; except that potentially speed comes at a price.
+
+If this method finds files or directories with spaces in the name, it
+may create empty files in your package's source build directory.
+
+For example:
+
+B</usr/doc/prog-2.0/FILE WITH A SPACE IN IT>
+
+You may find that you have six new files, "FILE", "WITH", "A", "SPACE," "IN", and "IT" existing
+in your package's build source directory.
+
+However, if you know that there are no files or directories with spaces in their names,
+feel free to use this option in preference to B<--touch-filesystem-first>.
+
+B<Note:> This is an expert option and is not recommended for use unless
+you are working on a throw-away development installation.
+
+
+=item B<-Y>, B<--delete-orphaned-pyc> 
+
+After the build has completed, this option scans the contents of the new package,
+and if it finds any '*.pyc' files without a matching '*.py' file, the *.pyc file 
+will be removed from the package contents (but not from the filesystem).
+
+This scan only checks the content of the B<package> not the filesystem.  There may be
+a corresponding '*.py' file on the filesystem, but it wasn't created or modified
+during the build process of this particular package.
+
+When building Slackware's 'ap/linuxdoc-tools' package, we found that 'gnome doc-tools' 
+was causing some Python '*.py' system files from the Python package to be recompiled 
+(generating '*.pyc' files) but was not modifying the original '*.py' files.  
+This meant that slacktrack was correctly detecting the changed '*.pyc' files and including
+them in the 'linuxdoc-tools' package; but this meant that we had file overlap
+with the 'd/python' package.  Since the original '*.py' files were not modified, 
+and the '*.pyc' files already existed in the Slackware Python package, they didn't
+need to be included in the 'linuxdoc-tools' package - and the overlapping files 
+would have caused problems with package upgrades.
+
+This option is not on by default because it's quite conceivable that the user
+may wish to include '*.pyc' files without '*.py' files.
+
+If the directories and parent directories containing the *.pyc files become
+empty after this operation, then these directories are removed from the package.
+
+=back
+
+=head1 SPECIAL SLACKTRACK ENVIRONMENT VARIABLES
+
+slacktrack makes a small number of environment variables available to the
+build script(s).  The variables allow build scripts to gain access to 
+various inner-workings of slacktrack.
+
+=over 4
+
+=item B<SLACKTRACKFAKEROOT>
+
+This directory is the 'root' directory of the package.  You may wish
+to access this directory during build or post-build time so that you can perform
+special operations that slacktrack itself cannot perfom.
+
+However, the to-be-packaged contents won't exist in this directory until
+B<after> the build script finishes and the package has installed itself
+to the filesystem; but you can still pre-populate it with content if you wish,
+although typically you'd perform these actions directly onto the filesystem
+and let slacktrack take care of packaging it.
+
+For example, whilst slacktrack is able to strip all ELF objects, it may
+be that a small number of the objects will not function when stripped, yet 
+the rest will.  Therefore you cannot use slacktrack's stripping options
+to accomplish this task; instead you can access the package's directory
+directly.  
+
+You could do this using the following script, called from slacktrack
+using the B<-R, --run-after> operator:
+
+=item # B<slacktrack> -R $CWD/postbuildfixes.sh -Qp foo-1.0-i486-2.tgz ./foo.build
+
+
+B<Example post build script 1:>
+
+
+Where the 'postbuildfixes.sh' script contains:
+
+B<( cd ${SLACKTRACKFAKEROOT} 
+      strip usr/bin/foo
+      strip bin/bar ) >
+
+
+B<Example post build script 2:>
+
+Another example would be to remove known files that were detected by slacktrack
+as being changed/added/updated during the build process, but that we do not want
+to be packaged.  This is an easier method than using the B<-x,--exclude> operator.
+
+B<# Incase you had CUPS running:
+  rm -rf etc/cups etc/printcap
+  # crond:
+  rm -rf var/spool/cron
+  rmdir var/spool
+  # perllocal.pod files don't belong in packages.
+  # SGMLSPL creates this:
+  find . -name perllocal.pod -print0 | xargs -0 rm -f
+  # Some doc dirs have attracted setuid.
+  # We don't need setuid for anything in this package:
+  chmod -R a-s . 
+>
+
+B<Note:> You may use any shell commands once inside the package's root directory
+but be careful never to specify any paths within the B<real> root directory (for example
+F</usr> rather than F<usr>) in any of your commands.
+
+=back
+
+
+=over 4
+
+
+=item B<SLACKTRACKSCRATCHDIR>
+
+This directory provides a temporary 'scratch' directory for use by the
+build scripts.  Its purpose is to allow the author to simplify the build scripts 
+by removing the need to create and manage temporary directories where
+the source archives will be unpacked.
+
+Example usage:
+
+B<   cd ${SLACKTRACKSCRATCHDIR}
+   tar jxf /path/to/source/ball.bz2
+   cd ball-2.3
+   ./configure && make install >
+
+This directory is subject to the same command line options as the
+rest of the slacktrack temporary build tree; if --notidy is specified
+then this directory will remain, otherwise it is deleted.
+
+=back
+
+
+=head1 EXAMPLES
+
+=over 4
+
+=item # B<slacktrack> -p foo-0.10-i386-1.tgz '/bin/sh -x foo.build'
+
+This is the minimum selection of options you must pass to slacktrack.
+You are simply telling slacktrack the name of the resulting package file
+and specifying that slacktrack should launch "foo.build" via "/bin/sh"
+
+=item # B<slacktrack> -jmkznp bar-3.20-sparc-5.tgz ./bar.build
+
+We are telling slacktrack to strip libraries, chown root:root /bin 
+/sbin, /usr/bin, /usr/sbin, /usr/local/sbin, /usr/local/bin and /usr/X11R?/bin directories, 
+chown root:root files in the binary dirs, strip binaries found in the binary dirs listed above 
+and gzip man pages.  
+
+The resulting Slackware package name is 'bar-3.20-sparc-5.tgz'
+
+Note that I have compounded the various options;  the above option list could
+also be specified as B<-j -m -k -z -n -p bar-3.20-sparc-5.tgz>
+
+=back
+
+There are various example scripts in F</usr/doc/slacktrack-@VERSION@/examples>
+
+=head1 WARNINGS
+
+=over 4
+
+
+=item B<Do not use slacktrack on production machines>
+
+Please do not run slacktrack on a production machine.  Infact, it is advisable
+not build B<any> packages (either B<SlackBuild> or B<.build>) on production machines.
+
+Always use a development box.
+
+
+=item B<Slackware versions>
+
+slacktrack has only been tested on Slackware 8.1 & Slackware-9 and Splack (Slackware on SPARC, 
+using Slackware 9's pkgtools & tar-1.13).
+
+It may works on previous releases of Slackware, it may not.
+
+=item B<slacktrack default working space>
+
+By default, slacktrack puts its work space in B</var/tmp/>
+
+It is essential that you have enough disk space on the
+partition on which /var/tmp resides.  If you do not then you 
+can pass B<--tempdir> to slacktrack to change the base temporary directory:
+
+# B<slacktrack> --tempdir /tmp/slacktrack -jefknzp "foobar-4.1-sparc-2.tgz" "/bin/sh foobar.build">
+
+=back
+
+=head1 RETURN VALUES
+
+These are the exit codes that slacktrack will produce when it encounters
+certain problems. You may wish to use these return codes to indicate
+success or failure when slacktrack is called from unattended auto builder
+scripts. 
+
+=over 4
+
+=item B<0>
+Clean exit
+
+slacktrack exited without encountering any errors.
+This is the default exit code.
+
+=item B<1>
+Reserved
+
+This error code is not currently used.
+
+=item B<2>
+Missing command line parameters
+
+slacktrack was called with insufficient parameters or a parameter 
+that requires a value was specified but no value was given.
+
+=item B<3>
+Slackware package dependencies failed
+
+slacktrack was asked to check that certain Slackware packages were installed.
+It didn't find at least one of the specified packages.
+
+=item B<4>
+Missing external helper 
+
+slacktrack failed to find a required external helper.  Currently the external helpers
+is the Slackware 'makepkg' utility.
+
+=item B<5>
+Zero files found in slacktrack's package-content-tracking working directory
+
+slacktrack failed to find any files installed as part of the build process.
+
+This error may be due to any of the following reasons:
+
+B<1.> The build script or command line specified did not exist or could not be executed.
+
+B<2.> The build script/command line exists but failed to be executed or executed and died with an error
+
+B<3.> The build script/command worked as expected but slacktrack failed to detect any activity.
+
+It is suggested that you run B<slacktrack> with the --notidy option and inspect
+the working space directory in /var/tmp/ to discover what the problem is.
+
+=item B<6>
+Possibly unsafe to continue operation.
+
+slacktrack determined that it was possibly unsafe to continue.  This may be
+because it found the temporary directory to already exist (slacktrack needs
+to wipe the temporary directory), or it may get to a point where it needs to
+overwrite an existing file which would require manual intervention.
+
+Since slacktrack is designed to be scriptable, it will never prompt for human
+interaction - just fail with pre-set error codes which can be collected by 
+caller scripts.
+
+=back
+
+=head1 FILES
+
+F</usr/bin/slacktrack> the slacktrack script
+
+F</usr/doc/slacktrack-@VERSION@/LICENCE> a copy of the GPLv2 licence
+
+F</usr/doc/slacktrack-@VERSION@/OVERVIEW> an overview of the Slackware package system & build scripts
+
+F</usr/doc/slacktrack-@VERSION@/PACKAGE_BUILDING_CHECKLIST> a checklist for package builders
+
+=head1 AUTHOR
+
+Stuart Winter <mozes@slackware.com> 
+
+=head1 SEE ALSO
+
+=over 4
+
+B<makepkg>(8), B<installpkg>(8), B<explodepkg>(8), B<removepkg>(8), B<pkgtool>(8), B<upgradepkg>(8), B<slackdtxt>(8)
+
+=back
+=cut
+
+

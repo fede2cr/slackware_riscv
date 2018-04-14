@@ -1,0 +1,137 @@
+slacktrack version 2.00
+Release notes: 17th September 2008
+===================================
+
+Highlights:
+-----------
+
+slacktrack no longer uses 'installwatch' to track the installation
+process -- what was previously called 'altertrack' has been turned
+into 'slacktrack'.
+
+slacktrack's method of tracking package installations is to
+have the package installed directly onto the host's filesystem.
+
+This is for a number of reasons:
+
+ 1.  installwatch is ill maintained and was failing to work correctly
+     with new versions of glibc and GNU 'coreutils'.
+
+ 2.  installwatch could not track statically compiled binaries, 
+     meaning that if a statically compiled binary was used to
+     manipulate the filesystem in any way, these manipulations would
+     not be reflected in your package contents.
+
+ 3.  With virtualisation -- QEMU, VMWare, SUN's VirtualBox -- being so
+     readily available, and allowing filesystem 'snapshots', it's
+     easier and easier to spin up a development operating system and
+     build and install directly onto the root filesystem, thus getting
+     a complete package.
+
+Upgrading your build scripts from slacktrack version 1.x
+--------------------------------------------------------
+
+1.  slacktrack internal variables
+    -----------------------------
+
+    $SLACKTRACKFAKEROOT
+
+    This variable points to the location of the package's
+    root filesystem (usually /var/tmp/<someplace>).
+    Using slacktrack 1.x, you could perform operations on the 
+    package contents from your build script *during* the build
+    process.
+
+    In slacktrack 2.x, the package root directory is only populated
+    after the build script has finished.
+
+    However, the variable can still be used from a post-build
+    script.  
+    You can use slacktrack's '-R' operator to specify a post-build
+    script.  In the example below, the post build script is
+    called 'postbuildfixes.sh' and resides in the same directory
+    as the 'trackbuild' script.
+
+ **  Note: Ensure that your post-build script is chmod 755. **
+
+# Launch the build script:
+altertrack \
+   --notidy \
+   --showdeps \
+   -T $TMP \
+   -l $CWD/build.$ARCH.log \
+   -R $CWD/postbuildfixes.sh \
+   -b $PKGSTORE \
+   -zIKASmg \
+   -Ocp $PKGNAM-$PKGVERSION-$ARCH-$BUILD.tgz ./linuxdoc-tools.build
+
+   The contents of this post build script can be something such as:
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#!/bin/bash
+
+# Once altertrack has determined what the contents of the package
+# should be, it copies them into $SLACKTRACKFAKEROOT
+# From here we can make modifications to the package's contents
+# immediately prior to the invocation of makepkg: altertrack will
+# do nothing else with the contents of the package after the execution
+# of this script.
+
+# If you modify anything here, be careful *not* to include the full
+# path name - only use relative paths (ie rm usr/bin/foo *not* rm /usr/bin/foo).
+
+# Enter the package's contents:
+cd $SLACKTRACKFAKEROOT
+
+# OpenSP creates this symlink; we delete it.
+if [ -L usr/share/doc ]; then
+   rm -f usr/share/doc
+fi
+
+# Incase you had CUPS running:
+rm -rf etc/cups etc/printcap
+# crond:
+rm -rf var/spool/cron
+rmdir var/spool
+
+# perllocal.pod files don't belong in packages.
+# SGMLSPL creates this:
+find . -name perllocal.pod -print0 | xargs -0 rm -f
+
+# Some doc dirs have attracted setuid.
+# We don't need setuid for anything in this package:
+chmod -R a-s .
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+2.  Build script changes
+    --------------------
+
+    If your build scripts were more sophisticated and took advantage of
+    the way installwatch used a pseudo root filesystem, please be acutely
+    aware that your build script now runs on the host's live operating system;
+    so you need to be more careful.  However, as suggested -- run only on development
+    installations.
+
+3.  Additional files creeping into the packages
+    -------------------------------------------
+
+    Due to some daemons making changes to their config files whilst your build
+    is in flight, you may find some additional files have crept into your package
+    which you were not expecting.
+
+    You may wish to turn off the following daemons before starting a build:
+    CUPS
+    crond
+    sendmail
+    ypbind (NIS)
+    ypserv (NIS)
+
+    If you look at the example post build script above, you can see that it
+    removes some CUPS and crond residue.
+    Whilst it would be possible to remove these paths from slacktrack's scan
+    locations, some users may wish their package to place data in those directories;
+    so you need to make your own adjustments and checks for this.
+
+
+END.

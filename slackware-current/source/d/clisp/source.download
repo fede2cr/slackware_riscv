@@ -1,0 +1,14 @@
+# Pull the latest clisp sources from the upstream mercurial repository:
+rm -rf clisp-2.49
+hg clone http://hg.code.sf.net/p/clisp/clisp clisp-2.49
+# Determine date and changeset for tarball labeling:
+DATE="$(date -d "$( cd clisp-2.49 ; hg parent | grep date: | cut -b 14- | cut -f 1 -d +)" +"%Y%m%d")"
+CHANGESET="$( cd clisp-2.49 ; hg parent | grep changeset: | cut -f 3 -d :)"
+# Don't package .hg:
+rm -fr clisp-2.49/.hg*
+# Create tarball:
+mv clisp-2.49 clisp-2.49.${DATE}.${CHANGESET}  
+tar cf clisp-2.49.${DATE}.${CHANGESET}.tar clisp-2.49.${DATE}.${CHANGESET}
+plzip -9 -n 6 clisp-2.49.${DATE}.${CHANGESET}.tar
+# Clean up:
+rm -rf clisp-2.49.${DATE}.${CHANGESET}

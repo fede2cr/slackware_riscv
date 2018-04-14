@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+p2c: p2c (Pascal to C translator)
+p2c:
+p2c: P2c is a tool for translating Pascal programs into C. The input
+p2c: consists of a set of source files in any of the following Pascal
+p2c: dialects: HP Pascal, Turbo/UCSD Pascal, DEC VAX Pascal, Oregon
+p2c: Software Pascal/2, Macintosh Programmer's Workshop Pascal,
+p2c: Sun/Berkeley Pascal, Texas Instruments Pascal, Apollo Domain Pascal.
+p2c: Modula-2 syntax is also supported. Output is a set of .c and .h
+p2c: files that comprise an equivalent program in any of several dialects
+p2c: of C.
+p2c:

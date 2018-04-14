@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+patchelf: patchelf (tool to modify ELF binaries/libraries)
+patchelf:
+patchelf: PatchELF is a utility for modifying an existing ELF executable or
+patchelf: library. It can change the dynamic loader ("ELF interpreter") of an
+patchelf: executable, modify the RPATH, and add/change/remove declared
+patchelf: dependencies on dynamic libraries.
+patchelf:
+patchelf: PatchELF was written by Eelco Dolstra.
+patchelf:
+patchelf: Homepage: http://nixos.org/patchelf.html
+patchelf:

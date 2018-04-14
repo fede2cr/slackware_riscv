@@ -1,0 +1,190 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2010, 2011, 2012, 2015, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=subversion
+VERSION=${VERSION:-$(echo subversion-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-4}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-subversion
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf subversion-$VERSION
+tar xvf $CWD/subversion-$VERSION.tar.?z* || exit 1
+cd subversion-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --with-apache-libexecdir=/usr/lib${LIBDIRSUFFIX}/httpd/modules \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/subversion-$VERSION \
+  --enable-shared \
+  --disable-static \
+  --with-apr=/usr \
+  --with-apr-util=/usr \
+  --with-apxs=/usr/bin/apxs \
+  --with-zlib=/usr \
+  --with-pic \
+  --with-kwallet \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+make install-tools DESTDIR=$PKG || exit 1
+make install-docs DESTDIR=$PKG || exit 1
+
+# Install python bindings
+make swig-py
+make install-swig-py DESTDIR=$PKG
+PYTHON_VER=$(python -c 'import sys; print "%d.%d" % sys.version_info[:2]')
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/python${PYTHON_VER}/site-packages
+mv $PKG/usr/lib${LIBDIRSUFFIX}/svn-python/* \
+  $PKG/usr/lib${LIBDIRSUFFIX}/python${PYTHON_VER}/site-packages
+rmdir $PKG/usr/lib${LIBDIRSUFFIX}/svn-python
+
+# Perl bindings
+make swig-pl-lib
+make install-swig-pl-lib DESTDIR=$PKG
+( cd subversion/bindings/swig/perl/native
+  perl Makefile.PL
+  make install_vendor DESTDIR=$PKG
+)
+eval $(perl '-V:archlib')
+mv $PKG/$archlib/perllocal.pod $PKG/$archlib/subversion.pod
+
+# Ruby bindings
+make swig-rb
+make install-swig-rb DESTDIR=$PKG
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Remove rpaths:
+for file in $(find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : 2> /dev/null) ; do
+  if [ ! "$(patchelf --print-rpath $file 2> /dev/null)" = "" ]; then
+    patchelf --remove-rpath $file
+  fi
+done
+
+rm -rf $PKG/usr/info
+# Something doesn't honor --mandir
+mv $PKG/usr/share/man/man3 $PKG/usr/man
+gzip -9 $PKG/usr/man/man?/*
+rmdir $PKG/usr/share/man
+
+# What is this junk for?  Since I don't know, I'll erase it.  :-)
+rm -rf $PKG/usr/build
+
+mkdir -p $PKG/usr/doc/subversion-$VERSION
+cp -a \
+  BUGS COMMITTERS COPYING* HACKING INSTALL README TRANSLATING doc \
+  $PKG/usr/doc/subversion-$VERSION
+# too big && useless for most || if you think not, can be found in the source tarball
+rm -rf $PKG/usr/doc/subversion-$VERSION/doc/tools
+# Add the HTML svn book:
+( cd $PKG/usr/doc/subversion-$VERSION
+  tar xf $CWD/svn-book-html.tar.bz2
+  mv svn-book-html book
+  cd book
+  chown -R root:root .
+  find . -type d -exec chmod 0755 {} \;
+  find . -type f -exec chmod 0644 {} \;
+  find . -perm 2755 -exec chmod 0755 {} \;
+  find . \
+   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+   -exec chmod 755 {} \; -o \
+   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+   -exec chmod 644 {} \;
+)
+
+# If there's a CHANGES file, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+  cat CHANGES | head -n 1000 > $DOCSDIR/CHANGES
+  touch -r CHANGES $DOCSDIR/CHANGES
+fi
+
+# This removes our DESTDIR from the packlist filenames, to keep perl's
+# internal inventories consistent and correct.
+find $PKG -name .packlist | while read plist ; do
+  sed  -e "s%$PKG%%g" \
+       -e "s%/share/man%/man%g" \
+      -re "s%\.([1-9]n?|3pm)$%&.gz%g   # extend man filenames for .gz" \
+      ${plist} > ${plist}.new
+      mv -f ${plist}.new ${plist}
+done
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/subversion-$VERSION-$ARCH-$BUILD.txz
+

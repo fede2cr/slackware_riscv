@@ -1,0 +1,15 @@
+Thu Mar 29 18:14:22 UTC 2018
+  doxygen: build fixed with update to flex. Thanks to nobodino.
++--------------------------+
+Fri Feb 16 20:45:05 UTC 2018
+  make: use a different patch directly to glob/glob.c as the other patch was
+  producing an unstable binary. Thanks to nobodino.
++--------------------------+
+Sun Feb 11 05:21:56 UTC 2018
+  Fix all packages that fail to build from source:
+  make: patch GLOB test in configure.ac to fix build with glibc-2.27.
++--------------------------+
+Thu Feb  1 21:36:53 UTC 2018
+  Fix all packages that fail to build from source:
+  p2c: change builtin getline() function to p2c_getline()
+  rcs: build with -std=c99

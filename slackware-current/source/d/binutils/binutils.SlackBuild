@@ -1,0 +1,232 @@
+#!/bin/sh
+
+# Copyright 2005-2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Modified 2011 by Eric Hameleers <alien at slackware.com> for ARM port.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=binutils
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+MARCH=$( uname -m )
+if [ -z "$ARCH" ]; then
+  case "$MARCH" in
+    i?86)    export ARCH=i586 ;;
+    armv7hl) export ARCH=$MARCH ;;
+    arm*)    export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)       export ARCH=$MARCH ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+# Uncomment this to include the experimental gold linker:
+GOLD=" --enable-gold=yes --enable-ld=default "
+
+# Set to ld.gold or ld.bfd:
+DEFAULT_LD=ld.bfd
+
+# The --enable-initfini-array option was added in binutils-2.21.51.0.3.
+# This option currently causes a world of hurt trying to compile glibc,
+# and might break static libraries or cause other ill effects.  There
+# is an upstream patch for glibc but it does not avoid all of the known
+# problems (and there may be some unknown ones, too), so we will avoid
+# introducing this feature for now.
+# References:
+# http://sourceware.org/bugzilla/show_bug.cgi?id=12343
+# http://gcc.gnu.org/bugzilla/show_bug.cgi?id=46770
+NO_INITFINI=" --disable-initfini-array "
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  # The config option below is currently needed to compile on x86:
+  WERROR="--enable-werror=no"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  # The config option below is currently needed to compile on x86:
+  WERROR="--enable-werror=no"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-binutils
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf binutils-$VERSION
+tar xvf $CWD/binutils-$VERSION.tar.?z || exit 1
+cd binutils-$VERSION || exit 1
+
+# Various upstream patches:
+zcat $CWD/patches/binutils-2.20.51.0.2-libtool-lib64.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/binutils-2.25-version.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/binutils-2.25-set-long-long.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/binutils-2.20.51.0.10-copy-osabi.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/binutils-2.20.51.0.10-sec-merge-emit.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/binutils-2.24-ldforcele.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/binutils-2.25.1-cleansweep.patch.gz | patch -p2 --verbose || exit 1
+
+# Export the demangle.h header file:
+zcat $CWD/patches/binutils.export.demangle.h.diff.gz | patch -p1 --verbose || exit 1
+# Don't check to see if "config.h" was included in the installed headers:
+zcat $CWD/patches/binutils.no-config-h-check.diff.gz | patch -p1 --verbose || exit 1
+
+# Set %version to something halfway meaningful:
+sed -i -e 's/%''{release}/slack15/g' bfd/Makefile{.am,.in}
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# End of preparations
+if echo "$*" | grep -qw -- --prep ; then
+  exit 0
+fi
+
+# Build for an x86 glibc2-based Linux system:
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --with-docdir=/usr/doc/binutils-$VERSION \
+  --disable-compressed-debug-sections \
+  --enable-shared \
+  --enable-multilib \
+  --enable-64-bit-bfd \
+  --enable-plugins \
+  --enable-threads \
+  --enable-targets=i386-efi-pe,${TARGET} \
+  --enable-install-libiberty \
+  $GOLD \
+  $NO_INITFINI \
+  $WERROR \
+  --build=$TARGET \
+  || exit 1
+
+make clean || exit 1
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Add a symlink since binutils's version of strings used to be called
+# "strings-GNU" on Slackware, and it's possible that people have scripts
+# that use that name:
+( cd $PKG/usr/bin ; ln -sf strings strings-GNU )
+
+# Move ldscripts to /usr/lib${LIBDIRSUFFIX}, and then put symlinks in place
+mv $PKG/usr/${TARGET}/lib/ldscripts $PKG/usr/lib${LIBDIRSUFFIX}
+( cd $PKG/usr/${TARGET}
+  ln -s /usr/lib${LIBDIRSUFFIX}/ldscripts lib/ldscripts
+  for FILE in ar as ld ld.bfd ld.gold nm objcopy objdump ranlib strip ; do
+    if [ -r "/usr/bin/$FILE" ]; then
+      rm -f bin/$FILE
+      ln -s /usr/bin/$FILE bin/$FILE
+    fi
+  done
+)
+
+# If the requested default linker is present, make it the default:
+# Set the link differently on the system to change the default at runtime.
+if [ -r $PKG/usr/bin/$DEFAULT_LD ]; then
+  ( cd $PKG/usr/bin ; rm -f ld ; ln -sf $DEFAULT_LD ld )
+fi
+      
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Remove some unneeded man pages, and then compress the rest
+rm -f $PKG/usr/man/man1/{dlltool,windres}.1
+( cd $PKG/usr/man
+  find . -type f -exec gzip -9 {} \;
+  for i in $(find . -type l) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+)
+
+# Compress info pages
+rm -f $PKG/usr/info/dir
+gzip -9 $PKG/usr/info/*
+
+mkdir -p $PKG/usr/doc/binutils-$VERSION
+cp \
+  $CWD/release.binutils-* \
+  COPYING* ChangeLog.linux MAI* README* \
+  $PKG/usr/doc/binutils-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+chown -R root:root $PKG/usr/doc/binutils-$VERSION
+
+# Add slack-desc:
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/binutils-$VERSION-$ARCH-$BUILD.txz
+
+cat << EOF
+
+#############################
+oprofile links to libbfd so
+be sure to recompile that
+#############################
+
+EOF

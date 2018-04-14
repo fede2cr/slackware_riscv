@@ -1,0 +1,205 @@
+=pod
+
+=head1 NAME
+
+slackdtxt - Create package description files for Slackware packages
+
+=head1 SYNOPSIS
+
+B<slackdtxt> B<[>optionsB<]> B<E<lt>tgz file or list of filesE<gt>>
+
+
+=head1 DESCRIPTION
+
+B<slackdtxt> is tool for creating the package description (packagename.txt)
+files that can be see in the Slackware package series directories. It can
+also optionally sign the Slackware package with your GnuPG secret key.
+
+All Slackware packages have an 'install/slack-desc' file contained within the 
+package file.  This file gives a brief description of the package and is displayed
+by the B<installpkg> program when the package is installed, or by B<upgradepkg>
+when the package is upgraded.
+
+Within the Slackware binary distribution package 'series' directories
+are the '.t?z' files and an accompanying .txt file.  However, the slack-desc files
+contained within the .t?z often have comments and 'the handy ruler' which
+should B<not> appear the .txt version.  B<slackdtxt> removes this and generates
+a 'standard' .txt version from the slack-desc file.
+
+B<slackdtxt> can either take an existing B<slack-desc> file and convert it, or 
+extract the slack-desc from the specified .t?z package file.
+
+The basic purpose of B<slackdtxt> is to build .txt files after you have run
+Slackware's official B<SlackBuild> scripts.  Slackware's SlackBuild scripts
+leave the packages in /tmp, and it is presumed that you would like to move
+them into a safe place and create a .txt file at the same time.  Therefore slackdtxt
+enables you to specify a B<destination directory> in which to copy or move the .t?z
+and to create the .txt file.
+
+slackdtxt was written with porting Slackware to other architectures in mind.
+
+=head1 Slackware Package file extensions
+
+Starting with Slackware version 13, four types of package compression formats
+are suported.
+
+=over 4
+
+=item B<.tgz> - Gzip
+
+=item B<.tbz> - Bzip2
+
+=item B<.tlz> - LZMA
+
+=item B<.txz> - XZ
+
+=back
+
+Where this document mentions '.t?z', it refers to one of the above formats.
+
+
+
+=head1 OPTIONS - GENERAL
+
+=over 4
+
+=item B<-h>, B<--help>
+
+Show the available options and exit
+
+=item B<-v>, B<--version>
+
+Show the version information and exit
+
+=back
+
+=head1 OPTIONS - MAIN
+
+=over 4
+
+=item B<-s>, B<--slackdescfile> <path to slack-desc file>
+
+Specify the name of/path to the 'slack-desc' file.
+
+You would typically want to use this option if you are in the package
+build directory that contains the B<slack-desc> file.
+
+B<Note:> You cannot use this option when specifying more than
+one .t?z package file; all slack-desc files will be extracted
+from the .t?z file.
+
+This option is not mandatory.
+
+=item B<-d>, B<--destdir> <directory>
+
+If this option is specified, slackdtxt will move (or copy, see
+B<--nodelete>) the .t?z file into this directory.  The .txt and .asc
+files will also be created in this directory.
+
+See the examples document for the purpose of this option.
+
+This option is not mandatory.
+
+B<Note:> Omitting this flag implies B<--nodelete>
+
+=item B<-n>, B<--nodelete>
+
+This option is used in conjunction with B<--destdir>
+
+With this option, when slackdtxt has created the .txt file and copied the .t?z file
+into the destination directory, it will not delete the original version.
+
+For example, if your file is F</tmp/foobar-2.0-i386-4.tgz>
+and you feed slackdtxt B<--destdir> F</data/slackware/> then  
+the F</tmp/foobar-2.0-i386-4.tgz> will remain.
+
+By default, the original will be deleted B<unless> there is no
+destination directory specified by B<--destdir>
+
+=item B<-G>,  B<--gpg-sign> <id>
+
+Sign the original .t?z package file with specified GnuPG key. The
+GnuPG signature file will have the same name as the .t?z file but with an
+extra B<.asc> suffixed (e.g. foobar-1.0-i486-5.tgz.asc).
+
+=back
+
+
+=head1 EXAMPLES
+
+=over 4
+
+=item # B<slackdtxt> foo-1.00-i486-1.tgz
+
+This will create a single file named foo-1.00-i486-1.txt
+within the current working directory.  To specify a different
+directory, see options B<-d>, B<--destdir>
+
+=item # B<slackdtxt> *.t?z
+
+This will make slackdtxt create '.txt' files for every 
+'.t?z' package file within the current working directory.
+
+=back
+
+=head1 RETURN VALUES
+
+These are the exit codes that slackdtxt will produce when it encounters
+certain problems. You may wish to use these return codes to indicate
+success or failure when slackdtxt is called from unattended auto builder
+scripts. 
+
+=over 4
+
+=item B<0>
+Clean exit
+
+slackdtxt exited without encountering any errors.
+This is the default exit code.
+
+=item B<1>
+Reserved
+
+This error code is not currently used.
+
+=item B<6>
+Missing destination directory
+
+The destination directory specified by the B<--destdir> switch does not exist.
+
+=item B<7>
+Missing user specified file
+
+A file specified by the user does not exist.  Typically this will
+be the .t?z package file.  
+
+=item B<8>
+Error moving data or moved data is corrupt
+
+slackdtxt failed to copy or move a data file correctly, or the file
+was moved correctly (B<mv> or B<cp> did not exit with a non-zero value)
+but a further verify failed.
+
+=back
+
+
+=head1 FILES
+
+F</usr/bin/slackdtxt> the slackdtxt script
+
+F</usr/doc/slacktrack-@VERSION@/SLACKDTXT.examples> slackdtxt usage examples
+
+=head1 AUTHOR
+
+Stuart Winter <mozes@slackware.com> 
+
+=head1 SEE ALSO
+
+=over 4
+
+B<slacktrack>(8), B<makepkg>(8), B<installpkg>(8), B<explodepkg>(8), B<removepkg>(8), B<pkgtool>(8), B<upgradepkg>(8)
+
+=cut
+=back
+
+

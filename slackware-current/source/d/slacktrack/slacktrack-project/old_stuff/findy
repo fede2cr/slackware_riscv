@@ -1,0 +1,17 @@
+#!/bin/bash -x
+function package_name () {
+  local PACKAGENAME="$( echo $1 | rev | cut -d- -f4- | rev )"
+  echo ${PACKAGENAME}
+}
+
+
+PACKAGE=linuxdoc-tools-2.0-arm-1.txz
+
+# need to get the find op right.
+find . -path './install' -prune -o -type f -printf "%P\n" | egrep -v "^$" > /tmp/log # | \
+( cd /var/log/packages
+  cat /tmp/log | while read file ; do
+    grep -H "${file}" * 
+ done ) | sort | uniq | egrep -v "^$( package_name ${PACKAGE}).*:" > /tmp/log2 2>&1
+
+cat /tmp/log2

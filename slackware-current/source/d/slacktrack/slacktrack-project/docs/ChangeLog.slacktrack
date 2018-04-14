@@ -1,0 +1,705 @@
+##############################################################################
+# Document: ChangeLog.slacktrack
+# Purpose : Document the changes that have occurred in 'slacktrack'
+##############################################################################
+
+07-Jun-2017 - v2.18
+  * Added option --run-after-withlog
+    This option is the same as -R, --run-after, with the only difference
+    being that any output from that script is logged to the slacktrack build
+    log.
+
+25-Apr-2015 - v2.17
+  * Cleaned up superfluous white space.
+  * Added operator -o, --no-fs-search
+    Prior to beginning a build, and post build, slacktrack uses the 'find'
+    command to scan the OS' file system, and stores these records.  The
+    difference between the two records are used to determine the package's
+    contents.
+
+    This default set is ideal for a default Slackware installation, but some
+    users have data in other directories which should never be included in a
+    package.  Scanning these additional directories takes extra time and serves
+    no purpose.
+
+    While the -x,--exclude operator is applied to the final package
+    contents list, -o, --no-fs-search is applied before and can be used to
+    significantly speed up the searches that build the before/after file lists.
+
+    Thanks to Andrew Lyon for the patch.
+
+10-Jan-2014 - v2.16
+  * Added the following paths to the default exclude list:
+     /usr/man/whatis
+     /usr/local/man/whatis
+     /var/lib/pgsql/
+     /var/lib/mysql/
+    Thanks to Eduard Rozenberg.
+ * Updated the 'OVERVIEW' doc to correct a couple of small details.
+ * Updated man pages to conform with stricter pod2man syntax.
+ * Updated FAQ to explain why after using one of the 'touch file system'
+   options, root is notified about having new mail.
+
+23-May-2013 - v2.15
+  * Added the $PWD from which slacktrack was invoked in to the default exclude
+    list. This allows a package's source directory to be in a non-default
+    excluded path and receive updates (such as log files) and avoid slacktrack
+    including them in the newly created package file.
+    Thanks to Eduard Rozenberg.
+
+10-May-2013 - v2.14
+  * Removed '-i, --install' flag from the man page and the slacktrack script,
+    as this has been a no-op since slacktrack stopped using 'installwatch'.
+    Thanks to Michael Stewart.
+  * Added /etc/ntp/drift to the default exclude list.
+    Thanks to Eduard Rozenberg.
+
+05-Apr-2013 - v2.13
+   * Use '-c' operator to 'touch' when touching the file system.  This avoids
+     creating empty files that were referenced from a dangling symlink, and
+     avoids creating empty files when using the (not recommended) 'faster'
+     file system touch option.
+   * Moved slacktrack's 'ln' wrapper from /usr/share/slacktrack to
+     /usr/libexec/slacktrack, since /usr/share is for architecture independent
+     files.
+     Thanks to Darren Austin for the suggestion.
+   * Added '/usr/libexec' to the default list of library locations that will
+     have their ELF objects stripped.
+   * Capture the output of touching the file system into the slacktrack log
+     file, as this can be useful for recording any issues resulting from touching
+     files on the file system (such as dangling symlinks in existing installed
+     packages).
+   * Support supplying the full path name using the -p operator.  Previously,
+     to store the resulting .t?z package in a location other than the default
+     ('/tmp'), you had to supply -b <dir name> in addition to -p <package name>
+     This was a somewhat wooly distinction between package *name* and package
+     *file name*.
+     The package name can now be supplied using:
+       # slacktrack [options] -p /somedir/foo-1.01-arm-2.tgz
+     The -b operator is still effective, so previous 'trackbuild' scripts will
+     continue to work as before.
+     Thanks to Eduard Rozenberg for the suggestion.
+
+18-Sep-2012 - v2.12
+   * Added /run to the list of default path exclusions.
+
+27-May-2012 - v2.11
+    * Added /var/lib/NetworkManager to the list of default path exclusions.
+      Thanks to Patrick Volkerding for the suggestion.
+
+05-Nov-2011 - v2.10
+    * Added --allow-overlapping option to permit the package to contain files
+     that overlap with existing packages installed on the system.
+     The default is to permit this behaviour, but if you're using the -Q option
+     as I do to build my packages, you'll find that there's no way to switch
+     the behaviour off whilst building an otherwise Slackware standards 
+     compliant package.
+     To use this option you will need to supply it on the command line 
+     after '-Q'.
+    * Fixed bug where --delete-overlapping was expecting an input.
+    * To the default path exclusion list, the following paths have been added:
+       /var/spool/cron/cron
+       /dev/bus/
+       /dev/char/
+       /dev/rfkill
+
+25-Sep-2011 - v2.09
+    * Fixed formatting issues with the man pages exposed by a newer version
+      of "pod2man".  Thanks to Branko Grubic for the report and the patches.
+    * The /var/log/{packages,scripts}/$PACKAGE entries of the unprocessed 
+      package contents (just after slacktrack completes execution of the 
+      supplied package build script) were incorrect due to slacktrack not
+      handling symlinks when creating these entries - any symlinks were treated
+      treated as files which caused "removepkg" to emit messages such as 
+      ".. no longer exists"
+      slacktrack now uses "makepkg" and "installpkg" to correctly create and
+      handle the /var/log/{packages,scripts} entries.
+      Thanks to Roberto for the report and a good detailed explaination.
+    * Removed /usr/bin/altertrack symlink to /usr/bin/slacktrack.  It's 
+      been years since altertrack was a separate tool.  If you have any
+      scripts still calling "altertrack" -- change them :-) 
+    * When deleting perllocal.pod files, look in /usr/lib & /usr/lib64
+    * Warn if any files in the newly built package overlap with other packages
+      that are already installed on the system.
+    * Added -X, --delete-overlapping option. 
+      This option deletes any of the overlapping files from the new package.
+      The -Q option now includes the erasing of any overlapping files.
+    * Do not emit the name of the newly built package when displaying the 
+      list of package dependencies.
+      
+08-Nov-2010 - v2.08
+    * Exclude /var/lib/dhcpcd from being included in the package contents.
+
+18-Dec-2009 - v2.07
+    * Rewrote package_name() function to cater for "old style" package names.
+      Thanks to Jim Hawkins for the bit of sed script.
+    * Prevent /etc/dhcpc, /var/run and /etc/resolv.conf from appearing in 
+      the package contents.  This is especially useful when your build 
+      machine is using dhcpcd to manage its network address.
+
+16-July-2009 - v2.06
+    * Added /lib/udev/devices to the default path exclusion list.
+      Files in here are generated and maintained by udev and should not
+      be included in packages.
+
+02-June-2009 - v2.05
+    * If after removing orphaned *.pyc files, their previous & parent 
+      directories become empty, delete the directories.
+
+29-May-2009 - v2.04
+    * Added -Y, --delete-orphaned-pyc option.
+      Within the package contents, if slacktrack finds *.pyc files without a
+      matching *.py file, the *.pyc files will be removed from the package
+      contents.
+      Thanks to Patrick Volkerding for the suggestion.
+      Updated slacktrack(8).
+
+15-May-2009 - v2.03
+    slackdtxt:
+    * Updated to handle .tgz, .tbz, .tlz, .txz file extensions
+      Thanks to Patrick Volkerding.
+    * Renamed --nodeletetgz option in to --nodelete.
+    * Updated slackdtxt(8)
+    slacktrack:
+    * Added /usr/lib64 and /lib64 to the list of known library directories.
+      Thanks to Eric Hameleers for reminding me.
+
+12-May-2009 - v2.02
+
+     This is an interim release to allow slacktrack to work with the 
+     additional package compression formats introduced in Slackware v13.
+     The documentation & the 'slackdtxt' utility will be updated at a
+     later date.
+
+     * Renamed --md5sumtgz option to --md5sum because starting at
+       Slackware v13, the package format has been expanded to several 
+       other compression types; updated slacktrack(8).
+     * No longer suffix ".tgz" to a package name if the ".tgz" extension
+       wasn't specified.  This allows you to specify one of the new alternate
+       package file extensions:  .tgz, .tbz, .tlz and .txz
+     * Added /usr/share/slacktrack/ln which is an ln wrapper.
+       This calls /bin/ln with the -f (force) option which allows the
+       time stamp to get updated on symlinks.
+       Thanks to Jim Hawkins for writing this wrapper.
+
+19-Nov-2008 - v2.01
+     * Added /var/cache/ to the default exclude list.
+       This excludes SAMBA's 'browse.dat'.
+       Thanks to Eduard Rozenberg for the suggestion.
+     * Updated 'dvd_libs' example build scripts to use libdvdcss-1.2.10
+       and verified the source URLs for the other components.
+       (You must still download the source yourself).
+
+17-Sep-2008 - v2.00 
+     * The 'slacktrack' tool is now what used to be shipped as 'altertrack'.
+       This tool tracks installations directly within a live root file system
+       rather than a pseudo root file system.
+
+    ** Important: This means that you *MUST* now run slacktrack on a 
+       devbox only **
+
+       Please read /usr/doc/slacktrack*/RELEASE_NOTES for
+       important details about migrating from the previous version of 
+       slacktrack.
+
+
+     * Changed to BSD licence for 'slacktrack' and 'slackdtxt' tools.
+       The only reason it was previously GPL was because this was the licence
+       installwatch used.
+     * Updated documentation & man pages.
+     * A GPG signing key must be specified when using the -G,--gpg-sign option;
+       it will not fall back on the default.  This is because the code
+       to parse the command line operators doesn't work.  I checked
+       the supplied examples for getopt and even they don't work!
+       (Perhaps it used to work with older versions of bash?)
+     * Added -P,  --delete-perllocalpod option.
+       This deletes any 'perllocal.pod' found within the package's /usr/lib.
+       perllocal.pod files should only be included with the Slackware 'perl'
+       package.
+     * The -Q (set options to build a Slackware compliant package) option now
+       sets the -P,  --delete-perllocalpod options.
+     * Removed --froot operator.  This used to run the 'fakeroot' daemon
+       and LD_PRELOAD the fakeroot library to make your user environment
+       appear as if were root, with the intention of allowing package utilities
+       to set ownerships of files/dirs -- an ability allowed only for root.
+       However, since slacktrack needs to be run as root to make a useful
+       package (it's unlikely you'd use slacktrack to track files in a 
+       non-root location, eg /mypackages/), then this option is defunct.
+     * Removed --with-scratchbox.  This deleted the /dev and /home 
+       directories that used to find their way into early ARMedslack packages.
+       ARMedslack has not used scratchbox in years, and I can't imagine
+       anybody else ever used this option!
+     * Build script examples are now bundled with the package rather than
+       being on a separate web site (since there's no cholestrol 
+       from installwatch)
+     * Added "/dev/input$|/dev/input/|/dev/.udev/|/dev/.udev$" to the default
+       exclude list because udev is now keeping some live data in there.
+
+08-Feb-2008 - v1.33 - build 1 [ Not released ]
+     * Replaced installwatch with 'libsentry' - a fork of installwatch
+       by Gilbert Ashley.
+
+29-Jun-2007 - v1.32 - build 1, Slackware 12.0 special version.
+     * Fixed a bug where if --stripallexec was used, it wasn't stripping
+       all ELFs (.so, bins & .a files).
+     * Replaced slacktrack script with a dummy for the release of 
+       Slackware 12.0.  The new *at-style functions that coreutils 6.7+
+       are not tracked by installwatch, so chown, chmod et al do not work.
+       The real slacktrack script (if you wanted to use it) is named
+       /usr/bin/slacktrack-real
+
+05-May-2007 - v1.31 - build 2
+     * Fixed a bug in altertrack's --touch-filesystem-first code.
+       See docs/ChangeLog.altertrack.
+     * Updated slacktrack(8): -Q option now states that files in binary
+       directories are chown root:root not root:bin.
+       Thanks to Eduard Rozenberg for noticing that.
+
+31-Mar-2007 - v1.31 - build 1
+     * When gzipping man & info pages, force compression (gzip -f)
+     * Applied Fred Emmott's portable patch to installwatch to make it
+       work on 64bit machines.
+
+19-Feb-2007 - v1.30 - build 1
+     * Move installwatch library from /usr/lib/installwatch.so
+       /usr/lib/installwatch-slacktrack.so
+       This prevents an installation conflict with checkinstall.
+       Thanks to Henrik Carlqvist for the suggestion.
+
+04-Apr-2006 - v1.29 - build 1
+     * Added new option, -m|--chown-bins-root-root    
+       This sets ownerships of files and directories in the standard Slackware
+       binary directories to 'root:root'.
+       This change is for Slackware v11 - binary directories are no longer
+       chown root:bin.
+     * The -Q option now sets -m rather than chowning root:bin.
+       If you want root:bin, specify the -f and -e options.  The command would
+       look something like this:
+
+         # slacktrack -Q -fe -p moose-1.0-i486-1.tgz ./moose.build
+
+     * Added /media,/srv and /selinux to the 'watch' patch exclusion list
+       (any changes to these paths will be excluded from the package).
+       Updated slacktrack(1) with the new paths.
+  
+14-Nov-2005 - v1.28 - build 1
+     * Fixed a bug where any man page symlinks broken by gzipping were not
+       being repaired.
+       Thanks to Andrei Levin for the bug report.
+
+22-Sep-2005 - v1.27 build 1
+     * Rewrote the slack-desc file to explain what slacktrack actually does
+       in simple words :-)
+     * Added /var/lib/rpm to list of excluded paths.  This allows you to
+       do some seriously kludgey stuff like build from a source RPM and
+       install the binary RPM as part of the build script.
+       Very useful sometimes - docbook is an example :-)
+     * Fixed bug where if a temporary directory was manually specified with -T,
+       its contents were tracked by installwatch.  Manually set temporary
+       directories are now in installwatch's exclude list.
+       Thanks to Gufo for reporting this.
+     * slacktrack will now return error code 6 and abort if it finds the 
+       temporary directory (either chosen automatically or selected via the
+       -T|--tempdir option) already exists.  This is to prevent slacktrack
+       from wiping user data without any warning.
+       slacktrack does not create a sub directory within the specified area;
+       it was never designed to do so, so this is the best option.
+     * Modified man page to reflect the above change, and added error code 6
+       to the error code section.
+       Thanks to Gufo for suggesting this change.
+
+22-Jul-2005 - v1.26 build 1
+     * Added /opt/kde/man to the list of man page directories.
+
+08-May-2005 - v1.25 build 1
+     * Renamed internal string 'VERSION' to 'SLACKTRACKVERSION' as it's
+       too much of a generic name and can cause confusion as it's exported
+       to the build script/environment.
+
+21-Mar-2004 - v1.24 build 1
+     * Added /sys to the list of excluded paths
+     * Fixed bug with chowning files that was introduced in v1.19.
+       Files with brackets in the name would get interpreted by bash.  Now
+       these names are enclosed within '' to prevent this.
+     * Trimmed down --help text a little - it's too wordy.  
+     * Added a patch to installwatch which was posted by Alexander Kern on the
+       checkinstall mailing list:
+       It adds simply "utimes" and "setxattr" to the list of
+       intercepted functions.
+       - Please note, however, that I am aware that there seems to be a problem
+         with installwatch on Slackware-10.1, although it does not show up when
+         building all software.  I am looking to replace installwatch with 
+         something specifically for slacktrack.
+
+09-Dec-2004 - v1.23 build 1
+     * Upgraded to installwatch-0.7.0beta4 from checkinstall-1.6.0beta4
+     * Fixed bug where you were informed that there were "orphaned" libraries
+       and dependencies upon installed packages, but the list was blank.
+       This was because the file contained spaces and therefore passed the
+       if [ -s ] check.
+
+16-Nov-2004 - v1.22 build 1
+     * Fixed a bug where if --notidy was specified and slacktrack/altertrack
+       failed to track any changes, the temporary workspace would be deleted.
+       This became a bug when I introduced $SLACKTRACKSCRATCHDIR; if a build
+       fails then the developer will be interested in looking at the source
+       tree which should always be preserved by --notidy.
+     * /usr/local/bin, /usr/local/sbin and /usr/X11R? directories & files
+       contained within will now:
+        - be chown root:bin 
+        - be stripped (with the same strip option as the major bin directories)
+     * man pages in /usr/X11R?/man will now be compressed.
+     * Updated slacktrack(8) to reflect the above two changes.
+     * Fixed a typo in --help and added a suggested usage line.
+     * If an incorrect parameter is specified then --help is directed to STDERR.
+     * If no parameters are specified (or there has been no package name
+       specified) then the usage message is directed to STDERR.
+     * Updated the TODO list.
+     * Updated the OVERVIEW document (last update was 09-Dec-2003)
+       - Added a couple of new architectures (official & unofficial ports)
+         and made a note about i586 binary packages
+       - A couple of other minor edits.
+
+26-Aug-2004 - v1.21 build 2
+     * Tidied up slacktrack.SlackBuild 
+     * Updates to altertrack
+
+19-Jun-2004 - v1.21 build 1
+     * Only strip debugging symbols (strip -g) from object files in .a archives
+       because --strip-unneeded tends to render many object files unusable.
+       If you're sure you know what you're doing and want to use strip
+       options other than -g, then I suggest doing this inside your build
+       script or (if using altertrack) in your post build script.
+       Updated slacktrack(8) to reflect this.
+     * Use strip -p to preserve dates/time stamps.
+     * Fixed a typo in the package info display prior to building the package.
+
+31-May-2004 - v1.20 build 1
+     * Changed chown uid.gid to uid:gid
+
+25-Mar-2004 - v1.19 build 1
+     * With the recent version of the coreutils package in Slackware-current
+       (coreutils-5.2.1), chmod no longer preserves setuid bits.  This means
+       that if you elect to chown root.bin the binaries, you lose setuid.
+       I have implemented a work-around which works with both the new and old
+       coreutils chown.
+
+03-Mar-2004 - v1.18 build 1
+     * Strip archive files (.a) with --strip-unneeded, as using strip without
+       this option causes the contents of some archive files to be unusable.
+       Thanks to longname@sezampro for reporting it.
+
+12-Feb-2004 - v1.17 build 1
+     * Added --froot option to start the fakeroot server prior to setting
+       ownerships and so on.  This may be helpful if you are not root on 
+       the machine where the packages are being prepared.  However, if the
+       build script or 'make install' sets its own ownerships, these will
+       be lost because the fakeroot server is not started until *after* the
+       build script finishes.  The reason for this is that fakeroot can make
+       some configure scripts fail.  If you know that the configure script
+       you are using does *not* fail under fakeroot, I suggest that you still
+       use fakeroot ./trackbuild.xxx
+       -- Please note that due to the path to the fakeroot libraries, slacktrack
+          only works with fakeroot-0.8.3 and up 
+          You can download the latest version of a fakeroot Slackware package
+          builder from http://www.slackware.com/~mozes --
+     * Upgraded to installwatch-0.7.0beta3 from CheckInstall 1.6.0beta3
+
+12-Dec-2003 - v1.16 build 1
+     * Updated docs/OVERVIEW
+     * Updated docs/TODO
+     * Bumped up version number for release.
+
+10-Dec-2003 - v1.15 build 5
+     * Tidied up slacktrack.SlackBuild
+       Most of the recent changes have been in altertrack (bug fixes) which
+       is why the version of slacktrack itself hasn't been updated.
+       The usr/doc/slacktrack-version directory is now
+       usr/doc/slacktrack-version_build
+       because (at present) the build number is important to this project 
+       because it changes more than the major slacktrack version number.
+     * Mentioned installwatch segfaulting in the FAQ.
+
+01-Nov-2003 - v1.15(release)
+     * altertrack is now included within the binary .tgz package because 
+       I'm satisfied that it is just as safe as protopkg, and it enables you
+       to build packages from .build scripts that do not work with 
+       slacktrack/installwatch.
+
+29-Oct-2003 - v1.15rc1
+     * If running under fakeroot then remove fakeroot from the list of 
+       dependencies (it's included because it's LD_PRELOADed)
+       (suggested by Emanuele Vicentini).
+ Patch from Emanuele Vicentini:
+     * Redirect file descriptor 2 to 1 so that the slacktrack log file 
+       contains anything sent to STDOUT.
+
+22-Oct-2003 - v1.15
+     * Added --showdeps option to log to screen and a log file what 
+       _installed_ Slackware packages your new package relies upon.
+       The purpose of this for interest only but I find it useful to ensure
+       I haven't just built a package on a box that Xfree86 installed
+       and I intend to install and use the package on a box that does not, 
+       when the package has linked against X's libraries.
+       Using this option will also flag up 'orphaned' libraries (ones that
+       do not belong to an installed package, which is especially handy
+       if you're going to be distributing a package).
+     * Added another question to FAQ.
+     * Bomb out if /var/log/packages or /var/log/scripts is missing.
+       
+20-Oct-2003 - v1.14 [beta only]
+     * When stripping shared objects (.so files), look for 'shared' rather
+       than 'shared objects' (in the output from 'file') as this was causing 
+       some files not to be stripped (PHP is an example).
+     * Added --mpopts option to allow the inclusion of additional options 
+       (e.g. --prepend) to Slackware's 'makepkg' program. 
+     * Fixed bug where by the .txt description file wouldn't be created if
+       you had specified a seperate build store directory that didn't end
+       with a /
+     * No longer create the /install directory because if your build script
+       fails to create any files then you don't see the warning slacktrack
+       gives you.  I could code around this but I think it's cleaner this way.
+     * Added /root to the list of directories that will not be included within
+       the package.  This should help with using ccache when compiling as root.
+       You should still see docs/FAQ for help with non-root users.
+       It also helps with building CPAN modules.
+     * Updated the FAQ with information about using perl -MCPAN -eshell
+       (turn off logging and the CPAN interface console will work)
+     * Fixed bug where by gzipping info pages wouldn't gunzip .bz files first
+     * Forked slacktrack into another script named 'altertrack'.  This works
+       in a similar fashion to Pat's 'bp' and David Cantrell's 'protopkg' in
+       that it compares the differences between the file system before and
+       after 'make install', rather than using installwatch.
+       This script is available only in the source distribution and is
+       totally unsupported (but it works for me).  There is an example
+       build script contained within the source in the 'examples-altertrack'
+       directory.
+     * Moved fakeroot's build script (and source) out of slacktrack's source 
+       and on to http://www.slackware.com/~mozes because it's 
+       more useful there.
+
+01-Oct-2003 - v1.13
+     * Warn if /install/slack-desc not found or 0 bytes
+     * The package's /install directory is now created by slacktrack 
+       _before_ it executes your .build script.  This saves you a line 
+       in your .build script, plus it's required in order
+       to meet Slackware package standards (because 'slack-desc' lives
+       within /install).  However, if you do not wish to have a /install
+       directory within your final package, you may delete it within
+       your .build script ( rm -rf ${SLACKTRACKFAKEROOT}/install )
+     * Updated dependency checking code so that it can handle packages
+       that begin with the same name (e.g. 'glib' 'glib2').
+     * Updated the fakeroot build scripts for version 0.7.8
+ Patches from Emanuele Vicentini:
+     * Added -Q, --standard options that specifies all command line switches 
+       required to create a .tgz file that complies with the Slackware standard.
+     * Added -G, --gpg-sign option that will sign the resulting .tgz 
+       package file with the default user's GnuPG key and placed the 
+       detached, armored signature (.asc file) in the package store 
+       directory.
+     * Fixed the value of GZINFO (which should be "No" according to the 
+       man page but was "Yes")
+     * Updated man pages, typos fixed and so on.
+     
+       The easiest way to build a package is now:
+       # slacktrack -Qp foo-1.13-i486-1.tgz ./foo.build
+  
+11-Jul-2003 - v1.12
+     * Added -D, --md5sumtgz option that will create an MD5sum of
+       the resulting .tgz package file.
+     * Fixed problem with checking the exit code from getopt 
+       (reported by Emanuele Vicentini).
+     * Added a preemptive FAQ
+     * Merged Patrick's changes of slacktrack.SlackBuild into mine
+       slacktrack.SlackBuild now also creates its own slacktrack-*.txt file
+
+22-Jun-2003 - v1.11r2
+     * I'd missed single quotes from a few find commands - fixed.
+
+02-Jun-2003 - v1.11
+     * -S, --stripallexec will now strip .a (archive) files.
+     * -A, --striparchives option added.  This option strips .a archives.
+       Suggested by Patrick Volkerding.
+     * slacktrack.SlackBuild no longer includes the large collection of
+       example scripts into the resulting package .tgz; they're now 
+       maintained in a separate archive (slacktrack-examples-v??.tar.gz)
+       available from http://www.slackware.com/~mozes
+
+28-May-2003 - v1.10r2
+     * If deleting 'usr/info/dir' then append this info to the log.
+
+22-May-2003 - v1.10
+     * Before gzipping man or info pages we now find any bzip2 (.bz2) files
+       and unpack them.  I have found that BitchX installs BitchX(1) as
+       a bzip2 file.  There is no slacktrack option to turn this feature off
+       because if we gzip the bzip2'd man page, the man program won't
+       work with the file.
+     * Added -K, --delete-usrinfodir option.  If this option is specified
+       then slacktrack will delete the file 'usr/info/dir' if it is
+       found in the package.
+       This file is a special file used by the 'info' program.  To quote
+       texinfo's 'dir' file:
+           "This (the Directory node) gives a menu of major topics."
+       Many programs create their own 'info' file.  However, using slacktrack
+       (or even a clean SlackBuild script), any such attempts to create 
+       an up to date 'info' file result in the file only containing 
+       information about the particular program (or set of programs)
+       you have just compiled.
+       Therefore you will usually want to delete this file from your
+       package so as to avoid overwriting the system version when you
+       install your new package.
+       The default is not to delete usr/info/dir.
+     * As an example, I typically invoke slacktrack as:
+       # slacktrack -gfenzKSUIp package-1.00-i386-1.tgz ./package.build
+
+
+16-May-2003 - v1.09
+     * Added exported variable: SLACKTRACKSCRATCHDIR
+       This variable points to a 'scratch' dir inside slacktrack's temporary
+       path.  Should they wish to do so, the authors of the build scripts 
+       can use this directory to save them 'managing' their own temporary
+       directories where they unpack the source archives and so on.
+       This directory is subject to the same conditions as the rest of the
+       slacktrack temporary path -- it will remain if --notidy is specified.
+     * Added paragraph in slacktrack(8) that talks about the exported environment
+       variables.       
+     * Now use date +%s to create more randomly named temp directory for installwatch
+       This reduces the possibility of conflicting with another user who is
+       running slacktrack on the same system.
+     * Modified afio.build to demonstrate using ${SLACKTRACKSCRATCHDIR}
+     * Modified tf.build to use ${SLACKTRACKSCRATCHDIR} & to prevent it from
+       confirming the compile-time settings with the user.
+     * Tidy up of the build scripts in the docs dir.
+     * slacktrack(8) & slackdtxt(8) release dates now always in sync with 
+       their respective scripts.
+
+07-May-2003 - v1.08r3
+     * Updated a few docs
+     * Fixed a comment typo in the slacktrack script
+     * Tidy up of 'SlackBuild' script
+     * Other misc tidying.
+
+03-May-2003 - v1.08r2
+     * If the command line/script provided exits with an error code we now
+       display the error code as well as a warning message.
+     * Moved slacktrack and slackdtxt to /usr/bin rather than being in
+       /usr/sbin.  This is because we can use slacktrack with 'fakeroot'
+       from the Debian distribution.  fakeroot fakes root privileges, thereby
+       allowing slacktrack to chown correctly.  Therefore we can sensibly
+       use slacktrack as user other than root.
+
+       To use slacktrack with fakeroot you could do this
+        # fakeroot ./trackbuild.fetchmail
+
+       less through the resulting package .tgz to verify that the permissions
+       are what they ought to be.  Obviously there will be some issues with
+       using fakeroot but it should be pretty useful for users without root
+       access.
+       I have packaged up fakeroot and you may download it at
+         http://www.slackware.com/~mozes
+       I have included by fakeroot build script within slacktrack's source
+       ball - slacktrack/misc/fakeroot/
+ 
+28-Apr-2003 - v1.08
+     * Added -N, --strip-prog to allow the user to specify the location
+       of the strip binary.  This allows me to start cross compiling
+       stuff with slacktrack stripping the binaries.
+     * Renamed my wrapper scripts from 'SlackBuild' to 'trackbuild' to 
+       avoid any confusion & updated docs to match.
+     * If specifying an alternate package store dir, now suffix the path
+       with a /   
+     * Now reports size of .tgz if a .tgz is built
+     * No options are 'Advanced' - they are now just options
+     * Added -R, --run-after facility to make slacktrack execute a given
+       command prior to running makepkg.  The purpose of this is to allow
+       the user to specify a program such as mc (Midnight Commander) to
+       inspect the package directory contents and possibly make changes
+       before slacktrack creates the .tgz
+       [] Note: The CWD is changed to the package's root directory before
+                the external command is executed.  This allows you to specify
+                -Rmc and have Midnight Commander load and automatically
+                display the root dir of the package.
+     * -T wasn't accepting the specified path.  Fixed.
+     * -g,--chmod644docs also now does chown -R root.root /usr/doc.  I am finding
+       I need to do this in build scripts a lot so I figured since I'm already
+       chmod 644ing I may as well just chown them to root since they always
+       are in Slackware packages anyway !
+
+16-Apr-2003 - v1.07
+     * Added the facility to gzip info pages & updated slacktrack(8) to match.
+       -I,  --gzinfo               
+       -W,  --extra-infodir <path>  
+       -F,  --gzinfo-no-symfix  
+     * Switched @uksolutions email addresses in example build scripts with
+       @polplex.co.uk
+     * Added two build scripts for GNU VCD Imager into the docs/examples/non-slackware
+       directory.  There are two scripts:
+           vcdimager.build -- this is for use with slacktrack
+           vcdimager.SlackBuild -- this is a 'clean' SlackBuild script 
+                                   that installs the package into a clean 
+                                   dir by doing make DESTDIR
+           The purpose of having these two scripts is for anybody who is
+           interested in building their own packages; it enables you to
+           compare and contrast the differences... or something :)
+
+01-Apr-2003 - v1.06
+     * --extra-libdir, --extra-bindir, --extra-mandir added to allow
+       the user to specify additional directories that slacktrack should
+       consider when stripping binaries and gzipping man pages.
+       Note that any binary directories specified by --extra-bindir 
+       will NOT be chown root.bin
+       Suggested by Darren Austin
+     * No longer chown root.bin in /usr/local/{sbin,bin}/
+       as it's not the Slackware standard to chown root.bin in any dirs other
+       than /sbin, /bin, /usr/bin & /usr/sbin
+
+26-Mar-2003 - v1.05
+     * Now considers usr/local for man page, binary and .so files after
+       Darren Austin gave a convincing argument as to why one may wish to
+       use /usr/local
+      
+22-Mar-2003 - v1.04-build-2
+     * Moved Change Log details into separate file - 'ChangeLog.slacktrack'
+       to save cluttering the slacktrack script.
+     * Added zlib build script to the list of Slackware example build scripts
+       This script downloaded the Slackware bits and also patches in the 
+       security patch from OpenPKG.
+     * Added NVIDIA_GLX-1.0-4191 and tinyfuge example slacktrack build scripts
+     * Fixed a few typos and grammar problems in the docs
+     * Tidied up a few comments & code in the slacktrack script
+       - No new features added.
+  
+10-Mar-2003 - v1.04
+     * Added --stripallexec option to strip any unstripped ELF executable files
+       in the entire package directory.  This means that slacktrack will find all
+       files in non-standard Slackware directories such as /opt.
+     * Added 'short' command flags for the advanced options.
+
+02-Mar-2003 - v1.03
+     * Make sure we have specified a package name before proceeding
+     * Bomb out & tidy up if no files or dirs are found in /var/tmp/slacktrack/TRANSL/
+       this saves makepkg building a package of the current directory & it also
+       indicates that installwatch failed to track any activity, thus has no files
+       to package.
+     * Fixed problem with the location of installwatch's log file.
+     * Lots of error checks
+     * Exit codes now have meaning; read slacktrack(8) man page.
+     * If build store dir doesn't exist then change it to /tmp rather than
+       creating it without warning.
+
+01-Mar-2003 - v1.02
+     * Added --chmod644docs option
+     * Renamed SLACKTRACKPSEUDODIR to SLACKTRACKFAKEROOT because it makes more
+       sense.
+
+28-Feb-2003 - v1.01
+     * Stopped dumping all output to /dev/null when gzipping man pages
+       as this doesn't always work
+     * Added code to fix broken symlinks caused by gzipping man pages
+       Added --gzman-no-symfix command line option to prevent this behaviour
+     * Added --chown-bdirs-root-bin & chown-bfiles-root-bin (-e,-f) options
+       to chown root.bin the system binaries installed into /usr/bin and so on
+       This behaviour is specified in Pat's 'slack-tools' README file.
+
+22-Jan-2002 - v1.00
+     * Created

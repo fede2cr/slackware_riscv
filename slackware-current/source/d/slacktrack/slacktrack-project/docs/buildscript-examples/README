@@ -1,0 +1,19 @@
+This directory contains example scripts on which you may
+base your own build scripts.
+
+Note that the packages and versions are not current, but their
+purpose is to serve as examples.
+
+Slackware's packaging standard is that documents in /usr/doc are
+chmod 644, so these examples are archived to retain the execute 
+permissions on the build scripts.
+
+Please extract the archive to /tmp to begin:
+Example:
+
+mkdir -pm /tmp/slacktrack
+tar xf examples.tar.bz2 -C /tmp/slacktrack
+
+-- 
+Stuart Winter <mozes@slackware.com>
+17th Sept 2008

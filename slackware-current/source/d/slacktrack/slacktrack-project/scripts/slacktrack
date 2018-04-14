@@ -1,0 +1,1305 @@
+#!/bin/bash
+#
+# Copyright 2002-2017   Stuart Winter, Surrey, England, United Kingdom.
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+######################################################################################
+# Program: slacktrack
+# Purpose: Tracking & building packages for Slackware v9.1+
+#          Inspired by Patrick Volkerding's 'bp' script
+#
+#          This DOES NOT USE libsentry nor installwatch!
+#          This WILL INSTALL THE PACKAGE ON THE SYSTEM (and updates the
+#          /var/log/packages database so that you may remove the newly built package).
+#
+#         * DO NOT USE THIS ON ANYTHING BUT A PACKAGE BUILDING DEVELOPMENT MACHINE *
+#
+#          You MUST consult the FAQ before using this script so that you avoid
+#          including unrelated files in your packages.
+#
+# Author : Stuart Winter <mozes@slackware.com>
+# Date...: 07-Jun-2017
+# Version: 2.18
+######################################################################################
+
+# Program name
+PROGNAME="slacktrack"
+
+# Version
+SLACKTRACKVERSION="${PROGNAME} v2.18 by Stuart Winter <mozes@slackware.com>"
+
+# Path to Slackware's makepkg
+MAKEPKG=/sbin/makepkg
+
+# Set defaults. These may be modified via the command line switches
+unset SLACKWAREPACKAGE PACKAGEDEPEND
+CREATESYMLINKS=Yes
+SETROOTOWNER=No
+CHOWNBINDIRSROOTBIN=No
+CHOWNBINFILESROOTBIN=No
+CHOWNBINSROOTROOT=No
+TIDYONFINISH=Yes
+GZMAN=No
+GZINFO=No
+GZMANFIXSYMLINKS=Yes
+GZINFOFIXSYMLINKS=Yes
+DELETEUSRINFODIR=No
+DELETEPERLLOCALPOD=No
+DELETEORPHANEDPYC=No
+STRIPPROG="$( which strip )"
+STRIPLIB=No
+STRIPBIN=No
+STRIPALLEXEC=No
+STRIPARCHIVES=No
+CREATEDESCRIPTION=No
+CHMODNOGLOBALWRITE=No
+CHMOD644DOCS=No
+BUILDSTORE=/tmp/built-slackwarepackages/ # if that dir doesn't exist it'll use /tmp
+LOGGING=Yes
+CREATEMD5SUM=No
+SIGNPACKAGE=No
+SIGNINGKEY=
+NOUSRTMP=No
+ALLOWOVERLAPPINGFILES=Yes
+LOGHARDLINKS=Yes
+SLACKTRACKLOGFILE="/var/tmp/$$.$(date +%s).${RANDOM}.slacktrack.log"
+MANDIR_LIST="/usr/man /usr/local/man /usr/X11R?/man /opt/kde/man"
+INFODIR_LIST="/usr/info /usr/local/info"
+LIBDIR_LIST="/usr/lib /usr/lib64 /lib64 /lib /usr/local/lib /usr/libexec"
+BINDIR_LIST="/bin /sbin /usr/sbin /usr/bin /usr/local/bin /usr/local/sbin /usr/X11R?/bin"
+ROOTDIR=/
+RUNCMDAFTER=
+RUNCMDAFTER_WITHLOG=No
+MAKEPKGOPTS=
+SHOWDEPS=No
+# Below is the list of files and directories that should be excluded from the list
+# of files that have changed since before and after the build.
+# It's in egrep's pattern format.  Note that when this string is used in altertrack
+# (as it used to be called), we prefix everything with ^ meaning to only remove the
+# listed value if it is at the start of a line.  Eg, /var/log/monkey.log would be removed
+# from the list (because /var/log is listed below), but /usr/monkey/var/log/monkey.log
+# would not.
+EXCLUDE_LIST="${PWD}$|${PWD}|/etc/ntp/drift|/var/run/|/var/run$|/var/lib/dhcpcd|/var/lib/dhcpcd$|/etc/dhcpc/|/etc/dhcpc$|/var/cache/|/var/cache$|/run$|/run/|/media$|/media/|/srv$|/srv/|/selinux$|/selinux/|/var/lib/rpm|/var/lib/rpm$|/var/yp$|/var/yp/|/sys$|/sys/|/initrd$|/initrd/|/dev/bus$|/dev/bus/|/dev/char$|/dev/char/|/dev/rfkill|/dev/input$|/dev/input/|/dev/.udev/|/dev/.udev$|/dev/vc$|/dev/vc/|/dev/console|/dev/pts$|/dev/pts/|/dev/ptmx|/dev/tty|/var/log|/etc/mtab|/etc/resolv.conf|/etc/ld.so.cache|/tmp|/root|/proc|/var/tmp|/var/run/utmp|/var/spool/cron/cron|/var/lib/NetworkManager|/var/lib/NetworkManager$|/usr/man/whatis|/usr/local/man/whatis|/var/lib/pgsql$|/var/lib/pgsql|/var/lib/mysql$|/var/lib/mysql"
+
+# The list of files/directories to exclude from the pre and post-file system scan.
+# Note that this is applied to the search itself, unlike EXCLUDE_LIST, which
+# means a) if you know what to exclude can make the install a lot faster and
+# b) it uses find's -regex syntax.
+# Paths are relative to ROOTDIR - if you amend these using the --no-fs-search operator
+# you will need to omit the '/' prefix as you can see below:
+SEARCH_EXCLUDE_LIST='mnt\|sys\|proc\|tmp\|home\|lib/udev/devices'
+
+# Default touch list:
+# (ideally there shouldn't be any directories called /install as these are part of the
+#  package that are used during installation, and wiped afterwards; but occasionally
+#  there is some residue due to a problematic package or a failed build):
+FSTOUCHLIST="/opt /bin /boot /etc /install /lib /usr/lib64 /lib64 /sbin /usr /var"
+
+# Basic sanity checks
+if [ ! -f "${MAKEPKG}" ]; then
+   echo "ERROR: Unable to locate the Slackware 'makepkg' program"
+   echo "       Your system is broken.  makepkg is part of the pkgtools"
+   echo "       package; you must install it to continue."
+   exit 4
+fi
+if [ ! -d /var/log/packages -o ! -d /var/log/scripts ]; then
+   echo "ERROR: Unable to find at least one of the package"
+   echo "       information repositories.  Your system is broken!"
+   exit 4
+fi
+
+
+############################################### Functions###################################
+function display_usage () {
+printf "Usage: ${PROGNAME} [options] -p <package_file_name> <command_line>\n"
+if [ ! -z "$1" ]; then
+   echo "Use $( basename $0 ) --help for a list of options"
+fi
+}
+
+function display_help () {
+printf "${SLACKTRACKVERSION}\n\n$(display_usage)
+
+Startup:
+ -h,   --help                   Display this help
+ -v,   --version                Display version information
+
+Options to Slackware's 'makepkg':
+ -p,  --package <package_name>  Resulting tar file name of the package
+ -s,  --nosymlinks              Do not create symlinks via install/doinst.sh script
+ -r,  --setrootowner            Set permissions on directories to 755 and owners to root.root
+      --mpopts \"<options>\"      Specify additional options to 'makepkg'
+
+Specific slacktrack options:
+ -t,  --notidy                  Do not delete temporary package directory
+ -b,  --buildstore <directory>  Location to store built packages
+                                [ default: ${BUILDSTORE} ]
+ -l,  --logfile <filename>      Path of slacktrack's logfile
+                                [ default: (buildstore_path)/<package_name>.log ]
+ -n,  --nologging               Delete log file upon slacktrack completing successfully
+ -D,  --md5sum                  Create an MD5sum file of the resulting package
+ -G,  --gpg-sign <key id>       Sign the resulting package with GnuPG
+ -z,  --gzman                   gzip any man pages found in known locations
+ -I,  --gzinfo                  gzip any info pages found in known locations
+ -Z,  --gzman-no-symfix         Do not repair broken symlinks caused by the --gzman option
+                                [ default is to fix broken symlinks ]
+ -F,  --gzinfo-no-symfix        Do not repair broken symlinks caused by the --gzinfo option
+                                [ default is to fix broken symlinks ]
+ -K,  --delete-usrinfodir       Delete package's /usr/info/dir file [default is no]
+ -P,  --delete-perllocalpod     Delete perllocal.pod files found in /usr/lib & /usr/lib64 [default is no]
+ -d,  --depend \"package1,pack2\" Ensure Slackware packages are installed before continuing
+ -j,  --striplib                Strip executable ELF .so objects in the library directories
+ -A,  --striparchives           Strip .a (archive) files found anywhere within the package
+ -k,  --stripbin                Strip executable ELF files in the binary directories
+ -S,  --stripallexec            Strip all executable ELF objects found within the package
+ -c,  --createdescription       Create a slack-desc file named <package-name>.txt in
+                                the build store path
+ -e,  --chown-bdirs-root-bin    Set ownerships of the standard Slackware binary directories to
+                                'root:bin'.  If you use the --setrootowner option then it will
+                                reset the directory permissions to root:root
+ -f,  --chown-bfiles-root-bin   Set ownerships of files contained within the standard Slackware
+                                binary directories to 'root:bin'
+ -m,  --chown-bins-root-root    Set ownerships of files and directories in the standard Slackware
+                                binary directories to 'root:root'
+ -g,  --chmod644docs            Run chmod 644 & chown root:root on files in package's /usr/doc/
+ -U,  --nousrtmp                If /usr/tmp is a symlink, delete it and its contents
+ -T,  --tempdir <path>          Specify a temporary path for the package building
+                                By default, slacktrack will choose one in /var/tmp
+ -L,  --nologhardlinks          Do not log the existence of hard links
+ -O,  --chmod-og-w              Run 'chmod -R og-w' over the package directory
+ -x,  --exclude '/foo|/bar'     Supply replacement egrep pattern for dir/file exclusion
+ -o,  --no-fs-search 'foo\|bar' Supply replacement find regex pattern for pre and post-build file
+                                system scans. If you know where the package will install, this can
+                                significantly reduce the processing time. Paths are relative to --rootdir
+                                [default: mnt\|sys\|proc\|tmp\|home\|lib/udev/devices]
+ -M,  --extra-mandir <path>     Append path to the man directory list
+ -W,  --extra-infodir <path>    Append path to the info directory list
+ -E,  --extra-libdir <path>     Append path to the lib directory list
+ -B,  --extra-bindir <path>     Append path to the bin directory list
+ -N,  --strip-prog <path>       Specify the location of the 'strip' binary
+ -R,  --run-after <cmd>         Run command/script after build script finishes, without appending
+                                its output to the slacktrack log file.
+                                Use this for any post build processing scripts that require manual
+                                intervention or use a curses interface (for example a 'dialog' script).
+      --run-after-withlog <cmd> Run command/script after build script finishes, appending any output
+                                to the slacktrack log file.
+ -X,  --delete-overlapping      Remove any files from the resulting package's contents that overlap
+                                with any of the system's existing installed packages
+      --allow-overlapping       Permit the package to contain any files that overlap with existing
+                                installed packages [this is the default]
+ -Q,  --standard                Select options required to build a compliant Slackware package
+      --showdeps                List the installed packages on which this new package depend
+      --rootdir                 Change the directory that slacktrack considers to be the root
+                                [default: /]
+      --touch-filesystem-first  Touch files on the filesystem before scanning filesystem
+                                contents
+      --touch-filesystem-faster Touch files on the filesystem before scanning filesystem
+                                contents, using a faster but less safe method
+                                than --touch-filesystem-first
+                                This option is _not_ recommended.
+ -Y,  --delete-orphaned-pyc     Delete orphaned Python compiled *.pyc files from the package.
+
+Suggested usage: ${PROGNAME} -Qp foo-1.0-i486-1.txz ./foo.build
+"
+}
+
+# basename + strip extensions .tbz, .tgz, .tlz and .txz
+pkgbase() {
+  echo "$1" | sed 's?.*/??;s/\.t[bglx]z$//'
+}
+# Function to retrieve the package name.
+# glibc-solibs-2.2-i386-1.tgz = glibc-solibs
+package_name() {
+  # Strip version, architecture and build from the end of the name
+  pkgbase $1 | sed 's?-[^-]*-[^-]*-[^-]*$??'
+}
+
+# Function to determine whether a supplied package name is already installed
+# Returns 0 if not installed, 1 if installed.
+# This function allows us to specify 'autoconf' for example, without having
+# to worry about the version number installed (unless you specifically want to,
+# in which case specify the version number as well - e.g. autoconf-2.54)
+function is_package_installed () {
+  local PACKAGENAME="$1"
+  local installed_package
+
+  # We have to go through each package like this (rather than just do if -f foobar-*
+  # because otherwise packges such as glibc, glibc-solibs and so on get wildcarded
+  # and things get confused.
+   for installed_package in $( find /var/log/packages/${PACKAGENAME}-* -type f -printf "%f\n" 2>/dev/null ) ; do
+       installed_package="$( package_name ${installed_package} )"
+       if [ "${installed_package}" = "${PACKAGENAME}" ]; then
+           return 1 # the package 'short' name is installed
+           break
+       fi
+   done
+return 0
+}
+
+# Check if we have any package dependencies.  This is a lame way of doing it and
+# possibly proves nothing, but it saves me writing it in a few build scripts that
+# would otherwise fail when they haven't got package X installed.
+function check_package_dep () {
+local error pack
+# Change comma separated input into spaces and consider them one by one
+for pack in $( echo ${1} | sed s/,/\ /g ); do
+  is_package_installed "${pack}"
+  if [ $? -eq 0 ]; then
+     echo "${PROGNAME}: dependency Slackware package '${pack}' not installed"
+     error=y
+  else
+     echo "${PROGNAME}: dependency Slackware package '${pack}' is installed. OK!"
+  fi
+done
+
+if [ ! -z "${error}" ]; then
+   echo "Error: Package dependencies failed"
+   return 1
+fi
+}
+
+
+# Function to move the temporary log file into the correct place & with the correct name.
+function move_log () {
+if [ "${LOGGING}" = "Yes" ]; then
+   if [ -z "${USER_SLACKTRACKLOGFILE}" ]; then
+      # Move /var/tmp/slacklog to /tmp/built-slackwarepackages/packagename.log
+      mv -f ${SLACKTRACKLOGFILE} "${BUILDSTORE}/$( echo $SLACKWAREPACKAGE | rev | cut -d. -f2- | rev ).log" > /dev/null 2>&1
+    else
+      # The user specified their own log path; rename our /var/tmp/slacklog to their's
+      mv -f ${SLACKTRACKLOGFILE} ${USER_SLACKTRACKLOGFILE} > /dev/null 2>&1
+   fi
+  else
+   # We don't want a log, so we'll just delete the /var/tmp version
+   rm -f ${SLACKTRACKLOGFILE}
+fi
+}
+
+# Tidy up the temporary directory (source extraction dir and pseudo root):
+function tidy_workspace () {
+( if [ "${TIDYONFINISH}" = "Yes" ]; then
+     echo -n "${PROGNAME}: Deleting temporary directory"
+     rm -rf /install/* /install > /dev/null 2>&1 # otherwise this may cause trouble for other builds
+     rm -rf "${SLACKTRACKTMPPATH}"
+     if [ $? -gt 0 ]; then
+        echo " ... error removing"
+      else
+        echo " ... done"
+     fi
+   else
+     rm -rf /install/* /install > /dev/null 2>&1
+     echo "${PROGNAME}: Temporary workspace '${SLACKTRACKTMPPATH}' will remain"
+fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+}
+
+#############################################################################################
+PARAMS="$( getopt -qn "$( basename $0 )" -o p:b:l:d:M:N:W:E:x:o:B:R:T:DG:mnefgcsrthvzPAISjkKULOZQXY -l exclude:,no-fs-search:,mpopts:,tempdir:,package:,buildstore:,logfile:,depend:,delete-overlapping,allow-overlapping,extra-mandir:,extra-infodir:,run-after:,run-after-withlog:,extra-libdir:,extra-bindir:,strip-prog:,nologging,createdescription,gzman,gzinfo,gzman-no-symfix,gzinfo-no-symfix,striplib,striparchives,stripbin,stripallexec,nosymlinks,nousrtmp,chmod644docs,setrootowner,chown-bdirs-root-bin,chown-bfiles-root-bin,notidy,help,version,delete-usrinfodir,nologhardlinks,md5sum,gpg-sign:,chmod-og-w,standard,showdeps,rootdir:,chown-bins-root-root,touch-filesystem-first,touch-filesystem-faster,delete-perllocalpod,delete-orphaned-pyc -- "$@" )"
+
+# If params are incorrect then
+if [ $? -gt 0 ]; then display_help >&2 ; exit 2 ; fi
+eval set -- "${PARAMS}"
+for param in $* ; do
+  case "$param" in
+
+     -p|--package)           	 SLACKWAREPACKAGE="$2"
+                             	 shift 2;;
+
+     -b|--buildstore)        	 BUILDSTORE="$2/"
+                             	 shift 2;;
+
+     -l|--logfile)           	 USER_SLACKTRACKLOGFILE="$2"
+                             	 shift 2;;
+
+     -n|--nologging)         	 LOGGING=No
+                                 shift 1;;
+
+     -D|--md5sum)		 CREATEMD5SUM="Yes"
+				 shift 1;;
+
+     -G|--gpg-sign)		 SIGNPACKAGE="Yes"
+				 SIGNINGKEY="$2"
+				 shift 2;;
+
+     -s|--nosymlinks)        	 CREATESYMLINKS="No"
+                             	 shift 1;;
+
+     -U|--nousrtmp)            	 NOUSRTMP="Yes"
+                             	 shift 1;;
+
+     -L|--nologhardlinks)     	 LOGHARDLINKS="No"
+	     	      		 shift 1;;
+
+     -O|--chmod-og-w)          	 CHMODNOGLOBALWRITE="Yes"
+ 		           	 shift 1;;
+
+     -T|--tempdir)             	 SLACKTRACKTMPPATH="$2"
+			     	 shift 2;;
+
+     -r|--setrootowner)      	 SETROOTOWNER="Yes"
+                             	 shift 1;;
+
+     --mpopts)                   MAKEPKGOPTS="$2"
+				 shift 2;;
+
+     -e|--chown-bdirs-root-bin)  CHOWNBINDIRSROOTBIN="Yes"
+                                 CHOWNBINSROOTROOT="No"
+                               	 shift 1;;
+
+     -f|--chown-bfiles-root-bin) CHOWNBINFILESROOTBIN="Yes"
+                                 CHOWNBINSROOTROOT="No"
+                              	 shift 1;;
+
+     -m|--chown-bins-root-root)  CHOWNBINSROOTROOT="Yes"
+                                 shift 1;;
+
+     -g|--chmod644docs)          CHMOD644DOCS="Yes"
+                                 shift 1;;
+
+     -t|--notidy)            	 TIDYONFINISH="No"
+                             	 shift 1;;
+
+     -c|--createdescription) 	 CREATEDESCRIPTION="Yes"
+                             	 shift 1;;
+
+     -j|--striplib)          	 STRIPLIB="Yes"
+                             	 shift 1;;
+
+     -k|--stripbin)          	 STRIPBIN="Yes"
+                             	 shift 1;;
+
+     -S|--stripallexec)          STRIPALLEXEC="Yes"
+                                 shift 1;;
+
+     -A|--striparchives)         STRIPARCHIVES="Yes"
+                                 shift 1;;
+
+     -N|--strip-prog)            STRIPPROG="$2"
+				 shift 2;;
+
+     -z|--gzman)             	 GZMAN="Yes"
+                             	 shift 1;;
+
+     -I|--gzinfo)                GZINFO="Yes"
+     				 shift 1;;
+
+     -Z|--gzman-no-symfix)     	 GZMANFIXSYMLINKS="No"
+  			     	 shift 1;;
+
+     -F|--gzinfo-no-symfix)      GZINFOFIXSYMLINKS="No"
+      				 shift 1;;
+
+     -K|--delete-usrinfodir)	 DELETEUSRINFODIR="Yes"
+                                 shift 1;;
+
+     -P|--delete-perllocalpod)   DELETEPERLLOCALPOD="Yes"
+                                 shift 1;;
+
+     -d|--depend)            	 PACKAGEDEPEND="$2"
+                             	 shift 2;;
+
+     -Y|--delete-orphaned-pyc)   DELETEORPHANEDPYC="Yes"
+                             	 shift 1;;
+
+     -x|--exclude)		 EXCLUDE_LIST="$2"
+				 shift 2;;
+
+     -o|--no-fs-search)	         SEARCH_EXCLUDE_LIST="$2"
+				 shift 2;;
+
+     -M|--extra-mandir)          MANDIR_LIST="${MANDIR_LIST} $( echo ${2} | sed s/,/\ / )" # replace commas with spaces for 'for' loops
+                                 shift 2;;
+
+     -W|--extra-infodir)         INFODIR_LIST="${INFODIR_LIST} $( echo ${2} | sed s/,/\ / )"
+                                 shift 2;;
+
+     -E|--extra-libdir)		 LIBDIR_LIST="${LIBDIR_LIST} $( echo ${2} | sed s/,/\ / )"
+				 shift 2;;
+
+     -B|--extra-bindir)          BINDIR_LIST="${BINDIR_LIST} $( echo ${2} | sed s/,/\ / )"
+				 shift 2;;
+
+     -R|--run-after)             RUNCMDAFTER="$2"
+				 shift 2;;
+
+     --run-after-withlog)        RUNCMDAFTER="$2"
+                                 RUNCMDAFTER_WITHLOG="Yes"
+				 shift 2;;
+
+     -v|--version)           	 printf "${SLACKTRACKVERSION}\n" ; exit 0 ;;
+
+     -h|--help)              	 display_help    ; exit 0 ;;
+
+     -X|--delete-overlapping)    ALLOWOVERLAPPINGFILES="No"
+     				 shift ;;
+
+     --allow-overlapping)        ALLOWOVERLAPPINGFILES="Yes"
+     				 shift ;;
+
+     -Q|--standard)              GZMAN="Yes"
+                                 GZINFO="Yes"
+                                 DELETEUSRINFODIR="Yes"
+                                 STRIPALLEXEC="Yes"
+                                 CREATEDESCRIPTION="Yes"
+                                 CHMOD644DOCS="Yes"
+                                 CHOWNBINSROOTROOT="Yes"
+                                 NOUSRTMP="Yes"
+                                 DELETEPERLLOCALPOD="Yes"
+                                 ALLOWOVERLAPPINGFILES="No"
+				 shift ;;
+
+     --showdeps)	         SHOWDEPS="Yes"
+                                 shift ;;
+
+     --rootdir)			 ROOTDIR="$2"
+                		 shift 2;;
+
+     --touch-filesystem-first)   TOUCHFILESYSTEMFIRST=Yes
+                                 shift ;;
+     --touch-filesystem-faster)  TOUCHFILESYSTEMFIRST=Yes
+                                 TOUCHFILESYSTEMFASTER=Yes
+                                 shift ;;
+
+
+     --) shift; break;;
+esac done
+
+# The package name is the final argument in the list
+COMMANDLINESCRIPT="$@"
+
+#
+# Sanity checks:
+#
+# Support the user supplying the full path of the package name - e.g. slacktrack -p /tmp/foo-1.0-arm-1.tgz
+# rather than specifying slacktrack -b /tmp -p foo-1.0-arm-1.tgz
+if [ "$( dirname "$SLACKWAREPACKAGE" )" != "." ]; then
+   BUILDSTORE="$( dirname "$SLACKWAREPACKAGE" )"
+   SLACKWAREPACKAGE="$( basename "$SLACKWAREPACKAGE" )"
+fi
+
+# Do we have a package name & a build script ?  If not, bomb out.
+if [ -z "${SLACKWAREPACKAGE}" -o -z "${COMMANDLINESCRIPT}" ]; then
+   display_usage help >&2
+   exit 2
+fi
+
+# Why don't we check to see if the build script exists?
+# Well, if I do "/bin/sh foo.build" -- how can I check whether it exists?
+# Just don't pass slacktrack duff stuff ;)
+
+# Check package dependencies
+if [ ! -z "${PACKAGEDEPEND}" ]; then
+   check_package_dep "${PACKAGEDEPEND}" || exit 3
+fi
+
+# If we didn't specify a temporary directory then we need make a random one
+if [ -z "${SLACKTRACKTMPPATH}" ]; then
+   SLACKTRACKTMPPATH="/var/tmp/$$.$(date +%s).${RANDOM}.slacktrack.FAKEROOT" # Temporary path for file translation
+  else
+   # Remove duplicate / otherwise it breaks further down when we egrep it out of the 'changed files'
+   # list.
+   SLACKTRACKTMPPATH="$( echo $SLACKTRACKTMPPATH | tr -s '/' )"
+fi
+
+# If we elected to strip everything in the entire package directory then
+# set the other two strip options to something sensible to display to the
+# user/log file.
+if [ "${STRIPALLEXEC}" = "Yes" ]; then
+   STRIPLIB="Yes"
+   STRIPBIN="Yes"
+   STRIPARCHIVES="Yes"
+fi
+
+# Let's check if user really has gpg.
+if [ "${SIGNPACKAGE}" = "Yes" ]; then
+   which gpg >/dev/null 2>&1 || { echo "${PROGNAME}: Warning: Cannot find gpg; disabling signature creation"; SIGNPACKAGE="No"; }
+fi
+
+# Display some info about the new package we're going to build
+(
+printf "
+Package information
+--------------------------------------------------
+Slackware package name...........................: ${SLACKWAREPACKAGE}
+Build script/command line........................: ${COMMANDLINESCRIPT}
+Build package store..............................: ${BUILDSTORE}
+slacktrack log file..............................: ${SLACKTRACKLOGFILE}
+slacktrack temporary dir.........................: ${SLACKTRACKTMPPATH}
+Logging..........................................: ${LOGGING}
+Create an MD5sum of the resulting package........: ${CREATEMD5SUM}
+Sign the resulting package with GnuPG............: $( if [ "${SIGNPACKAGE}" = "Yes" ]; then echo "with ${SIGNINGKEY:-your default} key" ; else echo "No" ; fi )
+Create description file..........................: ${CREATEDESCRIPTION}
+Log hard links...................................: ${LOGHARDLINKS}
+chmod -R og-w....................................: ${CHMODNOGLOBALWRITE}
+chown root:bin binary directories................: ${CHOWNBINDIRSROOTBIN}
+chown root:bin binaries in bin dirs..............: ${CHOWNBINFILESROOTBIN}
+chown root:root binary dirs & files..............: ${CHOWNBINSROOTROOT}
+chmod 644 & chown root:root /usr/doc/*...........: ${CHMOD644DOCS}
+Additional options to 'makepkg'..................: $( if [ -z "${MAKEPKGOPTS}" ]; then echo "[ None ]" ; else echo "${MAKEPKGOPTS}" ; fi )
+Tell 'makepkg' to create symlinks................: ${CREATESYMLINKS}
+Call 'makepkg' with --setrootowner...............: ${SETROOTOWNER}
+Tidy on finish...................................: ${TIDYONFINISH}
+gzip man pages...................................: ${GZMAN}
+gzip info pages..................................: ${GZINFO}
+Fix broken gz man page symlinks..................: ${GZMANFIXSYMLINKS}
+Fix broken gz info page symlinks.................: ${GZINFOFIXSYMLINKS}
+Delete package's /usr/info/dir page..............: ${DELETEUSRINFODIR}
+Delete perllocal.pod files in /usr/lib{,64}......: ${DELETEPERLLOCALPOD}
+Strip executable ELF binaries....................: ${STRIPBIN}
+Strip executable ELF shared objects..............: ${STRIPLIB}
+Strip .a (archive) files.........................: ${STRIPARCHIVES}
+Strip all executable ELF files...................: ${STRIPALLEXEC}
+Path to strip utility............................: ${STRIPPROG}
+Shared objects (libraries) dirs..................: ${LIBDIR_LIST}
+Binary objects dirs..............................: ${BINDIR_LIST}
+Man page dirs....................................: ${MANDIR_LIST}
+Info page dirs...................................: ${INFODIR_LIST}
+Delete /usr/tmp symlink..........................: ${NOUSRTMP}
+Show dependencies to other packages..............: ${SHOWDEPS}
+egrep pattern for dir/file/path exclusion........: ${EXCLUDE_LIST}
+File system pre & post scan path exclusion regex : ${SEARCH_EXCLUDE_LIST}
+Command/script to run after build script.........: $( if [ -z "${RUNCMDAFTER}" ]; then echo "None" ; else echo ${RUNCMDAFTER} ; fi )
+Directory slacktrack considers is root...........: ${ROOTDIR}
+Allow files to overlap with other packages.......: ${ALLOWOVERLAPPINGFILES}
+Delete orphaned Python *.pyc files...............: ${DELETEORPHANEDPYC}
+Touch filesystem contents first..................: $( if [ -z "${TOUCHFILESYSTEMFIRST}" ]; then echo "No" ; else echo "in $FSTOUCHLIST" ; fi )
+--------------------------------------------------\n"
+) 2>&1 | tee ${SLACKTRACKLOGFILE}
+
+# Ensure that the temporary directory (either one chosen by slacktrack or set manually
+# with --tempdir) does not exist.
+# A user may expect slacktrack to choose its own directory within a sub directory
+# which it deliberately does not do.
+# It's safest to abort if the directory exists to avoid destroying user data.
+if [ -d "${SLACKTRACKTMPPATH}" ]; then
+   echo "${PROGNAME}: ERROR: Temporary directory ${SLACKTRACKTMPPATH} already exists"
+   echo "                    Please delete this directory before trying again."
+   exit 6 # error code=unsafe to continue
+ else
+   # We're safe to create the directory:
+   mkdir -pm700 "${SLACKTRACKTMPPATH}"
+fi
+
+# Create a temporary 'scratch' directory inside the slacktrack
+# temporary dir.  This is to save build scripts managing their own
+# temporary directories should the author be too lazy ;)
+export SLACKTRACKSCRATCHDIR="${SLACKTRACKTMPPATH}/SCRATCHDIR"
+mkdir -pm700 "${SLACKTRACKSCRATCHDIR}"
+
+export SLACKTRACKFAKEROOT="${SLACKTRACKTMPPATH}/TRANSL"
+mkdir -pm755 "${SLACKTRACKFAKEROOT}"
+
+# Touch the contents of the filesystem.
+( if [ "${TOUCHFILESYSTEMFIRST}" = "Yes" ]; then
+   echo -n "${PROGNAME}: Touching contents of"
+   for touching in $FSTOUCHLIST ; do
+     if [ -d "$touching" ]; then
+        echo -n " $touching"
+        # Also, exclude /lib/udev/devices:
+        if [ "${TOUCHFILESYSTEMFASTER}" = "Yes" ]; then
+           find $touching -path '/lib/udev/devices' -prune -o -print | xargs touch -c
+         else
+           # Do it the slower but safer, preferred way:
+           # This method handles files/dirs with spaces in the names - the above, faster method
+           # may fail to touch some files that have spaces in their file names - therefore you cannot
+           # be certain that a full 'state of the system' has been captured, which may lead to
+           # some new/modified files being excluded from the resulting .t?z package upon build completion.
+           find $touching -path '/lib/udev/devices' -prune -o -print | xargs -I '{}' touch -c '{}'
+        fi
+        # Update symlink time stamps on the symlink targets:
+        # There's not really any point in doing this actually since the build script
+        # or makefile would have to use ln -fs as well, in which case slacktrack
+        # would find the change with just the regular touching.
+        # To do this reliably, you could patch 'ln' to always force overwriting of the
+        # target.
+        # But if we wanted to, here's how we'd do it:
+        # find $touching -path '/lib/udev/devices' -prune -o  -type l -printf "ln -nfs "%l" "%p"\n" | bash
+     fi
+   done
+   echo
+fi ) 2>&1 | tee ${SLACKTRACKLOGFILE}
+
+# Generate list of files on the system prior to executing the build script
+#
+# I remove /mnt, /proc, /tmp and /home here to make the find
+# execute more quickly.  I have a box NFS mounted on /mnt
+# so it's highly undesirable to scan another OS installation
+# in addition to our own ;-)
+BEFOREFILESLIST="${SLACKTRACKTMPPATH}/before_files.list"
+AFTERFILESLIST="${SLACKTRACKTMPPATH}/after_files.list"
+NEWFILESLIST="${SLACKTRACKTMPPATH}/new_files.list"
+DIRLIST="${SLACKTRACKTMPPATH}/dir.list"
+
+echo -n "${PROGNAME}: Finding files on the system, please wait"
+( cd ${ROOTDIR}
+  find . \( -regex "./\(${SEARCH_EXCLUDE_LIST}\)" -prune \) -o -not -name . -printf "%p %T@ %s\n" | cut -d. -f2- > ${BEFOREFILESLIST} ) >/dev/null 2>&1
+echo " ... done"
+
+# Launch build script with logging
+if [ "${LOGGING}" = "Yes" ]; then
+   [ -x /usr/libexec/slacktrack/ln ] && export PATH=/usr/libexec/slacktrack:$PATH
+   ( printf "\n\n\n[$( date "+%D %r" )] ${PROGNAME}: Executing command line '${COMMANDLINESCRIPT}'\n\n"
+     ${COMMANDLINESCRIPT}
+     EXIT_CODE=$?
+     if [ ${EXIT_CODE} -gt 0 ]; then
+        printf "\n\n[$( date "+%D %r" )] ${PROGNAME}: * WARNING: ${COMMANDLINESCRIPT} returned exit code ${EXIT_CODE} *\n\n"
+     fi
+     printf "[$( date "+%D %r" )] ${PROGNAME}: Command line '${COMMANDLINESCRIPT}' finished\n\n"
+   ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+ else
+   # Launch build script without logging (allows perl's CPAN interface to work)
+   ( printf "\n\n\n[$( date "+%D %r" )] ${PROGNAME}: Executing command line '${COMMANDLINESCRIPT}'\n\n"
+     [ -x /usr/libexec/slacktrack/ln ] && export PATH=/usr/libexec/slacktrack:$PATH
+     ${COMMANDLINESCRIPT}
+     EXIT_CODE=$?
+     if [ ${EXIT_CODE} -gt 0 ]; then
+        printf "\n\n[$( date "+%D %r" )] ${PROGNAME}: * WARNING: ${COMMANDLINESCRIPT} returned exit code ${EXIT_CODE} *\n\n"
+     fi
+     printf "[$( date "+%D %r" )] ${PROGNAME}: Command line '${COMMANDLINESCRIPT}' finished\n\n"
+    )
+fi
+
+
+# Generate list of files post installation
+# Again we miss out /mnt et al to speed up the process.
+echo -n "${PROGNAME}: Finding files on the system, please wait"
+( cd ${ROOTDIR}
+  find . \( -regex "./\(${SEARCH_EXCLUDE_LIST}\)" -prune \) -o -not -name . -printf "%p %T@ %s\n" | cut -d. -f2- > ${AFTERFILESLIST} ) >/dev/null 2>&1
+echo " ... done"
+
+# Generate new list of files on the system (compare before and after file list)
+# and delete the list of files/dirs that match the egrep pattern exclude list.
+echo -n "${PROGNAME}: Comparing file lists"
+diff -Bbu ${BEFOREFILESLIST} ${AFTERFILESLIST} | grep "^+" | awk '{print $1}' | cut -d+ -f2- | \
+egrep -v "^(/$|\+\+$|${EXCLUDE_LIST}|${SLACKTRACKTMPPATH}$|${SLACKTRACKTMPPATH}/)" > ${NEWFILESLIST}
+echo " ... done"
+
+# Remove all non-empty directories from our package contents list
+# If we don't and we have any non-empty directories that have
+# changed (or been accessed) then the tar (below) ends up
+# including the directory & contents in its entirety into our new package!
+cd ${SLACKTRACKFAKEROOT}
+echo -n "${PROGNAME}: Removing non-empty directories from package contents list"
+( cd ${ROOTDIR}
+  cat ${NEWFILESLIST} | while read fileline ; do
+  if [ -d "./${fileline}" ]; then
+     # We only retain the *empty* directories otherwise any directories
+     # created by our build scripts (such as place holders) will be
+     # removed.  Everything contained within the non-empty directories will
+     # be picked up by tar.
+     if [ "$( find "./${fileline}" | wc -l )" -ne 1 ]; then
+         echo "${fileline}" >> "${DIRLIST}"
+     fi
+  fi
+  done ) > /dev/null 2>&1
+( cat ${NEWFILESLIST} ${DIRLIST} | sort | uniq -u > ${NEWFILESLIST}.new ) > /dev/null 2>&1
+mv -f ${NEWFILESLIST}.new ${NEWFILESLIST}
+echo " ... done"
+
+# Copy the changed files into our temporary package directory
+echo -n "${PROGNAME}: Copying the new/changed files into temporary directory"
+( cd ${ROOTDIR} ; cut -d/ -f2- ${NEWFILESLIST} | tar pvvcf - -T- | tar -C${SLACKTRACKFAKEROOT} -pxf - ) >/dev/null 2>&1
+echo " ... done"
+
+# Do we have any files in the temporary directory ?
+if [ "$( find ${SLACKTRACKTMPPATH}/TRANSL -print | wc -l )" -le 1 ]; then
+   ( printf "slacktrack: failed to track any activity\n"
+     printf "            Perhaps the build script doesn't exist or is broken\n\n"
+     printf " ERROR:     Cannot build a package\n\n"
+   ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+   move_log # we will want to log this error incase we're using slacktrack through an unattended auto builder
+   tidy_workspace # clean up workspace
+   exit 5
+fi
+
+# Get back inside the package's root directory
+# (we shouldn't have left it because all cding is done inside subshells
+#  but it doesn't hurt)
+cd ${SLACKTRACKFAKEROOT}
+
+# Determine whether there are any files that overlap with other packages on the filesystem.
+# These should be avoided since they may cause problems when upgrading packages (how would we know
+# which package 'really' owns the file?)
+# Output a list of all files *not* owned by the name of the package you're building
+# (this caters for situations when the package you're building cannot be removed from the
+#  filesystem of a running system ("zlib" is an example)).
+shopt -s extglob # needed to find package names
+cd /var/log/packages # we need to enter a directory that doesn't contain the archive (*.t?z) filename of the package
+find . -type f -not -name $( package_name ${SLACKWAREPACKAGE} )-+([^-])-+([^-])-+([^-]) | xargs sed -s -e '1,/FILE LIST:/d' | egrep -v '\/\.\/|^install/' > ${SLACKTRACKTMPPATH}/packaged_and_owned_files.list
+shopt -u extglob # return to previous behaviour
+cd ${SLACKTRACKFAKEROOT}
+
+# Find the unique entries in the packaged/owned files (there are lots of duplicate entries for /bin and so on)
+# then merge it in with the list of new files we've found when creating this package, and finally
+# identify the overlapping (duplicated) entries:
+# Remove the absolute path name from the list of new files detected, so that we can compare them with the
+# list in /var/log/packages:
+sed 's?^/??g' ${SLACKTRACKTMPPATH}/new_files.list > ${SLACKTRACKTMPPATH}/new_files_noabsolutepath.list
+sort -u ${SLACKTRACKTMPPATH}/packaged_and_owned_files.list | sort -m ${SLACKTRACKTMPPATH}/new_files_noabsolutepath.list - | uniq -d  > ${SLACKTRACKTMPPATH}/overlapping_files.list
+# Match an overlapping file to its package name and print out the list:
+# This flapping between subshells and the parent is due to 'shopt' not working properly inside subshells
+# and the need to direct the output of slacktrack to the log file.
+# It's messy and horribly inefficient -- if you know of a better way, let me know!
+if [ -s ${SLACKTRACKTMPPATH}/overlapping_files.list ]; then
+   ( echo "${PROGNAME}: Warning - found file overlap with existing packages:" ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+     pushd /var/log/packages > /dev/null
+     shopt -s extglob # needed to find package names
+     cat ${SLACKTRACKTMPPATH}/overlapping_files.list | while read ofile ; do
+        # Identify the package(s!) that contains the overlapping file, but exclude the package name
+        # that we're currently building (it could be the case that an older version of the package
+        # we're currently building is already installed that also contains overlapping files.  I assume
+        # that you're going to replace this older package, so it's not worth identifying the overlapping
+        # file as belonging to this other version).
+        # The following only works with 'new' (Slackware 8.1+) style package names: "foo-1.0-arm-1.t?z"
+        foundpkg="$( grep "$( echo "$ofile" )" * | awk -F: '{print $1}' | egrep -v "^$(  package_name ${SLACKWAREPACKAGE} )-[^-]*-[^-]*-[^-]*$" | sed '2,$s/^/\t\ \ \ \ /' )"
+         if [ ! -z "$foundpkg" ]; then
+            ( # We found it in a package:
+              echo "File: $ofile"
+              echo "Package(s): $foundpkg" ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+         fi
+       done
+    popd > /dev/null
+    shopt -u extglob # return to previous behaviour
+    if [ "${ALLOWOVERLAPPINGFILES}" = "No" ]; then
+       ( echo -n "${PROGNAME}: Deleting overlapping files from the package contents"
+         cat ${SLACKTRACKTMPPATH}/overlapping_files.list | while read ovlpfile ; do
+           rm -f "${SLACKTRACKFAKEROOT}/${ovlpfile}"
+         done
+         echo " ... done" ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+    fi
+  fi
+
+# Restore original directory permissions from root filesytem.
+# Why? Because we only store (in our file list), EMPTY directories.  Example:
+# I chmod 700 /etc/rc.d (which contains many startup scripts)
+# My new file rc script is called 'rc.foo' and this is the only thing that's changed
+# within /etc/rc.d. Therefore slacktrack only preserves the file name
+# '/etc/rc.d/rc.foo', so tar has to create etc/rc.d for itself -- it has no
+# information about its permissions/ownerships.
+# Why don't I just tar up the directory? read the comments above the code that does the tar.
+( if [ -s ${DIRLIST} ]; then
+     echo -n "${PROGNAME}: Restoring directory permissions & ownerships"
+     cat ${DIRLIST} | while read line ; do
+         find "${ROOTDIR}/${line}" -mindepth 0 -maxdepth 0 -printf "%U:%G" | xargs -0i chown {} "./${line}"
+         find "${ROOTDIR}/${line}" -mindepth 0 -maxdepth 0 -printf "%m"    | xargs -0i chmod {} "./${line}"
+     done
+     echo " ... done"
+fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+# Get back inside the package's root directory
+# (we shouldn't have left it because all cding is done inside subshells
+#  but it doesn't hurt)
+cd ${SLACKTRACKFAKEROOT}
+
+# Create a temporary package using "makepkg" to contain everything that
+# we have detected should be in the new package.
+# This will be used to populate the /var/log/packages/$package entry - the only thing we're doing
+# in this block of code is to generate the package entry for the build box, so that the build "mess" can be
+# removed cleanly.  The reason we do this here rather than use the contents of the $package (the final .t?z) is
+# because post-build, we modify some files (such as gzipping man pages), and as such when we removepkg $package,
+# removepkg won't delete /usr/man/man1/bash.1 because the entry would contain /usr/man/man1/bash1.gz
+# First copy the contents to another temporary location so that makepkg can slice and dice it.
+( echo -n "${PROGNAME}: Creating entries for $( echo $SLACKWAREPACKAGE | rev | cut -d. -f2- | rev ) in /var/log/{packages,scripts}"
+  cp -fa ${SLACKTRACKFAKEROOT} ${SLACKTRACKTMPPATH}/makepkg.tmppkg
+  cd ${SLACKTRACKTMPPATH}/makepkg.tmppkg
+  # Create a slack-desc that identifies this as a slacktrack special.
+  mkdir -pm755 install
+  NOEXTPKGNAM=$( echo $SLACKWAREPACKAGE | rev | cut -d. -f2- | rev )
+cat << EOF > install/slack-desc
+              |-----handy-ruler------------------------------------------------------|
+${NOEXTPKGNAM}: $NOEXTPKGNAM
+${NOEXTPKGNAM}:
+${NOEXTPKGNAM}: This package entry represents the filesystem as it was when slacktrack
+${NOEXTPKGNAM}: finished executing your build script.
+${NOEXTPKGNAM}:
+${NOEXTPKGNAM}: There has been no post processing on the contents of the package
+${NOEXTPKGNAM}: (for example, no compression of man pages).
+${NOEXTPKGNAM}:
+${NOEXTPKGNAM}: The primary purpose of this entry is to allow easy removal of the
+${NOEXTPKGNAM}: package contents with the Slackware  removepkg  tool.
+${NOEXTPKGNAM}:
+EOF
+
+  ${MAKEPKG} -l y -c n ${SLACKTRACKTMPPATH}/${SLACKWAREPACKAGE} >/dev/null 2>&1
+  # We don't need to install it on to the root filesystem since we already have the contents,
+  # all that we need is the /var/log/{packages,scripts} entries to allow manipulation by pkgtools.
+  mkdir -pm755 ${SLACKTRACKTMPPATH}/fakeinstalldir
+  installpkg --root ${SLACKTRACKTMPPATH}/fakeinstalldir ${SLACKTRACKTMPPATH}/${SLACKWAREPACKAGE} >/dev/null 2>&1
+  cp -fa ${SLACKTRACKTMPPATH}/fakeinstalldir/var/log/scripts/$NOEXTPKGNAM /var/log/scripts/ >/dev/null 2>&1
+  cp -fa ${SLACKTRACKTMPPATH}/fakeinstalldir/var/log/packages/$NOEXTPKGNAM /var/log/packages/ >/dev/null 2>&1
+echo " ... done" ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+# gzip man pages ?
+# Note that we prefix the dir name with ./ - this is so that if users specify
+# additional directories with --extra-xxxdir and include / , then it doesn't actually
+# *look* in the root dir.
+( if [ "${GZMAN}" = "Yes" ]; then
+        echo -n "${PROGNAME}: gzipping man pages"
+        for man_dir in ${MANDIR_LIST}; do
+            if [ -d "./${man_dir}" ]; then
+	       ( find ./${man_dir} -type f -name '*.bz2' -print0 | xargs -0 bzip2 -df ) >/dev/null 2>&1
+               ( find ./${man_dir} -type f -print0 | xargs -0 gzip -9f  ) >/dev/null 2>&1
+               ( find ./${man_dir} -type f -print0 | xargs -0 chmod 644 ) >/dev/null 2>&1
+            fi
+        done
+        echo " ... done"
+
+        if [ "${GZMANFIXSYMLINKS}" = "Yes" ]; then
+          echo -n "${PROGNAME}: Fixing any broken symlinks in man page directories"
+          # Fix up symlinks unless instructed not to
+          for man_dir in ${MANDIR_LIST}; do
+              if [ -d "./${man_dir}" ]; then
+                 ( cd ./${man_dir}
+                   # Enter each man page directory (man1,man2..) and whittle them down one by one
+                   for i in $( find . -type d -maxdepth 1 -printf "%P\n" | grep -v "^$" ); do
+                       # We cd into the man dir then use find to construct some shell commands & pipe into
+                       # bash for execution.  Neat huh? ;)
+                       cd ${i} && ( find . -type l -printf "rm -f %P ; ln -s %l.gz %p.gz\n" ) | /bin/bash && cd ..
+                   done
+                 ) 
+              fi
+          done
+          echo " ... done"
+        fi
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+# Delete any perllocal.pod files found in /usr/lib:
+( if [ "${DELETEPERLLOCALPOD}" = "Yes" ]; then
+     echo -n "${PROGNAME}: Deleting perllocal.pod files in /usr/lib and /usr/lib64"
+     ( find usr/lib{,64} -name perllocal.pod -print0 | xargs -0 rm -f ) >/dev/null 2>&1
+     echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+# Delete package's /usr/info/dir ?
+# You're more than likely going to want to do this.
+( if [ "${DELETEUSRINFODIR}" = "Yes" -a -f usr/info/dir ]; then
+        echo -n "${PROGNAME}: Deleting /usr/info/dir"
+        rm -f usr/info/dir
+        echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+# gzip info pages ?
+( if [ "${GZINFO}" = "Yes" ]; then
+        echo -n "${PROGNAME}: gzipping info pages"
+        for info_dir in ${INFODIR_LIST}; do
+            if [ -d "./${info_dir}" ]; then
+	       ( find ./${info_dir} -type f -name '*.bz2' -print0 | xargs -0 bzip2 -df ) >/dev/null 2>&1
+               ( find ./${info_dir} -type f -print0 | xargs -0 gzip -9f  ) >/dev/null 2>&1
+               ( find ./${info_dir} -type f -print0 | xargs -0 chmod 644 ) >/dev/null 2>&1
+            fi
+        done
+        echo " ... done"
+
+        if [ "${GZINFOFIXSYMLINKS}" = "Yes" ]; then
+          echo -n "${PROGNAME}: Fixing any broken symlinks in info page directories"
+          # Fix up symlinks unless instructed not to
+          for info_dir in ${INFODIR_LIST}; do
+              if [ -d "./${info_dir}" ]; then
+                 ( cd ./${info_dir} && ( find . -type l -printf "rm -f %P ; ln -s %l.gz %p.gz\n" ) | /bin/bash )
+              fi
+          done
+          echo " ... done"
+        fi
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# Strip shared objects ?
+( if [ "${STRIPLIB}" = "Yes" ]; then
+     echo -n "${PROGNAME}: Stripping unstripped ELF shared objects"
+     for i in ${LIBDIR_LIST}; do
+         ( cd ./${i} && find . -name '*.so*' -type f \( -perm -100 -o -perm -010 -o -perm -001 \) -print0 | xargs -0 file | egrep '(ELF.*shared.*not stripped)' | awk -F: '{print $1}' | xargs ${STRIPPROG} -p --strip-unneeded ) > /dev/null 2>&1
+     done
+     echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# Strip .a (archive) files ?
+( if [ "${STRIPARCHIVES}" = "Yes" ]; then
+     echo -n "${PROGNAME}: Stripping .a (archive) files"
+     ( find . -name '*.a' -type f -print0 | xargs -0 ${STRIPPROG} -p -g ) > /dev/null 2>&1
+     echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# Strip binaries?
+( if [ "${STRIPBIN}" = "Yes" ]; then
+     echo -n "${PROGNAME}: Stripping unstripped ELF binaries"
+     for i in ${BINDIR_LIST}; do
+         ( cd ./${i} && find . -type f \( -perm -100 -o -perm -010 -o -perm -001 \) -print0 | xargs -0 file | egrep '(ELF.*not stripped)' | awk -F: '{print $1}' | xargs ${STRIPPROG} -p --strip-unneeded ) >/dev/null 2>&1
+     done
+     echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# Strip everything?  This does the same as the above but instead it does it across
+# the entire package directory -- therefore it finds stuff in /opt and anywhere else
+# that files have been created.  You may prefer to use this option if you already use -jkA
+# but it's worth noting that it will take longer (especially on a package with many files
+# in a deep directory structure)
+( if [ "${STRIPALLEXEC}" = "Yes" ]; then
+  echo -n "${PROGNAME}: Stripping all unstripped executable ELF files"
+  ( find . -type f \( -perm -100 -o -perm -010 -o -perm -001 \) -print0 | xargs -0 file | egrep '(ELF.*not stripped)' | awk -F: '{print $1}' | xargs ${STRIPPROG} -p --strip-unneeded ) >/dev/null 2>&1
+  # Strip the .a archives
+  ( find . -name '*.a' -type f -print0 | xargs -0 ${STRIPPROG} -p -g ) > /dev/null 2>&1
+  echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# If we find <package_builddir>/usr/tmp is a symlink then delete it.
+# Some programs such as Apache seem to put stuff in here.  /usr/tmp is a symlink and is
+# created by Slackware's 'aaa_base' package.
+( if [ "${NOUSRTMP}" = "Yes" -a -h "usr/tmp" ]; then
+     echo "${PROGNAME}: Deleting /usr/tmp symlink from package build directory"
+     rm -rf "${SLACKTRACKTMPPATH}/TRANSL/usr/tmp"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# Run chmod -R og-w over the package directory ?
+# In general you won't want to do this because you should take care of your
+# own permissions on a per-build-script basis.  However, some software such
+# as PHP leaves files globally writeable (even a recent Slackware PHP package
+# had files og+w).
+( if [ "${CHMODNOGLOBALWRITE}" = "Yes" ]; then
+     echo -n "${PROGNAME}: Running chmod -R og-w on package contents"
+     chmod -R og-w .
+     echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# Fix up ownerships in the package.  According to the 'README' that comes with
+# Pat's 'slack-tools' scripts say:
+# "non-setuid binaries in /bin, /sbin, /usr/bin, and /usr/sbin are
+#  all chown root:bin (and the directories are, too)"
+# However, I spot traceroute as being setuid and owned by root.bin
+# So we'll just set everything in & including those dirs to be root.bin
+# You WON'T want to always use this facility -- some build scripts such as
+# 'floppy' set their own permissions correctly.  Again, you need to check over
+# the package afterwards and make changes to your build script accordingly.
+( if [ "${CHOWNBINDIRSROOTBIN}" = "Yes" ]; then
+     echo -n "${PROGNAME}: chowning root:bin the directories ${BINDIR_LIST}"
+     for i in ${BINDIR_LIST}; do
+         # Yes, we're assuming we may have dirs inside our bins.  I've yet to see
+         # one but there may be in the future.
+         ( cd ./$i && find . -type d -print0 | xargs -0 chown root:bin ) >/dev/null 2>&1
+     done
+     echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# chown root:bin files
+# Please note that any additional paths specified using --extra-bindir
+# will NOT be considered here.  The Slackware standard is to only chown root:bin on
+# /usr dirs -- if you look at /opt/kde/bin you'll see the files are owned by root.root
+( if [ "${CHOWNBINFILESROOTBIN}" = "Yes" ]; then
+     echo -n "${PROGNAME}: chowning root:bin the files inside ${BINDIR_LIST}"
+     for i in ${BINDIR_LIST}; do
+         ( cd ./$i && find . -type f -printf "chown root:bin '%p' && chmod %m '%p'\n" | /bin/bash ) > /dev/null 2>&1
+     done
+     echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# chown root:root files.
+# This was introduced in Slackware v11.
+# Please note that any additional paths specified using --extra-bindir
+# will NOT be considered here.  The Slackware standard is to only chown root:root on
+# /usr dirs -- if you look at /opt/kde/bin you'll see the files are owned by root:root
+( if [ "${CHOWNBINSROOTROOT}" = "Yes" ]; then
+     echo -n "${PROGNAME}: chowning root:root on files inside ${BINDIR_LIST}"
+     for i in ${BINDIR_LIST}; do
+         ( cd ./$i && find . -type f -printf "chown root:root '%p' && chmod %m '%p'\n" | /bin/bash ) > /dev/null 2>&1
+     done
+     echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# chmod 644 & chown root:root docs in usr/doc ?
+# This is my own 'thing'.  I don't like having any executable files in
+# my docs directory.
+( if [ "${CHMOD644DOCS}" = "Yes" -a -d "usr/doc" ]; then
+     echo -n "${PROGNAME}: Running chmod 644 over documents in usr/doc/"
+     ( find usr/doc/ -type f -print0 | xargs -0 chmod 644 ) >/dev/null 2>&1
+     ( chown -R root:root usr/doc/ ) >/dev/null 2>&1
+     echo " ... done"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# If the user has specified both --setrootowner and --chown-bdirs-root-bin then warn
+# them that their dirs permissions will be changed
+# These options aren't mutually exclusive because --chown-bdirs-root-bin
+# ONLY  chowns  /bin,/sbin,/usr/bin & /usr/sbin
+( if [ "${CHOWNBINDIRSROOTBIN}" = "Yes" -a "${SETROOTOWNER}" = "Yes" ]; then
+     echo "${PROGNAME}: * WARNING *"
+     echo "  You have specified both --setrootowner AND --chown-bdirs-root-bin"
+     echo "  options, but Slackware's makepkg script will change the"
+     echo "  directory permissions to 'root.root'."
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# Ensure the 'root' directory of the tarchive is globally readable
+# else it breaks your root dir thus your system when you install the package ;)
+chmod 755 ${SLACKTRACKTMPPATH}/TRANSL
+chown root:root ${SLACKTRACKTMPPATH}/TRANSL
+
+# Delete any orpahaned *.pyc files - these do not have a matching *.py file
+# that was detected by slacktrack.  It doesn't mean that there isn't a file
+# on the *filesystem*, just that if there was, it was not modified during the
+# build, and so probably doesn't belong in the package, and infact may be
+# conflicting with an existing file in another package.
+( if  [ "${DELETEORPHANEDPYC}" = "Yes" ]; then
+      echo "${PROGNAME}: Deleting any orphaned *.pyc files within the package"
+      find . -name '*.pyc' -type f | sed 's/\(.*\)\..*/\1/' | while read pycfile ; do
+         # We searched for .pyc files and chopped off the file extension; if
+         # we dont find a matching .py file for the .pyc, then we wipe it:
+         if [ ! -f "${pycfile}.py" ]; then
+            # Wipe the *.pyc file, and if that was successful then try and rmdir the directory
+            # and its parents.  This will fail if there were more than just *.pyc files.
+            # We redirect to a temporary log file because rmdir displays its progress
+            # as it goes, rather than doing its business then reporting -- so
+            # we'd see "Removing directory /usr/foo", next line "Failed removing /usr/foo"
+            # This way we only display the log file if rmdir successfully removed the dir.
+            # Note however, that if it's a directory such as /usr/lib, then rmdir will try
+            # and remove that on every invocation, which will fail - so we'll never see
+            # the output; this isn't what I'd like but I don't see a way around it
+            # and it's not a big deal.
+            { rm -fv "${pycfile}.pyc" ; } && { rmdir -vp "$( dirname ${pycfile}.pyc )" > ${SLACKTRACKTMPPATH}/rmdir.out 2>&1 && cat ${SLACKTRACKTMPPATH}/rmdir.out ; }
+         fi
+      done
+     # Remove that temp file
+     rm -f ${SLACKTRACKTMPPATH}/rmdir.out
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+# If the buildstore doesn't exist then we'll use /tmp instead
+# We don't check this earlier because *my* scripts mkdir /tmp/built-slackwarepackages
+# and Slackware's SlackBuild scripts leave the package in /tmp -- and /tmp must always exist
+# We won't try and create the dir because if you made a typo in the dir name, you
+# make find your package (that may contain sensitive files) ends up in a globally readable
+# area.
+if [ ! -d "${BUILDSTORE}" ]; then
+   printf "${PROGNAME}: WARNING: The build store directory ${BUILDSTORE}\n"
+   printf "                     does not exist; using /tmp instead\n\n"
+   BUILDSTORE="/tmp/"
+fi
+
+
+# Show dependencies to the INSTALLED packages ?
+( if [ "${SHOWDEPS}" = "Yes" ]; then
+     LDDEPSFILE="${SLACKTRACKTMPPATH}/ld_list"
+     LDDEPSUNRESOLVED="${SLACKTRACKTMPPATH}/ld_unresolved"
+     LDDEPSFOUNDPACKAGES="${SLACKTRACKTMPPATH}/ld_found_packages"
+
+     echo -n "${PROGNAME}: Generating list of shared library dependencies"
+     # I grep out 'not found' from the list because if this package CONTAINS the
+     # 'not found' library then we're not going to find it in /var/log/packages
+     # This isn't the same as having what I call an 'orphaned' library.
+     ( find . -type f \( -perm -100 -o -perm -010 -o -perm -001 \) -print0 | xargs -0 file | egrep '(ELF.*shared)' | \
+       awk -F: '{print $1}' | xargs ldd 2>/dev/null | grep '=>' | grep -vi 'not found' | \
+       awk '{print $3}' | grep -v "^$" > "${LDDEPSFILE}" ) > /dev/null 2>&1
+
+     if [ ! -s "${LDDEPSFILE}" ]; then
+        printf "\n            Failed to find any shared object dependencies\n"
+      else
+
+        # Remove dupes from the list
+        sort "${LDDEPSFILE}" | uniq > "${LDDEPSFILE}.sorted"
+        mv -f "${LDDEPSFILE}.sorted" "${LDDEPSFILE}"
+
+        # Look in /var/log/packages and /var/log/scripts (because our library
+        # may be linked against a symlink) and find our packages.
+        # Now, a problem that we have is that some of
+        # Slackware's packages have an 'incoming' directory (eg glibc)
+        # to avoid trampling over the running system without doing
+        # some pokery first.
+        # This is why I am *only* keeping the .so name rather than the
+        # full path leading to it.
+        cat "${LDDEPSFILE}" | rev | cut -d/ -f1 | rev | while read library_name ; do
+            ( ( cd /var/log/packages && grep -l ${library_name} * ) || ( cd /var/log/scripts && grep -l ${library_name} * ) ) >> "${LDDEPSFOUNDPACKAGES}"
+            # If we couldn't find it in a package (most likely because
+            # it's linked against something that was compiled 'locally' rather than
+            # being brewed into a package, or because you've broken your packages list)
+            if [ $? -gt 0 ]; then
+               # This way it shows the full path to the library rather than just its file name.
+               egrep "${library_name}$" "${LDDEPSFILE}" >/dev/null 2>&1 && \
+               echo "$( egrep "${library_name}$" "${LDDEPSFILE}" )" >> "${LDDEPSUNRESOLVED}"
+            fi
+        done
+
+        # Before you think "Hold on a second old cheese, but some libraries
+        # exist in more than one package (glibc/glibc-solibs is an example)
+        # so what you going to do about that?"
+        # Absolutely nothing! :-)  That'd mean having some sort of database
+        # to know that you'd only need one of the packages listed.
+        # *Also*, if you think about it, then who's to tell you whether you
+        # should have glibc OR glibc-solibs? *I* only install 'glibc' because
+        # I compile stuff (you don't need -solibs if you have the
+        # developer/full package) .. then if I compiled this package on a box
+        # that only had 'openssl' (rather than openssl-solibs *AND* openssl)
+        # then... oh it's too complicated.  It's like a paradox or something.
+
+        # Remove any dupes from the package list
+        sort "${LDDEPSFOUNDPACKAGES}" | uniq > "${LDDEPSFOUNDPACKAGES}.sorted"
+        mv -f "${LDDEPSFOUNDPACKAGES}.sorted" "${LDDEPSFOUNDPACKAGES}"
+
+        # From 'generating list of dependencies' above.
+        echo " ... done"
+
+        # Dump the list of package dependencies to screen
+        if [ -s "${LDDEPSFOUNDPACKAGES}" ]; then
+           echo "${PROGNAME}: This package depends on libraries within the following installed packages:"
+           egrep -v "$( package_name ${SLACKWAREPACKAGE} )" "${LDDEPSFOUNDPACKAGES}" | while read line ; do
+               printf "\t    ${line}\n"
+           done
+        fi
+
+        # Now dump the list of dependencies into a log file.
+        # We could store it somewhere in the package I suppose, any suggestions?
+        install -m644 "${LDDEPSFOUNDPACKAGES}" "${BUILDSTORE}/$( echo $SLACKWAREPACKAGE | rev | cut -d. -f2- | rev ).ld_deps.log"
+
+        # And if we found any libraries that aren't part of installed packages, dump
+        # those too.
+        if [ -s "${LDDEPSUNRESOLVED}" ]; then
+           echo "${PROGNAME}: The following libraries were not found in any installed package:"
+           cat "${LDDEPSUNRESOLVED}" | while read line ; do
+               printf "\t    ${line}\n"
+           done
+           # Not much point in listing libraries in the package if we can't
+           # tell the user how to get a package containing that library, so
+           # we'll just log it and let the developer fix it afterwards.
+           install -m644 "${LDDEPSUNRESOLVED}" "${BUILDSTORE}/$( echo $SLACKWAREPACKAGE | rev | cut -d. -f2- | rev ).orphaned_ld_deps.log"
+        fi
+   fi
+
+fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# Launch an external command/script before running makepkg ?
+# This may be useful to inspect the package contents with a file manager such as
+# Midnight Commander or xtc.
+# This is extremly useful for slacktrack as you can fix up symlinks and stuff
+# that you couldn't do inside the root file system.
+if [ ! -z "${RUNCMDAFTER}" ]; then
+   echo "${PROGNAME}: Launching external command '${RUNCMDAFTER}'" >> ${SLACKTRACKLOGFILE}
+   # Enter the package's root directory and run the command, appending any output to
+   # slacktrack's log:
+   if [ "${RUNCMDAFTER_WITHLOG}" = "Yes" ]; then
+      ( cd ${SLACKTRACKTMPPATH}/TRANSL ; ${RUNCMDAFTER} ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+    else
+      # No logging - best for manual intervention or a curses type program, since this would
+      # potentially cause an unclean log file:
+      ( cd ${SLACKTRACKTMPPATH}/TRANSL ; ${RUNCMDAFTER} )
+   fi
+   echo "${PROGNAME}: External command finished" >> ${SLACKTRACKLOGFILE}
+fi
+
+
+# Execute the Slackware package making utility & append its output to the package logfile
+( ${MAKEPKG} ${MAKEPKGOPTS} \
+    --linkadd $( echo ${CREATESYMLINKS} | cut -b1 | tr A-Z a-z ) \
+    --chown   $( echo ${SETROOTOWNER}   | cut -b1 | tr A-Z a-z ) \
+    ${BUILDSTORE}/${SLACKWAREPACKAGE}
+
+  # Warn if no slack-desc file found.  You don't need a doinst.sh script
+  # though, so we won't bother with that one.
+  # Why do this *after* running makepkg?  makepkg makes lots of noise
+  # and unless you specifically scroll up or look at logs, you'll miss this warning.
+  if [ ! -s "install/slack-desc" ]; then
+     echo "${PROGNAME}: WARNING - /install/slack-desc not found or is 0 bytes"
+  fi
+
+  # Display the size of the package:
+  if [ -f "${BUILDSTORE}/${SLACKWAREPACKAGE}" ]; then
+     printf "${PROGNAME}: ${SLACKWAREPACKAGE}'s size is $( ls -lah ${BUILDSTORE}/${SLACKWAREPACKAGE} | awk '{print $5}' )\n"
+  fi
+
+  # Create an MD5sum of the package if requested
+  if [ "${CREATEMD5SUM}" = "Yes" ]; then
+     echo -n "${PROGNAME}: Creating an MD5 sum of ${SLACKWAREPACKAGE}"
+     ( cd "${BUILDSTORE}"
+       md5sum "${SLACKWAREPACKAGE}" > "${SLACKWAREPACKAGE}.md5" )
+     echo " ... done"
+  fi
+
+  # Sign the package if requested to do so.
+  if [ "${SIGNPACKAGE}" = "Yes" ]; then
+     echo -n "${PROGNAME}: Signing ${SLACKWAREPACKAGE} with ${SIGNINGKEY:-your default} key"
+     ( cd "${BUILDSTORE}"
+       GPG_OPTIONS="--detach-sign --yes --armor"
+       if [ "${SIGNINGKEY}" ]; then
+          GPG_OPTIONS="${GPG_OPTIONS} --local-user $SIGNINGKEY"
+       fi
+
+       gpg ${GPG_OPTIONS} --output ${SLACKWAREPACKAGE}.asc ${SLACKWAREPACKAGE}
+       if [ $? -ne 0 ]; then
+          printf "\n${PROGNAME}: ERROR: Signature has not been correctly generated\n"
+        else
+          echo " ... done"
+       fi )
+
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# Copy the slack-desc file into the build store path ?
+( if [ "${CREATEDESCRIPTION}" = "Yes" -a -f "${SLACKTRACKTMPPATH}/TRANSL/install/slack-desc" ]; then
+     echo "${PROGNAME}: Installing package description file into build store"
+     # Cut the handy ruler, comments and empty lines out of the file.
+     egrep -v '^($|#| *\|)' ${SLACKTRACKTMPPATH}/TRANSL/install/slack-desc > "${BUILDSTORE}/$( echo $SLACKWAREPACKAGE | rev | cut -d. -f2- | rev ).txt"
+     chmod 644 "${BUILDSTORE}/$( echo $SLACKWAREPACKAGE | rev | cut -d. -f2- | rev ).txt"
+  fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+
+# Log hard links
+# Some packages (such as Python) use ln to create hard links rather than soft links.
+# It is impossible to determine the original file name of a hard link, and thus
+# must be weeded out manually.
+( if [ "${LOGHARDLINKS}" = "Yes" ]; then
+   echo -n "${PROGNAME}: Scanning for hard links"
+   printf "$( find ${SLACKTRACKTMPPATH}/TRANSL -type f -links +1 -printf "Hard link: %P\n" )\n" > ${SLACKTRACKLOGFILE}.hardlinks
+   if [ ! -z "$( grep "Hard link:" ${SLACKTRACKLOGFILE}.hardlinks )" ]; then
+      printf "\nWARNING: The following hard links were detected\n"
+      cat ${SLACKTRACKLOGFILE}.hardlinks
+      echo
+      # We will ALWAYS create a log file for hardlinks regardless of whether logging is disabled.
+      # The packager HAS to know about them !
+      mv ${SLACKTRACKLOGFILE}.hardlinks "${BUILDSTORE}/$( echo $SLACKWAREPACKAGE | rev | cut -d. -f2- | rev ).hardlinks.log"
+    else
+      echo " ... none found"
+      rm -f "${SLACKTRACKLOGFILE}.hardlinks"
+   fi
+fi ) 2>&1 | tee -a ${SLACKTRACKLOGFILE}
+
+# Tidy up workspace:
+tidy_workspace
+
+# Report that slacktrack has finished, but to the log only.
+printf "\n\n[$( date "+%D %r" )] ${PROGNAME} finished.\n"  >> ${SLACKTRACKLOGFILE}
+
+
+# Unless the user has specified their own logfile, we'll use packagename-ver-arch-build.log
+# If they've disabled logging with --nologging then simply delete the log file.
+# You could say this was sloppy, that we're logging in the first place if we're told not to
+# but given that most make scripts scroll tens of pages off the screen, I think a log file
+# is *Always* handy to have, even if you don't retain it.
+move_log
+
+
+# Report that slacktrack has finished (to screen only).
+printf "\n\n[$( date "+%D %r" )] ${PROGNAME} finished.\n"
+
+exit 0
+#EOF

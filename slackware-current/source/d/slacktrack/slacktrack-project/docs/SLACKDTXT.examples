@@ -1,0 +1,103 @@
+##########################################################################
+# Document: SLACKDTXT.examples
+# Purpose : Provide examples of how one may use slackdtxt
+# Author..: Stuart Winter <mozes@slackware.com>
+# Version : 1.00
+# Date....: 02-Mar-2003
+###########################################################################
+
+1.0 Building ProFTPD from Slackware's source directory
+    --------------------------------------------------
+
+In this example, I have my slackware-current source tree 
+stored in the directory  ' /data2 '
+
+I want to compile ProFTPD using Slackware's SlackBuild script, but I want
+to move the package from /tmp (where SlackBuild stores it) 
+into my Slackware binary directory 
+ /data2/slackware-current/slackware/n/
+and I also want to create a .txt description file in the same binary directory.
+
+	1.  Enter the slackware-current source directory
+ 	    --------------------------------------------
+
+	meths [proftpd] # pwd
+	/data2/slackware-current/source/n/proftpd
+	meths [proftpd] # ls
+	_proftpd.tar.gz  etc  proftpd-1.2.7.tar.bz2  proftpd-1.2.7.tar.bz2.asc  proftpd.SlackBuild  slack-desc
+
+
+	2.  Compile ProFTPd using the supplied SlackBuild script.
+ 	    -----------------------------------------------------
+
+	meths [proftpd] # ./proftpd.SlackBuild
+
+	[ .. snip lots of text as the package is compiled and built .. ]
+
+	Our proftpd package is built in /tmp as this is where SlackBuild stores it.
+
+	meths [proftpd] # ls -l /tmp/proftpd-1.2.7-i386-1.tgz
+	-rw-r--r--    1 root     root       503169 Mar  3 00:43 /tmp/proftpd-1.2.7-i386-1.tgz
+	meths [proftpd] #
+
+
+	3.  Create the .txt file and move the package into the binary distribution directory
+            ---------------------------------------------------------------------------------
+	meths [proftpd] # slackdtxt -d /data2/slackware-current/slackware/n/ /tmp/proftpd-1.2.7-i386-1.tgz
+	slackdtxt: Copying package to destination directory ....done
+	slackdtxt: Verifying the version of the package in the destination directory ....done
+	slackdtxt: Attempting to extract install/slack-desc from the package ....done
+	slackdtxt: proftpd-1.2.7-i386-1.txt created
+	slackdtxt: Deleting the original package ....done
+	meths [proftpd] #
+
+	In this instance I have extracted the slack-desc file from the /tmp/proftpd-1.2.7-i386-1.tgz
+	package.  Because I was in the source directory, I could have used the local slack-desc
+	file and saved the overhead of having to untar.  In order to do this I could have done:
+
+	 # slackdtxt -d /data2/slackware-current/slackware/n/ -s slack-desc /tmp/proftpd-1.2.7-i386-1.tgz 
+
+
+Example 2: Creating .txt files from a bunch of packages
+           --------------------------------------------
+
+In this example, I have built a number of packages already.  They are
+stored in my binary distribution directory (/data2/slackware-current/slackware)
+but the packages do not have corresponding .txt files.
+
+I will use slackdtxt to create .txt files in the same directory as the package files.
+
+
+	1.  Enter the slackware-current binary distribution directory
+            ==========================================================
+
+	meths [n] # pwd
+	/data2/slackware-current/slackware/n
+
+	These are the packages I have built previously.
+
+	meths [n] # ls
+	htdig-3.1.6-i386-2.tgz  mod_ssl-2.8.12_1.3.27-i386-1.tgz  mutt-1.4i-i386-1.tgz  wget-1.8.2-i386-2.tgz
+	meths [n] #
+
+	2.  Create .txt files for all corresponding package files
+            =====================================================
+
+	meths [n] # slackdtxt *.tgz
+	slackdtxt: Attempting to extract install/slack-desc from the package ....done
+	slackdtxt: htdig-3.1.6-i386-2.txt created
+	slackdtxt: Attempting to extract install/slack-desc from the package ....done
+	slackdtxt: mod_ssl-2.8.12_1.3.27-i386-1.txt created
+	slackdtxt: Attempting to extract install/slack-desc from the package ....done
+	slackdtxt: mutt-1.4i-i386-1.txt created
+	slackdtxt: Attempting to extract install/slack-desc from the package ....done
+	slackdtxt: wget-1.8.2-i386-2.txt created
+
+	meths [n] # ls
+	htdig-3.1.6-i386-2.tgz  mod_ssl-2.8.12_1.3.27-i386-1.tgz  mutt-1.4i-i386-1.tgz  wget-1.8.2-i386-2.tgz
+	htdig-3.1.6-i386-2.txt  mod_ssl-2.8.12_1.3.27-i386-1.txt  mutt-1.4i-i386-1.txt  wget-1.8.2-i386-2.txt
+	meths [n] #
+
+        All .txt files are now created.
+
+

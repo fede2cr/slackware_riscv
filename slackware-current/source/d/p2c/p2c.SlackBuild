@@ -1,0 +1,146 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2010, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Sources:
+# ftp://ftp.pal.xgw.fi/pub/gnu/alpha/gnu/p2c-1.21alpha2.tar.gz
+# ftp://ftp.clara.net/pub/mirrors/gnu/hurd/p2c-1.21alpha2.tar.gz
+# ftp://ftp.obspm.fr/pub1/computing/gnu/hurd/p2c-1.21alpha2.tar.gz
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=p2c
+VERSION=${VERSION:-1.21alpha2}
+BUILD=${BUILD:-3}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-p2c
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+# Explode the package framework:
+cd $PKG
+explodepkg $CWD/_p2c.tar.gz
+
+cd $TMP
+rm -rf p2c-1.21alpha-07.Dec.93
+tar xvf $CWD/p2c-1.21alpha2.tar.gz || exit 1
+cd p2c-1.21alpha-07.Dec.93 || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+zcat $CWD/p2c_1.21alpha2-2.1.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+zcat $CWD/p2c_time.diff.gz | patch -p0 --verbose --backup --suffix=.orig || exit 1
+zcat $CWD/p2c.getline.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+
+find . -name "*.orig" | xargs rm --verbose
+# Fix library paths:
+sed -i -e "s#/lib #/lib${LIBDIRSUFFIX} #g" \
+       -e "s#/lib\$#/lib${LIBDIRSUFFIX}#g" \
+       -e "s#/lib/#/lib${LIBDIRSUFFIX}/#g" \
+        $( grep -lr '/lib' * )
+
+cd src
+make OPT="$SLKCFLAGS" || exit 1
+make p2cc
+
+mv $PKG/usr/lib $PKG/usr/lib${LIBDIRSUFFIX} 2>/dev/null
+cat p2c > $PKG/usr/bin/p2c
+cat p2cc > $PKG/usr/bin/p2cc
+cat libp2c.a > $PKG/usr/lib${LIBDIRSUFFIX}/libp2c.a
+cat p2c.man | gzip -9c > $PKG/usr/man/man1/p2c.1.gz
+cat p2cc.man | gzip -9c > $PKG/usr/man/man1/p2cc.1.gz
+cat sys.p2crc > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/p2crc
+cat loc.p2crc > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/loc.p2crc
+cat system.imp > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/system.imp
+cat system.m2 > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/system.m2
+cat turbo.imp > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/turbo.imp
+cat string.pas > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/string.pas
+cat p2c.h > $PKG/usr/include/p2c/p2c.h
+cd ..
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/usr/doc/p2c-1.21alpha2
+cp -a \
+  README ftp.README \
+  $PKG/usr/doc/p2c-1.21alpha2
+( cd src
+  for file in HISTORY NOTES COPYING INSTALL ; do
+    cp -a $file $PKG/usr/doc/p2c-1.21alpha2
+  done
+)
+cp -a src/README $PKG/usr/doc/p2c-1.21alpha2/README.src
+cp -a examples $PKG/usr/doc/p2c-1.21alpha2
+( cd $PKG/usr/doc/p2c-1.21alpha2
+  zcat $CWD/p2c.examples.diff.gz | patch -p1 --verbose || exit 1
+) || exit 1
+rm -f $PKG/usr/doc/p2c-1.21alpha2/examples/Makefile~
+rm -rf $PKG/usr/doc/p2c-1.21alpha2/examples/c
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/p2c-$VERSION-$ARCH-$BUILD.txz
+

@@ -1,0 +1,9 @@
+
+In order to build slacktrack:
+
+ # ./slacktrack.SlackBuild -i
+
+This will create a Slackware package of slacktrack
+and install it.
+
+The resulting package will reside in /tmp.

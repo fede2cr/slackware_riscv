@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+indent: indent (changes the appearance of a C program)
+indent:
+indent: GNU indent changes the appearance of a C program by inserting or
+indent: deleting whitespace according to a plethora of options. Some canned
+indent: styles of formatting (like the GNU style, Kernighan & Ritchie style,
+indent: and original Berkeley style) are supported as well.
+indent:
+indent: GNU indent is a descendant of BSD indent.
+indent:
+indent:
+indent:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+distcc: distcc (distributed C/C++ compiler/daemon)
+distcc:
+distcc: distcc allows compilation of C code to be distributed across several
+distcc: machines on a network. distcc should always generate the same results
+distcc: as a local compile, is simple to install and use, and is often
+distcc: significantly faster than a local compile.
+distcc:
+distcc: IMPORTANT SECURITY NOTE: distccd should only run on trusted networks.
+distcc:
+distcc: distcc was written by Martin Pool.
+distcc:

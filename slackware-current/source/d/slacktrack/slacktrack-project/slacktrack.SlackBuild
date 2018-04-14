@@ -1,0 +1,107 @@
+#!/bin/bash
+
+#################################################################
+# Program: slacktrack.SlackBuild
+# Purpose: Build a Slackware Package of slacktrack
+# Author : Stuart Winter <mozes@slackware.com>
+# Version: 1.06
+# Date...: 05-Apr-2013
+#################################################################
+
+PKGNAM=slacktrack
+VERSION=${VERSION:-2.18}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+case "$( uname -m )" in
+  i?86)    export ARCH=i586
+           PKGEXT=txz ;;
+  arm*)    export ARCH=arm
+           PKGEXT=txz ;;
+  # Unless $ARCH is already set, use uname -m for all other archs:
+     *)    export ARCH=$( uname -m )
+           PKGEXT=txz ;;
+esac
+
+SLACKPACKAGE=$PKGNAM-$VERSION-$ARCH-$BUILD.$PKGEXT
+
+# Resting place for the package .t?z:
+PKGSTORE=${PKGSTORE:=/tmp}
+
+# Temporary unarchive, compile & package-root directory:
+TMP=/tmp/build-slacktrack
+PKG=/tmp/package-slacktrack
+
+# Work out where we are now so we can untar our source ball from it:
+cd $(dirname $0) ; CWD=$(pwd)
+
+# Delete previous build dirs
+rm -rf $PKG $TMP
+mkdir -pm755 $PKG $TMP
+
+# Create package framework:
+mkdir -pm755 $PKG/{install,usr/{libexec/slacktrack,bin,doc/$PKGNAM-${VERSION},man/man8}}
+
+# slacktrack's docs:
+cp -fav $CWD/docs/* $PKG/usr/doc/$PKGNAM-${VERSION}
+rm -fv $PKG/usr/doc/$PKGNAM-${VERSION}/INSTALL
+
+# Fix any wonky permissions the docs may have attracted:
+find $PKG/usr/doc -type f -print0 | xargs -0 chmod 644
+find $PKG/usr/doc -type f -print0 | xargs -0 chown root:root
+
+# Install man pages:
+( cd $CWD/man
+  ./man.build
+  gzip -9c slacktrack.8 > $PKG/usr/man/man8/slacktrack.8.gz
+  gzip -9c slackdtxt.8  > $PKG/usr/man/man8/slackdtxt.8.gz
+  rm -f *.8 )
+
+# Install slacktrack & friends:
+install -oroot -groot -vpm755 $CWD/scripts/{slacktrack,slackdtxt} \
+                             $PKG/usr/bin
+
+# Build the ln wrapper:
+gcc -O3 $CWD/ln-wrapper.c -o $PKG/usr/libexec/slacktrack/ln || exit 1
+strip --strip-unneeded $PKG/usr/libexec/slacktrack/ln
+
+# Install package description:
+install -vpm644 $CWD/slack-desc $PKG/install
+
+# Build package:
+cd $PKG
+chown -R root:root .
+chmod -R og-w .
+makepkg -l y -c n $PKGSTORE/$SLACKPACKAGE
+
+# Create the corresponding .txt description file:
+( cd $PKGSTORE && $CWD/scripts/slackdtxt $SLACKPACKAGE )
+
+# Package maintainer stuff:
+PARAMS="$( getopt -qn "$( basename $0 )" -o iz -- "$@" )"
+if [ $? -eq 0 ]; then 
+    eval set -- "$PARAMS"
+    for option in $* ; do
+    case "${option}" in
+         -i) 
+           removepkg slacktrack
+           installpkg $PKGSTORE/$SLACKPACKAGE
+           shift ;;
+
+         -z)
+           echo -n "Making a distributable source archive"
+           ( cd $CWD/..
+             # Don't worry, you're not missing much!
+             chown -R root:root .
+             tar --exclude slacktrack/2bourbon \
+                 --exclude slacktrack/old_stuff \
+                 -Ixz -cf $CWD/../slackware-package-dir/slacktrack/$PKGNAM-${VERSION}-source.tar.xz slacktrack-project )
+             echo " ... done"
+             shift ;;
+    esac done
+fi
+
+# Delete temporary build dir and package-root.
+# I don't like doing this anymore - I prefer to be able to refer back to
+# the compiled source tree after the build.
+#rm -rf $TMP $PKG

@@ -1,0 +1,39 @@
+#!/bin/sh
+# Set initial variables:
+cd $(dirname $0) ; CWD=$(pwd)
+if [ "$TMP" = "" ]; then
+  TMP=/tmp
+fi
+
+PKGNAM=slacktrack
+export VERSION=2.18
+# Automatically determine the architecture we're building on:
+case "$( uname -m )" in
+  i?86)    export ARCH=i586
+           PKGEXT=txz ;;
+  arm*)    export ARCH=arm
+           PKGEXT=txz ;;
+  # Unless $ARCH is already set, use uname -m for all other archs:
+     *)    export ARCH=$( uname -m )
+           PKGEXT=txz ;;
+esac
+BUILD=$(grep BUILD= slacktrack-project/./slacktrack.SlackBuild | cut -f 2 -d - | cut -f 1 -d })
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP # location to build the source
+fi
+cd $TMP
+rm -rf slacktrack-project
+tar xvf $CWD/slacktrack-$VERSION-source.tar.xz
+cd slacktrack-project || exit 1
+
+# Start the "real" SlackBuild:
+./slacktrack.SlackBuild

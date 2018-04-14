@@ -1,0 +1,34 @@
+
+If you are looking for example scripts to help you use
+slacktrack please look in the documentation directory:
+
+   /usr/doc/slacktrack*/buildscript-examples/
+
+Quick example:
+--------------
+
+I will build the elvis editor that you can find in Slackware's
+'a' series.  This is looking at an older version of the Slackware
+source tree (v 9.1) -- the build script has since been replaced
+by a 'SlackBuild', but this example still serves as a good example
+reference:
+
+bourbon [root]  # cd slackware-9.1/source/a
+bourbon [elvis] # slacktrack -gfenzKSUIp elvis-2.41-i486-1.tgz ./elvis.build
+bourbon [elvis] # tar ztvvf /tmp/elvis-2.41-i486-1.tgz | head -n9
+drwxr-xr-x root/root         0 2003-07-11 09:26:05 ./
+drwxr-xr-x root/root         0 2003-07-11 09:26:04 usr/
+drwxr-xr-x root/bin          0 2003-07-11 09:26:05 usr/bin/
+-rwxr-xr-x root/bin     301280 2003-07-11 09:26:05 usr/bin/elvis
+-rwxr-xr-x root/bin      19956 2003-07-11 09:26:05 usr/bin/ref
+-rwxr-xr-x root/bin      15160 2003-07-11 09:26:05 usr/bin/elvtags
+-rwxr-xr-x root/bin     936180 2002-06-08 00:15:29 usr/bin/vim
+drwxr-xr-x root/root         0 2003-07-11 09:26:01 usr/share/
+drwxr-xr-x root/root         0 2003-07-11 09:26:04 usr/share/elvis-2.1_4/
+bourbon [elvis] #
+
+As you can see, we now have an elvis package with the 
+correct ownerships set on the binary files and so on and
+so forth.
+
+Stuart.

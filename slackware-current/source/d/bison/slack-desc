@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+bison: bison (parser generator similar to yacc)
+bison:
+bison: GNU "Bison" is a general-purpose parser generator that converts a
+bison: grammar description for an LALR(1) context-free grammar into a C
+bison: program to parse that grammar.
+bison:
+bison: Bison is upward compatible with Yacc: all properly-written Yacc
+bison: grammars ought to work with Bison with no change. Anyone familiar
+bison: with Yacc should be able to use Bison with little trouble.
+bison:
+bison:

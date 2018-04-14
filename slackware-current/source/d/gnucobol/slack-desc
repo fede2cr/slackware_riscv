@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+gnucobol: gnucobol (open source COBOL compiler)
+gnucobol:
+gnucobol: GNU Cobol is an open source COBOL compiler. GNU Cobol implements a
+gnucobol: substantial part of the COBOL 85, COBOL 2002, and COBOL 2014
+gnucobol: standards, as well as many extensions of the existent COBOL compilers.
+gnucobol: GNU Cobol translates COBOL into C and compiles the translated code
+gnucobol: using the native C compiler. GNU Cobol was written by Roger While and
+gnucobol: Keisuke Nishida, with the invaluable assistance of many others.
+gnucobol:
+gnucobol: Homepage: ftp://ftp.gnu.org/gnu/gnucobol
+gnucobol:

@@ -1,0 +1,312 @@
+#!/bin/bash
+#
+# Copyright 2002, 2009   Stuart Winter, Surrey, England, United Kingdom.
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+##################################################################################
+# Program: slackdtxt
+# Purpose: Create package-ver-arch-build.txt files from slack-desc files.
+#          For use after running a SlackBuild script - you do not need to
+#          use this program for a package produced by slacktrack -- use its
+#          -c switch instead.
+# Author : Stuart Winter <mozes@slackware.com>
+# Date...: 24-Sep-2011
+# Version: 1.05
+#################################################################################
+# History
+##########
+# 24-Sep-2011 - v1.05
+#             * Look for 'install/slack-desc' and './install/slack-desc'
+#               in the packages.  This provides support for malformed packages 
+#               that have not been created with the Slackware 'makepkg' command.
+#               Thanks to Helmut Hullen for the suggestion.
+# 15-May-2009 - v1.04
+#             * Adjust to handle .tgz, .tbz, .tlz, .txz file extensions/
+#               compression formats.
+# 04-Sep-2008 - v1.03
+#             * Display the filename of the .tgz being processed.
+#             * .txt files now use the time stamp of the corresponding .tgz
+#             * New default: only create a .txt or sign a package if there
+#               isn't an existing .txt or .asc *or* the .txt's time stamp
+#               isn't the same as the .tgz's.
+#             * Fixed bug where the gpg signing key wasn't being picked up
+#               at the command line.
+#             * Always wipe temp file when exiting
+#             * A GPG signing key must be specified -- it will not fall back
+#               on the default.  This is because the code to check check the
+#               command line operators doesn't work.  I checked the supplied
+#               examples for getopt and even they don't work!
+# 28-Sep-2003 - v1.02
+#             * Added option -G, --gpg-sign to sign the .tgz package
+#               (Patch from Emanuele Vicentini)
+#             * Removed -t option.  You may now do specify the file after
+#               as before (but without -t) or specify more than one package
+#               at once: eg  slackdtxt *.tgz
+# 11-Jul-2003 - v1.01
+#             * Fixed problem with checking the exit code from getopt.
+#               (reported by Emanuele Vicentini).
+# 02-Mar-2003 - v1.00
+#             * Created
+##################################################################################
+
+# Program name
+PROGNAME=slackdtxt
+
+# Version
+VERSION="${PROGNAME} v1.03 by Stuart Winter <mozes@slackware.com>"
+
+# Temporary store for the slack-desc file
+DESCTMPFILE="/var/tmp/$$.slackdtxt.desc.$$"
+
+trap "rm -f $DESCTMPFILE" EXIT
+
+############################## Functions###################################
+function display_usage () {
+printf "Usage: ${PROGNAME} [options] <package file/list of package files>\n"
+if [ ! -z "$1" ]; then
+   echo "Use $( basename $0 ) --help for a list of options"
+fi
+}
+
+function display_help () {
+printf "${VERSION}\n\n$(display_usage)
+
+Startup:
+ -h,   --help                   Display this help
+ -v,   --version                Display version information
+
+Main options:
+ -s,   --slackdescfile <file>   'slack-desc' file (cannot be used when
+                                specifying more than one package file)
+ -d,   --destdir   <directory>  The directory in which to store the package
+                                file & create the .txt description file within
+                                Omitting this flag implies --nodelete
+ -n,   --nodelete               Do not delete the original package file.
+                                once moved into destination directory
+ -G,   --gpg-sign <key id>      Sign the package with GnuPG
+ -f,   --force                  Force creation of a .txt and GPG signing.
+                                By default, .txt files are only created and 
+                                packages signed if there is no existing .txt
+                                or .asc file, or the .txt time stamps aren't
+                                the same as the package's.
+"
+}
+
+###############################################################################
+
+############################## Configuration variables #########################
+# These can be changed via the command line switches
+#
+DELETEPKG="Yes"
+# By default, don't force signing nor creation of .txt files
+FORCE=No
+################################################################################
+
+PARAMS="$( getopt -qn "$( basename $0 )" -o s:d:fnhvG: -l slackdescfile:,destdir:,nodelete,force,help,version,gpg-sign: -- "$@" )"
+# If params are incorrect then
+if [ $? -gt 0 ]; then display_help ; exit 2 ; fi
+eval set -- "${PARAMS}"
+for param in $*; do
+  case "$param" in
+     -s|--slackdescfile) SLACKDESCFILE="$2"
+                         shift 2;;
+
+     -d|--destdir)       DESTDIR="$2"
+			 shift 2;;
+
+     -n|--nodelete)      DELETEPKG="No"
+                         shift 1;;
+   
+     -f|--force)         FORCE="Yes"
+                         shift 1;;
+
+     -G|--gpg-sign)      SIGNPACKAGE="Yes"
+                         SIGNINGKEY="$2"
+                         shift 2 ;;
+
+     -h|--help)          display_help ; exit ;;
+
+     -v|--version)       printf "${VERSION}\n" ; exit;;   
+ 
+     --) shift; break;;
+  esac 
+done
+
+# Do we have the relevant information to proceed?
+if [ -z "${1}" ]; then
+   display_usage help
+   exit 2
+fi
+
+# Do we have too *much* information to proceed?
+if [ $# -gt 1 -a ! -z "${SLACKDESCFILE}" ]; then
+   echo "Error: You cannot specify a slack-desc file when"
+   echo "       specifying more than one package file"
+   display_usage help
+   exit 2
+fi
+
+# Let's check if user really has gpg.
+if [ "${SIGNPACKAGE}" = "Yes" ]; then
+   which gpg >/dev/null 2>&1 || { echo "${PROGNAME}: Warning: Cannot find gpg; disabling signature creation"; unset SIGNPACKAGE; }
+fi
+
+# Main loop, handle any number (well, not really but you know..)
+# of package files specified at the command line.
+for PKGFILE in $*; do
+
+# If we were given a destination dir then check whether it exists
+# Now giving a dest dir allows us to do
+#  # for i in *.t?z ; do slackdtxt -t $i ; done
+# and create .txt files for all the package files in a dir.
+if [ ! -z "${DESTDIR}" ]; then
+   DESTDIR="${DESTDIR}/" # otherwise when we tar without specifying a dest dir, it becomes /package-blah.tgz
+   if [ ! -d "${DESTDIR}" ]; then
+      echo "${PROGNAME}: ERROR: The destination directory does not exist"
+      exit 6
+   fi
+  else
+   DELETEPKG="No" # otherwise we'd delete our only copy
+fi
+
+# Does the specified package exist?
+if [ ! -s "${PKGFILE}" ]; then
+   echo "${PROGNAME}: ERROR: The specified package "${PKGFILE}" does not exist"
+   exit 7
+fi
+
+# Does the specified slack-desc file exist ?
+if [ ! -z "${SLACKDESCFILE}" ]; then
+   if [ ! -s "${SLACKDESCFILE}" ]; then
+      echo "${PROGNAME}: Warning: The specified slack-desc file ${SLACKDESCFILE} does not exist;"
+      echo "                    will try and extract from the package."
+      unset SLACKDESCFILE
+  else
+     # .. the file is fine.
+     # copy the slack-desc file to the temp location so I don't have
+     # to code around having the user specify one and having to take one
+     # from the package then delete it.
+     cp -f "${SLACKDESCFILE}" "${DESCTMPFILE}" 
+     # .. but if copying it fails then we'll take it from the package anyway.
+     if [ $? -gt 0 ]; then
+        unset SLACKDESCFILE
+      else
+        SLACKDESCFILE="${DESCTMPFILE}" # we'll use the /var/tmp version now
+     fi
+  fi
+fi
+############################## Main program###################################
+
+# Move the pakage file to the dest dir if we were given one
+if [ ! -z "${DESTDIR}" ]; then
+   echo -n "${PROGNAME}: Copying package to destination directory"
+   cp -fa "${PKGFILE}" "${DESTDIR}"
+   if [ $? -gt 0 ]; then
+      printf "\n${PROGNAME}: ERROR: Failed to copy the package\n"
+      exit 8
+    else
+      echo " ... done"
+   fi
+fi
+
+# Test the copied package -- it probably isn't corrupt (eg no disk space on $DESTDIR)
+# as the cp would have errored, but I'd like to check anyway
+if [ ! -z "${DESTDIR}" ]; then
+   echo -n "${PROGNAME}: Verifying the version of the package in the destination directory"
+   tar ftz "${DESTDIR}$( basename ${PKGFILE} )" >/dev/null 2>&1
+   if [ $? -gt 0 ]; then
+      printf "\n${PROGNAME}: ERROR: The package in ${DESTDIR} is corrupt\n"
+      exit 8
+    else
+      echo " ... done"
+   fi
+fi
+
+# If we weren't given a slack-desc file then try and pull one from the
+# package
+if [ -z "${SLACKDESCFILE}" ]; then
+   SLACKDESCFILE="${DESCTMPFILE}"
+   echo    "${PROGNAME}: Processing $( basename ${PKGFILE} ) ..."
+   echo -n "${PROGNAME}: Attempting to extract install/slack-desc from the package"
+   # In case somebody's not used 'makepkg' (which uses tar-1.13) to create the package,
+   # and tar has created the archive index with absolute path names.
+   # (it's a malformed package in this case, but we may as well support it)
+   tar fOx "${PKGFILE}" install/slack-desc ./install/slack-desc > "${SLACKDESCFILE}" 2>/dev/null
+   if [ ! -s "${SLACKDESCFILE}" ]; then
+      printf "\n${PROGNAME}: ERROR: Failed to extract the slack-desc file from the package\n"
+      rm -f "${SLACKDESCFILE}" # it may be zero bytes/empty
+      exit 8
+    else
+      echo " ... done"
+   fi
+fi
+
+# Turn the slack-desc file into a .txt file;
+# only if there isn't an existing .txt or the .txt is older than the package
+# unless -f,--force is specified.
+SLACKTXTFILE="${DESTDIR}$( echo $( basename $PKGFILE ) | rev | cut -d. -f2- | rev ).txt"
+if [ $SLACKTXTFILE -ot $PKGFILE -o $SLACKTXTFILE -nt $PKGFILE -o "$FORCE" = "Yes" ]; then
+   egrep -v '^($|#| *\|)' "${SLACKDESCFILE}" > $SLACKTXTFILE
+   rm -f "${SLACKDESCFILE}"
+   # Set the time stamp to that of the package:
+   touch -r $PKGFILE $SLACKTXTFILE
+   echo "${PROGNAME}: $SLACKTXTFILE created"
+ else
+   echo "${PROGNAME}: Not created .txt - is same age as package (use -f to override)"
+fi
+
+# Let's sign the original package with user's gpg key
+if [ ! -z "${SIGNPACKAGE}" ]; then
+# If the .asc is the same time stamp as the package, don't sign unless
+# forced.
+   if [ ${DESTDIR}${PKGFILE}.asc -ot $PKGFILE -o ${DESTDIR}${PKGFILE}.asc -nt $PKGFILE -o "$FORCE" = "Yes" ]; then
+      echo -n "${PROGNAME}: signing ${PKGFILE} with ${SIGNINGKEY:-your default} key"
+      GPG_OPTIONS="--detach-sign --armor --yes"
+      if [ "${SIGNINGKEY}" ]; then
+         GPG_OPTIONS="${GPG_OPTIONS} --local-user $SIGNINGKEY"
+      fi
+      gpg ${GPG_OPTIONS} --output ${DESTDIR}${PKGFILE}.asc ${PKGFILE}
+      if [ $? -ne 0 ]; then
+         echo "${PROGNAME}: ERROR: Signature has not been correctly generated"
+        else
+         echo " ... done"
+         # Set time stamp to that of the package:
+         touch -r $PKGFILE ${DESTDIR}${PKGFILE}.asc
+      fi
+    else
+      echo "${PROGNAME}: Not signed package - is same age as package (use -f to override)"   
+  fi
+fi
+
+# Delete the package ?
+if [ "${DELETEPKG}" = "Yes" ]; then
+   echo -n "${PROGNAME}: Deleting the original package"
+   rm -f "${PKGFILE}"
+   if [ $? -gt 0 ]; then
+      printf "\n${PROGNAME}: Warning: unable to delete package\n"
+    else
+      echo " ... done"
+   fi
+fi
+
+unset SLACKDESCFILE
+
+# Exit from main loop
+done

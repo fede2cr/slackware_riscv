@@ -1,0 +1,51 @@
+#!/bin/sh
+
+###########################################################################
+# Program: man.build
+# Purpose: Create an nroff format file from slacktrack's Perl POD
+#          format manpage
+# Author : Stuart Winter <mozes@slackware.com>
+###########################################################################
+# Information about man pages: 
+# http://www.fnal.gov/docs/products/ups/ReferenceManual/html/manpages.html
+# which describes creating man pages in nroff format. 
+# However, it's easier (IMO) to create them in POD format.
+###########################################################################
+
+# Get version from the scripts
+SLACKTRACKVERSION="$( grep VERSION= ../scripts/slacktrack  | tr -d =,\",[:alpha:] | awk '{print $2}' )"
+SLACKDTXTVERSION="$(  grep VERSION= ../scripts/slackdtxt   | tr -d =,\",[:alpha:] | awk '{print $2}' )"
+
+# Turn /usr/doc/slacktrack-@VERSION@ into usr/doc/slacktrack-1.02
+# You can't pipe sed into pod2man because pod2man then creates
+# the man page's name as 'STANDARD INPUT(8)' rather than 'SLACKTRACK(8)'
+sed s/@VERSION@/${SLACKTRACKVERSION}/g slacktrack.pod > SLACKTRACK.pod
+sed s/@VERSION@/${SLACKTRACKVERSION}/g slackdtxt.pod  > SLACKDTXT.pod
+
+# Use pod2man to create an nroff compatible man page
+pod2man \
+  --section=8  \
+  --release="$(grep "^# Date" ../scripts/slacktrack | rev | awk '{print $1}' | rev)" \
+  --center=' ' \
+  --date="slacktrack Version ${SLACKTRACKVERSION}" \
+  SLACKTRACK.pod 2>&1 > slacktrack.8
+
+pod2man \
+  --section=8  \
+  --release="$(grep "^# Date" ../scripts/slackdtxt | rev | awk '{print $1}' | rev)" \
+  --center=' ' \
+  --date="slackdtxt Version ${SLACKDTXTVERSION}" \
+  SLACKDTXT.pod > slackdtxt.8
+
+# If we specified -t at the command line then display the man page & exit
+if [ "${1}" = "-t" ]; then
+   man ./slacktrack.8
+   man ./slackdtxt.8
+   rm -f slacktrack.8 slackdtxt.8
+fi
+
+# Delete the butchered .pod files
+rm -f SLACKTRACK.pod SLACKDTXT.pod
+
+# EOF
+

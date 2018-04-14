@@ -1,0 +1,8 @@
+
+slacktrack and slackdtxt have full section 8 man pages.  Please do
+
+  # man slacktrack
+  # man slackdtxt
+
+
+Stuart Winter <mozes@slackware.com>

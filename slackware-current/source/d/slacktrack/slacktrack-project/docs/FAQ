@@ -1,0 +1,234 @@
+################################################################
+# Document: FAQ
+# Purpose : Frequently asked questions
+# Author..: Stuart Winter <mozes@slackware.com>
+################################################################
+# It's small at the moment but if I get any repeated
+# or potentially repeated questions then they'll be added
+# here.
+################################################################
+
+
+Questions
+---------
+
+1.  My build script places files into /home, but these are not
+    included in the package created by slacktrack.  Why?
+
+2.  Do I really have to remove the existing package before
+    building a new version with slacktrack ?
+
+3.  I want to build a package of DVD libraries and players
+    but the players depend on the libraries being installed
+    first.  How can I build such a package with slacktrack?
+
+4.  I find that when building packages with slacktrack, a number of 
+    files are appearing in the package that do not belong there.  Why?
+
+5.  What does slacktrack's --touch-filesystem-first option do?
+    why would I need it?
+
+6.  I can't compile Perl CPAN modules via perl -MCPAN -eshell
+    Why ?
+
+7.  I'm using Slackware v13 (or greater) and I want to create
+    package files using one of the other compression methods.  
+    How can I do that?
+
+8.  After completing a build using slacktrack, I see 
+    "You have mail in /var/mail/root"
+    but I have no new email.
+
+Answers
+-------
+
+Q1. My build script places files into /home, but these are not
+    included in the package created by slacktrack.  Why?
+
+A1. slacktrack (by design and thus default) excludes /home 
+    from being included within the package.  The reason for this
+    that typically no package shipped should ever contain 
+    data within /home.
+
+Q2. Do I really have to remove the existing package before
+    building a new version with slacktrack ?
+
+A.  No (see my zlib example), but in the majority of cases,
+    I'd advise that you do.
+
+    The reason that my example trackbuild scripts remove the
+    existing package first (or bomb out) is because some
+    package installations (makefiles) will not install a 
+    new file onto the filesystem if it's identical to the
+    one in the source archive.  This means that slacktrack
+    will not notice any change in the before and after picture
+    of the filesystem; thus your resulting package may
+    be missing some files.
+
+    The way to work around this is:
+    1.  removepkg the package prior to building;
+    2.  Use the --touch-filesystem-first option;
+        But this option is not recommended since it destroys the
+        time stamp information on your system.
+        This option should only be used by experts using a disposable
+        OS installation.
+        Please see FAQ question 5.
+
+    It's worth noting that Slackware's 'removepkg' program
+    won't always remove all files (especially config files
+    which are packaged as /etc/file.new and are renamed to
+    /etc/file by install/doinst.sh).
+
+    It shouldn't be too much of an issue though.  If it's a
+    brand new piece of software that you are building from 
+    scratch then installwatch will pick up all new files.
+    If you're rebuilding a Slackware package using a
+    .build script from the source tree then it's worth
+    browsing the package's contents ( # cat /var/log/packages/lftp-* 
+    for example ), then running 'removepkg' and looking at its
+    output. If there are any remaining config files then either
+    move them to a safe place or delete them before
+    building your package with slacktrack.
+
+    In general though you shouldn't have any problems.
+  
+
+Q3. I want to build a package of DVD libraries and players
+    but the players depend on the libraries being installed
+    first.  How can I build such a package with slacktrack?
+
+A.  There are two ways.
+    1.  You either write build scripts for each individual 
+        library and create packages for each.  Once the packages
+        have been built, you install them prior to building
+        the player.
+        You then unarchive all packages into a temporary
+        directory and run makepkg over it.
+    2.  Use slacktrack and build them all one after another as
+        you no doubt have originally attempted.
+    
+    I have included example build scripts for a DVD library
+    package within slacktrack's source archive.
+
+
+Q4. I find that when building packages with slacktrack, a number of
+    files are appearing in the package that do not belong there.  Why?
+
+A.  The way that slacktrack works is that it:
+    [a] takes a snapshot of the files and directories on the file system;
+    [b] runs the build script
+    [c] makes another snapshot of the files & dirs on the file system;
+    [d] compares the two snapshots and determines the differences
+    [e] the differences between the two snapshots constitute the package
+        contents
+
+    The problem with this approach is that other running programs can 
+    make modifications to files & dirs on the file system during the 
+    build/compilation process.  slacktrack will consider these modifications
+    to be part of the package -- slacktrack does not directly track what the
+    build process does: it *only* compares the differences between the 
+    file system snapshots.
+
+    Major culprits for this are:
+     cups
+     crond (running cron jobs)
+     Window Managers and X
+     
+    When using slacktrack you are advised to reduce the number of
+    processes to the minimum, and try to ensure that there are no processes
+    running which will modify the file system during the build process.
+
+    If you cannot do this then you there are a number of work arounds:
+    [a] Using the -x (--exclude) operator. 
+        With this operator you can specify a list of
+        paths to exclude from the file system snapshots, thus excluding them
+        from the resulting package.
+    [b] Use the -R (--run-after) operator.
+        With this operator you can specify a command that will be run after
+        slacktrack has compiled the package contents.
+        You may wish to run 'mc' (Midnight Commander) or perhaps just a 'bash'
+        shell; this will enable you to inspect and modify the contents of the
+        package prior to it being turned into a package file.
+
+Q5.  What does slacktrack's --touch-filesystem-first option do?
+     why would I need it?
+
+    This option touches all files this pre-set location on the host's
+    filesystem:
+    /opt /bin /boot /dev /etc /install /lib /sbin /usr /var
+
+    It *excludes* by default '/lib/udev/devices' since this contains
+    live device data that doesn't take kindly to being touched.
+    You may see errors from 'touch' about certain binaries, including
+    /sbin/vol_id because this is a symlink into /lib/udev/devices.
+
+    This will touch every file within those directories, destoying all the
+    timestamp information.
+    This is intended to be used on a throwaway development installation
+    that's reinstalled daily or more often.  Builds will often leave
+    residue strewn about, so don't use this on your "good" machine and
+    think you're managing it properly.  :-)
+
+    The reason behind this is that if you run slacktrack and your build
+    partially fails, then it will leave some data on the filesystem.
+    You then fix the problem and re-try: this time the build may succeed.
+    However, if the original data on the filesystem from the first
+    part-failed build has *not* changed (ie if it was some static data that
+    was copied with cp -a (preserved time stamp & ownership)) between
+    the first part-failed build and second successful build, slacktrack
+    will miss this data from the final package.
+
+    This option updates the file stamps contained within standard package
+    directories, therefore allowing slacktrack to detect changes
+    (even if the data contains an *old* time stamp from 1982, it will still
+    detect the difference).
+
+*****  This is an expert option: Please don't use this option unless you do
+       not care about your operating system installation *****
+
+
+Q6. I can't compile Perl CPAN modules via perl -MCPAN -eshell
+    Why ?
+
+A.  If you get this message:
+      Unable to get Terminal Size. The TIOCGWINSZ ioctl didn't work. 
+      The COLUMNS and LINES environment variables didn't work. 
+      The resize program didn't work.
+
+    the answer is to tell slacktrack to turn off logging.
+    eg:
+       # slacktrack -Qnp foo-1.0-i486-2.tgz ./foo.build 
+
+Q7. I'm using Slackware v13 (or greater) and I want to create
+    package files using one of the other compression methods.
+    How can I do that?
+
+A.  It is 'makepkg' from the 'pkgtools' package which handles
+    the compression, based upon the extension of the package
+    file name supplied to it.
+
+    The compression methods & file names are:
+
+     .tgz - Gzip
+     .tbz - Bzip2
+     .tlz - LZMA
+     .txz - XZ
+
+
+    Examples:
+
+    # slacktrack -Qp foo-1.0-i486-1.tgz ./foo.build
+    # slacktrack -Qp foo-1.0-i486-1.tbz ./foo.build
+    # slacktrack -Qp foo-1.0-i486-1.tlz ./foo.build
+    # slacktrack -Qp foo-1.0-i486-1.txz ./foo.build
+
+
+Q8. After completing a build using slacktrack, I see
+    "You have mail in /var/mail/root"
+    but I have no new email.
+
+A.  This is because you used the '--touch-filesystem-first' or
+    '--touch-filesystem-faster' option at build time.
+    This option has touched all of the files on the file system, which
+    refreshes their date stamp.  The mail notification system works only on
+    the date stamp of the mail spools, hence it triggers the message.

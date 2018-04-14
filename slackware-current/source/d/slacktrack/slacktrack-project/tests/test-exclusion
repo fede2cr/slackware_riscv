@@ -1,0 +1,12 @@
+#!/bin/bash
+eval $( grep ^EXCLUDE_LIST ../scripts/slacktrack )
+
+cat << EOF | egrep "$EXCLUDE_LIST"
+/var/lib/NetworkManager/dir
+/usr/bin/wn
+/usr/man/whatis.gz
+/usr/local/man/whatis.gz
+/var/lib/pgsql/foop
+/var/lib/mysql
+EOF
+

@@ -1,0 +1,183 @@
+#!/bin/sh
+# $Id: yasm.SlackBuild,v 1.7 2009/05/12 20:24:31 root Exp root $
+# Copyright (c) 2008 Eric Hameleers <alien@slackware.com>
+# Copyright 2010, 2018  Patrick Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+#   Permission to use, copy, modify, and distribute this software for
+#   any purpose with or without fee is hereby granted, provided that
+#   the above copyright notice and this permission notice appear in all
+#   copies.
+#
+#   THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+#   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+#   IN NO EVENT SHALL THE AUTHORS AND COPYRIGHT HOLDERS AND THEIR
+#   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+#   USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+#   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+#   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+#   OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+#   SUCH DAMAGE.
+# -----------------------------------------------------------------------------
+#
+# Slackware SlackBuild script
+# ===========================
+# By:         Eric Hameleers <alien@slackware.com>
+# For:        yasm
+# Descr:      complete rewrite of the NASM assembler
+# URL:        http://www.tortall.net/projects/yasm/
+# Needs:
+# Changelog:
+# 0.7.1-1:    16/Jun/2008 by Eric Hameleers <alien@slackware.com>
+#             * Initial build.
+# 0.7.2-1:    08/dec/2008 by Eric Hameleers <alien@slackware.com>
+#             * Update.
+# 0.8.0-1:    12/may/2009 by Eric Hameleers <alien@slackware.com>
+#             * Update.
+# 1.1.0-1:    2010-08-31 by volkerdi@slackware.com
+#             * Update.
+# 1.3.0-1:    2014-11-09 by Heinz Wiesinger <pprkut@slackware.com>
+#             * Update.
+#
+# Run 'sh yasm.SlackBuild' to build a Slackware package.
+# The package (.txz) file is created in /tmp .
+# Install using 'installpkg'.
+#
+# -----------------------------------------------------------------------------
+
+PKGNAM=yasm
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+DOCS="ABOUT-NLS AUTHORS ChangeLog COPYING GNU_* NEWS README *.txt"
+
+# If you want to disable python bindings, set ENABLE_PYTHON to "NO".
+# Building python support requires Cython, which is not shipped with Slackware.
+ENABLE_PYTHON=${ENABLE_PYTHON:-"'NO"}
+
+# Where do we look for sources?
+SRCDIR=$(cd $(dirname $0); pwd)
+
+# Place to build (TMP) package (PKG) and output (OUTPUT) the program:
+TMP=${TMP:-/tmp/build}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+# Exit the script on errors:
+set -e
+trap 'echo "$0 FAILED at line ${LINENO}" | tee $OUTPUT/error-${PKGNAM}.log' ERR
+# Catch unitialized variables:
+set -u
+P1=${1:-1}
+
+case "$ARCH" in
+  i586)      SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  s390)      SLKCFLAGS="-O2"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  powerpc)   SLKCFLAGS="-O2"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  x86_64)    SLKCFLAGS="-O2 -fPIC"
+             SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"
+             ;;
+  athlon-xp) SLKCFLAGS="-march=athlon-xp -O3 -pipe -fomit-frame-pointer"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+esac
+
+# Create working directories:
+mkdir -p $OUTPUT          # place for the package to be saved
+mkdir -p $TMP/tmp-$PKGNAM # location to build the source
+mkdir -p $PKG             # place for the package to be built
+rm -rf $PKG/*             # always erase old package's contents
+rm -rf $TMP/tmp-$PKGNAM/* # remove the remnants of previous build
+
+# --- PACKAGE BUILDING ---
+
+echo "++"
+echo "|| $PKGNAM-$VERSION"
+echo "++"
+
+cd $TMP/tmp-$PKGNAM
+echo "Extracting the source archive(s) for $PKGNAM..."
+tar xvf $SRCDIR/$PKGNAM-$VERSION.tar.?z*
+cd ${PKGNAM}-${VERSION}
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+if [ "$ENABLE_PYTHON" = "YES" ]; then
+  PYTHONSTUFF="--enable-python --enable-python-bindings"
+else
+  PYTHONSTUFF=""
+fi
+
+echo Building ...
+LDFLAGS="$SLKLDFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+CFLAGS="$SLKCFLAGS" \
+./configure --prefix=/usr \
+            --libdir=/usr/lib${LIBDIRSUFFIX} \
+            --localstatedir=/var \
+            --sysconfdir=/etc \
+            --mandir=/usr/man \
+            ${PYTHONSTUFF} \
+            --program-prefix= \
+            --program-suffix= \
+            --build=$ARCH-slackware-linux
+
+make
+
+make DESTDIR=$PKG install
+
+# Add documentation:
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a $DOCS $PKG/usr/doc/$PKGNAM-$VERSION || true
+rm $PKG/usr/doc/$PKGNAM-$VERSION/CMakeLists.txt
+chown -R root:root $PKG/usr/doc/$PKGNAM-$VERSION
+find $PKG/usr/doc -type f -exec chmod 644 {} \;
+
+# Remove empty share directory:
+rmdir $PKG/usr/share || true
+
+# Compress the man page(s):
+if [ -d $PKG/usr/man ]; then
+  find $PKG/usr/man -type f -name "*.?" -exec gzip -9f {} \;
+  for i in $(find $PKG/usr/man -type l -name "*.?") ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+fi
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Add a package description:
+mkdir -p $PKG/install
+cat $SRCDIR/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg --linkadd y --chown n $OUTPUT/${PKGNAM}-${VERSION}-${ARCH}-${BUILD}.txz
+

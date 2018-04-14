@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+cscope: cscope (source code browsing tool)
+cscope:
+cscope: Cscope is a text screen based source browsing tool. Although it is
+cscope: primarily designed to search C code (including lex and yacc files),
+cscope: it can also be used for C++ code.
+cscope:
+cscope: For more information, see http://cscope.sourceforge.net.
+cscope:
+cscope:
+cscope:
+cscope:

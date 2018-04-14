@@ -1,0 +1,244 @@
+##########################################################################
+# Document: PACKAGE_BUILDING_CHECKLIST
+# Purpose : Check list for creation of Slackware packages
+#           via .build scripts
+# Author..: Stuart Winter <mozes@slackware.com>
+# Date....: 04-Apr-2006
+# Version : 1.01
+##########################################################################
+# This document belongs to my 'slacktrack' program
+#     http://www.slackware.com/~mozes
+##########################################################################
+# Changelog
+###########
+# v1.01 - 04-Apr-2006
+#       * Added note about Slackware version 11 using root:root ownerships
+#         for binary directories.
+# v1.00 - 01-Mar-2003
+#       * Created
+###########################################################################
+Building the package via slacktrack
+-----------------------------------
+
+Let's assuming you're rebuilding the 'fetchmail' utilities package
+from Slackware-current.
+
+  # cd slackware/slackware-current/source/n
+  # slacktrack -jefkzcnp "fetchmail-6.2.0-sparc-2.tgz" "/bin/sh fetchmail.build"
+
+
+If you wanted to make slacktrack save the package into a different directory
+you would use the -b option, eg
+  # slacktrack -b "/data/sparc-packages/n/" \
+               -Qnp "fetchmail-6.2.0-sparc-2.tgz" "/bin/sh fetchmail.build"
+
+slacktrack now moves the package and its .txt description file into my
+Sparc port's 'n' series package directory.
+
+Your package compiles successfully and is now stored in
+/tmp/built-slackwarepackages/ 
+as fetchmail-6.2.0-sparc-2.tgz
+
+Testing the package
+-------------------
+
+We must now manually check the integrity of the resulting package.
+
+The easiest way of examining the package is to run it through less.
+  # less fetchmail-6.2.0-sparc-2.tgz
+
+[a] The 'install/slack-desc' file
+    -----------------------------
+
+    This is a text file in the standard 'slack-desc' format.
+    It gives a brief description of the package and any relevant
+    information.
+
+    For examples you should look in the source directory 
+    of any slackware package.    
+
+[b] The 'install/doinst.sh' file
+    ----------------------------
+
+    Unless you know what you are doing, your installation scripts should
+    only refer to relative path names.
+    For example:
+    
+    if [ ! -f etc/foo.conf ]; then
+       mv -f etc/foo.conf.new etc/foo.conf
+    fi
+
+    This is because the user can specify a different root directory
+    when installing the package.  If your script uses absolute path names
+    (path names begin with a /) then this script will not work as expected because
+    installpkg only changes into the specified root directory and runs the script;
+    it does not perform a chroot or anything similar.
+
+[c] Check permissions 
+    -----------------
+
+    Ensure that there are no globally writeable files and directories
+    that should not be there.
+    PHP 4.3.0 is an all time classic example of why you should check
+    your packages; it had globally writeable files in /usr/lib/php !
+
+    You can feed slacktrack the --chmod-og-w option to help you 
+    deal with globally writeable files.  However, it's best if you
+    do it yourself from your script, and using this option is no 
+    excuse to not check !
+
+[d] Check file & directory ownerships
+    -----------------------------------
+
+    Unless specifically required, the files and directories should 
+    be owned by 'root' in the group 'root'.    
+    You may find that some source distributions install their files
+    with different UIDs because they've simply copied them from the
+    source ball -- so the files end up being owned by 'bob.users'
+    or similar.
+
+    However, also see the next check regarding binaries.
+
+[e] Check binary file & binary directory ownerships 
+    -----------------------------------------------
+   
+    Prior to Slackware version 11, the standard was to have binaries
+    installed in
+     /bin,/sbin,/usr/bin,/usr/sbin
+    as owned by root:bin
+    
+    The directories (above) themselves should also have these ownerships.
+   
+    You can feed slacktrack the following options to help here:
+      -e,  --chown-bdirs-root-bin
+           This runs chown root.bin over the binary directories listed above
+      -f, -chown-bfiles-root-bin 
+           This runs chown root.bin over the FILES inside the binary directories
+           listed above.
+     
+    Again, you should check the package incase there has been a problem.
+
+    The -e and -f options are provided because *Slackware*'s .build scripts
+    do not do chown them for you -- it is done manually by Pat.
+
+    With Slackware version 11, those binary directories are owned by root:root.
+    For slacktrack you can use the -m operator to have this set for you.
+
+[f] Ensure man pages are gzipped & any broken symlinks are fixed
+    ------------------------------------------------------------
+
+    Slackware's packages all (or at least should) have gzipped man pages.
+    The man pages reside in numbered directories ('sections') within
+    /usr/man
+    eg man pages in section 1 reside in /usr/man/man1
+
+    man pages that are *not* gzipped will not have a .gz extension.
+    For example, the mkdir man page that is not gzipped would be:
+       /usr/man/man1/mkdir.1
+    The gzipped version is
+       /usr/man/man1/mkdir.1.gz
+
+    Some binaries behave differently when called with different names, or
+    have different names for historical purposes.
+    Such an example are packages from the 'floppy' Slackware package.
+      /usr/bin/xdfformat is a symlink to /usr/bin/xdfcopy
+    The man page is no different:
+      xdfformat.1 -> xdfcopy.1
+    By default, the Slackware 'floppy.build' script does not gzip man pages.
+    It's easy to gzip man pages - slacktrack does this
+      find usr/man -type f -print0 | xargs -0 gzip -9
+    However, if you do an ls -l on the man1 directory, you will see
+    that we have broken the xdffformat.1 symlink to xdfcopy.1
+    because xdfcopy.1 is now named xdfcopy.1.gz
+    The way to fix this would be to 
+      # rm -f xdffformat.1 ; ln -s xdfcopy.1 xdfformat.1
+
+    The easiest way to ensure your man pages are gzipped and all symlinks
+    are restored is to feed slacktrack the -z or --gzman option
+    slacktrack will take care of your symlinks for you.
+
+    Again, there is no excuse not to check manually !
+
+[g] strip binaries and shared objects
+    ---------------------------------
+
+    In order to reduce the size of the binary once installed and package, 
+    Slackware strips the libraries and binaries.
+
+    For example, if we wanted to strip the grep program we would do
+     # strip --strip-unneeded /bin/grep
+
+    Stripping binaries from .build scripts called via slacktrack
+    is fairly easy.  There are two ways of doing it:
+      [1] Let slacktrack take care of it
+            -j or --striplib will cause slacktrack to strip
+            any executable .so files it finds in /lib and /usr/lib
+           
+            -k or --stripbin will cause slacktrack to strip
+            any executable binaries it finds in /bin,/sbin,/usr/bin,/usr/sbin
+             
+      [2] Do it yourself in the your build script - this is the preferred way.
+            slacktrack exports an environment variable named
+              SLACKTRACKFAKEROOT
+            This enables you to do something like this
+            # find ${SLACKTRACKFAKEROOT}/usr/lib -type f -name *.so -print0 | xargs -0 strip
+            Using the environement variable prevents you from having to know
+            all of the library & binary file names, as you will only find
+            files that your build script has created in the fake root directory.
+
+    * Note: You may find that some binaries or libraries break when they
+            are stripped.  This is because they require symbols that strip
+            removes.  This is why it's best to do your own binary and
+            library stripping and individually strip the required files rather
+            than letting slacktrack do it for you *
+
+[h] Check zero length files 
+    -----------------------
+
+    slacktrack uses Slackware's makepkg program which should identify any
+    zero length files for you.  However, it's worth checking *why* any files
+    are of zero length -- you will find that some of them are meant to be;
+    the etc-*-noarch-*.tgz package's /etc/mtab file is an example of this.
+
+    There should be no occasion for a binary or .so to be of zero bytes.
+
+    If you're unsure of any zero length files, check out the next point.
+
+[i] Compare your package with the official package
+    -----------------------------------------------
+
+    If you are rebuilding/porting a Slackware package from -8.1 or -current
+    (or any other version for that matter), then one of the easiest ways
+    to give you some confidence that your package is official-looking is to
+    simply examine the official package.
+
+    This will allow you to see whether the file & dir permissions are the
+    same as your own package, verify any zero length files and so on.
+    
+    Please note that if you DO find any zero length files or anything
+    that you can easily PROVE is broken then *DO* submit a report
+    to Slackware so that it can be fixed.
+
+    If you're porting Slackware packages to a different architecture then
+    obviously don't be overly concerned about file size differences -- although
+    it's worth making sure you've stripped your binaries.  You may actually
+    find that some of the Slackware official packages aren't stripped.
+
+[j] Ensure your package root directory is chmod 755
+    -----------------------------------------------
+
+    prisere [packages] # tar ztvvf foo.tgz
+    drwx------ root/root         0 2003-03-01 18:46:17 ./
+    
+    If you see this, your package IS BROKEN.
+ 
+    Installing this package will render your system seriously
+    broken because it will chmod 700 the root directory !
+    
+    By default slacktrack will chmod 755 the root directory, but
+    as with everything else, you should check !
+    
+        
+
+That's about it.  If you can think of any other checks then please
+email <mozes@slackware.com>

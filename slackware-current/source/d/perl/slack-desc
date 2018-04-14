@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+perl: perl (Practical Extraction and Report Language)
+perl:
+perl: Larry Wall's "Practical Extraction and Report Language". Perl is a
+perl: language optimized for scanning arbitrary text files, extracting
+perl: information from those text files, and printing reports based on that
+perl: information. It's also a good language for many system management
+perl: tasks. The language is intended to be practical (easy to use,
+perl: efficient, complete) rather than beautiful (tiny, elegant, minimal).
+perl:
+perl: Homepage: http://www.perl.org
+perl:

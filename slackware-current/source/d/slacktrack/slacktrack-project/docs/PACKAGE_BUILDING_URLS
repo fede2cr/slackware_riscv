@@ -1,0 +1,38 @@
+These are a few URLs that provide information about
+how to build packages for Slackware Linux:
+
+ Slackware Linux Essentials book
+ -------------------------------
+
+ http://www.slackware.com/book/index.php?source=x4132.html
+
+
+ Linux packages
+ --------------
+
+ This web site has a great number of pre-built packages for
+ Slackware.
+
+ It also has a HOWTO about building packages:
+
+ http://www.linuxpackages.net/howto/howto.php?page=package
+
+
+ Slackbuilds.org
+ ------------------
+
+ This site has a huge repository of build scripts for Slackware.
+ They are all 'SlackBuild' type -- eg the 'clean' builds
+ (the preferred method -- i.e. these do not need slacktrack)
+
+ http://www.slackbuilds.org
+
+  
+ Slackware's official build scripts
+ ----------------------------------
+
+ I also recommend that you look at the official Slackware build
+ scripts that can be found on the FTP site in the 'source' 
+ directory of the distribution 
+ (e.g. slackware/slackware-9.1/source)
+
