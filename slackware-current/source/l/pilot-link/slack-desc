@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------------|
+pilot-link: pilot-link (library for communicating with PalmOS devices)
+pilot-link:
+pilot-link: This is a library for communicating with Palm Computing, Inc. Palm
+pilot-link: Devices as well as the Handspring Visor,  TRGPro,  and other devices
+pilot-link: which conform to this standard (PalmOS licensed devices).
+pilot-link:
+pilot-link: pilot-link is used by KPilot.
+pilot-link:
+pilot-link:
+pilot-link:
+pilot-link:

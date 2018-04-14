@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+           |-----handy-ruler------------------------------------------------|
+qimageblitz: QImageBlitz (Graphical effect and filter library for KDE4)
+qimageblitz:
+qimageblitz: Blitz is a graphical effect and filter library for KDE4.0 that 
+qimageblitz: contains many improvements over KDE 3.x's kdefx library 
+qimageblitz: including bugfixes, memory and speed improvements, and MMX/SSE
+qimageblitz: support.
+qimageblitz:
+qimageblitz:
+qimageblitz:
+qimageblitz:
+qimageblitz:

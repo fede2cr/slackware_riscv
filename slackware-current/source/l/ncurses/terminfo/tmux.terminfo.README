@@ -1,0 +1,2 @@
+This is the standard terminfo from tmux's FAQ, with kbs=\177 added since this
+is what tmux is hardcoded to generate for backspace.

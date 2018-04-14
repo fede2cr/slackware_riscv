@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+libkarma: libkarma (library for accessing the Rio Karma music player)
+libkarma:
+libkarma: This is a library for accessing the Rio Karma, a small media player
+libkarma: which supports the music formats ogg vorbis, flac, mp3, wave and wma.
+libkarma:
+libkarma: libkarma was mostly written by Frank Zschockelt.
+libkarma:
+libkarma:
+libkarma:
+libkarma:
+libkarma:

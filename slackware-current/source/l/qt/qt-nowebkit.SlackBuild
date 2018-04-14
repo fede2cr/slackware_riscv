@@ -1,0 +1,358 @@
+#!/bin/sh
+
+# Copyright 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Merged some ideas from Alex Sarmardzic's script for qt4 at SlackBuilds.org
+# ^^ Modified by Robby Workman <rworkman@slackware.com> for QT4 & KDE4
+
+# We're using qt-copy instead of a released qt version, as this git release
+# has at least one bugfix strongly recommended by the kde developers.
+
+# Obtained from:
+# git clone git://gitorious.org/+kde-developers/qt/kde-qt.git
+# git checkout origin/4.5.3-patched
+# git checkout origin/4.6.0-stable-patched
+# git checkout origin/4.6.1-patched
+# git checkout origin/4.7.0-patched
+#
+# Alternate method (we don't use this):
+# wget http://qt.gitorious.org/qt/kde-qt/archive-tarball/4.6.2-patched
+#
+# Modifications 2010, 2011, 2012  Eric Hameleers, Eindhoven, NL
+# qt 4.7.3, 4.7.4, 4.8.0, 4.8.1, 4.8.2, 4.8.4, 4.8.5, 4.8.6 are built from original nokia sources.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=qt
+VERSION=$(ls qt-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+BUILD=${BUILD:-8}
+
+NUMJOBS=${NUMJOBS:--j7}
+
+# Automatically determine the architecture we're building on:
+MARCH=$( uname -m )
+if [ -z "$ARCH" ]; then
+  case "$MARCH" in
+    i?86)    export ARCH=i586 ;;
+    armv7hl) export ARCH=$MARCH ;;
+    arm*)    export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)       export ARCH=$MARCH ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  # To prevent "qatomic_armv6.h error: output number 2 not directly addressable"
+  # More permanent solution is to patch gcc:
+  # http://bazaar.launchpad.net/~linaro-toolchain-dev/gcc-linaro/4.6/revision/106731
+  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16 -fno-strict-volatile-bitfields"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-${PKGNAM}
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf qt-everywhere-opensource-src-$VERSION
+tar xvf $CWD/qt-everywhere-opensource-src-$VERSION.tar.xz     # For qt releases
+cd qt-everywhere-opensource-src-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+if [ $ARCH = "i486" -o $ARCH = "i586" ]; then
+  sed -i -e "s/QMAKE_CFLAGS_RELEASE        += -O2/QMAKE_CFLAGS_RELEASE        += $SLKCFLAGS/" mkspecs/common/gcc-base.conf || exit 1
+fi
+
+# Fix path to mysql header
+zcat $CWD/qt.mysql.h.diff.gz | patch -p1 --verbose || exit 1
+
+# Stupid idea - remove it:
+zcat $CWD/qt.webkit-no_Werror.patch.gz | patch -p1 --verbose || exit 1
+
+# Fix crash on malformed GIF images (CVE-2014-0190):
+zcat $CWD/qt.fix.broken.gif.crash.diff.gz | patch -p1 --verbose || exit 1
+
+# Implement qsystemtrayicon support for Qt4 applications in Plasma 5:
+zcat $CWD/qt.qsystemtrayicon-plugin-system.diff.gz | patch -p1 --verbose || exit 1
+
+# Apply LibreOffice fixes (QTBUG-37380, QTBUG-34614, QTBUG-38585),
+# Native KDE4 file pickers will be disabled at runtime otherwise.
+zcat $CWD/qt.glib-honor-ExcludeSocketNotifiers-flag.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/qt.qclipboard_fix_recursive.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/qt.qclipboard_delay.patch.gz | patch -p1 --verbose || exit 1
+
+# Fix for moc with glibc-2.25+:
+zcat $CWD/qt.QTBUG-22829.diff.gz | patch -p1 --verbose || exit 1
+
+# Another macro definition workaround with newer libraries:
+zcat $CWD/qt.QT_VERSION_CHECK.diff.gz | patch -p1 --verbose || exit 1
+
+# Fix build with gcc 6 or gcc 7:
+zcat $CWD/qt.gcc6.diff.gz | patch -p1 --verbose || exit 1
+
+# Fix test with ALSA 1.1.x:
+zcat $CWD/qt.alsa-1.1.diff.gz | patch -p1 --verbose || exit 1
+
+# Fix QTreeView crash:
+zcat $CWD/qt.qtreeview.crash.diff.gz | patch -p1 --verbose || exit 1
+
+# Increase entity limit:
+zcat $CWD/qt.QTBUG-35459.diff.gz | patch -p1 --verbose || exit 1
+
+# Don't emit a misleading icu4c debug error:
+zcat $CWD/qt.icu4c.nodebug.diff.gz | patch -p1 --verbose || exit 1
+
+## Fix building with icu4c >= 59
+#zcat $CWD/qt.icu59.patch.gz | patch -p1 --verbose || exit 1
+
+# The header files for icu59+ require C++11, so compile only the source file
+# that uses them with that C++ standard:
+zcat $CWD/qt.icu59.c++11.diff.gz | patch -p1 --verbose || exit 1
+
+# All other distros I checked build with -no-webkit. But this has the downside of
+# breaking the build when QtWebKit is present on the build system and some things
+# (assistant for one) are built without support for QtWebKit. So let's go with
+# -webkit and remove the built files later from the package. -HW
+
+export CFLAGS="$SLKCFLAGS"
+export CXXFLAGS="$SLKCFLAGS -std=gnu++98 -fpermissive -fno-delete-null-pointer-checks"
+export OPENSOURCE_CXXFLAGS="$SLKCFLAGS -std=gnu++98 -fpermissive -fno-delete-null-pointer-checks"
+./configure \
+  -confirm-license \
+  -opensource \
+  -prefix /usr/lib${LIBDIRSUFFIX}/qt \
+  -fast \
+  -release \
+  -system-libpng \
+  -system-libjpeg \
+  -system-zlib \
+  -system-sqlite \
+  -plugin-sql-sqlite \
+  -dbus \
+  -webkit \
+  -no-phonon \
+  -nomake examples \
+  -nomake demos \
+  -nomake docs \
+  -no-separate-debug-info \
+  -no-pch
+  # No-precompiled-headers is ccache-friendly.
+
+# Sometimes a failure happens when parallelizing make.  Try again if make fails,
+# but make a failure the second time around (single threaded) a fatal error:
+make $NUMJOBS || make || exit 1
+make install INSTALL_ROOT=$PKG || exit 1
+
+# dropping the just built WebKit since we replace it with an external one
+rm -f $PKG/usr/lib$LIBDIRSUFFIX/qt/lib/libQtWebKit*
+rm -f $PKG/usr/lib$LIBDIRSUFFIX/qt/lib/pkgconfig/QtWebKit.pc
+rm -rf $PKG/usr/lib$LIBDIRSUFFIX/qt/imports/QtWebKit
+rm -rf $PKG/usr/lib$LIBDIRSUFFIX/qt/include/QtWebKit
+
+# The infamous qt -> qt-${VERSION} link that keeps the full path out of .la files:
+( cd $PKG/usr/lib${LIBDIRSUFFIX} ; ln -sf qt qt-${VERSION} )
+
+# Add a missing Qt.pc which is needed by KDE applications:
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig
+cat <<EOF > $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig/Qt.pc
+prefix=/usr/lib${LIBDIRSUFFIX}/qt
+bindir=\${prefix}/bin
+datadir=\${prefix}
+docdir=\${prefix}/doc
+headerdir=\${prefix}/include
+importdir=\${prefix}/imports
+libdir=\${prefix}/lib
+moc=\${bindir}/moc
+plugindir=\${prefix}/plugins
+qmake=\${bindir}/qmake
+sysconfdir=\${prefix}/etc/settings
+translationdir=\${prefix}/translations
+
+Name: Qt
+Description: Qt Configuration
+Version: $VERSION
+EOF
+
+# libjscore is used internally.  Prevent a false dependency on this in the .la and .pc files:
+sed -i "s,-ljscore,,g" $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/*.la $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig/*.pc
+sed -i "s,-L../JavaScriptCore/release,,g" $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/*.la $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig/*.pc
+
+# Make sure that .la, .pc, and .prl files use the correct $LIBDIRSUFFIX:
+sed -i "s,-L/usr/X11R6/lib ,-L/usr/X11R6/lib${LIBDIRSUFFIX} ,g" $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/*.la $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig/*.pc $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/*.prl
+
+# Link the shared libraries into /usr/lib:
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  for file in qt/lib/*.so* ; do
+    ln -sf $file .
+  done
+)
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Add profile scripts
+mkdir -p $PKG/etc/profile.d
+sed -e "s#usr/lib/#usr/lib${LIBDIRSUFFIX}/#g" $CWD/profile.d/qt4.sh \
+  > $PKG/etc/profile.d/qt4.sh
+sed -e "s#usr/lib/#usr/lib${LIBDIRSUFFIX}/#g" $CWD/profile.d/qt4.csh \
+  > $PKG/etc/profile.d/qt4.csh
+chmod 0755 $PKG/etc/profile.d/*
+
+# Put a ton of links to more "normal" places.  I'd just use a prefix of /usr, but it
+# creates a ton of new (and ambiguously named) /usr directories...
+mkdir -p $PKG/usr/bin
+( cd $PKG/usr/lib${LIBDIRSUFFIX}/qt/bin
+  for file in * ; do
+    ( cd $PKG/usr/bin ; ln -sf /usr/lib${LIBDIRSUFFIX}/qt/bin/$file . )
+  done
+)
+
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig
+( cd $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig
+  for file in *.pc ; do
+    ( cd $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig ; ln -sf /usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig/$file . )
+  done
+)
+
+# Install Qt's private headers - at least Gentoo and Fedora are adding these
+# and some software has (inevitably) started depending on them:
+# We're using `rsync -R` as easy way to preserve relative path names:
+rsync -aR \
+  include/Qt{Core,Declarative,Gui,Script}/private \
+  src/{corelib,declarative,gui,script}/*/*_p.h \
+  ${PKG}/usr/lib${LIBDIRSUFFIX}/qt/
+
+# Add menu entries for all those hidden but great Qt applications:
+# Assistant icons
+install -p -m644 -D tools/assistant/tools/assistant/images/assistant.png $PKG/usr/share/icons/hicolor/32x32/apps/assistant.png
+install -p -m644 -D tools/assistant/tools/assistant/images/assistant-128.png $PKG/usr/share/icons/hicolor/128x128/apps/assistant.png
+# Designer icon
+install -p -m644 -D tools/designer/src/designer/images/designer.png $PKG/usr/share/icons/hicolor/128x128/apps/designer.png
+# Linguist icons
+for icon in tools/linguist/linguist/images/icons/linguist-*-32.png ; do
+  size=$(echo $(basename ${icon}) | cut -d- -f2)
+  install -p -m644 -D ${icon} $PKG/usr/share/icons/hicolor/${size}x${size}/apps/linguist.png
+done
+# Qt logo:
+convert doc/src/images/qt-logo.png  -resize 48x48 $PKG/usr/share/icons/hicolor/48x48/apps/qt-logo.png
+
+# And the .desktop files
+mkdir -p $PKG/usr/share/applications
+cat <<EOF > $PKG/usr/share/applications/designer.desktop
+[Desktop Entry]
+Name=Qt4 Designer
+GenericName=Interface Designer
+Comment=Design GUIs for Qt4 applications
+Exec=designer
+Icon=designer
+MimeType=application/x-designer;
+Terminal=false
+Encoding=UTF-8
+Type=Application
+Categories=Qt;Development;
+EOF
+cat <<EOF > $PKG/usr/share/applications/assistant.desktop
+[Desktop Entry]
+Name=Qt4 Assistant
+Comment=Shows Qt4 documentation and examples
+Exec=assistant
+Icon=assistant
+Terminal=false
+Encoding=UTF-8
+Type=Application
+Categories=Qt;Development;Documentation;
+EOF
+cat <<EOF > $PKG/usr/share/applications/linguist.desktop
+[Desktop Entry]
+Name=Qt4 Linguist
+Comment=Add translations to Qt4 applications
+Exec=linguist
+Icon=linguist
+MimeType=text/vnd.trolltech.linguist;application/x-linguist;
+Terminal=false
+Encoding=UTF-8
+Type=Application
+Categories=Qt;Development;
+EOF
+cat <<EOF > $PKG/usr/share/applications/qtconfig.desktop
+[Desktop Entry]
+Name=Qt4 Config
+Comment=Configure Qt4 behavior, styles, fonts
+Exec=qtconfig
+Icon=qt-logo
+Terminal=false
+Encoding=UTF-8
+Type=Application
+Categories=Qt;Settings;
+EOF
+
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a *GPL_EXCEPTION* FAQ* INSTALL KNOWN* LICENSE* README* changes-* \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+if [ -d $PKG/usr/lib${LIBDIRSUFFIX}/qt/doc/html ]; then
+  ( cd $PKG/usr/doc/$PKGNAM-$VERSION
+    ln -sf /usr/lib${LIBDIRSUFFIX}/qt/doc/html .
+  )
+fi
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+

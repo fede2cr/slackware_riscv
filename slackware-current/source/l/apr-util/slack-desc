@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+apr-util: apr-util (Apache Portable Runtime utilities)
+apr-util:
+apr-util: The mission of the Apache Portable Runtime (APR) is to provide a
+apr-util: free library of C data structures and routines, forming a system
+apr-util: portability layer to as many operating systems as possible.
+apr-util:
+apr-util: This package contains additional utility interfaces for APR;
+apr-util: including support for XML, LDAP, database interfaces, URI parsing,
+apr-util: and more.
+apr-util:
+apr-util:

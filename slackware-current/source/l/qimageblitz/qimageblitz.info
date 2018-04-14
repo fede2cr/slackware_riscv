@@ -1,0 +1,8 @@
+PRGNAM="qimageblitz"
+VERSION="0.0.4"
+HOMEPAGE="http://sourceforge.net/projects/qimageblitz"
+DOWNLOAD="http://downloads.sourceforge.net/qimageblitz/qimageblitz-0.0.4.tar.bz2"
+MD5SUM="cb87c7f1c0455e8984ee4830f1e749cf"
+MAINTAINER="Robby Workman"
+EMAIL="rw@rlworkman.net"
+APPROVED=

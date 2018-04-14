@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+liboggz: liboggz (Ogg inspect/edit/validate tools and library)
+liboggz:
+liboggz: Oggz comprises liboggz and the tool oggz, which provides commands to
+liboggz: inspect, edit and validate Ogg files. The oggz-chop tool can also be
+liboggz: used to serve time ranges of Ogg media over HTTP by any web server
+liboggz: that supports CGI. liboggz is a C library for reading and writing Ogg
+liboggz: files and streams. It offers various improvements over the reference
+liboggz: libogg, including support for seeking, validation and timestamp
+liboggz: interpretation.
+liboggz:
+liboggz:

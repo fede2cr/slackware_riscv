@@ -1,0 +1,146 @@
+#!/bin/sh
+
+# Copyright 2005-2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=freetype
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-freetype
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf freetype-$VERSION
+tar xvf $CWD/freetype-$VERSION.tar.?z || exit 1
+cd freetype-$VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# This breaks far too many things.  Freetype2 developers will have to get their
+# punishment on someone else's distribution.
+zcat $CWD/freetype.illadvisederror.diff.gz | patch -p1 --verbose || exit 1
+
+# The line below enables code patented by Microsoft, so don't uncomment it
+# unless you have a license to use the code and take all legal responsibility
+# for doing so. With the new subpixel hinting modes there's not much reason
+# to want to use this anyway.
+# Please see this web site for more details:
+#   http://www.freetype.org/patents.html
+#zcat $CWD/freetype.subpixel.rendering.diff.gz | patch -p1 --verbose || exit 1
+
+# Compile support into the Freetype library for both the Infinality and
+# new 2.7.x (default) subpixel hinting modes. To adjust your preferences
+# (the classic hinting mode is also available), see the freetype profile
+# scripts in /etc/profile.d/.
+zcat $CWD/freetype.compile.both.subpixel.hinting.methods.diff.gz | patch -p1 --verbose || exit 1
+
+chown -R root:root .
+CFLAGS="$SLKCFLAGS" make setup CFG="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --build=$ARCH-slackware-linux"
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Install runtime profile configuration scripts, used to set hinting defaults:
+mkdir -p $PKG/etc/profile.d
+cp -a $CWD/freetype.csh.gz $PKG/etc/profile.d
+cp -a $CWD/freetype.sh.gz $PKG/etc/profile.d
+gzip -d $PKG/etc/profile.d/*
+chown root:root $PKG/etc/profile.d/*
+chmod 755 $PKG/etc/profile.d/*
+mv $PKG/etc/profile.d/freetype.csh $PKG/etc/profile.d/freetype.csh.new
+mv $PKG/etc/profile.d/freetype.sh $PKG/etc/profile.d/freetype.sh.new
+
+# This shouldn't be needed (apps should pick up -I/usr/include/freetype2 from
+# `freetype-config --cflags` while compiling), but it's so often reported as
+# a bug that I'll give in to the point.  Now that Freetype1 is pretty much gone
+# having this link shouldn't hurt anything.  Try not to rely on it, though.
+mkdir -p $PKG/usr/include
+( cd $PKG/usr/include
+  rm -rf freetype
+  ln -sf freetype2 freetype
+)
+
+# Can't imagine a lot of use for this:
+rm -f $PKG/usr/lib${LIBDIRSUFFIX}/*.a
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mv $PKG/usr/share/man $PKG/usr/man
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+
+mkdir -p $PKG/usr/doc/freetype-$VERSION
+cp -a \
+  docs \
+  README \
+  $PKG/usr/doc/freetype-$VERSION
+# too much
+rm -rf $PKG/usr/doc/freetype-$VERSION/docs/reference
+
+mkdir $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/freetype-$VERSION-$ARCH-$BUILD.txz
+

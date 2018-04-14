@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+libwnck: libwnck (Window Navigator Construction Kit library)
+libwnck:
+libwnck: libwnck is the Window Navigator Construction Kit, a library for use
+libwnck: in writing pagers, tasklists, and more generally applications that
+libwnck: are dealing with window management. It tries hard to respect the
+libwnck: Extended Window Manager Hints specification (EWMH).
+libwnck:
+libwnck: libwnck is used by compiz to provide the gtk-window-decorator program.
+libwnck:
+libwnck:
+libwnck:

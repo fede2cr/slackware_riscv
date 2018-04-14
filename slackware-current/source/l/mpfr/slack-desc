@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+mpfr: mpfr (Multiple-Precision Floating-Point Reliable Library)
+mpfr:
+mpfr: The MPFR library is a C library for multiple-precision floating-point
+mpfr: computations with exact rounding (also called correct rounding).
+mpfr: It is based on the GMP multiple-precision library.
+mpfr: The main goal of MPFR is to provide a library for multiple-precision
+mpfr: floating-point computation which is both efficient and has 
+mpfr: well-defined semantics. It copies the good ideas from the
+mpfr: ANSI/IEEE-754 standard for double-precision floating-point arithmetic
+mpfr: (53-bit mantissa).
+mpfr:

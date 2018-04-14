@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler--------------------------------------------------|
+QScintilla: QScintilla (Qt port of the Scintilla C++ editor control)
+QScintilla:
+QScintilla: QScintilla includes features especially useful when editing and 
+QScintilla: debugging source code. These include support for syntax styling, 
+QScintilla: error indicators, code completion, and call tips. The selection 
+QScintilla: margin can contain markers like those used in debuggers to 
+QScintilla: indicate breakpoints and the current line. Styling choices are 
+QScintilla: more open than with many editors, allowing the use of 
+QScintilla: proportional fonts, bold and italics, multiple foreground and 
+QScintilla: background colours, and multiple fonts.
+QScintilla:

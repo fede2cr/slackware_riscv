@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+                |-----handy-ruler------------------------------------------------------|
+phonon-gstreamer: phonon-gstreamer (gstreamer backend for phonon)
+phonon-gstreamer:
+phonon-gstreamer: This package provides an additional gstreamer backend for the phonon
+phonon-gstreamer: multimedia framework used in KDE.
+phonon-gstreamer:
+phonon-gstreamer: For more information, visit:
+phonon-gstreamer: https://projects.kde.org/projects/kdesupport/phonon/phonon-gstreamer
+phonon-gstreamer:
+phonon-gstreamer:
+phonon-gstreamer:
+phonon-gstreamer:

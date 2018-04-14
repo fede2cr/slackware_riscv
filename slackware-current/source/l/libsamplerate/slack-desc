@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler------------------------------------------------------|
+libsamplerate: libsamplerate (a Sample Rate Converter for audio)
+libsamplerate:
+libsamplerate: Secret Rabbit Code (aka libsamplerate) is a Sample Rate Converter for
+libsamplerate: audio. One example of where such a thing would be useful is
+libsamplerate: converting audio from the CD sample rate of 44.1kHz to the 48kHz
+libsamplerate: sample rate used by DAT players. SRC is capable of arbitrary and time
+libsamplerate: varying conversions. SRC provides a small set of converters to allow
+libsamplerate: quality to be traded off against computation cost.
+libsamplerate:
+libsamplerate: libsamplerate home: http://www.mega-nerd.com/SRC/
+libsamplerate:

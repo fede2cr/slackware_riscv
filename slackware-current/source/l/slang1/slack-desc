@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+slang1: slang (S-Lang interpreter version 1)
+slang1:
+slang1: S-Lang is an interpreted language that was designed from the start
+slang1: to be easily embedded into a program to provide it with a powerful
+slang1: extension language. S-Lang is also a programmer's library that
+slang1: permits a programmer to develop sophisticated platform-independent
+slang1: software. In addition to providing the S-Lang extension language,
+slang1: the library provides facilities for screen management, keymaps,
+slang1: and low-level terminal I/O.
+slang1:
+slang1:

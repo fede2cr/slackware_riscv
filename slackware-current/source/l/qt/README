@@ -1,0 +1,9 @@
+qt-<version>_<git revision> is actually KDE's version of Qt from git
+that includes important patches not yet present in mainline Qt.
+
+The recommended version of Qt for KDE may be obtained from the
+repository with this command:
+
+git clone git://gitorious.org/+kde-developers/qt/kde-qt.git
+
+(see the SlackBuild for more details)

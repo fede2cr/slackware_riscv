@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+libidn2: libidn2 (GNU Internationalized Domain Name library version 2)
+libidn2:
+libidn2: GNU Libidn is an implementation of the Stringprep, Punycode and IDNA
+libidn2: specifications defined by the IETF Internationalized Domain Names
+libidn2: (IDN) working group, used for internationalized domain names.
+libidn2:
+libidn2:
+libidn2:
+libidn2:
+libidn2:
+libidn2:

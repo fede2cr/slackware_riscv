@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler-----------------------------------------------------|
+M2Crypto: M2Crypto (cryptography toolkit for Python)
+M2Crypto:
+M2Crypto: M2Crypto is a crypto and SSL toolkit for Python. It includes:
+M2Crypto: - RSA, DSA, DH, HMACs, message digests, symmetric ciphers (e.g. AES)
+M2Crypto: - SSL functionality to implement clients and servers
+M2Crypto: - HTTPS extensions to Python's httplib, urllib, and xmlrpclib
+M2Crypto: - Unforgeable HMAC'ing AuthCookies for web session management
+M2Crypto: - FTP/TLS client and server, S/MIME v2, ZServerSSL, ZSmime  
+M2Crypto:
+M2Crypto: Homepage: https://gitlab.com/m2crypto/m2crypto
+M2Crypto:

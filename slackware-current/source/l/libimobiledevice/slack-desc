@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+                |-----handy-ruler------------------------------------------------------|
+libimobiledevice: libimobiledevice (iOS device communication library) 
+libimobiledevice:
+libimobiledevice: A library to communicate with services of Apple iOS devices using native
+libimobiledevice: protocols.
+libimobiledevice:
+libimobiledevice: The libimobiledevice homepage: http://www.libimobiledevice.org/
+libimobiledevice:
+libimobiledevice:
+libimobiledevice:
+libimobiledevice:
+libimobiledevice:

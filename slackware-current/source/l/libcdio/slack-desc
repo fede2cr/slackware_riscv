@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+libcdio: libcdio (GNU CD access library)
+libcdio:
+libcdio: The libcdio package contains a library for CD-ROM and CD image access.
+libcdio: Applications wishing to be oblivious of the OS and device-dependent
+libcdio: properties of a CD-ROM or of the specific details of various CD-image
+libcdio: formats may benefit from using this library. A library for working
+libcdio: with ISO-9660 filesystems libiso9660 is included. A generic interface
+libcdio: for issuing MMC (multimedia commands) is also part of the libcdio
+libcdio: library.
+libcdio:
+libcdio:

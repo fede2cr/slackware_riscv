@@ -1,0 +1,164 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2010, 2012, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=db44
+VERSION=4.4.20
+BUILD=${BUILD:-3}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-db44
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+cd $TMP
+rm -rf db-$VERSION
+tar xjvf $CWD/db-$VERSION.tar.bz2
+cd db-$VERSION
+
+# Official patches:
+zcat $CWD/patch.4.4.20.1.gz | patch -p0 --verbose
+zcat $CWD/patch.4.4.20.2.gz | patch -p0 --verbose
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+rm -rf build-dir
+mkdir build-dir
+cd build-dir
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+../dist/configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --enable-shared \
+  --enable-rpc \
+  --enable-cxx \
+  --enable-compat185 \
+  $ARCH-slackware-linux
+
+make -j3
+make install DESTDIR=$PKG
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+# Remove WAY TOO LARGE (and misplaced) docs:
+rm -rf $PKG/usr/docs
+mkdir -p $PKG/usr/doc/db-$VERSION
+cp -a \
+  ../LICENSE ../README \
+  $PKG/usr/doc/db-$VERSION
+cat << EOF > $PKG/usr/doc/db-$VERSION/README-DOCS
+
+  For a ton of additional documentation (too large to include
+  here) on writing source code that uses libdb44, please see
+  the source tarball db-$VERSION.tar.bz2, which can be found
+  in the Slackware source tree in source/l/db44/, or on
+  Sleepycat's web site:  http://www.sleepycat.com.
+
+EOF
+
+# Move include files:
+( cd $PKG/usr/include
+  mkdir db44
+  mv *.h db44
+  for file in db44/* ; do
+    ln -sf $file .
+  done
+  # Better add this symlink, too, just to be safe...
+  ln -sf db44 db4
+)
+
+# Rename binaries to avoid overlap:
+( cd $PKG/usr/bin
+  mv berkeley_db_svc berkeley_db44_svc
+  for file in db_* ; do
+    mv $file db44_`echo $file | cut -f 2- -d _`
+  done
+)
+
+# Put libdb-4.4.so into /lib${LIBDIRSUFFIX} since it might be needed
+# before /usr is mounted (eg, nsswitch.conf can be set up to
+# use databases instead of flat files)
+mkdir -p $PKG/lib${LIBDIRSUFFIX}
+mv $PKG/usr/lib${LIBDIRSUFFIX}/libdb-4.4.so $PKG/lib${LIBDIRSUFFIX}/libdb-4.4.so
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  ln -sf /lib${LIBDIRSUFFIX}/libdb-4.4.so .
+)
+
+# Some things might look for these libraries by other names.
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  ln -sf libdb-4.4.a libdb-4.a
+  ln -sf libdb-4.4.a libdb4.a
+  ln -sf libdb-4.4.a libdb.a
+  ln -sf libdb_cxx-4.4.a libdb_cxx-4.a
+  ln -sf libdb_cxx-4.4.a libdb_cxx.a
+  ln -sf libdb-4.4.so libdb4.so
+  ln -sf libdb-4.4.so libdb.so
+)
+
+chmod 755 $PKG/usr/bin/*
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+makepkg -l y -c n $TMP/db44-$VERSION-$ARCH-$BUILD.txz
+

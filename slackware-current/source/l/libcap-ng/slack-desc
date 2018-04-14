@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler---------------------------------------------------|
+libcap-ng: libcap-ng (capabilities library and utilities)
+libcap-ng:
+libcap-ng: The libcap-ng library is intended to make programming with POSIX
+libcap-ng: capabilities easier. The package also includes utilities to help
+libcap-ng: analyze a system for programs that may have too much privilege.
+libcap-ng:
+libcap-ng: libcap-ng was written and is maintained by Steve Grubb.
+libcap-ng:
+libcap-ng: Homepage: https://people.redhat.com/sgrubb/libcap-ng/
+libcap-ng:
+libcap-ng:

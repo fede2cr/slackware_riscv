@@ -1,0 +1,16 @@
+prefix=/usr/lib${LIBDIRSUFFIX}/qt
+bindir=${prefix}/bin
+datadir=${prefix}
+docdir=${prefix}/doc
+headerdir=${prefix}/include
+importdir=${prefix}/imports
+libdir=${prefix}/lib
+moc=${bindir}/moc
+plugindir=${prefix}/plugins
+qmake=${bindir}/qmake
+sysconfdir=/etc
+translationdir=${prefix}/translations
+
+Name: Qt
+Description: Qt Configuration
+Version: 4.8.6

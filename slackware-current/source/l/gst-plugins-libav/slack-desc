@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+                 |-----handy-ruler------------------------------------------------------|
+gst-plugins-libav: gst-plugins-libav (GStreamer FFmpeg/Libav plugin)
+gst-plugins-libav:
+gst-plugins-libav: GStreamer Libav plugin contains one plugin with a set of elements
+gst-plugins-libav: using the FFmpeg/Libav library code. It contains many popular
+gst-plugins-libav: decoders and encoders.
+gst-plugins-libav:
+gst-plugins-libav: Home: http://gstreamer.freedesktop.org/modules/gst-libav.html
+gst-plugins-libav:
+gst-plugins-libav:
+gst-plugins-libav:
+gst-plugins-libav:

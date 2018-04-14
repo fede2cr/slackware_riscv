@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler-----------------------------------------------------|
+v4l-utils: v4l-utils (libraries and utilities for video4linux)
+v4l-utils:
+v4l-utils: libv4l is a collection of libraries which adds a thin abstraction
+v4l-utils: layer on top of video4linux2 devices. The purpose of this (thin)
+v4l-utils: layer is to make it easy for application writers to support a wide
+v4l-utils: variety of devices without having to write separate code for
+v4l-utils: different devices in the same class. Linux V4L2 and DVB API
+v4l-utils: utilities are also included.
+v4l-utils:
+v4l-utils: Homepage: http://linuxtv.org
+v4l-utils:

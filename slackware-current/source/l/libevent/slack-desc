@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+libevent: libevent (event loop library)
+libevent:
+libevent: libevent is meant to replace the event loop found in event driven
+libevent: network servers. An application just needs to call event_dispatch()
+libevent: and then add or remove events dynamically without having to change the
+libevent: event loop. The libevent API provides a mechanism to execute a
+libevent: callback function when a specific event occurs on a file descriptor or
+libevent: after a timeout has been reached.
+libevent:
+libevent: Homepage: http://libevent.org
+libevent:

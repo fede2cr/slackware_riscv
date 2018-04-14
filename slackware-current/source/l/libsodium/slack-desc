@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+libsodium: libsodium (Sodium crypto library)
+libsodium:
+libsodium: Sodium is a library for encryption, decryption, signatures, password
+libsodium: hashing and more. It is a portable, cross-compilable, installable,
+libsodium: packageable fork of NaCl, with a compatible API, and an extended API
+libsodium: to improve usability even further.
+libsodium:
+libsodium: Its goal is to provide all of the core operations needed to build
+libsodium: higher-level cryptographic tools.
+libsodium:
+libsodium: Homepage: https://libsodium.org

@@ -1,0 +1,32 @@
+Thu Mar 29 17:26:28 UTC 2018
+  apr-util: merged upstream patch to fix httpd build.
+  Thanks to nobodino.
++--------------------------+
+Sat Mar 24 17:44:29 UTC 2018
+  gst-plugins-base: --disable-examples (they aren't installed anyway).
+  Thanks to nobodino.
++--------------------------+
+Sat Feb 24 20:44:54 UTC 2018
+  Fix all packages that fail to build from source:
+  gst-plugins-base0: fix build on 32-bit x86
++--------------------------+
+Mon Feb 12 02:25:34 UTC 2018
+  Fix all packages that fail to build from source:
+  pulseaudio: patch to prevent collision with glibc-2.27's memfd_create()
++--------------------------+
+Fri Feb  2 19:06:56 UTC 2018
+  Fix all packages that fail to build from source:
+  aspell: build with -fpermissive
+  audiofile: build with -fpermissive
+  glib: patches to fix libtool breakage
+  gtk+: merge patches from Fedora
+  gstreamer0: patched to build with bison-3.x.
+  js185: build with -std=gnu++98 -fpermissive -fno-delete-null-pointer-checks
+  libcap: disable broken gperf support
+  libmad: remove obsolete --force-mem optimization
+  librevenge: --disable-werror
+  libtheora: patch for libpng1.6 and new LaTeX.
+  libvisio: kludge build to work around doxygen segfault
+  svgalib: fix math redefinitions
+  taglib-extras: patched to allow newer taglib version
+  qt: Fix building with gcc-7.3.0 and against icu4c-59+

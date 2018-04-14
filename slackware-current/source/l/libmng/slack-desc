@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+libmng: libmng (Multiple-image Network Graphics library)
+libmng:
+libmng: This is libmng, the MNG reference library. MNG (pronounced 'ming'),
+libmng: is short for Multiple-image Network Graphics. Designed with the same
+libmng: modular philosophy as PNG and by many of the same people, MNG is
+libmng: intended to provide a home for all of the multi-image (animation)
+libmng: capabilities that have no place in PNG. 
+libmng:
+libmng: libmng was written by Gerard Juyn.
+libmng:
+libmng:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+              |-----handy-ruler------------------------------------------------------|
+python-appdirs: python-appdirs (Python module for determining platform-specific dirs)
+python-appdirs:
+python-appdirs: A small Python module for determining appropriate platform-specific
+python-appdirs: dirs, e.g. a "user data dir".
+python-appdirs:
+python-appdirs: Homepage: https://github.com/ActiveState/appdirs
+python-appdirs:
+python-appdirs:
+python-appdirs:
+python-appdirs:
+python-appdirs:

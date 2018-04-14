@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+           |-----handy-ruler------------------------------------------------------|
+xapian-core: xapian-core (Search Engine Library)
+xapian-core:
+xapian-core: Xapian is an Open Source Probabilistic Information Retrieval
+xapian-core: Library. It offers a highly adaptable toolkit that allows
+xapian-core: developers to easily add advanced indexing and search facilities
+xapian-core: to applications.
+xapian-core:
+xapian-core:
+xapian-core:
+xapian-core: xapian home: http://www.xapian.org/
+xapian-core:

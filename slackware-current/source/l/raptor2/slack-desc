@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+raptor2: raptor2 (RDF Parser & Serializer)
+raptor2:
+raptor2: Raptor is a free software/Open Source C library that provides a set of
+raptor2: parsers and serializers that generate Resource Description Framework
+raptor2: (RDF) triples by parsing syntaxes or serialize the triples into a
+raptor2: syntax. The supported parsing syntaxes are RDF/XML, N-Triples, TRiG,
+raptor2: Turtle, RSS tag soup including all versions of RSS, Atom 1.0 and 0.3,
+raptor2: GRDDL and microformats for HTML, XHTML and XML.
+raptor2:
+raptor2: Homepage: http://librdf.org/
+raptor2:

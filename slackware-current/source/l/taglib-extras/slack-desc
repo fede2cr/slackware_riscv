@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+             |-----handy-ruler------------------------------------------------------|
+taglib-extras: taglib-extras (taglib support for other formats)
+taglib-extras:
+taglib-extras: Taglib file type plugins which were split off from Amarok
+taglib-extras: to allow others to use and help maintain them.
+taglib-extras: Taglib-extras delivers support for reading and editing
+taglib-extras: meta-data of audio formats not supported by taglib, including:
+taglib-extras: asf, mp4v2, rmff, wav.
+taglib-extras:
+taglib-extras:
+taglib-extras: The taglib-extras are part of kdesupport: http://www.kde.org
+taglib-extras:

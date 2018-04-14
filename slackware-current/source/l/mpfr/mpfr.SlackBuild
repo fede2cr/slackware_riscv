@@ -1,0 +1,150 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2010, 2011, 2012, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Modified 2011 by Eric Hameleers <alien at slackware.com> for ARM port.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=mpfr
+VERSION=${VERSION:-$(echo mpfr-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+# Automatically determine the architecture we're building on:
+MARCH=$( uname -m )
+if [ -z "$ARCH" ]; then
+  case "$MARCH" in
+    i?86)    export ARCH=i586 ;;
+    armv7hl) export ARCH=$MARCH ;;
+    arm*)    export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)       export ARCH=$MARCH ;;
+  esac
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-mpfr
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+# Determine patchlevel:
+PATCHLEVEL=$(/bin/ls $CWD/patches/* 2> /dev/null | rev | cut -f 1 -d / | cut -b4- | rev | cut -b6- | tail -n 1 )
+if [ ! "$PATCHLEVEL" = "" ]; then
+  PATCHLEVEL="p${PATCHLEVEL}"
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION${PATCHLEVEL}-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+cd $TMP
+rm -rf mpfr-$VERSION
+tar xvf $CWD/mpfr-$VERSION.tar.?z || exit 1
+cd mpfr-$VERSION || exit 1
+chown -R root:root .
+
+if [ ! -z "$(ls $CWD/patches/* 2> /dev/null)" ]; then
+  for file in $CWD/patches/* ; do
+    ( zcat $file 2> /dev/null | patch -p1 --verbose --batch 2> /dev/null || exit 1 )
+    if [ ! $? = 0 ]; then
+      exit 1
+    fi
+  done
+fi
+
+# End of preparations
+if echo "$*" | grep -qw -- --prep ; then
+  exit 0
+fi
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --infodir=/usr/info \
+  --docdir=/usr/doc/mpfr-$VERSION \
+  --enable-static=no \
+  --enable-shared=yes \
+  --build=$TARGET || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Hardly a savings doing this...
+#strip -g $PKG/usr/lib${LIBDIRSUFFIX}/*.a
+
+# Don't ship .la files:
+rm -f $PKG/usr/lib${LIBDIRSUFFIX}/*.la
+
+rm -f $PKG/usr/info/dir
+gzip -9 $PKG/usr/info/*
+
+mkdir -p $PKG/usr/doc/mpfr-$VERSION
+cp -a \
+  AUTHORS BUGS COPYING* FAQ.html INSTALL NEWS README* TODO VERSION \
+  examples \
+  $PKG/usr/doc/mpfr-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/mpfr-${VERSION}${PATCHLEVEL}-${ARCH}-${BUILD}.txz
+

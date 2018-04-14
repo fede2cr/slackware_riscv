@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+fribidi: fribidi (Unicode BiDirectional algorithm library)
+fribidi:
+fribidi: This library implements the Unicode BiDirectional algorithm, which
+fribidi: is needed in order to support right-to-left languages such as Arabic
+fribidi: and Hebrew. It is used in display software like KDE's SVG modules.
+fribidi:
+fribidi: Homepage: http://fribidi.org
+fribidi:
+fribidi:
+fribidi:
+fribidi:

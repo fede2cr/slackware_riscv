@@ -1,0 +1,6 @@
+rm -rf polkit-qt-1
+git clone git://anongit.kde.org/polkit-qt-1
+( cd polkit-qt-1 && rm -rf .git* )
+mv polkit-qt-1 polkit-qt-1-$(date +%Y%m%d)git
+tar cf polkit-qt-1-$(date +%Y%m%d)git.tar polkit-qt-1-$(date +%Y%m%d)git
+xz -9 polkit-qt-1-$(date +%Y%m%d)git.tar

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+libyaml: libyaml (YAML parser, written in C)
+libyaml:
+libyaml: YAML Ain't Markup Language. It is a human friendly data serialization 
+libyaml: standard for all programming languages.
+libyaml:
+libyaml: Homepage: http://pyyaml.org/wiki/LibYAML
+libyaml:
+libyaml:
+libyaml:
+libyaml:
+libyaml:

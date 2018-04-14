@@ -1,0 +1,8 @@
+PRGNAM="qtscriptgenerator"
+VERSION="0.1.0"
+HOMEPAGE="http://code.google.com/p/qtscriptgenerator/"
+DOWNLOAD="http://qtscriptgenerator.googlecode.com/files/qtscriptgenerator-src-0.1.0.tar.gz"
+MD5SUM="ca4046ad4bda36cd4e21649d4b98886d"
+MAINTAINER="ppr:kut"
+EMAIL="pprkut@liwjatan.at"
+APPROVED=""

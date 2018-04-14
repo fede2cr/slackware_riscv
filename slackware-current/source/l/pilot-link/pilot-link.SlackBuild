@@ -1,0 +1,158 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2010, 2011, 2015, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=pilot-link
+VERSION=${VERSION:-0.12.5}
+BUILD=${BUILD:-12}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-pilot-link
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+cd $TMP
+rm -rf pilot-link-$VERSION
+tar xvf $CWD/pilot-link-$VERSION.tar.bz2 || exit 1
+cd pilot-link-$VERSION
+
+zcat $CWD/pilot-link.png14.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/pilot-link-0.12.5-redefinePerlsymbols.patch.gz | patch -p1 --verbose || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --localstatedir=/var/lib \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/pilot-link-$VERSION \
+  --enable-static=no \
+  --enable-conduits \
+  --enable-threads \
+  --enable-libusb \
+  --with-libpng \
+  --with-perl \
+  --with-python \
+  --program-prefix="" \
+  --program-suffix="" \
+  --build=$ARCH-slackware-linux
+
+make -i $NUMJOBS || make -i || exit 1
+make -i install DESTDIR=$PKG || exit 1
+
+# Get rid of perllocal.pod:
+( cd $PKG ; find . -name perllocal.pod -exec rm "{}" \; )
+
+# Right.
+mkdir -p $PKG/lib/udev/rules.d
+mv $PKG/usr/share/pilot-link/udev/60-libpisock.rules \
+  $PKG/lib/udev/rules.d/80-libpisock.rules
+rmdir $PKG/usr/share/pilot-link/udev
+
+# Fix the mode set by the default udev rules
+sed -i "s/0664/0660/g" $PKG/lib/udev/rules.d/80-libpisock.rules
+
+# Dropped one.
+if [ -d $PKG/usr/share/man/man3 ]; then
+  mkdir -p $PKG/usr/man/man3
+  mv $PKG/usr/share/man/man3/* $PKG/usr/man/man3
+  rmdir $PKG/usr/share/man/man3 2> /dev/null
+  rmdir $PKG/usr/share/man 2> /dev/null
+  rmdir $PKG/usr/share 2> /dev/null
+fi
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/usr/doc/pilot-link-$VERSION
+cp -a \
+  AUTHORS COPYING* INSTALL NEWS README* \
+  $PKG/usr/doc/pilot-link-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+# Install man pages:
+mkdir -p $PKG/usr/man/man{1,7}
+cp -a doc/man/*.1 $PKG/usr/man/man1
+cp -a doc/man/*.7 $PKG/usr/man/man7
+
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/pilot-link-$VERSION-$ARCH-$BUILD.txz
+

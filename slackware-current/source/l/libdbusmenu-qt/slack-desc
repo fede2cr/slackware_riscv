@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+              |-----handy-ruler-----------------------------------------------------|
+libdbusmenu-qt: libdbusmenu-qt (Qt implementation of the DBusMenu spec)
+libdbusmenu-qt:
+libdbusmenu-qt: This library provides a Qt implementation of the DBusMenu protocol.
+libdbusmenu-qt: The DBusMenu protocol makes it possible for applications to export
+libdbusmenu-qt: and import their menus over DBus.
+libdbusmenu-qt:
+libdbusmenu-qt: Homepage: http://people.canonical.com/~agateau/dbusmenu/
+libdbusmenu-qt:
+libdbusmenu-qt:
+libdbusmenu-qt:
+libdbusmenu-qt:

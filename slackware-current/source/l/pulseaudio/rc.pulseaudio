@@ -1,0 +1,48 @@
+#!/bin/sh
+#
+# Start/stop/restart PulseAudio in system mode.
+# In this mode, a single system instance of PulseAudio will be shared by
+# multiple local users.
+#
+# Please note:  this is not generally the best way to use PulseAudio!
+# Normally pulseaudio will start automatically as-needed with an instance
+# per audio user.  Unless you really need to use system mode you should leave
+# this script non-executable.
+#
+# For more information, see:
+# http://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide
+
+pulse_start() {
+  if [ -x /usr/bin/pulseaudio ]; then
+    echo "Starting system PulseAudio daemon:  /usr/bin/pulseaudio --system --disallow-module-loading &"
+    rm -rf /var/lib/pulse
+    # Any errors/warnings will go to the log files:
+    /usr/bin/pulseaudio --system --disallow-module-loading 1> /dev/null 2> /dev/null &
+  fi
+}
+
+pulse_stop() {
+  echo "Stopping PulseAudio:  /bin/killall pulseaudio"
+  /bin/killall pulseaudio 2> /dev/null
+}
+
+pulse_restart() {
+  pulse_stop
+  sleep 1
+  pulse_start
+}
+
+case "$1" in
+'start')
+ pulse_start
+  ;;
+'stop')
+  pulse_stop
+  ;;
+'restart')
+ pulse_restart
+  ;;
+*)
+  echo "usage $0 start|stop|restart"
+esac
+

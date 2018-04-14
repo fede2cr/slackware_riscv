@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+giflib: giflib (GIF image format library)
+giflib:
+giflib: A library to load and save (uncompressed only) images using GIF,
+giflib: or Graphics Interchange Format. GIF was introduced by CompuServe
+giflib: in 1987, but is still widely used today (especially on web pages.)
+giflib:
+giflib:
+giflib:
+giflib:
+giflib:
+giflib:

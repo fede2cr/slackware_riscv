@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+          |-----handy-ruler------------------------------------------------------|
+fluidsynth: fluidsynth (real-time software synthesizer)
+fluidsynth:
+fluidsynth: FluidSynth is a real-time software synthesizer based on the Soundfont
+fluidsynth: 2 specifications. FluidSynth reads and handles MIDI events from the
+fluidsynth: MIDI input device. It is the software analogue of a MIDI synthesizer.
+fluidsynth: FluidSynth can also play midifiles using a Soundfont.
+fluidsynth:
+fluidsynth: Homepage: http://www.fluidsynth.org/
+fluidsynth:
+fluidsynth:
+fluidsynth:

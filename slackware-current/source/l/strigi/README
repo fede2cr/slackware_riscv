@@ -1,0 +1,17 @@
+trueg's blog,
+http://trueg.wordpress.com/2011/09/22/about-strigi-soprano-virtuoso-clucene-and-libstreamanalyzer/
+
+recommends using a newer libstreamanalyzer (and friends) than what is currently formally released.
+
+I ran the script
+https://projects.kde.org/projects/kdesupport/strigi/strigi/repository/revisions/master/changes/createtararchive.sh
+to generate a tarball, and am hosting it at:
+
+http://rdieter.fedorapeople.org/strigi/strigi-0.7.6.tar.bz2
+http://rdieter.fedorapeople.org/strigi/strigi-0.7.6.tar.bz2.md5sum
+http://rdieter.fedorapeople.org/strigi/strigi-0.7.6.tar.bz2.sha1sum
+
+for others' convenience.
+
+-- rex
+

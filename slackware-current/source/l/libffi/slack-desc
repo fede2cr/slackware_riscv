@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+      |-----handy-ruler------------------------------------------------------|
+libffi: libffi (A Portable Foreign Function Interface Library)
+libffi:
+libffi: FFI stands for Foreign Function Interface. A foreign function 
+libffi: interface is the popular name for the interface that allows code 
+libffi: written in one language to call code written in another language. 
+libffi: The libffi library really only provides the lowest, machine dependent 
+libffi: layer of a fully featured foreign function interface. 
+libffi:
+libffi: Homepage: http://sourceware.org/libffi/
+libffi:
+libffi:

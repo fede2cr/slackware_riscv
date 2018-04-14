@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+neon: neon (HTTP and WebDAV client library)
+neon:
+neon: neon is an HTTP and WebDAV client library, with a C language API.
+neon: Bindings for other languages may also be available, see the web site
+neon: for more details: http://www.webdav.org/neon/
+neon:
+neon: The neon library is used by projects such as subversion.
+neon:
+neon:
+neon:
+neon:

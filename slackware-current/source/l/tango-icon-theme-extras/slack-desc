@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+                       |-----handy-ruler------------------------------------------------------|
+tango-icon-theme-extras: tango-icon-theme-extras (Extras for the Tango icon theme)
+tango-icon-theme-extras:
+tango-icon-theme-extras: This is an extension to the Tango Icon Theme. Currently it includes
+tango-icon-theme-extras: Tango icons for iPod Digital Audio Player (DAP) devices and the Dell
+tango-icon-theme-extras: Pocket DJ DAP.
+tango-icon-theme-extras:
+tango-icon-theme-extras: Visit the Tango project at: http://tango-project.org/
+tango-icon-theme-extras:
+tango-icon-theme-extras:
+tango-icon-theme-extras:
+tango-icon-theme-extras:

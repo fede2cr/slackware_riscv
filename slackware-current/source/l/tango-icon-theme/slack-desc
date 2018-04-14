@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+                |-----handy-ruler------------------------------------------------------|
+tango-icon-theme: Tango icon theme (Another standard icon theme)
+tango-icon-theme:
+tango-icon-theme: The Tango Desktop Project has designed a basic set of desktop icons
+tango-icon-theme: that follow the style guidelines. The set has been created as a
+tango-icon-theme: proof of concept for the style, but works rather well as a replacement
+tango-icon-theme: for the base theme under GNOME and KDE.
+tango-icon-theme:
+tango-icon-theme: Tango's home page is: http://tango.freedesktop.org
+tango-icon-theme:
+tango-icon-theme:
+tango-icon-theme:

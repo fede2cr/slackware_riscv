@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+               |-----handy-ruler------------------------------------------------------|
+python-requests: python-requests (HTTP request library for python)
+python-requests:
+python-requests: Requests allows you to send organic, grass-fed HTTP/1.1 requests,
+python-requests: without the need for manual labor. There's no need to manually add
+python-requests: query strings to your URLs, or to form-encode your POST data.
+python-requests: Keep-alive and HTTP connection pooling are 100% automatic, powered by
+python-requests: urllib3, which is embedded within Requests.
+python-requests:
+python-requests: Homepage: http://docs.python-requests.org/en/master/
+python-requests:
+python-requests:

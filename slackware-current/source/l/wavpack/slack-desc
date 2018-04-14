@@ -1,0 +1,21 @@
+
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+wavpack: wavpack (A lossless WAV file compressor)
+wavpack:
+wavpack: Wavpack is a hybrid lossless wavefile compressor. Wavfile is
+wavpack: Copyright (c) 1998 - 2006 Conifer Software. All Rights Reserved.
+wavpack:
+wavpack: Wavpack is distributed under the BSD Software License.
+wavpack:
+wavpack: Visit the wavpack project online: http://www.wavpack.com
+wavpack:
+wavpack:
+wavpack:
+

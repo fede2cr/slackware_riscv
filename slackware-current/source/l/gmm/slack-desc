@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler--------------------------------------------------------|
+gmm: gmm (C++ generic matrix template library)
+gmm:
+gmm: Gmm++ is a generic C++ template library for sparse, dense and skyline
+gmm: matrices. It is built as a set of generic algorithms (mult, add, copy,
+gmm: sub-matrices, dense and sparse solvers, etc.) for any interfaced vector 
+gmm: type or matrix type. It can be viewed as a glue library that allows 
+gmm: cooperation between several vector and matrix types. However, basic 
+gmm: sparse, dense and skyline matrix/vector types are built in Gmm++, so 
+gmm: it can be used as a standalone linear algebra library.
+gmm: 
+gmm: 

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------------|
+libsigsegv: GNU libsigsegv (user mode page fault handling library)
+libsigsegv:
+libsigsegv: This is a library for handling page faults in user mode. A page fault
+libsigsegv: occurs when a program tries to access to a region of memory that is
+libsigsegv: currently not available. Catching and handling a page fault is a
+libsigsegv: useful technique for implementing things such as pageable virtual
+libsigsegv: memory, memory-mapped access to persistent databases, generational
+libsigsegv: garbage collectors, stack overflow handlers, distributed shared
+libsigsegv: memory, and more.
+libsigsegv:
+libsigsegv:

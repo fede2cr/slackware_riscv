@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+gmp: gmp (GNU multiple precision arithmetic library)
+gmp:
+gmp: GNU MP is a library for arbitrary precision arithmetic, operating on
+gmp: signed integers, rational numbers, and floating point numbers. It has
+gmp: a rich set of functions, and the functions have a regular interface.
+gmp:
+gmp:
+gmp:
+gmp:
+gmp:
+gmp:
