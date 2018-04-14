@@ -1,0 +1,107 @@
+#!/bin/sh
+
+# Copyright 2007-2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=netkit-rsh
+VERSION=0.17
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-netkit-rsh
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+echo "+=================+"
+echo "| netkit-rsh-$VERSION |"
+echo "+=================+"
+cd $TMP
+tar xzvf $CWD/netkit-rsh-$VERSION.tar.gz
+cd netkit-rsh-$VERSION
+chown -R root:root .
+./configure --prefix=/usr
+make
+cd rsh
+strip rsh
+mkdir -p $PKG/usr/bin
+cat rsh > $PKG/usr/bin/rsh
+mkdir -p $PKG/usr/man/man{1,8}
+cat rsh.1 | gzip -9c > $PKG/usr/man/man1/rsh.1.gz
+cd ../rshd
+strip rshd
+mkdir -p $PKG/usr/sbin
+cat rshd > $PKG/usr/sbin/in.rshd
+cat rshd.8 | gzip -9c > $PKG/usr/man/man8/in.rshd.8.gz
+cd ../rcp
+strip rcp
+cat rcp > $PKG/usr/bin/rcp
+cat rcp.1 | gzip -9c > $PKG/usr/man/man1/rcp.1.gz
+cd ../rexecd
+strip rexecd
+cat rexecd > $PKG/usr/sbin/in.rexecd
+cat rexecd.8 | gzip -9c > $PKG/usr/man/man8/rexecd.8.gz
+cd ../rlogin
+strip rlogin
+cat rlogin > $PKG/usr/bin/rlogin
+cat rlogin.1 | gzip -9c > $PKG/usr/man/man1/rlogin.1.gz
+cd ../rlogind
+strip rlogind
+cat rlogind > $PKG/usr/sbin/in.rlogind
+cat rlogind.8 | gzip -9c > $PKG/usr/man/man8/in.rlogind.8.gz
+chmod 755 $PKG/usr/sbin/*
+# This is how these ship, but some may wish to change these,
+# or for them to be changed in the package for local security
+# reasons.  Present your rationale to volkerdi@slackware.com.
+chmod 4711 $PKG/usr/bin/*
+cd ..
+mkdir -p $PKG/usr/doc/netkit-rsh-$VERSION
+cp -a README $PKG/usr/doc/netkit-rsh-$VERSION
+chown root:root $PKG/usr/doc/netkit-rsh-$VERSION/*
+chmod 644 $PKG/usr/doc/netkit-rsh-$VERSION/*
+
+# Finish up the package:
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg -l y -c n $TMP/netkit-rsh-$VERSION-$ARCH-$BUILD.txz
+

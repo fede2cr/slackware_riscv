@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+ethtool: ethtool (a tool for examining and tuning a network interface)
+ethtool:
+ethtool: ethtool is a small utility for examining and tuning your Ethernet
+ethtool: based network interface. For more details, see "man ethtool".
+ethtool:
+ethtool: ethtool was written by David Miller, with help from Jakub Jelinek,
+ethtool: Jeff Garzik, Tim Hockin, Eli Kupermann, Chris Leech, Scott Feldman,
+ethtool: and Andi Kleen.
+ethtool:
+ethtool:
+ethtool:

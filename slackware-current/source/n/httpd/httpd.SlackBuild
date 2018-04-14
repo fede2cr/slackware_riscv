@@ -1,0 +1,264 @@
+#!/bin/sh
+
+# Copyright 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# This script was written using the one from slackbuilds.org as a reference,
+# so thanks to Adis Nezirovic ( adis _at_ linux.org.ba ) for the original work.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=httpd
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.bz2 | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-2}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-${PKGNAM}
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+cd $TMP
+rm -rf ${PKGNAM}-${VERSION}
+tar xvf $CWD/${PKGNAM}-$VERSION.tar.bz2 || exit 1
+cd ${PKGNAM}-$VERSION || exit 1
+
+# Make sure ownerships and permissions are sane:
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+# A brief note about mpms:
+#
+# "prefork" is the legacy forked mpm, used with mod_php. Starting with httpd 
+# 2.4.0, new threaded mpms are available, and previously experimental mpms are
+# now stable
+#
+# Non-threaded mpms are no longer required, since php applications can now be
+# deployed with the help of mod_fcgid, essentially a set of fixed dedicated cgi
+# processes spawned for the whole purpose of executing dynamic applications
+#
+# Threaded mpms, by their very nature, are far more scalable than the
+# traditional preforking solution. They consume less memory for the same
+# workload, when serving the same amount of clients. httpd 2.4 ships with two
+# options, "event" and "worker", where the former is the default mpm used if
+# none is specified at the ./configure line
+#
+# Lastly, the "prefork" mpm can be used with mod_php as of version 5.4.0,
+# which yields a much improved stability, even with most mod_php extensions
+# loaded.
+#
+# The running mpm can be changed by simply loading the module. Here is a sample:
+# LoadModule mpm_event_module lib(64)/httpd/modules/mod_mpm_event.so
+#
+# When upgrading from 2.2, please make sure to stop the deamon first, or your
+# new instance may segfault.
+
+# Fix config.layout to use lib${LIBDIRSUFFIX}:
+sed -i -e "s#lib/httpd#lib${LIBDIRSUFFIX}/httpd#" config.layout
+
+# If /var/run becomes a tmpfs or a link to /run, subdirectories could be a problem.
+# Just use /var/run rather than /var/run/httpd.
+sed -i -e "s#/run/httpd#/run#" config.layout
+
+# Configure:
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --enable-layout=Slackware-FHS \
+  --with-apr=/usr \
+  --with-apr-util=/usr \
+  --enable-mods-shared=all \
+  --enable-so \
+  --enable-mpms-shared=all \
+  --enable-pie \
+  --enable-cgi \
+  --with-pcre \
+  --enable-ssl \
+  --enable-http2 \
+  --enable-rewrite \
+  --enable-vhost-alias \
+  --enable-proxy \
+  --enable-proxy-http \
+  --enable-proxy-http2 \
+  --enable-proxy-ftp \
+  --enable-cache \
+  --enable-mem-cache \
+  --enable-file-cache \
+  --enable-disk-cache \
+  --enable-dav \
+  --enable-ldap \
+  --enable-authnz-ldap \
+  --enable-authn-anon \
+  --enable-authn-alias \
+  --build=$ARCH-slackware-linux || exit 1
+
+# Build and install:
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+rmdir $PKG/usr/bin
+
+# Tweak default apache configuration
+( cd $PKG
+  zcat $CWD/httpd.runasapache.diff.gz | patch -p1 --verbose || exit 1
+  # mod_proxy_balancer should be commented out, as otherwise httpd
+  # will not start without additional configuration:
+  sed -i "s/^LoadModule proxy_balancer_module/#LoadModule proxy_balancer_module/g" $PKG/etc/httpd/httpd.conf
+  # This module issues a warning unless some non-default modules are loaded:
+  sed -i "s/^LoadModule lbmethod_heartbeat_module/#LoadModule lbmethod_heartbeat_module/g" $PKG/etc/httpd/httpd.conf
+  rm -f $PKG/etc/httpd/httpd.conf~ $PKG/etc/httpd/httpd.conf.orig
+) || exit 1
+# Change config files to .new:
+( cd $PKG/etc/httpd
+  mv httpd.conf httpd.conf.new
+  for file in extra/*; do
+    mv $file "${file}.new"
+  done
+)
+
+cat << EOF >> $PKG/etc/httpd/httpd.conf.new
+
+# Uncomment the following line to enable PHP:
+#
+#Include /etc/httpd/mod_php.conf
+
+# Uncomment the following lines (and mod_dav above) to enable svn support:
+#
+#LoadModule dav_svn_module lib${LIBDIRSUFFIX}/httpd/modules/mod_dav_svn.so
+#LoadModule authz_svn_module lib${LIBDIRSUFFIX}/httpd/modules/mod_authz_svn.so
+
+EOF
+
+rmdir $PKG/var/log/httpd
+
+mkdir -p $PKG/etc/rc.d
+cat $CWD/rc.httpd > $PKG/etc/rc.d/rc.httpd.new
+
+mkdir -p $PKG/etc/logrotate.d
+cat $CWD/logrotate.httpd > $PKG/etc/logrotate.d/httpd.new
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/
+cp -a \
+  ABOUT_APACHE CHANGES INSTALL LICENSE NOTICE README* ROADMAP VERSIONING \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+# If there's a CHANGES file, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat CHANGES | head -n 1000 > $DOCSDIR/CHANGES
+  touch -r CHANGES $DOCSDIR/CHANGES
+fi
+
+# Other distributions also strip the manual down to just English.
+# If this isn't your language of choice, mea culpa.
+( cd $PKG/srv/httpd/htdocs/manual
+  for file in $(find . -type f -name "*.html") ; do
+    if [ -f ${file}.en ]; then
+      cp ${file}.en ${file}
+      rm -f ${file}.*
+    fi
+  done
+)
+
+# On Slackware, the traditional location for the Apache document root has always
+# been "/var/www/htdocs/".  We can avoid an unpleasant surprise for people by
+# leaving things where they've always been, and comply with the FHS by providing
+# symlinks allowing access through the FHS-approved pathnames.  KDE, for example,
+# will look for htdig's htsearch here:  /var/www/cgi-bin/htsearch
+mv $PKG/srv/httpd $PKG/var/www
+
+## DISABLED. Don't make these symlinks prior to packaging any more, as it is
+## possibly dangerous to an existing document root created in the place where
+## these symlinks are normally found. Instead, we make them in the install
+## script (only if nothing exists there already)
+#( cd $PKG/srv
+#  ln -sf /var/www .
+#  ln -sf /var/www httpd
+#)
+
+# OK, it's just not generally good form to put your web site in /var/www/htdocs,
+# but people do it every day.  Like all new .new files, this won't save them this
+# time, but if they don't learn their lesson now then it will the next time:
+mv $PKG/var/www/htdocs/index.html $PKG/var/www/htdocs/index.html.new
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Compress and link manpages, if any:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.*
+      )
+    done
+  )
+fi
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-$VERSION-$ARCH-$BUILD.txz
+

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+netdate: netdate (simple network time utility)
+netdate:
+netdate: Netdate takes a list of names of Internet hosts as arguments, selects
+netdate: the one which supplies the best time, and sets the system time
+netdate: accordingly. The invoker must be the super-user for the time to be
+netdate: set. Protocol names (either udp or tcp) may be interspersed with the
+netdate: host names, and determine the protocol which will be used to connect
+netdate: to the hosts whose names follow, up to the next protocol name or the
+netdate: end of the arguments. The default protocol is udp.
+netdate:
+netdate: These days, "ntpdate" is probably a better choice.

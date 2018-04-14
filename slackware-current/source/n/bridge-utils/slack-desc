@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+bridge-utils: bridge-utils (network Ethernet bridging utilities)
+bridge-utils:
+bridge-utils: This package contains utilities for configuring Linux Ethernet
+bridge-utils: bridges. The Linux Ethernet bridge can be used for connecting
+bridge-utils: multiple Ethernet devices together. The connecting is fully
+bridge-utils: transparent. Hosts connected to one Ethernet device see hosts
+bridge-utils: connected through a bridge to the other Ethernet devices directly.
+bridge-utils:
+bridge-utils: bridge-utils was written by Stephen Hemminger and Lennert Buytenhek.
+bridge-utils:
+bridge-utils:

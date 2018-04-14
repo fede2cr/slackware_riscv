@@ -1,0 +1,145 @@
+#! /bin/sh
+#
+# Start/stop the Netatalk daemons.
+#
+# Netatalk daemons.
+# If you use AppleTalk, Make sure not to start atalkd in the background:
+# its data structures must have time to stablize before running the
+# other processes.
+#
+
+#
+# kill the named process(es)
+#
+killproc() {
+	pid=`/usr/bin/ps -e |
+	     /usr/bin/grep $1 |
+	     /usr/bin/sed -e 's/^  *//' -e 's/ .*//'`
+	[ "$pid" != "" ] && kill $pid
+}
+
+# netatalk.conf expects hostname in $HOSTNAME by default
+HOSTNAME=`hostname`
+
+. /etc/netatalk/netatalk.conf
+
+
+#
+# Start the netatalk server processes.
+#
+
+atalk_startup() {
+	echo -n 'starting netatalk daemons: '
+	if [ x"${ATALKD_RUN}" != x"no" ]; then
+		if [ -x /usr/sbin/atalkd ]; then
+			/usr/sbin/atalkd;		echo -n ' atalkd'
+		fi
+
+		if [ -x /usr/bin/nbprgstr ]; then
+			/usr/bin/nbprgstr -p 4 "${ATALK_NAME}:Workstation${ATALK_ZONE}";
+			/usr/bin/nbprgstr -p 4 "${ATALK_NAME}:netatalk${ATALK_ZONE}";
+							echo -n ' nbprgstr'
+		fi
+
+		if [ x"${PAPD_RUN}" = x"yes"  -a -x /usr/sbin/papd ]; then
+			/usr/sbin/papd;			echo -n ' papd'
+		fi
+
+		if [ x"${TIMELORD_RUN}" = x"yes"  -a -x /usr/sbin/timelord ]; then
+			/usr/sbin/timelord;		echo -n ' timelord'
+		fi
+	fi
+
+	if [ x"${CNID_METAD_RUN}" = x"yes" -a -x /usr/sbin/cnid_metad ]; then
+        /usr/sbin/cnid_metad $CNID_CONFIG
+        echo -n ' cnid_metad'
+	fi
+
+	if [  x"${AFPD_RUN}" = x"yes" -a -x /usr/sbin/afpd ]; then
+		/usr/sbin/afpd  ${AFPD_UAMLIST} -g ${AFPD_GUEST} \
+               -c ${AFPD_MAX_CLIENTS} -n "${ATALK_NAME}${ATALK_ZONE}";	echo -n ' afpd'
+	fi
+
+	echo '.'
+}
+
+atalk_shutdown() {
+	echo -n 'stopping netatalk daemons:'
+
+	if [ -x /usr/sbin/papd ]; then
+		killproc papd;			echo -n ' papd'
+	fi
+
+	if [ -x /usr/sbin/afpd ]; then
+		killproc afpd;			echo -n ' afpd'
+	fi
+
+	if [ -x /usr/sbin/cnid_metad ]; then
+		killproc cnid_met;		echo -n ' cnid_metad'
+	fi
+
+	if [ -x /usr/sbin/timelord ]; then
+		killproc timelord;		echo -n ' timelord'
+	fi
+
+	# kill atalkd last, since without it the plumbing goes away.
+	if [ -x /usr/sbin/atalkd ]; then
+		killproc atalkd;		echo -n ' atalkd'
+	fi
+	echo '.'
+}
+case "$1" in
+
+'start')
+        if [ x"${ATALK_BGROUND}" = x"yes" ]; then
+            echo -n "Starting netatalk in the background ... "
+            atalk_startup > /dev/null &
+        else
+            atalk_startup
+        fi
+        ;;
+
+#
+# Stop the netatalk server processes.
+#
+'stop')
+
+	echo -n 'stopping netatalk daemons:'
+
+	if [ -x /usr/sbin/papd ]; then
+		killproc papd;			echo -n ' papd'
+	fi
+
+	if [ -x /usr/sbin/afpd ]; then
+		killproc afpd;			echo -n ' afpd'
+	fi
+
+	if [ -x /usr/sbin/cnid_metad ]; then
+		killproc cnid_met;		echo -n ' cnid_metad'
+	fi
+
+	if [ -x /usr/sbin/timelord ]; then
+		killproc timelord;		echo -n ' timelord'
+	fi
+
+	# kill atalkd last, since without it the plumbing goes away.
+	if [ -x /usr/sbin/atalkd ]; then
+		killproc atalkd;		echo -n ' atalkd'
+	fi
+
+	echo '.'
+	;;
+
+'restart')
+atalk_shutdown
+atalk_startup
+	;;
+#
+# Usage statement.
+#
+
+*)
+	echo "usage: $0 {start|stop|restart}"
+	exit 1
+	;;
+esac

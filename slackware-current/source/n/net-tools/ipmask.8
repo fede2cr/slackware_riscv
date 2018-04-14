@@ -1,0 +1,34 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH IPMASK 8 "29 April 2007" "Slackware Version 12.0.0"
+.SH NAME
+ipmask \- determine network and broadcast addresses given a decimal netmask and IP address.
+.SH SYNOPSIS
+.B ipmask <decimal netmask> <decimal IP address>
+.SH DESCRIPTION
+.B ipmask
+is a simple program to calculate broadcast and network addresses from a decimal netmask and a decimal IP address.  It is used in the Slackware networking script /etc/rc.d/rc.inet1, and in the netconfig script.
+.SH OPTIONS
+.TP
+.B \<decimal netmask>
+A decimal netmask, such as:  255.255.255.0
+.TP
+.B \<decimal IP address>
+A decimal IP address, such as:  192.168.168.168
+.SH EXAMPLE
+Using the above sample netmask and IP address, here's an example:
+.TP
+$ ipmask 255.255.255.0 192.168.168.168
+.TP
+192.168.168.255 192.168.168.0
+.TP
+The program returns first the corresponding broadcast address, and then the network address.
+.SH AUTHOR
+Copyright 1994 by David Niemi.  Written in about 30 minutes on 13 Aug.  The author places no restrictions on the use of this program, provided that this copyright is preserved in any derived source code.

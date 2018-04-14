@@ -1,0 +1,187 @@
+#!/bin/sh
+
+# Copyright 2006, 2010  Alan Hicks, Lizella, GA
+# Copyright 2013, 2014, 2015, 2016, 2017  Mario Preksavec, Zagreb, Croatia
+# Copyright 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=dovecot
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-2}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i586 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+if [ "$(grep "^dovecot:x:94:94" /etc/passwd)" = "" -o \
+     "$(grep "^dovecot:x:94:" /etc/group)" = "" -o \
+     "$(grep "^dovenull:x:95:95" /etc/passwd)" = "" -o \
+     "$(grep "^dovenull:x:95:" /etc/group)" = "" ]; then
+cat << EOF
+The dovecot and dovenull user/group do not exist on this system.
+Before running this script, please add them with the following commands:
+
+groupadd -g 94 dovecot
+useradd -d /dev/null -s /bin/false -u 94 -g 94 dovecot
+groupadd -g 95 dovenull
+useradd -d /dev/null -s /bin/false -u 95 -g 95 dovenull
+
+EOF
+exit 1
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PKGNAM-ce-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
+cd $PKGNAM-$VERSION || exit 1
+
+# Ship config set up for authentication from /etc/passwd and /etc/shadow.
+zcat $CWD/dovecot.default.shadow.auth.diff.gz | patch -p1 --verbose || exit 1
+
+# Since this package installs working config files in /etc/dovecot, there isn't
+# any need to send people to /usr/doc. Also, make sure that TLS is recommended.
+zcat $CWD/dovecot.config.README.diff.gz | patch -p1 --verbose || exit 1
+
+chown -R root:root .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+ -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+# Add -ldl to LDFLAGS for sqlite
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+LDFLAGS="-ldl" \
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --localstatedir=/var \
+  --docdir=/usr/doc/$PKGNAM-$VERSION \
+  --mandir=/usr/man \
+  --with-notify=inotify \
+  --without-pam \
+  --with-ldap=plugin \
+  --with-mysql \
+  --with-sqlite \
+  --with-libcap \
+  --disable-static \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make -j1 || exit 1
+make install-strip DESTDIR=$PKG || exit 1
+
+# Install sample configuration files:
+mkdir -p $PKG/etc/dovecot
+cp -a $PKG/usr/doc/$PKGNAM-$VERSION/example-config/* $PKG/etc/dovecot
+( cd $PKG/etc/dovecot
+  for file in *.conf *.ext conf.d/*.conf conf.d/*.ext ; do
+    mv $file ${file}.new
+  done
+)
+
+mkdir -p $PKG/etc/rc.d
+cat $CWD/rc.dovecot > $PKG/etc/rc.d/rc.dovecot.new
+chmod 0644 $PKG/etc/rc.d/rc.dovecot.new
+
+# Compress and link manpages, if any:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1 | grep -v '\.gz$') ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+cp -a \
+  AUTHORS COPYING* ChangeLog NEWS README TODO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+# If there's a NEWS file, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r NEWS ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat NEWS | head -n 1000 > $DOCSDIR/NEWS
+  touch -r NEWS $DOCSDIR/NEWS
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

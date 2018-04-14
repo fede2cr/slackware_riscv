@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+tcp_wrappers: tcp_wrappers (TCP/IP daemon wrapper library and utilities)
+tcp_wrappers:
+tcp_wrappers: With this package you can monitor and filter incoming requests for
+tcp_wrappers: network services for access control, and detection things like host
+tcp_wrappers: name spoofing and host address spoofing. Nearly all the network
+tcp_wrappers: daemons on Slackware are "wrapped" using this library, and most
+tcp_wrappers: daemons in /etc/inetd.conf use tcp_wrappers' tcpd wrapper daemon.
+tcp_wrappers: If you plan to do much networking, you will need tcp_wrappers.
+tcp_wrappers:
+tcp_wrappers: tcp_wrappers was written by Wietse Venema.
+tcp_wrappers:

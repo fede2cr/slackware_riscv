@@ -1,0 +1,111 @@
+#!/bin/sh 
+# 
+# /etc/rc.d/rc.openvpn 
+# 
+# Start/stop/restart the openvpn daemon. 
+#
+# By default, this script will start/stop/restart a daemon for every *.conf
+# file found in /etc/openvpn.
+#
+# To work with a single connection, add the name of the config file:
+# /etc/rc.d/rc.openvpn start configfile.conf
+#
+# You may also use a config file not found in /etc/openvpn by providing a
+# complete path:
+# /etc/rc.d/rc.openvpn start /path/to/some/other/configfile.conf
+#
+# The name of a config file provided with a complete path should not match
+# the name of any config file present in the /etc/openvpn directory.
+ 
+ovpn_start() { 
+  if [ -x /usr/sbin/openvpn ]; then
+    if [ -z "$1" ]; then # start OpenVPN for all config files:
+      if /bin/ls /etc/openvpn/*.conf 1> /dev/null 2> /dev/null ; then
+        for config in /etc/openvpn/*.conf ; do
+          echo "Starting OpenVPN:  /usr/sbin/openvpn --daemon --writepid /run/openvpn/$(basename $config).pid --user nobody --group nobody --config $config"
+          /usr/sbin/openvpn --daemon --writepid /run/openvpn/$(basename $config).pid --user nobody --group nobody --config $config
+        done
+      else
+        echo "Unable to start OpenVPN - no .conf files found in /etc/openvpn/."
+      fi
+    else # start OpenVPN for one config file:
+      if [ -r "$1" ]; then
+        echo "Starting OpenVPN:  /usr/sbin/openvpn --daemon --writepid /run/openvpn/$(basename $1).pid --user nobody --group nobody --config $1"
+        /usr/sbin/openvpn --daemon --writepid /run/openvpn/$(basename $1).pid --user nobody --group nobody --config $1
+      else # config file is missing:
+        echo "Error starting OpenVPN: config file $1 is missing."
+      fi
+    fi
+  fi
+} 
+
+ovpn_stop() { 
+  # Note: OpenVPN has a bad habit of leaving stale pid files around when exiting.
+  # Maybe it would be better to just use killall unless called for one config?
+  if [ -z "$1" ]; then # stop OpenVPN for all pid files:
+    if /bin/ls /run/openvpn/*.pid 1> /dev/null 2> /dev/null ; then
+      for pid in /run/openvpn/*.pid ; do
+        echo "Stopping OpenVPN for pid file $pid..."
+        kill $(cat $pid)
+        rm -f $pid
+      done
+    else
+      echo "Warning: no pid files found in /run/openvpn/. Using killall to stop any OpenVPN processes."
+      killall openvpn
+    fi
+  else # stop OpenVPN for one config file:
+    if [ -r /run/openvpn/$(basename ${1}).pid ]; then
+      echo "Stopping OpenVPN for config file ${1}..."
+      kill $(cat /run/openvpn/$(basename ${1}).pid)
+      rm -f /run/openvpn/$(basename ${1}).pid
+    else
+      echo "Error stopping OpenVPN: no such pid file /run/openvpn/$(basename ${1}).pid"
+    fi
+  fi
+}
+
+ovpn_restart() {
+  if [ ! -z "$1" ]; then # restart for all config files:
+    ovpn_stop
+    sleep 2
+    ovpn_start
+  else # restart for one config file only:
+    ovpn_stop $1
+    sleep 2
+    ovpn_start $1
+  fi
+}
+
+ovpn_status() {
+  if /bin/ls /run/openvpn/*.pid 1> /dev/null 2> /dev/null ; then
+    echo "Currently running OpenVPN processes according to .pid files in /run/openvpn:"
+    for pid in /run/openvpn/*.pid ; do
+      echo "  $(basename $pid) ($(cat $pid))"
+    done
+  else
+    echo "No .pid files found in /run/openvpn." 
+  fi
+}
+
+# Create PID directory if it doesn't exist:
+if [ ! -d /run/openvpn ]; then
+  mkdir -p /run/openvpn
+fi
+
+case "$1" in
+'start')
+  ovpn_start $2
+  ;;
+'stop')
+  ovpn_stop $2
+  ;;
+'restart')
+  ovpn_restart $2
+  ;;
+'status')
+  ovpn_status
+  ;;
+*)
+  echo "Usage: $0 {start|stop|restart}"
+esac
+

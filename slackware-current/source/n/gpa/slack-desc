@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+   |-----handy-ruler------------------------------------------------------|
+gpa: gpa (GNU Privacy Assistant)
+gpa:
+gpa: GPA is a graphical frontend for the GNU Privacy Guard (GnuPG, 
+gpa: http://www.gnupg.org). GPA can be used to encrypt, decrypt, and
+gpa: sign files, to verify signatures and to manage the private and
+gpa: public keys.
+gpa:
+gpa:
+gpa:
+gpa:
+gpa:

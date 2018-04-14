@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+lftp: lftp (command line file transfer program)
+lftp:
+lftp: lftp is a program that allows sophisticated ftp and http connections
+lftp: to other hosts. lftp can handle many file access methods including
+lftp: ftp, ftps, http, https, hftp, fish and file. Every operation in lftp
+lftp: is reliable, that is any non-fatal error is ignored and the operation
+lftp: is retried. lftp has shell-like command syntax. lftp has a built in
+lftp: mirror feature which can download or upload a whole directory tree.
+lftp:
+lftp: Homepage: http://lftp.tech
+lftp:

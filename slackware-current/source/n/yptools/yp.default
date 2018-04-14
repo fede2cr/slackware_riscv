@@ -1,0 +1,37 @@
+# This file can be used to tweak the way YP (NIS) services
+# are started.
+#
+# Optional arguments to pass ypserv upon startup:
+#YPSERV_OPTS=""
+#
+# Example:
+#   If you run NIS in a firewalled environment you might want
+#   to bind ypserv to a specific port:
+#   YPSERV_OPTS="-p 12345"
+# See ypserv(8) for more details.
+#
+#
+# Optional arguments to pass rpc.yppasswdd upon startup:
+#YPPASSWDD_OPTS=""
+#
+# Example:
+#   You might want users to be able to change their shell
+#   and GECOS information, in which case you should add
+#   these options:
+#   YPPASSWDD_OPTS="-e chsh -e chfn"
+# See rpc.yppasswdd(8) for more details.
+#
+#
+# Optional arguments to pass rpc.ypxfrd upon startup:
+#YPXFRD_OPTS=""
+#
+# Example:
+#   If you run NIS in a firewalled environment you might want
+#   to bind rpc.ypxfrd to a specific port:
+#   YPXFRD_OPTS="-p 54321"
+#
+#
+# Optional arguments to pass ypbind upon startup. The default
+# is to use -broadcast if YPBIND_OPTS is not set. This ignores
+# /etc/yp.conf and broadcasts across the network to find a server.
+#YPBIND_OPTS="-broadcast"

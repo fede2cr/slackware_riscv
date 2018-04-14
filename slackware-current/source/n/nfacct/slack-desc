@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+      |-----handy-ruler------------------------------------------------------|
+nfacct: nfacct (tool to create/retrieve/delete accounting objects)
+nfacct:
+nfacct: nfacct is the command line tool to create/retrieve/delete accounting
+nfacct: objects. 
+nfacct:
+nfacct: The main features of nfacct are:
+nfacct: - listing the objects of the nfacct table in plain text/XML
+nfacct: - atomically get and reset objects of the nfacct table
+nfacct: - adding new objects to the nfacct table
+nfacct: - deleting objects from the nfacct table
+nfacct:

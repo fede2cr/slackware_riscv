@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler------------------------------------------------------|
+netkit-rusers: netkit-rusers (show users logged in to machines on local network)
+netkit-rusers:
+netkit-rusers: The rusers command produces output similar to who, but for the list
+netkit-rusers: of hosts or all machines on the local network. For each host
+netkit-rusers: responding to the rusers query, the hostname with the names of the
+netkit-rusers: users currently logged on is printed on each line. The rusers
+netkit-rusers: command will wait for one minute to catch late responders.
+netkit-rusers:
+netkit-rusers: Portmap and rpc.rusersd must be running on remote machines. Should
+netkit-rusers: probably be considered insecure (or at least ill-advised) on public
+netkit-rusers: networks.

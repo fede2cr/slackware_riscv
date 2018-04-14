@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+rdist: rdist (remote file distribution program)
+rdist:
+rdist: Rdist is a remote file distribution program. It is used to maintain
+rdist: identical copies of files over multiple network hosts. It preserves
+rdist: the owner, group, mode, and mtime of files if possible and can update
+rdist: programs that are executing.
+rdist:
+rdist:
+rdist:
+rdist:
+rdist:

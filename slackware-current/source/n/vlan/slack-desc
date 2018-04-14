@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+vlan: vlan (VLAN (802.1q) configuration program)
+vlan:
+vlan: The vlan package contains the vconfig program, which allows you to
+vlan: create and remove VLAN devices on a VLAN enabled kernel. VLAN
+vlan: devices are virtual Ethernet devices which represent virtual LANs on
+vlan: the physical LAN.
+vlan:
+vlan: vlan is primarily the work of Alex Zeffertt, Cambridge Broadband Ltd,
+vlan: extensively rewritten by Ben Greear.
+vlan:
+vlan:

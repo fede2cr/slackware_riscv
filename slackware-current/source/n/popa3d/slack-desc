@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+popa3d: popa3d (a POP3 daemon)
+popa3d:
+popa3d: popa3d is a Post Office Protocol version 3 (POP3) server. A POP3
+popa3d: server operates on local mailboxes on behalf of its remote users.
+popa3d: Users can connect at any time to check their mailbox and fetch the
+popa3d: mail that has accumulated. The design goals of this POP3 server are
+popa3d: security, reliability, RFC compliance (slightly relaxed to work with
+popa3d: real-world POP3 clients), and high performance.
+popa3d:
+popa3d: The popa3d daemon was written by Solar Designer.
+popa3d:

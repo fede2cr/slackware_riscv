@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+net-tools: net-tools (Linux networking utilities)
+net-tools:
+net-tools: This is a collection of traditional tools such as "ifconfig" and
+net-tools: "route" that were used to configure networking on Linux. While you can
+net-tools: still make use of these tools today, they have been largely superseded
+net-tools: by newer tools such as "ip", "ifrename", and "ethtool".
+net-tools:
+net-tools: The net-tools package was maintained for many years by Phil Blundell
+net-tools: and Bernd Eckenfels.
+net-tools:
+net-tools:

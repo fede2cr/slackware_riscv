@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+vsftpd: vsftpd (Very Secure FTP Daemon)
+vsftpd:
+vsftpd: vsftpd is an FTP server, or daemon. The 'vs' stands for Very Secure.
+vsftpd: Obviously this is not a guarantee, but a reflection that the entire
+vsftpd: codebase was written with security in mind, and carefully designed to
+vsftpd: be resilient to attack (as well as extremely fast and scalable).
+vsftpd:
+vsftpd: The vsftpd homepage is https://security.appspot.com/vsftpd.html
+vsftpd:
+vsftpd: The Very Secure FTP Daemon was written by Chris Evans.
+vsftpd:

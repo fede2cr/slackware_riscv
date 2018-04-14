@@ -1,0 +1,20 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------------|
+bsd-finger: bsd-finger (user information lookup program)
+bsd-finger:
+bsd-finger: The finger displays information about the system users. Finger
+bsd-finger: displays the user's login name, real name, terminal name and write
+bsd-finger: status (as a ``*'' after the terminal name if write permission is
+bsd-finger: denied), idle time, login time, office location and office phone
+bsd-finger: number.
+bsd-finger:
+bsd-finger: As fingerd leaks semi-private information about your machine's
+bsd-finger: usernames and other data, fingerd should be used with caution.
+bsd-finger: Allow machines on a need-to-know basis.
+

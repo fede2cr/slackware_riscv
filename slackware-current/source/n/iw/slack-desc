@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+  |-----handy-ruler----------------------------------------------------------|
+iw: iw (tool for configuring Linux wireless devices)
+iw:
+iw: This package contains the `iw' tool which allows you to configure and
+iw: show information about wireless networking. The tool is currently used
+iw: for drivers based on the mac80211 stack, but work is under way to make
+iw: it useful for other wireless drivers as well.
+iw: 
+iw: Homepage: http://wireless.kernel.org/en/users/Documentation/iw 
+iw:  
+iw:  
+iw:  

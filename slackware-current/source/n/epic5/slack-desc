@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+epic5: epic5 (Internet Relay Chat client)
+epic5:
+epic5: EPIC is the (E)nhanced (P)rogrammable (I)RC-II (C)lient.
+epic5:
+epic5: The EPIC home page is:       http://www.epicsol.org/
+epic5: The EPIC main ftp site is:   ftp://ftp.epicsol.org/
+epic5: The EPIC IRC channel is:     #epic on EFNet
+epic5:
+epic5:
+epic5:
+epic5:

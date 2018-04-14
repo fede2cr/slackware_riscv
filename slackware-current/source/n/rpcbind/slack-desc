@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+rpcbind: rpcbind (a daemon to manage RPC connections)
+rpcbind:
+rpcbind: This is a network daemon used to manage connections to RPC services.
+rpcbind: It is meant as a replacement for the 'rpc.portmap' server from the
+rpcbind: 'portmap' package. Daemons that offer RPC services (such as the
+rpcbind: daemons for NFS) tell the rpcbind on what port they listen.
+rpcbind: RPC network port numbers may change each time the system is booted.
+rpcbind:
+rpcbind: This package is required to use NFS or other RPC services.
+rpcbind:
+rpcbind: Homepage: http://sourceforge.net/projects/rpcbind/

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+               |-----handy-ruler------------------------------------------------------|
+network-scripts: network-scripts (Scripts to configure a network)
+network-scripts:
+network-scripts: These are the basic scripts and files used to define a network and
+network-scripts: configure network interfaces on Linux. Most of the original
+network-scripts: /etc files were written by Fred N. van Kempen, or borrowed from BSD.
+network-scripts: The rc.inet1 and rc.inet2 scripts were mostly written by Patrick
+network-scripts: Volkerding, with suggestions and fixes from hundreds of contributors
+network-scripts: over the years.
+network-scripts:
+network-scripts:
+network-scripts:

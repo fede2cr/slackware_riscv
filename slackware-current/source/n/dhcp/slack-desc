@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+dhcp: dhcp (DHCP server and client utilities)
+dhcp:
+dhcp: This package provides the ISC's DHCP utilities, including both a
+dhcp: server and client. The DHCP protocol allows a host to contact a
+dhcp: central server which maintains a list of IP addresses which may be
+dhcp: assigned on one or more subnets.  A DHCP client may request an
+dhcp: address from this pool, and then use it temporarily for communication
+dhcp: on the network.  The DHCP protocol also provides a mechanism whereby
+dhcp: a client can learn important details about the network to which it is
+dhcp: attached, such as the location of a default router or name server.
+dhcp:

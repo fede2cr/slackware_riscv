@@ -1,0 +1,109 @@
+#!/bin/sh
+
+# Copyright 2007-2010  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=netkit-ntalk
+VERSION=0.17
+BUILD=${BUILD:-4}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-netkit-ntalk
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf netkit-ntalk-$VERSION
+tar xzvf $CWD/netkit-ntalk-$VERSION.tar.gz
+cd netkit-ntalk-$VERSION
+chown -R root:root .
+zcat $CWD/netkit-ntalk-0.17.diff.gz | patch -p1 --verbose || exit
+zcat $CWD/ntalk-0.17-slackware-alt-talkd.patch.gz | patch -p1 --verbose || exit
+./configure --prefix=/usr
+make || exit
+cd talk
+strip talk
+mkdir -p $PKG/usr/bin
+cat talk > $PKG/usr/bin/talk
+chmod 755 $PKG/usr/bin/talk
+mkdir -p $PKG/usr/man/man{1,8}
+cat talk.1 | gzip -9c > $PKG/usr/man/man1/talk.1.gz
+cd ../talkd
+strip talkd
+mkdir -p $PKG/usr/sbin
+cat talkd > $PKG/usr/sbin/in.talkd
+chmod 755 $PKG/usr/sbin/in.talkd
+cat talkd.8 | gzip -9c > $PKG/usr/man/man8/in.talkd.8.gz
+cd ..
+mkdir -p $PKG/usr/doc/netkit-ntalk-$VERSION
+cp -a README $PKG/usr/doc/netkit-ntalk-$VERSION
+chown root:root $PKG/usr/doc/netkit-ntalk-$VERSION/*
+chmod 644 $PKG/usr/doc/netkit-ntalk-$VERSION/*
+
+# Include old version of 'talk', which works better with
+# 8-bit character sets:
+cd $TMP
+rm -rf netkit-ntalk-0.11
+tar xzvf $CWD/netkit-ntalk-0.11.tar.gz
+cd netkit-ntalk-0.11
+chown -R root:root .
+zcat $CWD/netkit-ntalk-0.11.diff.gz | patch -p0 --backup || exit
+./configure --prefix=/usr
+make SUB=talk # compiling talkd throws errors 
+cd talk
+strip talk
+mkdir -p $PKG/usr/bin
+cat talk > $PKG/usr/bin/talk-0.11
+chmod 755 $PKG/usr/bin/talk-0.11
+
+( cd $PKG/usr/sbin ; rm -rf in.ntalkd )
+( cd $PKG/usr/sbin ; ln -sf in.talkd in.ntalkd )
+( cd $PKG/usr/bin ; rm -rf ntalk )
+( cd $PKG/usr/bin ; ln -sf talk ntalk )
+
+# Finish up the package:
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg -l y -c n $TMP/netkit-ntalk-$VERSION-$ARCH-$BUILD.txz
+

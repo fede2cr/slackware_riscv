@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+net-snmp: net-snmp (Simple Network Management Protocol tools)
+net-snmp:
+net-snmp: Various tools relating to the Simple Network Management Protocol:
+net-snmp:
+net-snmp: An extensible agent
+net-snmp: An SNMP library
+net-snmp: Tools to request or set information from SNMP agents
+net-snmp: Tools to generate and handle SNMP traps
+net-snmp: A version of the UNIX 'netstat' command using SNMP
+net-snmp: A graphical Perl/Tk/SNMP based mib browser
+net-snmp:

@@ -1,0 +1,193 @@
+#!/bin/sh
+
+# Copyright 2004-2008 Eric Hameleers, Eindhoven, NL
+# Copyright 2008-2018  Patrick J. Volkerding, Sebeka, MN, USA
+#  Permission to use, copy, modify, and distribute this software for
+#  any purpose with or without fee is hereby granted, provided that
+#  the above copyright notice and this permission notice appear in all
+#  copies.
+#
+#  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+#  IN NO EVENT SHALL THE AUTHORS AND COPYRIGHT HOLDERS AND THEIR
+#  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+#  USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+#  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+#  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+#  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+#  SUCH DAMAGE.
+# -----------------------------------------------------------------------------
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=wpa_supplicant
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-3}
+
+SRCVERSION=$(printf $VERSION | tr _ -)
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "arm" ]; then
+  SLKCFLAGS="-O2 -march=armv4 -mtune=xscale"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armel" ]; then
+  SLKCFLAGS="-O2 -march=armv4t"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf ${PKGNAM}-${SRCVERSION}
+tar xvf $CWD/${PKGNAM}-${SRCVERSION}.tar.?z* || exit 1
+cd ${PKGNAM}-${SRCVERSION}
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+
+zcat $CWD/2017-1/rebased-v2.6-0001-hostapd-Avoid-key-reinstallation-in-FT-handshake.patch.gz | patch -p1 || exit 1
+zcat $CWD/2017-1/rebased-v2.6-0002-Prevent-reinstallation-of-an-already-in-use-group-ke.patch.gz | patch -p1 || exit 1
+zcat $CWD/2017-1/rebased-v2.6-0003-Extend-protection-of-GTK-IGTK-reinstallation-of-WNM-.patch.gz | patch -p1 || exit 1
+zcat $CWD/2017-1/rebased-v2.6-0004-Prevent-installation-of-an-all-zero-TK.patch.gz | patch -p1 || exit 1
+zcat $CWD/2017-1/rebased-v2.6-0005-Fix-PTK-rekeying-to-generate-a-new-ANonce.patch.gz | patch -p1 || exit 1
+zcat $CWD/2017-1/rebased-v2.6-0006-TDLS-Reject-TPK-TK-reconfiguration.patch.gz | patch -p1 || exit 1
+zcat $CWD/2017-1/rebased-v2.6-0007-WNM-Ignore-WNM-Sleep-Mode-Response-without-pending-r.patch.gz | patch -p1 || exit 1
+zcat $CWD/2017-1/rebased-v2.6-0008-FT-Do-not-allow-multiple-Reassociation-Response-fram.patch.gz | patch -p1 || exit 1
+
+# Fixup various paths in the dbus service file
+cat $CWD/patches/dbus-service-file-args.diff | patch -p1 --verbose || exit 1
+
+# Eliminate some logspam
+cat $CWD/patches/quiet-scan-results-message.diff | patch -p1 --verbose || exit 1
+
+# Apply a few other patches from Fedora
+cat $CWD/patches/assoc-timeout.diff | patch -p1 --verbose || exit 1
+cat $CWD/patches/flush-debug-output.diff | patch -p1 --verbose || exit 1
+cat $CWD/patches/rh1451834-nl80211-Fix-race-condition-in-detecting-MAC-change.patch | patch -p1 --verbose || exit 1
+cat $CWD/patches/rh1462262-use-system-openssl-ciphers.patch | patch -p1 --verbose || exit 1
+cat $CWD/patches/rh1497640-pae-validate-input-before-pointer.patch | patch -p1 --verbose || exit 1
+
+cd wpa_supplicant
+
+# Create the configuration file for building wpa_supplicant:
+cat $CWD/config/dot.config > .config
+
+# Build the usual binaries
+CFLAGS="$SLKCFLAGS" \
+make $NUMJOBS \
+  BINDIR=/usr/sbin \
+  LIBDIR=/usr/lib${LIBDIRSUFFIX} || exit 1
+
+# Build the Qt4 GUI client
+CFLAGS="$SLKCFLAGS" \
+make $NUMJOBS \
+  wpa_gui-qt4 \
+  BINDIR=/usr/sbin \
+  LIBDIR=/usr/lib${LIBDIRSUFFIX} || exit 1
+
+# Make sure man pages are built
+make -C doc/docbook man
+
+# This goes into the doc directory later on:
+mv wpa_supplicant.conf wpa_supplicant.conf.sample
+
+# Install binaries:
+mkdir -p $PKG/usr/sbin $PKG/usr/bin
+cp wpa_supplicant wpa_passphrase wpa_cli $PKG/usr/sbin/
+cp wpa_gui-qt4/wpa_gui $PKG/usr/bin/
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Install dbus configuration file:
+mkdir -p $PKG/etc/dbus-1/system.d/
+cp dbus/dbus-wpa_supplicant.conf \
+  $PKG/etc/dbus-1/system.d/dbus-wpa_supplicant.conf
+
+mkdir -p $PKG/usr/share/dbus-1/system-services
+install -m644 dbus/*.service $PKG/usr/share/dbus-1/system-services/
+
+# Install a .desktop file and icon for wpa_gui:
+# (converted from the wpa_gui.svg in the source)
+mkdir -p $PKG/usr/share/{applications,pixmaps}
+cat $CWD/config/wpa_gui.desktop > $PKG/usr/share/applications/wpa_gui.desktop
+cat $CWD/config/wpa_gui.png > $PKG/usr/share/pixmaps/wpa_gui.png
+
+# Install a logrotate config
+mkdir -p $PKG/etc/logrotate.d
+cat $CWD/config/wpa_supplicant.logrotate > $PKG/etc/logrotate.d/wpa_supplicant.new
+
+# Install man pages:
+for m in 5 8; do
+  mkdir -p $PKG/usr/man/man${m}
+  cp doc/docbook/*.${m} $PKG/usr/man/man${m}/
+done
+find $PKG/usr/man -type f -name "*.?" -exec gzip -9f {} \;
+
+# Install a default configuration file (only readable by root):
+mkdir -p $PKG/etc
+cat $CWD/config/wpa_supplicant.conf > $PKG/etc/wpa_supplicant.conf.new
+chmod 600 $PKG/etc/wpa_supplicant.conf.new
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a \
+  ChangeLog ../COPYING README README-{P2P,WPS} examples *.txt *.sample $CWD/README.slackware \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+chown -R root:root $PKG/usr/doc/$PKGNAM-$VERSION/*
+chmod -R a-w $PKG/usr/doc/$PKGNAM-$VERSION/*
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz >> $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-${VERSION}-${ARCH}-${BUILD}.txz

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+inetd: inetd (Internet super-server)
+inetd:
+inetd: This is a program to listen for connections on certain Internet
+inetd: sockets and invokes a program to service the request. Essentially,
+inetd: inetd allows running one daemon to invoke several others, reducing
+inetd: load on the system. Many of the network services are run through
+inetd: inetd, so you'll probably need it.
+inetd:
+inetd: This version of inetd was ported from OpenBSD.
+inetd:
+inetd:

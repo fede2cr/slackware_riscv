@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+netkit-rwall: netkit-rwall (send a message to all users)
+netkit-rwall:
+netkit-rwall: The rwall command sends a message to the users logged into the
+netkit-rwall: specified host. The message to be sent can be typed in and
+netkit-rwall: terminated with EOF or it can be in a file.
+netkit-rwall:
+netkit-rwall: Run the rpc.rwalld daemon with caution. It may be insecure.
+netkit-rwall:
+netkit-rwall: The rwall command appeared in SunOS.
+netkit-rwall:
+netkit-rwall:

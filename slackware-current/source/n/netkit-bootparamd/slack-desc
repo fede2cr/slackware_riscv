@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+                 |-----handy-ruler------------------------------------------------------|
+netkit-bootparamd: netkit-bootparamd (boot parameter server)
+netkit-bootparamd:
+netkit-bootparamd: This package provides rpc.bootparamd and callbootd, programs used to
+netkit-bootparamd: provide information to diskless clients so they can boot. It is
+netkit-bootparamd: used primarily to allow a Linux server to boot a Sun machine using
+netkit-bootparamd: SunOS bootparam.
+netkit-bootparamd:
+netkit-bootparamd: netkit-bootparamd was written by Klas Heggemann.
+netkit-bootparamd:
+netkit-bootparamd:
+netkit-bootparamd:

@@ -1,0 +1,29 @@
+# See also /etc/default/nfs
+
+# Optional arguments passed to rpcbind. See rpcbind(8)
+#RPCBIND_OPTS=""
+#
+# Optional arguments passed to rpc.statd. See rpc.statd(8)
+#RPC_STATD_OPTS=""
+# Optional hostname to start rpc.statd with.
+#RPC_STATD_HOSTNAME="darkstar"
+# Port rpc.statd should listen on.
+#RPC_STATD_PORT=32766
+# Outgoing port rpc.statd should use.
+#RPC_STATD_OUTGOING_PORT=32765
+#
+# Optional options passed to rquotad. See rquotad(8)
+#RPC_RQUOTAD_OPTS=""
+# Optional port rquotad should listen on:
+#RPC_RQUOTAD_PORT=32769
+#
+# TCP port rpc.lockd should listen on:
+#LOCKD_TCP_PORT=32768
+# UDP port rpc.lockd should listen on:
+#LOCKD_UDP_PORT=32768
+#
+# Optional arguments passed to rpc.mountd. See rpc.mountd(8)
+#RPC_MOUNTD_OPTS=""
+# Port rpc.mountd should listen on:
+#RPC_MOUNTD_PORT=32767
+#

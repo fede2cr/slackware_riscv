@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+               |-----handy-ruler------------------------------------------------------|
+zd1211-firmware: zd1211-firmware (Firmware for zd1211 USB wireless)
+zd1211-firmware:
+zd1211-firmware: This distribution contains the firmware files for the ZD1211 chip,
+zd1211-firmware: which is used in WLAN USB sticks. The files are generated from C
+zd1211-firmware: header files distributed in the original ZyDAS ZD1211 driver. The
+zd1211-firmware: GPL-licensed header files used to produce the firmware blobs are also
+zd1211-firmware: present in this distribution.
+zd1211-firmware:
+zd1211-firmware: The full source of the original ZYDAS driver is available from
+zd1211-firmware:  http://zd1211.wiki.sourceforge.net/VendorDriver
+zd1211-firmware:

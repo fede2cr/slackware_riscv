@@ -1,0 +1,3 @@
+#!/bin/sh
+#BLURB="Rebuild SSL certificate database."
+chroot . usr/sbin/update-ca-certificates --fresh 1> /dev/null 2> /dev/null

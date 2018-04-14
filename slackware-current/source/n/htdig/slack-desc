@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+htdig: htdig (web indexing and searching system)
+htdig:
+htdig: The ht://Dig system is a complete web indexing and searching system
+htdig: for a small domain or intranet. This system is not intended to
+htdig: replace the need for outside Internet search engines such as Google,
+htdig: but rather to cover the search needs for a single company, campus, or
+htdig: even a particular sub section of a web site.
+htdig:
+htdig:
+htdig:
+htdig:

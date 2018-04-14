@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+mcabber: mcabber (Jabber console client)
+mcabber:
+mcabber: mcabber is a small Jabber console client for Linux, maintained by
+mcabber: Mikael Berthe. Mcabber includes features such as SSL support,
+mcabber: multi-user chat (MUC), history logging, commands completion, and
+mcabber: external actions triggers.
+mcabber:
+mcabber: mcabber project home is: http://www.lilotux.net/~mikael/mcabber/
+mcabber:
+mcabber:
+mcabber:

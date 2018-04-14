@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+     |-----handy-ruler-----------------------------------------------------|
+sshfs: sshfs (SSH filesystem client)
+sshfs:
+sshfs: This is a filesystem client based on the SSH File Transfer Protocol.
+sshfs: Since most SSH servers already support this protocol it is very easy
+sshfs: to set up: i.e. on the server side there's nothing to do. On the
+sshfs: client side mounting the filesystem is as easy as logging into the
+sshfs: server with ssh.
+sshfs:
+sshfs: Homepage: https://github.com/libfuse/sshfs
+sshfs:
+sshfs:

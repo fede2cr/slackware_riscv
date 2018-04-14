@@ -1,0 +1,14 @@
+#
+# hosts.equiv	This file describes the names of the hosts which are
+#		to be considered "equivalent", i.e. which are to be
+#		trusted enought for allowing rsh(1) commands.
+#
+# Version:	@(#)/etc/hosts.equiv	2.00	04/30/93
+#
+# Author:	Fred N. van Kempen, <waltje@uwalt.nl.mugnet.org>
+#
+#
+
+localhost
+
+# End of hosts.equiv.

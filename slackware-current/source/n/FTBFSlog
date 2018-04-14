@@ -1,0 +1,11 @@
+Mon Feb 12 04:32:59 UTC 2018
+  All package confirmed to build from source.
++--------------------------+
+Fri Feb  2 19:33:00 UTC 2018
+  Fix all packages that fail to build from source:
+  htdig: build with -std=gnu++98 -fpermissive -fno-delete-null-pointer-checks
+  libtirpc: in xdr_sizeof.c, #include <stdint.h>
+  netkit-rwho: change getloadavg() function to rwho_getloadavg()
+  newspost: change getline() function to newspost_getline()
+  procmail: change getline() function to procmail_getline()
+  rp-pppoe: merge some Fedora patches

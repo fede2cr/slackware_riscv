@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+                      |-----handy-ruler------------------------------------------------------|
+libnetfilter_conntrack: libnetfilter_conntrack (netfilter conntrack library)
+libnetfilter_conntrack:
+libnetfilter_conntrack: libnetfilter_conntrack is a userspace library providing a programming
+libnetfilter_conntrack: interface (API) to the in-kernel connection tracking state table.
+libnetfilter_conntrack: This library is currently used by conntrack-tools and many other
+libnetfilter_conntrack: applications.
+libnetfilter_conntrack:
+libnetfilter_conntrack:
+libnetfilter_conntrack:
+libnetfilter_conntrack:
+libnetfilter_conntrack:

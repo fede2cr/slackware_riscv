@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------------|
+traceroute: traceroute (IP packet route tracing utility)
+traceroute:
+traceroute: The traceroute utility displays the route used by IP packets on their
+traceroute: way to a specified network host. Traceroute will display the IP
+traceroute: number and host name (if possible) of all the machines along the route
+traceroute: taken by the packets. If you're having network connectivity problems,
+traceroute: traceroute can show you where the trouble is located.
+traceroute:
+traceroute: Homepage: http://traceroute.sourceforge.net
+traceroute:
+traceroute:

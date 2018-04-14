@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+snownews: snownews (a console RSS newsreader)
+snownews:
+snownews: Snownews is a console RSS/RDF news reader. It supports all versions
+snownews: of RSS natively and can be expanded via plugins to support many other
+snownews: other formats.
+snownews:
+snownews: Snownews was written and is maintained by Oliver Feiler.
+snownews:
+snownews: Snownews homepage: http://kiza.kcore.de/software/snownews
+snownews:
+snownews:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+        |-----handy-ruler------------------------------------------------------|
+nftables: nftables (packet filtering and classification)
+nftables:
+nftables: nftables provides a new packet filtering framework, a new userspace
+nftables: utility, and also a compatibility layer for {ip,ip6}tables. nftables
+nftables: is built upon the building blocks of the Netfilter infrastructure such
+nftables: as the existing hooks, the connection tracking system, the userspace
+nftables: queueing component, and the logging subsystem.
+nftables:
+nftables: Homepage: http://www.netfilter.org/projects/nftables/
+nftables:
+nftables:

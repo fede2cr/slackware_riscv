@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+procmail: procmail (mail processing and local delivery program)
+procmail:
+procmail: Can be used to create mail-servers, mailing lists, sort your incoming
+procmail: mail into separate folders/files (real convenient when subscribing to
+procmail: one or more mailing lists or for prioritizing your mail), preprocess
+procmail: your mail, start any programs upon mail arrival (e.g. to generate
+procmail: different chimes on your workstation for different types of mail) or
+procmail: selectively forward certain incoming mail automatically to someone.
+procmail: Procmail is required by sendmail to deliver the local mail.
+procmail: The author of procmail is Stephen R. van den Berg.
+procmail:

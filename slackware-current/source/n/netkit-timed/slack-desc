@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+netkit-timed: netkit-timed (time server daemon)
+netkit-timed:
+netkit-timed: This is an early BSD time server daemon. While ntpd is better for
+netkit-timed: most purposes, this might be useful for secure networks or embedded
+netkit-timed: systems in need of something more lightweight.
+netkit-timed:
+netkit-timed: The timed daemon appeared in 4.3BSD.
+netkit-timed:
+netkit-timed:
+netkit-timed:
+netkit-timed:

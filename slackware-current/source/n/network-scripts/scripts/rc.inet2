@@ -1,0 +1,142 @@
+#!/bin/sh
+#
+# rc.inet2	This shell script boots up the entire network system.
+#		Note, that when this script is used to also fire
+#		up any important remote NFS disks (like the /usr
+#		directory), care must be taken to actually
+#		have all the needed binaries online _now_ ...
+#
+#               Uncomment or comment out sections depending on which
+#               services your site requires.
+#
+# Author:	Fred N. van Kempen, <waltje@uwalt.nl.mugnet.org>
+# Modified for Slackware by Patrick Volkerding <volkerdi@slackware.com>
+
+
+# At this point, we are ready to talk to The World...
+
+
+# Mount remote (NFS) filesystems:
+if cat /etc/fstab | grep -v '^#' | grep -w nfs 1> /dev/null 2> /dev/null ; then
+  # Start rpc.portmap, /sbin/rpc.lockd, and /sbin/rpc.statd if we find NFS
+  # volumes defined in /etc/fstab since these will need to be running in order
+  # to mount them.  If they are not running, attempting to mount an NFS
+  # partition will cause mount to hang, or at least result in unreliable
+  # operation.  Keep this in mind if you plan to mount unlisted NFS
+  # partitions... 
+  # If you have uncommented NFS partitions in your /etc/fstab, rc.rpc is run
+  # whether it is set as executable or not.  If you don't want to run it,
+  # comment the NFS partitions out in /etc/fstab or erase/rename rc.rpc.
+  if [ -r /etc/rc.d/rc.rpc ]; then
+    sh /etc/rc.d/rc.rpc start
+  fi
+  echo "Mounting remote (NFS) file systems:  /sbin/mount -a -t nfs"
+  /sbin/mount -a -t nfs          # This may be our /usr runtime!
+  # Show the mounted volumes:
+  /sbin/mount -v -t nfs
+fi
+
+# If /etc/rc.d/rc.rpc is executable, run it to load rpc.portmap, rpc.lockd,
+# and rpc.statd.  This might be needed to mount NFS partitions that are not
+# listed in /etc/fstab.  Starting this twice won't hurt as the script will
+# check if things are already running before trying to start them.
+if [ -x /etc/rc.d/rc.rpc ]; then
+  sh /etc/rc.d/rc.rpc start
+fi
+
+# Mount remote CIFS filesystems.  Note that where possible, using CIFS is
+# preferred over SMBFS.  SMBFS is no longer actively maintained.
+if cat /etc/fstab | grep -v '^#' | grep -w cifs 1> /dev/null 2> /dev/null ; then
+  echo "Mounting remote CIFS file systems:  /sbin/mount -a -t cifs"
+  /sbin/mount -a -t cifs
+  # Show the mounted volumes:
+  /sbin/mount -v -t cifs
+fi
+
+# Mount remote SMB filesystems:
+if cat /etc/fstab | grep -v '^#' | grep -w smbfs 1> /dev/null 2> /dev/null ; then
+  echo "Mounting remote SMBFS file systems:  /sbin/mount -a -t smbfs"
+  /sbin/mount -a -t smbfs
+  # Show the mounted volumes:
+  /sbin/mount -v -t smbfs
+fi
+
+# Start the system logger if it is not already running (maybe because /usr
+# is on a network partition).
+if [ -x /etc/rc.d/rc.syslog -a -d /var/log -a ! -r /var/run/syslogd.pid ]; then
+  . /etc/rc.d/rc.syslog start
+fi
+
+# If there is a firewall script, run it before enabling packet forwarding.
+# See the HOWTOs on http://www.netfilter.org/ for documentation on
+# setting up a firewall or NAT on Linux.  In some cases this might need to
+# be moved past the section below dealing with IP packet forwarding.
+if [ -x /etc/rc.d/rc.firewall ]; then
+  /etc/rc.d/rc.firewall start
+fi
+
+# Turn on IPv4 packet forwarding support.
+if [ -x /etc/rc.d/rc.ip_forward ]; then
+  . /etc/rc.d/rc.ip_forward start
+fi
+
+# Start the inetd server:
+if [ -x /etc/rc.d/rc.inetd ]; then
+  /etc/rc.d/rc.inetd start
+fi
+
+# Start the OpenSSH SSH daemon:
+if [ -x /etc/rc.d/rc.sshd ]; then
+  echo "Starting OpenSSH SSH daemon:  /usr/sbin/sshd"
+  /etc/rc.d/rc.sshd start
+fi
+
+# Start the BIND name server daemon:
+if [ -x /etc/rc.d/rc.bind ]; then
+  /etc/rc.d/rc.bind start
+fi
+
+# Start NIS (the Network Information Service):
+if [ -x /etc/rc.d/rc.yp ]; then
+  /etc/rc.d/rc.yp start
+fi
+
+# Start OpenVPN:
+if [ -x /etc/rc.d/rc.openvpn ]; then
+  /etc/rc.d/rc.openvpn start
+fi
+
+# Start the NFS server.  Note that for this to work correctly, you'll
+# need nfsd support in the kernel (the startup script will try to load
+# the module for you).
+# You'll also need to set up some shares in /etc/exports.
+# Starting the NFS server:
+if [ -x /etc/rc.d/rc.nfsd ]; then
+  /etc/rc.d/rc.nfsd start
+fi
+
+# Stuff you won't need follows.  ;-)
+
+# # Start the network routing daemon:
+# if [ -x /usr/sbin/routed ]; then
+#   echo "Starting network routing daemon:  /usr/sbin/routed"
+#   /usr/sbin/routed -g -s
+# fi
+
+# # Start the system status server:
+# if [ -x /usr/sbin/rwhod ]; then
+#   echo "Starting system status server:  /usr/sbin/rwhod"
+#   /usr/sbin/rwhod
+# fi
+
+#  # Fire up the PC-NFS daemon(s).  This is a primarily obsolete system, and may
+#  # not be very secure.  It's not at all needed for normal NFS server support.
+#  # You probably should not run this.
+#  if [ -x /usr/sbin/rpc.pcnfsd ]; then
+#    echo "Starting PC-NFS daemons:  /usr/sbin/rpc.pcnfsd /usr/sbin/rpc.bwnfsd"
+#    /usr/sbin/rpc.pcnfsd /var/spool/lpd
+#  fi
+#  if [ -x /usr/sbin/rpc.bwnfsd ]; then
+#    /usr/sbin/rpc.bwnfsd /var/spool/lpd
+#  fi
+

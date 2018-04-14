@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+gnupg: gnupg (The GNU Privacy Guard)
+gnupg:
+gnupg: GnuPG is GNU's tool for secure communication and data storage. It can
+gnupg: be used to encrypt data and to create digital signatures. It includes
+gnupg: an advanced key management facility and is compliant with the proposed
+gnupg: OpenPGP Internet standard as described in RFC2440.
+gnupg:
+gnupg:
+gnupg:
+gnupg:
+gnupg:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+newspost: newspost (binary posting utility)
+newspost:
+newspost: Newspost is a usenet binary autoposter. It will uuencode or yencode
+newspost: files and post them to usenet newsgroups. In addition, it can
+newspost: automatically generate and post .SFV checksum files and .PAR parity
+newspost: files.
+newspost:
+newspost: Newspost was mostly  written by Jim Faulkner, with some help from
+newspost: William McBrine. Portions borrowed from cksfv by Bryan Call, and
+newspost: parchive by Willem Monsuwe.
+newspost:

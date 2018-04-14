@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+         |-----handy-ruler------------------------------------------------------|
+libmilter: libmilter (sendmail Mail Filter API)
+libmilter:
+libmilter: The sendmail Mail Filter API (Milter) is designed to allow third
+libmilter: party programs access to mail messages as they are being processed 
+libmilter: in order to filter meta-information and content. 
+libmilter:
+libmilter:
+libmilter:
+libmilter:
+libmilter:
+libmilter:

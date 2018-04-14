@@ -1,0 +1,342 @@
+#!/bin/sh
+# /etc/rc.d/rc.wireless
+# $Id: rc.wireless,v 1.13 2007/04/13 14:14:43 eha Exp eha $
+#
+# Wireless network card setup.
+#
+# This script sets up PCI, USB, and 32-bit Cardbus wireless devices
+# NOT 16-bit PCMCIA cards!  Those are configured in /etc/pcmcia/.
+# Single parameter to this script is the name of a network interface.
+# Normally this script is called from rc.inet1 rather than run
+# directly.
+#
+# This script is a modified '/etc/pcmcia/wireless' script
+# 09/apr/2004 by Eric Hameleers
+# 16/sep/2004 * Eric Hameleers * Fixed iwspy and iwpriv commands
+# 08/apr/2005 * Eric Hameleers * Allow per-interface overrides of the wireless
+#                                parameters (see /etc/rc.d/rc.inet1.conf)
+# 11/apr/2005 * Eric Hameleers * Tune wpa_supplicant interactions.
+# 23/apr/2005 * Eric Hameleers * First configure card with iwconfig,
+#                                before starting wpa_supplicant
+# 27/apr/2005 * Eric Hameleers * Multiple 'iwpriv $INTERFACE set' commands.
+# 14/feb/2006 * Eric Hameleers * Better error messages; alternative way of
+#                                getting HWADDR; parametrized WPA_WAIT value.
+#                                Don't kill an already running wpa_supplicant.
+# 29/apr/2006 * Pat Volkerding * Reverted HWADDR change, since it relies on
+#                                a binary (macaddr) that is not built or
+#                                installed by default since it is not
+#                                compatible with all interfaces.
+# 15/aug/2006 * Eric Hameleers * Added missing "" around $ESSID, which broke
+#                                ESSIDs that contain a space character.
+# 10/oct/2006 * Eric Hameleers * Added default empty values for all parameters.
+#                                This makes a second wireless card leave
+#                                wpa_supplicant alone if WPA is not configured.
+# 15/oct/2006 * Eric Hameleers * Swapped the calls to "key <key>" and
+#                                "key restricted" since that might be needed
+#                                for WEP to work reliably.
+# 09/jan/2007 * Eric Hameleers * Add explicit default values to wireless params;
+#                                also set the ESSID before IWPRIV commands,
+#                                needed for some RaLink cards;
+#                                use /proc/net/wireless instead of calling
+#                                iwconfig to determine if a card is wireless.
+# 13/apr/2007 * Eric Hameleers * Use of the IWPRIV variable was broken.
+#                                NOTE: if you need to enter multiple parameters
+#                                in IWPRIV, you must separate them with the pipe
+#                                (|) character - this used to be a space char!
+#                                See the example in rc.inet1.conf.
+# 16/apr/2008 * Pat Volkerding * Make sure that HWADDR is all upper case.
+# 23/apr/2008 * Pat Volkerding * Increase sleep time after bringing up an
+#                                interface to 3 seconds.  Some drivers
+#                                need this additional time to initalize.
+# 02/jan/2010 * Pat Volkerding * Look for /sys/class/net/$NETDEV/wireless rather
+#                                than the contents of /proc/net/wireless to find
+#                                if a network device is wireless.  In newer
+#                                kernels devices will not show up in
+#                                /proc/net/wireless until active.
+# 16/aug/2012 * Pat Volkerding * Use several tests to determine if an interface
+#                                is wireless, as the reliability of any given
+#                                test may depend on the kernel options and the
+#                                wireless driver used.
+#                                Convert the MAC address to uppercase in sed.
+# ------------------------------------------------------------------------------
+
+LOGGER=${LOGGER:-cat}
+
+if [ -z $IFNAME ] ; then
+  echo "WARNING: The script 'rc.wireless' must be executed by 'rc.inet1'!"  | $LOGGER
+  echo "         You should run the command \"/etc/rc.d/rc.inet1 <your_interface>_start\" yourself." | $LOGGER
+  return 1 2> /dev/null || exit 1
+fi
+
+INTERFACE=$1
+
+# Find the path where wireless tools are installed
+for IWPATH in /usr/{bin,sbin} /usr/local/{bin,sbin} /sbin /bin ; do
+    if [ -x $IWPATH/iwconfig ] ; then break ; fi
+done
+
+# The same for wpa_supplicant (needed for WPA support)
+for SUPPATH in /usr/{bin,sbin} /usr/local/{bin,sbin} /sbin /bin ; do
+    if [ -x $SUPPATH/wpa_supplicant ] ; then break ; fi
+done
+
+# Set all desired settings through the wireless tools
+IWCOMMAND="$IWPATH/iwconfig ${INTERFACE}"
+IWPRIVCMD="$IWPATH/iwpriv ${INTERFACE}"
+IWSPYCMD="$IWPATH/iwspy ${INTERFACE}"
+IFCOMMAND="/sbin/ip link set dev ${INTERFACE}"
+
+is_wireless_device ()
+{
+    # Return 0 for a wireless interface, or 1 for a non-wireless interface.
+    if LC_ALL=C $IWPATH/iwconfig $1 2>&1 | grep -q "IEEE 802.11" ; then
+        return 0
+    elif [ -d /sys/class/net/${1}/wireless ]; then
+        return 0
+    elif [ "$(cat /sys/class/net/${1}/uevent | grep DEVTYPE)" = "DEVTYPE=wlan" ]; then 
+        return 0
+    else # all tests failed, assume the device is not wireless (or add a better test :)
+        return 1
+    fi
+}
+
+###############
+# EXIT POINTS #
+###############
+
+# Is the device wireless?  If not, exit this script.
+is_wireless_device ${INTERFACE} || return 0 2> /dev/null || exit 0
+
+# If we stop a wireless interface using wpa_supplicant,
+# we'll kill its wpa_supplicant daemon too and exit this script:
+if [ "$2" = "stop" ]; then
+	WPAPID=$(echo $(ps axww | grep wpa_supplicant | grep i${INTERFACE}) | cut -f1 -d' ')
+	[ ${WPAPID} ] &&  kill ${WPAPID}
+	return 0
+fi
+
+# -----------------------------------------------------
+# Continue with the script - bringing the interface UP.
+# -----------------------------------------------------
+
+# Bring interface up - for determining the HWADDR
+$IFCOMMAND up
+sleep 3
+
+# Get the MAC address for the interface
+HWADDR=$(/sbin/ip link show dev ${INTERFACE} | sed -ne 's/.*link\/ether \(..:..:..:..:..:..\).*/\U\1/p') 
+
+# Empty all wireless parameters- some of them could still be set for a previous interface:
+# when rc.inet1 is sourced from rc.M all scripts are run in the same shell.
+CHANNEL=""
+ESSID=""
+FREQ=""
+FRAG=""
+IWCONFIG=""
+IWPRIV=""
+IWSPY=""
+KEY=""
+MODE=""
+NICKNAME=""
+NWID=""
+RATE=""
+RTS=""
+SENS=""
+WPA=""
+WPADRIVER=""
+WPACONF=""
+WPAWAIT=""
+# Read the configuration information for the card with address $HWADDR
+# from /etc/rc.d/rc.wireless.conf:
+[[ -r /etc/rc.d/rc.wireless.conf ]] && . /etc/rc.d/rc.wireless.conf
+
+# Let any per-interface overrides (the WLAN_xxxx parameters) that are set
+# in /etc/rc.d/rc.inet1.conf have precedence.
+# The reason: you might have multiple wireless cards of the same brand, or
+# connecting to multiple networks.
+# Position 'i' of this interface in the IFNAME array was determined in rc.inet1
+CHANNEL=${WLAN_CHANNEL[$i]:-${CHANNEL}}
+ESSID=${WLAN_ESSID[$i]:-${ESSID}}
+FREQ=${WLAN_FREQ[$i]:-${FREQ}}
+FRAG=${WLAN_FRAG[$i]:-${FRAG}}
+IWCONFIG=${WLAN_IWCONFIG[$i]:-${IWCONFIG}}
+IWPRIV=${WLAN_IWPRIV[$i]:-${IWPRIV}}
+IWSPY=${WLAN_IWSPY[$i]:-${IWSPY}}
+KEY=${WLAN_KEY[$i]:-${KEY}}
+MODE=${WLAN_MODE[$i]:-${MODE}}
+NICKNAME=${WLAN_NICKNAME[$i]:-${NICKNAME}}
+NWID=${WLAN_NWID[$i]:-${NWID}}
+RATE=${WLAN_RATE[$i]:-${RATE}}
+RTS=${WLAN_RTS[$i]:-${RTS}}
+SENS=${WLAN_SENS[$i]:-${SENS}}
+WPA=${WLAN_WPA[$i]:-${WPA}}
+# The "ext" interface will be default if not explicitly set
+WPADRIVER=${WLAN_WPADRIVER[$i]:-${WPADRIVER:="wext"}}
+# The default config file as installed by the wpa_supplicant package:
+WPACONF=${WLAN_WPACONF[$i]:-${WPACONF:="/etc/wpa_supplicant.conf"}}
+WPAWAIT=${WLAN_WPAWAIT[$i]:-${WPAWAIT:="60"}}
+
+
+[ -n "$VERBOSE" -a -n "$INFO" ] && echo "$0:  $1 information: '$INFO'"
+
+###################
+# WIRELESS CONFIG #
+###################
+
+# Mode needs to be first : some settings apply only in a specific mode!
+if [ -n "$MODE" ] ; then
+	echo "$0:  $IWCOMMAND mode $MODE" | $LOGGER
+        # if $IWCOMMAND fails, try taking the interface down to run it.
+        # Some drivers require this.
+	if ! $IWCOMMAND mode $MODE 2> /dev/null ; then
+		$IFCOMMAND down
+		$IWCOMMAND mode $MODE
+		$IFCOMMAND up
+		sleep 3
+        fi
+fi
+# This is a bit hackish, but should do the job right...
+if [ ! -n "$NICKNAME" ] ; then
+    NICKNAME=$(/bin/hostname)
+fi
+if [ -n "$ESSID" -o -n "$MODE" ] ; then
+	echo "$0:  $IWCOMMAND nick $NICKNAME" | $LOGGER
+	$IWCOMMAND nick $NICKNAME
+fi
+# Regular stuff...
+if [ -n "$NWID" ] ; then
+	echo "$0:  $IWCOMMAND nwid $NWID" | $LOGGER
+	$IWCOMMAND nwid $NWID
+fi
+if [ -n "$FREQ" ] ; then
+	echo "$0:  $IWCOMMAND freq $FREQ" | $LOGGER
+	$IWCOMMAND freq $FREQ
+elif [ -n "$CHANNEL" ] ; then
+	echo "$0:  $IWCOMMAND channel $CHANNEL" | $LOGGER
+	$IWCOMMAND channel $CHANNEL
+fi
+
+# WEP keys (non-WPA) 
+if [ -n "$KEY" -a ! -n "$WPA" ] ; then
+	if [ "$KEY" = "off" ]; then
+	  echo "$0:  $IWCOMMAND key open" | $LOGGER
+	  $IWCOMMAND key open
+	  echo "$0:  $IWCOMMAND key off" | $LOGGER
+	  $IWCOMMAND key off
+	else 
+	  echo "$0:  $IWCOMMAND key ************" | $LOGGER
+	  $IWCOMMAND key $KEY
+	  if ! echo "$KEY" | egrep -qw "restricted|open" ; then
+	    # Set "restricted" as the default security mode:
+	    echo "$0:  $IWCOMMAND key restricted" | $LOGGER
+	    $IWCOMMAND key restricted
+	  fi
+	fi
+fi
+if [ -n "$SENS" ] ; then
+	echo "$0:  $IWCOMMAND sens $SENS" | $LOGGER
+	$IWCOMMAND sens $SENS
+fi
+if [ -n "$RATE" ] ; then
+	echo "$0:  $IWCOMMAND rate $RATE" | $LOGGER
+	$IWCOMMAND rate $RATE
+fi
+if [ -n "$RTS" ] ; then
+	echo "$0:  $IWCOMMAND rts $RTS" | $LOGGER
+	$IWCOMMAND rts $RTS
+fi
+if [ -n "$FRAG" ] ; then
+	echo "$0:  $IWCOMMAND frag $FRAG" | $LOGGER
+	$IWCOMMAND frag $FRAG
+fi
+# More specific parameters
+if [ -n "$IWCONFIG" ] ; then
+	echo "$0:  $IWCOMMAND $IWCONFIG" | $LOGGER
+	$IWCOMMAND $IWCONFIG
+fi
+if [ -n "$IWSPY" ] ; then
+	echo "$0:  $IWSPYCMD $IWSPY" | $LOGGER
+	$IWSPYCMD $IWSPY
+fi
+# For RaLink cards, the SSID must be set right before configuring WPAPSK/TKIP parameters
+# using iwpriv commands in order to generate the wpapsk password. This should not hurt other cards:
+if [ -n "$ESSID" ] ; then
+  echo "$0:  $IWCOMMAND essid \"$ESSID\"" | $LOGGER
+  $IWCOMMAND essid "$ESSID"
+fi
+# The iwpriv can set one private IOCTL at the time, so if the $IWPRIV
+# variable contains multiple pipe ('|') separated settings, we split them here:
+# WARNING: if your iwpriv commands contain a WEP/WPA key, these can be logged
+# in /var/log/messages!
+if [ -n "$IWPRIV" ] ; then
+  echo "${IWPRIV}|" | \
+  while read -d '|' iwi; do
+    if [ -n "$iwi" ]; then
+      echo "$0:  '$IWPRIVCMD $iwi'" | $LOGGER
+      $IWPRIVCMD $iwi
+    fi
+  done
+fi
+
+##################
+# WPA_SUPPLICANT #
+##################
+
+# Support for WPA (wireless protected access) is provided by wpa_supplicant
+# for those drivers that support it (and it looks like wpa_supplicant is
+# the future for WPA support in Linux anyway)
+if [ "$WPA" = "wpa_supplicant" ] || [ "$WPA" = "wpaxsupplicant" ] && [ -x ${SUPPATH}/wpa_supplicant ]; then
+	# Interface down, so wpa_supplicant can associate with the AP
+	$IFCOMMAND down
+	#WPACONF=${WPACONF:-/etc/wpa_supplicant.conf}
+	WPA_OPTIONS=""
+	[ ${WPADRIVER} ] && WPA_OPTIONS="-D${WPADRIVER}" # specify the driver
+	[ ${WPA} = "wpaxsupplicant" ] && WPA_OPTIONS="${WPA_OPTIONS} -e" # Use external xsupplicant (disables the internal supplicant)
+
+	# We leave a running wpa_supplicant process in peace:
+	WPAPID=$(echo $(ps axww | grep wpa_supplicant | grep i${INTERFACE}) | cut -f1 -d' ')
+	if [ ${WPAPID} ]; then
+	  echo "$0:  wpa_supplicant found running already" | $LOGGER
+	else
+	  echo "$0:  wpa_supplicant -B -c${WPACONF} ${WPA_OPTIONS} -i$INTERFACE" | $LOGGER
+	  ${SUPPATH}/wpa_supplicant -B -c${WPACONF} ${WPA_OPTIONS} -i$INTERFACE
+	fi
+
+	# Buy wpa_supplicant some time to authenticate before bringing the
+	# interface back up... but we don't wait forever:
+	# You can increase this value in rc.inet1.conf (WLAN_WPAWAIT) or rc.wireless.conf (WPAWAIT)
+        # if your card takes longer to associate:
+	WPAWAIT=${WPAWAIT:-10}
+	wi=0
+	while [ $wi -lt $WPAWAIT ]; do
+	  wi=$(($wi+1)); sleep 1
+	  if (grep -q "^ctrl_interface=" ${WPACONF}); then
+	    if (LC_ALL=C ${SUPPATH}/wpa_cli -i$INTERFACE status | grep -q "^wpa_state=COMPLETED"); then break; fi
+	  else
+	    if (LC_ALL=C ${IWCOMMAND} | grep -Eq "Encryption key:....-"); then break; fi
+	  fi
+	done
+	if [ $wi -eq $WPAWAIT ]; then
+	  echo "WPA authentication did not complete, try running '/etc/rc.d/rc.inet1 ${INTERFACE}_start' in a few seconds." | $LOGGER
+	fi
+	# Bring interface up to avoid 'not ready' errors when calling iwconfig
+	$IFCOMMAND up
+	sleep 3
+
+else
+
+	# ESSID need to be last: most devices re-perform the scanning/discovery
+	# when this is set, and things like encryption keys had better be
+	# defined if we want to discover the right set of APs/nodes.
+	# NOTE: when automatic association does not work, but you manage to get
+	# an IP address by manually setting the ESSID and then calling dhcpcd,
+	# then the cause might be the incorrect definition of your ESSID="bla"
+	# parameter in rc.wireless.conf.
+	# Debug your wireless problems by running 'iwevent' while the card
+	# is being configured.
+	if [ -n "$ESSID" ] ; then
+	  echo "$0:  $IWCOMMAND essid \"$ESSID\"" | $LOGGER
+	  $IWCOMMAND essid "$ESSID"
+	fi
+
+fi

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+metamail: metamail (MIME extensions for mail)
+metamail:
+metamail: Metamail is an implementation of MIME, the Multipurpose Internet
+metamail: Mail Extensions, a proposed standard for multimedia mail on the
+metamail: Internet. Metamail implements MIME, and also implements extensibility
+metamail: and configuration via the "mailcap" mechanism described in an
+metamail: informational RFC that is a companion to the MIME document.
+metamail:
+metamail:
+metamail:
+metamail:

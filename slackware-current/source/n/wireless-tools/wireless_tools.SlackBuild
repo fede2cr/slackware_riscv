@@ -1,0 +1,117 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2010, 2012, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=wireless_tools
+VERSION=29
+BUILD=${BUILD:-10}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX="64"
+else
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-wireless-tools
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf wireless_tools.$VERSION
+tar xvf $CWD/wireless_tools.$VERSION.tar.gz || exit 1
+cd wireless_tools.$VERSION
+zcat $CWD/wireless_tools.nowhine.diff.gz | patch -p1 --verbose --suffix=.orig --backup || exit 1
+zcat $CWD/wireless_tools.static.diff.gz | patch -p1 --verbose --suffix=.orig --backup || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+make || exit 1
+
+mkdir -p $PKG/sbin
+cp -a ifrename iwconfig iwevent iwgetid iwlist iwpriv iwspy $PKG/sbin
+chmod 755 $PKG/sbin/*
+# The library seems to be used by kdenetwork, but since the .soname in the shared library
+# doesn't seem to be forward-thinking we'll leave that out still:
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}
+cp -a libiw.a $PKG/usr/lib${LIBDIRSUFFIX}
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/usr/include
+cp -a iwlib.h wireless.h $PKG/usr/include
+chmod 644 $PKG/usr/include/*.h
+
+mkdir -p $PKG/usr/man/man5
+cat iftab.5 | gzip -9c > $PKG/usr/man/man5/iftab.5.gz
+mkdir -p $PKG/usr/man/man7
+cat wireless.7 | gzip -9c > $PKG/usr/man/man7/wireless.7.gz
+mkdir -p $PKG/usr/man/man8
+for file in *.8 ; do
+  cat $file | gzip -9c > $PKG/usr/man/man8/$file.gz
+done
+
+mkdir -p $PKG/usr/doc/wireless-tools-$VERSION
+cp -a \
+  COPYING INSTALL *.txt README* \
+  $PKG/usr/doc/wireless-tools-$VERSION
+chmod 644 $PKG/usr/doc/wireless-tools-$VERSION/*
+
+# Add init scripts from Eric Hameleers:
+mkdir -p $PKG/etc/rc.d
+cat $CWD/scripts/rc.wireless > $PKG/etc/rc.d/rc.wireless.new
+chmod 755 $PKG/etc/rc.d/rc.wireless.new
+# This might contain a secret key, so we'll use chmod 600:
+cat $CWD/scripts/rc.wireless.conf > $PKG/etc/rc.d/rc.wireless.conf.new
+chmod 600 $PKG/etc/rc.d/rc.wireless.conf.new
+
+mkdir $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/wireless-tools-$VERSION-$ARCH-$BUILD.txz
+

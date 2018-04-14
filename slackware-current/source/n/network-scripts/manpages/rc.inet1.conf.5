@@ -1,0 +1,253 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH RC.INET1.CONF 5 "12 Nov 2017" "Slackware Version 15.0"
+.SH NAME
+rc.inet1.conf \- Slackware network configuration file.
+.SH DESCRIPTION
+.B rc.inet1.conf
+\. This file contains the configuration settings for network interfaces.
+It consists basically of a series of variable array definitions.
+Array elements with the same index number will all belong to the same
+network interface.
+.LP
+By default, index number `0' is used for the configuration of interface
+.I eth0,
+index number `1' is used for
+.I eth1
+and so forth. The default interface name can be overruled by the use of
+the variable
+.B IFNAME.
+.LP
+This is what a typical section of the file looks like for a card that is
+configured to use DHCP, showing all array variables with the index number [0]:
+.LP
+# Config information for eth0:
+.br
+IPADDR[0]=""
+.br
+NETMASK[0]=""
+.br
+IPALIASES[0]=""
+.br
+USE_DHCP[0]="yes"
+.br
+DHCP_HOSTNAME[0]=""
+.br
+DHCP_TIMEOUT[0]=""
+.LP
+Alternatively, here is an example for a card that uses a static IP address and
+has a non-default name (
+.I ath0
+instead of
+.I eth1
+), as well as an additional IP address configured on the interface.
+The array index is [1] in this case.
+.LP
+# Config information for ath0 (using static IP address):
+.br
+IFNAME[1]="ath0"
+.br
+IPADDR[1]="192.168.3.11"
+.br
+NETMASK[1]="255.255.255.0"
+.br
+IPALIASES[1]="192.168.3.100"
+.br
+USE_DHCP[1]=""
+.br
+DHCP_HOSTNAME[1]=""
+.br
+GATEWAY="192.168.3.1"
+.br
+.SH EXAMPLE VIRTUAL INTERFACE CREATION AND SETUP
+Virtual interfaces are created before any address configuration or bridge 
+setup is done, so you may use these interfaces as IFNAME or BRNICS values.
+These can be tun or tap interfaces: adjust VIRTIFNAME and VIRTIFTYPE as
+needed.
+.LP
+# Virtual tap interface example
+.br
+#VIRTIFNAME[0]="tap0"
+.br
+#VIRTIFTYPE[0]="tap"
+.br
+#VIRTIFUSER[0]="root"
+.br
+#VIRTIFGROUP[0]="root"
+.br
+.SH EXAMPLE BRIDGE CREATION AND SETUP
+Note the added "BRNICS" variable which contains a space-separated list
+of the physical or virtual network interfaces you want to add to the bridge.
+Note that the array index can not be a duplicate of that defined for some
+other interface (e.g. eth0 will be index 0 by default).
+.LP
+IFNAME[0]="br0"
+.br
+BRNICS[0]="eth0 eth1 tun0"
+.br
+IPADDR[0]="192.168.0.1"
+.br
+NETMASK[0]="255.255.255.0"
+.br
+IPALIASES[0]=""
+.br
+USE_DHCP[0]=""
+.br
+DHCP_HOSTNAME[0]=""
+.br
+.SH GENERAL PARAMETERS
+This is a list of network parameters you can set for any card (wired as well
+as wired).  The example section is for `eth0' by default, i.e.
+the array variables all have the array index [0]:
+.LP
+# Config information for eth0:
+.TP 25
+IPADDR[0]=""
+# Set this value to an actual IP address if you want static IP
+address assignment
+.TP
+NETMASK[0]=""
+# With a static IP address, you are required to also set a netmask
+(255.255.255.0 is common)
+.TP
+IPALIASES[0]=""
+# Space separated list of additional IP addresses to bind to the 
+interface after initial configuration is complete. If USE_DHCP is
+set to `yes' then additional addresses will only be added if the
+dhcp client invocation is successful in obtaining a primary address.
+.TP
+USE_DHCP[0]="yes"
+# If set to "yes", we will run a DHCP client and have the IP address
+dynamically assigned
+.TP
+DHCP_HOSTNAME[0]="mybox"
+# Tell the DHCP server what hostname to register
+.TP
+DHCP_TIMEOUT[0]=15
+# The default timeout for the DHCP client to wait for server response is
+30 seconds, but you might want a shorter wait.
+.TP
+IFNAME[0]="usb0"
+# Use this to define configuration blocks for interfaces with non-standard
+names (this should be rare these days)
+.TP
+HWADDR[0]="00:01:23:45:67:89"
+# Overrule the card's hardware MAC address
+.TP
+MTU[0]=""
+# The default MTU is 1500, but you might need 1360 when you use NAT'ed
+IPSec traffic. IPv6 will likely require smaller MTUs as well
+.TP
+DHCP_KEEPRESOLV[0]="yes"
+# If you do
+.B not
+want `/etc/resolv.conf' overwritten by the DHCP client
+.TP
+DHCP_KEEPNTP[0]="yes"
+# If you do
+.B not
+want `/etc/ntp.conf' overwritten by the DHCP client
+.TP
+DHCP_KEEPGW[0]="yes"
+# If you do
+.B not
+want the DHCP client to change your default gateway
+.TP
+DHCP_DEBUG[0]="yes"
+# Make dhcpcd show verbose diagnostics
+.TP
+DHCP_NOIPV4LL[0]="yes"
+# Do not assign an
+.I `ipv4ll'
+address when a DHCP server is not found (ipv4 link-local addressing in the IP range 169.254.0.0/16 is also known as
+.I `zeroconf'
+address assignment)
+.TP
+DHCP_IPADDR[0]=""
+# Request a specific IP address from the DHCP server
+.SH WIRELESS PARAMETERS
+For wireless cards, several additional parameter definitions are available.
+All these parameters (or better, variables) start with the prefix
+.B WLAN_ .
+.LP
+.TP 25
+WLAN_ESSID[4]=DARKSTAR
+# Your Wireless Access Point's name
+.TP
+WLAN_MODE[4]=Managed
+# "Managed" mode for use with Access Points.  "Ad-Hoc" is for
+peer-to-peer connections.
+.TP
+WLAN_RATE[4]="54M auto"
+# The transmission rates you want the driver to try ("auto" means
+that bandwidth can be variable)
+.TP
+WLAN_CHANNEL[4]="auto"
+# The channel to which the Access Point is tuned ("auto" to let the
+driver find out the correct channel) 
+.TP
+WLAN_KEY[4]="D5A31F54ACF0487C2D0B1C10D2"
+# Definition of a WEP key
+.TP
+WLAN_IWPRIV[4]="set AuthMode=WPAPSK | set EncrypType=TKIP | set WPAPSK=the_64_character_key"
+# Some drivers require a private ioctl to be set through the iwpriv command.
+If more than one is required, you can place them in the
+.I IWPRIV
+parameter (separated with the pipe (|) character, see the example).
+.TP 
+WLAN_WPA[4]="wpa_supplicant"
+# Run wpa_supplicant for WPA support
+.TP
+WLAN_WPADRIVER[4]="ndiswrapper"
+# Tell wpa_supplicant to specifically use the ndiswrapper driver.
+If you leave this empty the `wext' driver is used by default; most
+modern wireless drivers use 'wext'.
+.TP
+WLAN_WPAWAIT[4]=30
+# In case it takes long for the WPA association to finish, you can
+increase the wait time before rc.wireless decides that association
+failed (defaults to 10 seconds)
+.SH FILES
+.TP 25
+.I /etc/rc.d/rc.inet1
+network configuration script
+.TP
+.I /etc/rc.d/rc.inet1.conf
+configuration parameter file (is being read by rc.inet1 and rc.wireless)
+.TP
+.I /etc/rc.d/rc.wireless
+wireless configuration script
+.TP
+.I /etc/rc.d/rc.wireless.conf
+configuration parameter file (
+.B deprecated
+)
+.SH CAVEATS
+The network interface definitions are stored in variable
+.I arrays.
+The bash shell has no facilities to retrieve the largest array index used.
+Therefore, the
+.I rc.inet1
+script makes the assumption that array indexes stay below the value of
+.B 6
+\.
+.LP
+If you want to configure more than six network interfaces, you will
+have to edit the file
+.I /etc/rc.d/rc.inet1
+and change the value `6' in the line
+.B MAXNICS=${MAXNICS:-6}
+to the number of network interfaces you wish to use.
+.SH AUTHORS
+Patrick J. Volkerding <volkerdi@slackware.com>
+Eric Hameleers <alien@slackware.com>
+Robby Workman <rworkman@slackware.com>
+.SH "SEE ALSO"
+.BR rc.inet1(8)

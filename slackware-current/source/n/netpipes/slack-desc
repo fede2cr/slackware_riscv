@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+netpipes: netpipes (TCP/IP pipe utilities)
+netpipes:
+netpipes: Robert Forsman's netpipes package makes TCP/IP streams usable in shell
+netpipes: scripts. It can also simplify client/server code by allowing the 
+netpipes: programmer to skip all the tedious programming bits related to sockets
+netpipes: and concentrate on writing a filter/service. Here's an example of
+netpipes: what you can do with 'faucet' and 'hose', two netpipes commands:
+netpipes: 
+netpipes: server$ faucet 3000 -out tar cf - .
+netpipes: client$ hose server 3000 -in tar xvf -
+netpipes:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+netkit-ntalk: netkit-ntalk (talk client and talkd daemon)
+netkit-ntalk:
+netkit-ntalk: talk and talkd are the BSD communication client server system for
+netkit-ntalk: the command line. "talk" is the client that asks another user to
+netkit-ntalk: respond; and "in.talkd" is the server that notifies a user that
+netkit-ntalk: someone else wants to initiate a conversation.
+netkit-ntalk:
+netkit-ntalk: The talk command appeared in 4.2BSD.
+netkit-ntalk:
+netkit-ntalk:
+netkit-ntalk:

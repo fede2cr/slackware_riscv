@@ -1,0 +1,85 @@
+#!/bin/sh
+
+# Copyright 2006, 2008, 2009, 2010, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=ipw2200-fw
+VERSION=${VERSION:-3.1}
+ARCH=${ARCH:-fw}
+BUILD=${BUILD:-1}
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-${PKGNAM}
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf ${PKGNAM}-${VERSION}
+tar xvf $CWD/${PKGNAM}-$VERSION.tar.?z* || exit 1
+cd ${PKGNAM}-$VERSION
+
+# Make sure ownerships and permissions are sane:
+chown -R root:root .
+chmod 644 *
+
+# install:
+mkdir -p $PKG/lib/firmware
+cp -a * $PKG/lib/firmware
+
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/${PKGNAM}-${VERSION}
+cp -a LICENSE* $PKG/usr/doc/${PKGNAM}-${VERSION}
+
+mkdir -p $PKG/install
+cat << EOF > $PKG/install/slack-desc
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in.  You must
+# make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------------|
+ipw2200-fw: ipw2200-fw (Intel ipw2200 wireless firmware)
+ipw2200-fw:
+ipw2200-fw: This firmware is used by the ipw2200 kernel module for the Intel
+ipw2200-fw: PRO/Wireless 2915ABG Network Connection and Intel PRO/Wireless 2200BG
+ipw2200-fw: Network Connection mini PCI adapters.
+ipw2200-fw: Your use of this firmware is governed by this Intel license:
+ipw2200-fw:   /usr/doc/${PKGNAM}-${VERSION}/LICENSE
+ipw2200-fw:
+ipw2200-fw: Visit Intel's Linux wireless website at this address:
+ipw2200-fw:   http://intellinuxwireless.org/
+ipw2200-fw:
+EOF
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-$VERSION-$ARCH-$BUILD.txz
+

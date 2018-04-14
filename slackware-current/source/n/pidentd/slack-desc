@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+pidentd: pidentd (TCP/IP IDENT protocol server)
+pidentd:
+pidentd: The identd daemon implements the IDENT protocol as specified in
+pidentd: RFC1413. When your machine connects to a remote system, the remote
+pidentd: machine may connect to your identd daemon to find out either the
+pidentd: user name or other information about the process that initiated
+pidentd: the connection. Some remote machines may choose not to allow your
+pidentd: connections if you do not provide access to an identd daemon.
+pidentd:
+pidentd: The pidentd daemon was written by Peter Eriksson.
+pidentd:

@@ -1,0 +1,46 @@
+#!/bin/sh
+
+dovecot_start()
+{
+  echo "Starting dovecot:  /usr/sbin/dovecot"
+  /usr/sbin/dovecot
+}
+
+dovecot_stop()
+{
+  echo "Stopping dovecot..."
+  /usr/bin/doveadm stop
+}
+
+dovecot_status()
+{
+  /usr/bin/doveadm service status
+}
+
+dovecot_reload()
+{
+  echo "Reloading dovecot..."
+  /usr/bin/doveadm reload
+}
+
+case $1 in
+'start')
+  dovecot_start
+  ;;
+'stop')
+  dovecot_stop
+  ;;
+'status')
+  dovecot_status
+  ;;
+'restart')
+  dovecot_stop
+  sleep 3
+  dovecot_start
+  ;;
+'reload')
+  dovecot_reload
+  ;;
+*)
+  echo "usage $0 start|stop|restart|reload|status"
+esac

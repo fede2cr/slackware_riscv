@@ -1,0 +1,112 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH RC.INET1 8 "12 Nov 2017" "Slackware Version 15.0"
+.SH NAME
+rc.inet1 \- Slackware network configuration script.
+.SH DESCRIPTION
+.BR rc.inet1 .
+This script configures network interfaces.
+Wireless interfaces are configured just like any network device
+but accept many more configuration parameters.
+.br
+rc.inet1 reads its configuration parameters from a file `rc.inet1.conf'.
+The `rc.inet1.conf' file contains a series of variable array definitions,
+with each array index corresponding to a single network interface.
+.SH OPTIONS
+The way to start your network (the configuration of your nics and
+bringing the interfaces up, and creating a default route if required)
+is by running the command:
+.LP
+.B /etc/rc.d/rc.inet1
+.LP
+Restarting the whole network (all available network interfaces)
+is done in a similar fashion:
+.LP
+.B /etc/rc.d/rc.inet1 restart
+.LP
+More generically speaking, you can start/stop/restart any network
+interface yourself by running one of the commands:
+.LP
+.B /etc/rc.d/rc.inet1 INTERFACE_start
+.LP
+.B /etc/rc.d/rc.inet1 INTERFACE_stop
+.LP
+.B /etc/rc.d/rc.inet1 INTERFACE_restart
+.LP
+where 
+.I `INTERFACE'
+is the name of an existing network interface (eth0, wlan0, ...)
+.SH WIRELESS
+The script
+.I rc.wireless
+takes care of configuring the wireless parameters for a network
+interface. This script does not run independently.  Instead, it is executed
+by the generic network configuration script
+.IR rc.inet1 .
+.br
+If a wireless interface is detected,
+.I rc.wireless
+will use
+.I iwconfig ,
+.I iwpriv
+and possibly
+.I wpa_supplicant
+to associate the card with an access point (in managed mode) or peer it with
+another computer (in ad-hoc mode), and enable an encryption modus like WPA.
+.SH FILES
+.TP 25
+.I /etc/rc.d/rc.inet1
+network configuration script
+.TP
+.I /etc/rc.d/rc.inet1.conf
+parameter definition file (is being read by rc.inet1 and rc.wireless)
+.TP
+.I /etc/rc.d/rc.wireless
+wireless configuration script
+.TP
+.I /etc/rc.d/rc.wireless.conf
+parameter definition file (
+.B deprecated
+)
+.SH DIAGNOSTICS
+If you remove the executable bit from the
+.I rc.wireless
+script, it will never be executed.  This can be beneficial if you have 
+written your own wireless script and don't want Slackware to mess it up.
+.SH CAVEATS
+The network interface definitions are stored in variable
+.I arrays.
+The bash shell has no facilities to retrieve the largest array index used.
+Therefore, the
+.I rc.inet1
+script makes the assumption that array indexes stay below the value of
+.BR 6 .
+Effectively this means that you can configure up to 6 network interfaces in
+rc.inet1.conf by default.
+.LP
+If you want to configure more than six network interfaces, you will
+have to edit the file
+.I /etc/rc.d/rc.inet1
+and change the value `6' in the line:
+.br
+.B \ \ MAXNICS=${MAXNICS:-6}
+.br
+to a value that is larger than the largest index value you use.
+.LP
+The /etc/rc.d/rc.wireless script is not meant to be run on its own by the user!
+.SH AUTHORS
+Patrick J. Volkerding <volkerdi@slackware.com>
+Eric Hameleers <alien@slackware.com>
+Robby Workman <rworkman@slackware.com>
+.SH "SEE ALSO"
+.BR rc.inet1.conf(5),
+.BR ip(8),
+.BR iwconfig(8),
+.BR route(8)
