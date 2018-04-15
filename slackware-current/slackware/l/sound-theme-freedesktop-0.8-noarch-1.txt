@@ -1,0 +1,11 @@
+sound-theme-freedesktop: sound-theme-freedesktop (freedesktop.org sound theme)
+sound-theme-freedesktop:
+sound-theme-freedesktop: The freedesktop.org sound theme is a basic set of sounds for
+sound-theme-freedesktop: applications to use.
+sound-theme-freedesktop:
+sound-theme-freedesktop: Homepage: http://freedesktop.org/wiki/Specifications/sound-theme-spec
+sound-theme-freedesktop:
+sound-theme-freedesktop:
+sound-theme-freedesktop:
+sound-theme-freedesktop:
+sound-theme-freedesktop:

@@ -1,0 +1,11 @@
+libwmf-docs: libwmf-docs (extra documentation for libwmf)
+libwmf-docs:
+libwmf-docs: This package contains extra documentation useful for programming with
+libwmf-docs: the libwmf (metafile graphics format) library.
+libwmf-docs:
+libwmf-docs:
+libwmf-docs:
+libwmf-docs:
+libwmf-docs:
+libwmf-docs:
+libwmf-docs:

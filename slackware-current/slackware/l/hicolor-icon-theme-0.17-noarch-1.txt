@@ -1,0 +1,11 @@
+hicolor-icon-theme: hicolor-icon-theme (default icon theme)
+hicolor-icon-theme:
+hicolor-icon-theme: This is the default fallback theme used by implementations of the icon
+hicolor-icon-theme: theme specification.  
+hicolor-icon-theme:
+hicolor-icon-theme: The specification is available at:
+hicolor-icon-theme:   http://www.freedesktop.org/standards/icon-theme-spec/
+hicolor-icon-theme:
+hicolor-icon-theme: Homepage:  https://www.freedesktop.org/wiki/Software/icon-theme
+hicolor-icon-theme:
+hicolor-icon-theme:

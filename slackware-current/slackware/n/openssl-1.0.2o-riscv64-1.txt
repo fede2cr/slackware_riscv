@@ -1,0 +1,11 @@
+openssl: openssl (Secure Sockets Layer toolkit)
+openssl:
+openssl: The OpenSSL certificate management tool and the shared libraries that
+openssl: provide various encryption and decryption algorithms and protocols.
+openssl:
+openssl: This product includes software developed by the OpenSSL Project for
+openssl: use in the OpenSSL Toolkit (http://www.openssl.org). This product
+openssl: includes cryptographic software written by Eric Young
+openssl: (eay@cryptsoft.com). This product includes software written by Tim
+openssl: Hudson (tjh@cryptsoft.com).
+openssl:

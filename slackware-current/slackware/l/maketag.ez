@@ -1,0 +1,349 @@
+#!/bin/sh
+#item   ####description                                      ###on off ###
+TMP=/var/log/setup/tmp
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP
+fi
+cat /dev/null > $TMP/SeTnewtag
+dialog --title "SELECTING PACKAGES FROM SERIES L (Libraries)" \
+       --checklist "Please confirm the packages you wish to install \
+from series L. Use the UP/DOWN keys to scroll through the list, and \
+the SPACE key to deselect any items you don't want to install. \
+Keep in mind that many of these libraries are required by KDE \
+or other parts of the system. It's safest to install all of these \
+packages even if you aren't sure if you need them. Press ENTER when \
+you are done." 22 74 10 \
+"ConsoleKit2" "ConsoleKit user session framework" "on" \
+"GConf" "GNOME configuration library" "on" \
+"LibRaw" "Library for decoding RAW digital photos" "on" \
+"M2Crypto" "Cryptography toolkit for Python" "on" \
+"Mako" "Template library written in Python" "on" \
+"PyQt" "Python bindings for Qt" "on" \
+"QScintilla" "Qt port of the Scintilla C++ editor control" "on" \
+"SDL2" "Simple DirectMedia Layer library Version 2" "on" \
+"SDL2_gfx" "SDL2 graphics primitives / surface functions" "on" \
+"SDL2_image" "SDL2 image loading library" "on" \
+"SDL2_mixer" "SDL2 multi-channel audio mixer library" "on" \
+"SDL2_net" "SDL2 network library" "on" \
+"SDL2_ttf" "SDL2 TrueType font library" "on" \
+"a52dec" "ATSC A/52 stream decoder library" "on" \
+"aalib" "ASCII Art library" "on" \
+"adwaita-icon-theme" "GTK+ default icon theme" "on" \
+"akonadi" "PIM storage service" "on" \
+"alsa-lib" "ALSA sound library" "on" \
+"alsa-oss" "OSS compatibility wrapper for ALSA" "on" \
+"alsa-plugins" "ALSA plugins, including PulseAudio" "on" \
+"apr" "Apache Portable Runtime library" "on" \
+"apr-util" "Extra APR library interfaces" "on" \
+"aspell" "Spell checking library" "on" \
+"aspell-en" "English word list for Aspell" "on" \
+"at-spi2-atk" "AT-SPI2 bridge to ATK" "on" \
+"at-spi2-core" "Assistive Technology Interface core" "on" \
+"atk" "Accessability library" "on" \
+"atkmm" "Accessability library for GTKmm" "on" \
+"attica" "Qt Collaboration library" "on" \
+"audiofile" "SGI's Audio File sound library" "on" \
+"automoc4" "Automatic moc for Qt4" "on" \
+"babl" "A pixel format translation library" "on" \
+"boost" "Boost C++ Libraries" "on" \
+"cairo" "Vector graphics library used by GTK+" "on" \
+"cairomm" "Vector graphics library used by GTKmm" "on" \
+"chmlib" "Library for accessing CHM files" "on" \
+"clucene" "Text-Search Engine" "on" \
+"db42" "Berkeley DB library, version 4.2" "on" \
+"db44" "Berkeley DB library, version 4.4" "on" \
+"db48" "Berkeley DB library, version 4.8" "on" \
+"dbus-glib" "glib bindings for the dbus IPC library" "on" \
+"dbus-python" "Python bindings for the D-Bus library" "on" \
+"dconf" "low-level configuration system" "on" \
+"dconf-editor" "graphical editor for dconf" "on" \
+"desktop-file-utils" "Tools for .desktop files" "on" \
+"djvulibre" "Web-centric document and image format" "on" \
+"ebook-tools" "Tools for ebook file formats" "on" \
+"eigen2" "C++ math library" "on" \
+"eigen3" "C++ math library" "on" \
+"elfutils" "ELF object file access library and utilities" "on" \
+"enchant" "A wrapper for spellcheck libraries" "on" \
+"esound" "Enlightened Sound Daemon" "on" \
+"exiv2" "Exif and IPTC Metadata Library and Tools" "on" \
+"expat" "XML parser library" "on" \
+"ffmpeg" "FFmpeg multimedia libraries and utilities" "on" \
+"fftw" "Fast Fourier Transform library" "on" \
+"fluidsynth" "Real-time software synthesizer" "on" \
+"freetype" "Font rendering library" "on" \
+"fribidi" "Unicode BiDirectional library" "on" \
+"fuse" "Tools for using filesystems in userspace" "on" \
+"gamin" "a minimalist FAM replacement" "on" \
+"gc" "Boehm-Demers-Weiser garbage collector library" "on" \
+"gcr" "crypto library and ui for gnome-keyring" "on" \
+"gd" "A graphics library" "on" \
+"gdbm" "The GNU gdbm database library" "on" \
+"gdk-pixbuf2" "Image library used by GTK+2" "on" \
+"gegl" "Generic Graphics Library" "on" \
+"giflib" "GIF image library" "on" \
+"glade3" "Glade UI Designer version 3" "on" \
+"glib" "Support library used by GTK+" "on" \
+"glib-networking" "network-related giomodules for glib" "on" \
+"glib2" "GLib version 2" "on" \
+"glibc" "The GNU C library" "on" \
+"glibc-i18n" "Internationalization support for glibc" "on" \
+"glibc-profile" "Profiling support for glibc" "on" \
+"glibmm" "Support library used by GTKmm" "on" \
+"gmime" "MIME parsing library" "on" \
+"gmm" "C++ generic matrix template library" "on" \
+"gmp" "A library for arithmetic" "on" \
+"gnome-keyring" "a tool to handle security credentials" "on" \
+"gnome-themes-standard" "Default icons used by many GTK+ applications" "on" \
+"gnu-efi" "EFI Development files for the GNU toolchain" "on" \
+"gobject-introspection" "GObject interface introspection library" "on" \
+"grantlee" "String Template system based on Qt" "on" \
+"gsettings-desktop-schemas" "GSettings schemas" "on" \
+"gsl" "GNU Scientific Library" "on" \
+"gst-plugins-base" "A base set of GStreamer plugins" "on" \
+"gst-plugins-base0" "A base set of GStreamer v0 plugins" "on" \
+"gst-plugins-good" "A good set of GStreamer plugins" "on" \
+"gst-plugins-good0" "A good set of GStreamer v0 plugins" "on" \
+"gst-plugins-libav" "GStreamer FFmpeg/Libav plugin" "on" \
+"gstreamer" "Streaming multimedia framework library" "on" \
+"gstreamer0" "Streaming multimedia framework library, v0" "on" \
+"gtk+" "A graphical toolkit library" "on" \
+"gtk+2" "GTK+ version 2" "on" \
+"gtk+3" "GTK+ version 3" "on" \
+"gtkmm2" "GTKmm version 2" "on" \
+"gtkmm3" "GTKmm version 3" "on" \
+"gtkspell" "GTK+ spell checker interface library" "on" \
+"gvfs" "glib virtual filesystems" "on" \
+"harfbuzz" "OpenType text shaping engine" "on" \
+"hicolor-icon-theme" "Standard icon theme tree" "on" \
+"hunspell" "Spell checker and morphological analyzer" "on" \
+"icon-naming-utils" "Icon naming utilities" "on" \
+"icu4c" "International Components for Unicode" "on" \
+"id3lib" "ID3 tag manipulation library" "on" \
+"ilmbase" "Industrial Light & Magic base libraries" "on" \
+"imagemagick" "ImageMagick image utilities" "on" \
+"iso-codes" "ISO standard lists" "on" \
+"jansson" "JSON data handling library" "on" \
+"jasper" "JPEG-2000 library" "on" \
+"jemalloc" "A memory allocator" "on" \
+"js185" "SpiderMonkey - Mozilla's JavaScript Engine" "on" \
+"judy" "Sparse dynamic array library" "on" \
+"keybinder" "keyboard shortcut library" "on" \
+"keyutils" "Kernel key management utilities" "on" \
+"lame" "LAME is an MP3 audio encoder" "on" \
+"lcms" "Little Color Management System" "on" \
+"lcms2" "little cms engine, version 2" "on" \
+"libaio" "Asynchronous I/O library" "on" \
+"libao" "Audio Output library" "on" \
+"libarchive" "Archive reading library" "on" \
+"libart_lgpl" "2D graphics library used by KDE" "on" \
+"libasyncns" "Asynchronous name query library" "on" \
+"libatasmart" "ATA S.M.A.R.T. library" "on" \
+"libbluedevil" "Qt wrapper for bluez" "on" \
+"libbluray" "Blu-Ray Disc playback library" "on" \
+"libcaca" "Colour AsCii Art library" "on" \
+"libcanberra" "XDG Sound Theme and Name Spec implementation" "on" \
+"libcap" "POSIX capabilities library" "on" \
+"libcap-ng" "Improved POSIX capabilities library" "on" \
+"libcddb" "online CD database lookup library" "on" \
+"libcdio" "GNU CD I/O library" "on" \
+"libcdio-paranoia" "CD paranoia libraries from libcdio" "on" \
+"libclc" "OpenCL 1.1 libraries" "on" \
+"libcroco" "CSS2 parsing and manipulation library" "on" \
+"libdbusmenu-qt" "Allows Qt/KDE apps to use DBus for menus" "on" \
+"libdiscid" "Library to generate DiscIDs from audio CDs" "on" \
+"libdvdnav" "DVD navigation library" "on" \
+"libdvdread" "Library for reading DVDs" "on" \
+"libedit" "BSD licensed input library with editing" "on" \
+"libevent" "event loop library" "on" \
+"libexif" "EXIF (image information) library" "on" \
+"libfakekey" "X virtual keyboard library" "on" \
+"libffi" "Foreign Function Interface library" "on" \
+"libglade" "An interface construction library" "on" \
+"libgnome-keyring" "gnome-keyring library" "on" \
+"libgphoto2" "A library for accessing digital cameras" "on" \
+"libgpod" "A library for a popular music device" "on" \
+"libgsf" "File I/O library" "on" \
+"libical" "iCAL protocol implementation" "on" \
+"libid3tag" "ID3 tag manipulation library" "on" \
+"libidl" "Interface Definition Language library" "on" \
+"libidn" "GNU Internationalized Domain Name library" "on" \
+"libidn2" "GNU Internationalized Domain Name library v2" "on" \
+"libieee1284" "Library to identify parallel port devices" "on" \
+"libimobiledevice" "iOS device communication library" "on" \
+"libiodbc" "Independent Open DataBase Connectivity" "on" \
+"libjpeg-turbo" "High-speed version of libjpeg" "on" \
+"libkarma" "A library for accessing the Rio Karma player" "on" \
+"liblastfm" "Library for interfacing with last.fm" "on" \
+"libmad" "high-quality MPEG audio library" "on" \
+"libmcrypt" "Mcrypt encryption library" "on" \
+"libmng" "Multiple-image Network Graphics library" "on" \
+"libmpc" "Multiple Precision Complex Library" "on" \
+"libmsn" "MSN Messenger protocol implementation" "on" \
+"libmtp" "MTP media device support library" "on" \
+"libnih" "lightweight library of C functions" "on" \
+"libnjb" "Creative Nomad and related device library" "on" \
+"libnl" "Netlink socket library" "on" \
+"libnl3" "Netlink socket library version 3" "on" \
+"libnotify" "A library for event notification" "on" \
+"libodfgen" "Library for generating ODF documents" "on" \
+"libogg" "Ogg Bitstream library" "on" \
+"liboggz" "Ogg inspect/edit/validate library" "on" \
+"liboil" "CPU optimizations library" "on" \
+"libpcap" "Packet Capture library" "on" \
+"libplist" "Apple Binary and XML Property Lists library" "on" \
+"libpng" "Portable Network Graphics library" "on" \
+"libproxy" "proxy configuration library" "on" \
+"libraw1394" "User space IEEE 1394 driver" "on" \
+"librevenge" "Library for REVerse ENGineered formats filters" "on" \
+"librsvg" "Scalable Vector Graphics library" "on" \
+"libsamplerate" "Digital audio resampling library" "on" \
+"libsecret" "library to access the Secret Service API" "on" \
+"libsigc++" "Typesafe callback system for C++" "on" \
+"libsigsegv" "User mode page fault handling library" "on" \
+"libsndfile" "A library for handling digital audio files" "on" \
+"libsodium" "Sodium crypto library" "on" \
+"libsoup" "an HTTP client/server library" "on" \
+"libspectre" "Ghostscript wrapper library" "on" \
+"libssh" "SSH C library" "on" \
+"libssh2" "SSH2 library" "on" \
+"libtasn1" "ASN.1 library" "on" \
+"libtheora" "Theora video codec library" "on" \
+"libtiff" "Tag Image File format library" "on" \
+"libunistring" "GNU Unicode string library" "on" \
+"libunwind" "API to determine the call-chain of a program" "on" \
+"libusb" "A library for accessing USB devices" "on" \
+"libusb-compat" "Compat library for the old libusb API/ABI" "on" \
+"libusbmuxd" "iOS USB connection library" "on" \
+"libvisio" "Visio document format library" "on" \
+"libvisual" "Audio visualization library" "on" \
+"libvisual-plugins" "Plugins for the libvisual library" "on" \
+"libvncserver" "VNC Server Library" "on" \
+"libvorbis" "Ogg Vorbis library" "on" \
+"libvpx" "VP8/VP9 video codec" "on" \
+"libwebp" "WebP photo compression library" "on" \
+"libwmf" "WMF graphics format library" "on" \
+"libwmf-docs" "Documentation for libwmf" "on" \
+"libwnck" "Window Navigator Construction Kit library" "on" \
+"libwpd" "WordPerfect document handling library" "on" \
+"libwpg" "WPG image reading/converting library" "on" \
+"libxklavier" "XKB library" "on" \
+"libxml2" "XML parser library v2" "on" \
+"libxslt" "XML transformation library" "on" \
+"libyaml" "YAML parser library" "on" \
+"libzip" "Zip archive library" "on" \
+"loudmouth" "Jabber protocol library" "on" \
+"lzo" "fast data compression library" "on" \
+"media-player-info" "media player capability data" "on" \
+"mhash" "Thread-safe hash library" "on" \
+"mm" "Shared Memory Allocation library" "on" \
+"mozilla-nss" "Mozilla NSS/NSPR libraries" "on" \
+"mpfr" "Another math lib based on GMP" "on" \
+"ncurses" "CRT screen handling package" "on" \
+"neon" "HTTP and WebDAV client library" "on" \
+"netpbm" "Graphics library and tools" "on" \
+"newt" "Not Erik's Windowing Toolkit" "on" \
+"ocl-icd" "OpenCL ICD bindings" "on" \
+"openexr" "HDR image file format and library" "on" \
+"openjpeg" "JPEG2000 library" "on" \
+"opus" "Efficient, low-latency audio codec" "on" \
+"opusfile" "Opus file handling libraries" "on" \
+"orc" "The Oil Runtime Compiler" "on" \
+"pango" "Text rendering library" "on" \
+"pangomm" "Text rendering library for GTKmm" "on" \
+"parted" "GNU parted, a partition manipulation program" "on" \
+"pcre" "Perl-compatible regular expression library" "on" \
+"pcre2" "Perl compatible regular expression library v2" "on" \
+"phonon" "Multimedia framework for KDE4" "on" \
+"phonon-gstreamer" "gstreamer backend for phonon" "on" \
+"pilot-link" "PalmOS communication library" "on" \
+"polkit" "Authentication policy framework" "on" \
+"polkit-gnome" "GTK+/XDG polkit authenticator" "on" \
+"polkit-qt-1" "Qt wrapper for the polkit API" "on" \
+"poppler" "Portable Document Format (PDF) library" "on" \
+"poppler-data" "Data files that can be used by poppler" "on" \
+"popt" "Command line parsing library" "on" \
+"pulseaudio" "PulseAudio sound server" "on" \
+"pycairo" "Python bindings for cairo" "on" \
+"pycups" "Python bindings for the CUPS API" "on" \
+"pycurl" "Python interface to cURL library" "on" \
+"pygobject" "GObject bindings for Python" "on" \
+"pygobject3" "GObject bindings for Python" "on" \
+"pygtk" "GTK+ bindings for Python" "on" \
+"pyparsing" "parsing module for python" "on" \
+"python-appdirs" "Python module for platform-specific dirs" "on" \
+"python-certifi" "Python package for the Mozilla's CA Bundle" "on" \
+"python-chardet" "Universal encoding detector for Python" "on" \
+"python-docutils" "Python Documentation Utilities" "on" \
+"python-idna" "Internationalized Domain Names for Python" "on" \
+"python-notify2" "Python interface to DBus notifications" "on" \
+"python-packaging" "Core utilities for Python packages" "on" \
+"python-pillow" "Python Imaging Library" "on" \
+"python-requests" "HTTP request library for python" "on" \
+"python-sane" "SANE interface for python" "on" \
+"python-six" "Python 2 and 3 compatibility library" "on" \
+"python-urllib3" "Powerful HTTP client for Python" "on" \
+"qca" "Qt Cryptographic Architecture" "on" \
+"qimageblitz" "Graphical effect/filter library for KDE4" "on" \
+"qjson" "manage JSON objects with Qt" "on" \
+"qt" "C++ GUI library used by KDE" "on" \
+"qt-gstreamer" "C++ bindings for gstreamer" "on" \
+"qtscriptgenerator" "Qt API Bindings for QtScript" "on" \
+"raptor2" "RDF parser and serializer" "on" \
+"rasqal" "RDF parsing library" "on" \
+"readline" "Input library with editing" "on" \
+"redland" "RDF high-level interface library" "on" \
+"sbc" "Sub Band Codec for bluetooth audio output" "on" \
+"sdl" "Simple DirectMedia Layer library" "on" \
+"seamonkey-solibs" "SeaMonkey shared libraries (runtime subset)" "on" \
+"serf" "Asynchronous HTTP client library" "on" \
+"sg3_utils" "low-level SCSI utilities" "on" \
+"shared-desktop-ontologies" "Shared OSCAF desktop ontologies" "on" \
+"shared-mime-info" "MIME database" "on" \
+"sip" "Tool for generating Python bindings" "on" \
+"slang" "S-Lang interpreted language and library v2" "on" \
+"slang1" "S-Lang interpreted language and library v1" "on" \
+"soprano" "C++/Qt4 framework for RDF data" "on" \
+"sound-theme-freedesktop" "freedesktop.org sound theme" "on" \
+"speex" "Low-bitrate voice audio codec" "on" \
+"speexdsp" "Speex DSP codec and library" "on" \
+"startup-notification" "Busy cursor library" "on" \
+"strigi" "Fast and light desktop search engine" "on" \
+"svgalib" "Super-VGA Graphics Library" "on" \
+"system-config-printer" "CUPS printer administration tool" "on" \
+"t1lib" "Library for handling Type 1 fonts" "on" \
+"taglib" "Audio meta-data library" "on" \
+"taglib-extras" "Taglib extra formats support" "on" \
+"talloc" "Memory pool system library" "on" \
+"tango-icon-theme" "Tango icon theme" "on" \
+"tango-icon-theme-extras" "Extra icons for the Tango icon theme" "on" \
+"tdb" "A trivial database library" "on" \
+"tevent" "Event system library" "on" \
+"urwid" "Python console UI module" "on" \
+"v4l-utils" "Libraries and utilities for video4linux" "on" \
+"virtuoso-ose" "Object-relational SQL database" "on" \
+"vte" "A terminal emulator for GTK+" "on" \
+"wavpack" "A lossless WAV file compressor" "on" \
+"xapian-core" "Search Engine Library" "on" \
+"zlib" "general purpose data compression library" "on" \
+2> $TMP/SeTpkgs
+if [ $? = 1 -o $? = 255 ]; then
+ rm -f $TMP/SeTpkgs
+ > $TMP/SeTnewtag
+ for pkg in \
+ConsoleKit2 GConf LibRaw M2Crypto Mako PyQt QScintilla SDL2 SDL2_gfx SDL2_image SDL2_mixer SDL2_net SDL2_ttf a52dec aalib adwaita-icon-theme akonadi alsa-lib alsa-oss alsa-plugins apr apr-util aspell aspell-en at-spi2-atk at-spi2-core atk atkmm attica audiofile automoc4 babl boost cairo cairomm chmlib clucene db42 db44 db48 dbus-glib dbus-python dconf dconf-editor desktop-file-utils djvulibre ebook-tools eigen2 eigen3 elfutils enchant esound exiv2 expat ffmpeg fftw fluidsynth freetype fribidi fuse gamin gc gcr gd gdbm gdk-pixbuf2 gegl giflib glade3 glib glib-networking glib2 glibc glibc-i18n glibc-profile glibmm gmime gmm gmp gnome-keyring gnome-themes-standard gnu-efi gobject-introspection grantlee gsettings-desktop-schemas gsl gst-plugins-base gst-plugins-base0 gst-plugins-good gst-plugins-good0 gst-plugins-libav gstreamer gstreamer0 gtk+ gtk+2 gtk+3 gtkmm2 gtkmm3 gtkspell gvfs harfbuzz hicolor-icon-theme hunspell icon-naming-utils icu4c id3lib ilmbase imagemagick iso-codes jansson jasper jemalloc js185 judy keybinder keyutils lame lcms lcms2 libaio libao libarchive libart_lgpl libasyncns libatasmart libbluedevil libbluray libcaca libcanberra libcap libcap-ng libcddb libcdio libcdio-paranoia libclc libcroco libdbusmenu-qt libdiscid libdvdnav libdvdread libedit libevent libexif libfakekey libffi libglade libgnome-keyring libgphoto2 libgpod libgsf libical libid3tag libidl libidn libidn2 libieee1284 libimobiledevice libiodbc libjpeg-turbo libkarma liblastfm libmad libmcrypt libmng libmpc libmsn libmtp libnih libnjb libnl libnl3 libnotify libodfgen libogg liboggz liboil libpcap libplist libpng libproxy libraw1394 librevenge librsvg libsamplerate libsecret libsigc++ libsigsegv libsndfile libsodium libsoup libspectre libssh libssh2 libtasn1 libtheora libtiff libunistring libunwind libusb libusb-compat libusbmuxd libvisio libvisual libvisual-plugins libvncserver libvorbis libvpx libwebp libwmf libwmf-docs libwnck libwpd libwpg libxklavier libxml2 libxslt libyaml libzip loudmouth lzo media-player-info mhash mm mozilla-nss mpfr ncurses neon netpbm newt ocl-icd openexr openjpeg opus opusfile orc pango pangomm parted pcre pcre2 phonon phonon-gstreamer pilot-link polkit polkit-gnome polkit-qt-1 poppler poppler-data popt pulseaudio pycairo pycups pycurl pygobject pygobject3 pygtk pyparsing python-appdirs python-certifi python-chardet python-docutils python-idna python-notify2 python-packaging python-pillow python-requests python-sane python-six python-urllib3 qca qimageblitz qjson qt qt-gstreamer qtscriptgenerator raptor2 rasqal readline redland sbc sdl seamonkey-solibs serf sg3_utils shared-desktop-ontologies shared-mime-info sip slang slang1 soprano sound-theme-freedesktop speex speexdsp startup-notification strigi svgalib system-config-printer t1lib taglib taglib-extras talloc tango-icon-theme tango-icon-theme-extras tdb tevent urwid v4l-utils virtuoso-ose vte wavpack xapian-core zlib \
+  ; do
+  echo "$pkg: SKP" >> $TMP/SeTnewtag
+ done
+ exit
+fi
+cat /dev/null > $TMP/SeTnewtag
+for PACKAGE in \
+ConsoleKit2 GConf LibRaw M2Crypto Mako PyQt QScintilla SDL2 SDL2_gfx SDL2_image SDL2_mixer SDL2_net SDL2_ttf a52dec aalib adwaita-icon-theme akonadi alsa-lib alsa-oss alsa-plugins apr apr-util aspell aspell-en at-spi2-atk at-spi2-core atk atkmm attica audiofile automoc4 babl boost cairo cairomm chmlib clucene db42 db44 db48 dbus-glib dbus-python dconf dconf-editor desktop-file-utils djvulibre ebook-tools eigen2 eigen3 elfutils enchant esound exiv2 expat ffmpeg fftw fluidsynth freetype fribidi fuse gamin gc gcr gd gdbm gdk-pixbuf2 gegl giflib glade3 glib glib-networking glib2 glibc glibc-i18n glibc-profile glibmm gmime gmm gmp gnome-keyring gnome-themes-standard gnu-efi gobject-introspection grantlee gsettings-desktop-schemas gsl gst-plugins-base gst-plugins-base0 gst-plugins-good gst-plugins-good0 gst-plugins-libav gstreamer gstreamer0 gtk+ gtk+2 gtk+3 gtkmm2 gtkmm3 gtkspell gvfs harfbuzz hicolor-icon-theme hunspell icon-naming-utils icu4c id3lib ilmbase imagemagick iso-codes jansson jasper jemalloc js185 judy keybinder keyutils lame lcms lcms2 libaio libao libarchive libart_lgpl libasyncns libatasmart libbluedevil libbluray libcaca libcanberra libcap libcap-ng libcddb libcdio libcdio-paranoia libclc libcroco libdbusmenu-qt libdiscid libdvdnav libdvdread libedit libevent libexif libfakekey libffi libglade libgnome-keyring libgphoto2 libgpod libgsf libical libid3tag libidl libidn libidn2 libieee1284 libimobiledevice libiodbc libjpeg-turbo libkarma liblastfm libmad libmcrypt libmng libmpc libmsn libmtp libnih libnjb libnl libnl3 libnotify libodfgen libogg liboggz liboil libpcap libplist libpng libproxy libraw1394 librevenge librsvg libsamplerate libsecret libsigc++ libsigsegv libsndfile libsodium libsoup libspectre libssh libssh2 libtasn1 libtheora libtiff libunistring libunwind libusb libusb-compat libusbmuxd libvisio libvisual libvisual-plugins libvncserver libvorbis libvpx libwebp libwmf libwmf-docs libwnck libwpd libwpg libxklavier libxml2 libxslt libyaml libzip loudmouth lzo media-player-info mhash mm mozilla-nss mpfr ncurses neon netpbm newt ocl-icd openexr openjpeg opus opusfile orc pango pangomm parted pcre pcre2 phonon phonon-gstreamer pilot-link polkit polkit-gnome polkit-qt-1 poppler poppler-data popt pulseaudio pycairo pycups pycurl pygobject pygobject3 pygtk pyparsing python-appdirs python-certifi python-chardet python-docutils python-idna python-notify2 python-packaging python-pillow python-requests python-sane python-six python-urllib3 qca qimageblitz qjson qt qt-gstreamer qtscriptgenerator raptor2 rasqal readline redland sbc sdl seamonkey-solibs serf sg3_utils shared-desktop-ontologies shared-mime-info sip slang slang1 soprano sound-theme-freedesktop speex speexdsp startup-notification strigi svgalib system-config-printer t1lib taglib taglib-extras talloc tango-icon-theme tango-icon-theme-extras tdb tevent urwid v4l-utils virtuoso-ose vte wavpack xapian-core zlib \
+ ; do
+ if grep "\(^\| \)$PACKAGE\( \|$\)" $TMP/SeTpkgs 1> /dev/null 2> /dev/null ; then
+  echo "$PACKAGE: ADD" >> $TMP/SeTnewtag
+ else
+  echo "$PACKAGE: SKP" >> $TMP/SeTnewtag
+ fi
+done
+rm -f $TMP/SeTpkgs

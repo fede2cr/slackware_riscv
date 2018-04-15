@@ -1,0 +1,11 @@
+glibc-i18n: glibc-i18n (locale files from glibc)
+glibc-i18n:
+glibc-i18n: These files go in /usr/lib/locale, /usr/share/i18n/, and
+glibc-i18n: /usr/share/locale/ to provide internationalization support.
+glibc-i18n: You'll need this package unless you will be using US English only.
+glibc-i18n:
+glibc-i18n:
+glibc-i18n:
+glibc-i18n:
+glibc-i18n:
+glibc-i18n:

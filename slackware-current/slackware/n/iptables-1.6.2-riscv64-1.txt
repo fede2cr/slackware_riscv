@@ -1,0 +1,11 @@
+iptables: iptables (IP packet filter administration)
+iptables:
+iptables: iptables is a packet filter administration tool. 
+iptables:
+iptables: Iptables can be used to build internet firewalls based on stateless
+iptables: and stateful packet filtering, use NAT and masquerading for sharing
+iptables: internet access if you don't have enough public IP addresses, use NAT
+iptables: to implement transparent proxies, aid the tc and iproute2 systems
+iptables: used to build sophisticated QoS and policy routers, do further packet
+iptables: manipulation (mangling) like altering the TOS/DSCP/ECN bits of the IP
+iptables: header, and much more.  See:  http://www.netfilter.org

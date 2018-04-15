@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+              |-----handy-ruler------------------------------------------------------|
+kernel-generic: kernel-generic (a general purpose single processor Linux kernel)
+kernel-generic:
+kernel-generic: A Linux kernel with built-in support for most disk controllers.
+kernel-generic: For filesystem support, or if you need to load support for a SCSI or
+kernel-generic: other controller, then you'll need to load one or more kernel modules
+kernel-generic: using an initial ramdisk, or initrd. For more information about
+kernel-generic: creating an initrd, see the README.initrd file in the /boot directory.
+kernel-generic:
+kernel-generic:
+kernel-generic:
+kernel-generic:

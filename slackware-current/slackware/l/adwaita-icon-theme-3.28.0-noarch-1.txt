@@ -1,0 +1,11 @@
+adwaita-icon-theme: adwaita-icon-theme (default icons used by GTK+)
+adwaita-icon-theme:
+adwaita-icon-theme: A set of default icons used by many GTK+ applications.
+adwaita-icon-theme:
+adwaita-icon-theme:
+adwaita-icon-theme:
+adwaita-icon-theme:
+adwaita-icon-theme:
+adwaita-icon-theme:
+adwaita-icon-theme:
+adwaita-icon-theme:

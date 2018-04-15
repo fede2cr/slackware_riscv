@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+              |-----handy-ruler------------------------------------------------------|
+%PACKAGE_NAME%: %PACKAGE_NAME% (a Linux kernel)
+%PACKAGE_NAME%:
+%PACKAGE_NAME%: This is a Linux kernel with built-in support for most disk
+%PACKAGE_NAME%: controllers. To use filesystems, or to load support for a SCSI or
+%PACKAGE_NAME%: other controller, then you'll need to load one or more kernel
+%PACKAGE_NAME%: modules using an initial ramdisk, or initrd. For more information
+%PACKAGE_NAME%: about creating an initrd, see the README.initrd file in the /boot
+%PACKAGE_NAME%: directory.
+%PACKAGE_NAME%:
+%PACKAGE_NAME%:
+%PACKAGE_NAME%:

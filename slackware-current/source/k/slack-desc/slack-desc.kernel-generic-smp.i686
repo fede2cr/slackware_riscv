@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+                  |-----handy-ruler------------------------------------------------------|
+kernel-generic-smp: kernel-generic-smp (a general purpose SMP Linux kernel)
+kernel-generic-smp:
+kernel-generic-smp: This is a Linux kernel with built-in support for most disk
+kernel-generic-smp: controllers. To use filesystems, or to load support for a SCSI or
+kernel-generic-smp: other controller, then you'll need to load one or more kernel
+kernel-generic-smp: modules using an initial ramdisk, or initrd. For more information
+kernel-generic-smp: about creating an initrd, see the README.initrd file in the /boot
+kernel-generic-smp: directory.
+kernel-generic-smp:
+kernel-generic-smp: SMP is "Symmetric multiprocessing", or multiple CPU/core support.
+kernel-generic-smp:

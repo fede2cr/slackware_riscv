@@ -1,3 +1,14 @@
+Sun Apr 15 13:00:05 UTC 2018
+ap/man-db-2.8.3-riscv64-1.txz: Ported.
+n/openssl-1.0.2o-riscv64-1.txz: Ported.
+l/glibc-2.27-riscv64-1.txz: Ported.
+n/iptables-1.6.2-riscv64-1.txz: Ported.
+ap/nano-2.9.5-riscv64-1.txz: Ported.
+ap/sudo-1.8.22-riscv64-1.txz: Ported.
+n/gnupg-1.4.22-riscv64-1.txz: Ported.
+n/gnupg2-2.2.5-riscv64-1.txz: Ported.
+n/iproute2-4.16.0-riscv64-1.txz: Ported.
++--------------------------+
 Fri Apr 13 18:24:24 UTC 2018
 d/binutils-2.30-riscv64-1.txz: Ported.
 d/gdb-8.1-riscv64-1.txz: Ported.

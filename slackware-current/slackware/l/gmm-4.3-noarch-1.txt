@@ -1,0 +1,11 @@
+gmm: gmm (C++ generic matrix template library)
+gmm:
+gmm: Gmm++ is a generic C++ template library for sparse, dense and skyline
+gmm: matrices.  It is built as a set of generic algorithms (mult, add, copy,
+gmm: sub-matrices, dense and sparse solvers, etc.) for any interfaced vector 
+gmm: type or matrix type.  It can be viewed as a glue library that allows 
+gmm: cooperation between several vector and matrix types.  However, basic 
+gmm: sparse, dense and skyline matrix/vector types are built in Gmm++, so 
+gmm: it can be used as a standalone linear algebra library.
+gmm: 
+gmm: 

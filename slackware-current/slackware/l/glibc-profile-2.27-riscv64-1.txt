@@ -1,0 +1,11 @@
+glibc-profile: glibc-profile (GNU C libraries with profiling support)
+glibc-profile:
+glibc-profile: This package contains static versions of the GNU C libraries with 
+glibc-profile: support for profiling binaries using gprof.  gprof calculates how
+glibc-profile: much time a program spends in each routine which can suggest where
+glibc-profile: to concentrate efforts to improve performance.
+glibc-profile:
+glibc-profile: See the gprof man page for more details.
+glibc-profile:
+glibc-profile:
+glibc-profile:

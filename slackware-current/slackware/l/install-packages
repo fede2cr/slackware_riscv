@@ -1,0 +1,73 @@
+#!/bin/sh
+# Copyright 2002  Slackware Linux, Inc., Concord, CA, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# This is a simple script to install a package series from the command line.
+# If you're already running Slackware, you can just run this script to install
+# the packages.
+#
+# I originally got the idea for this tool because Slackware with both KDE and
+# GNOME doesn't fit on a single CD-ROM anymore, so I wanted to provide a quick
+# way to add a series later on with the same ease as the initial installation.
+#
+# To use this script, just run it as root in the current directory like this:
+#
+# ./install-packages
+#
+# Note that this script does not make any attempt to remove or upgrade existing
+# packages.  If you want to upgrade an existing installation, you will be better
+# served using the pkgtools directly.  Here's how to upgrade all the packages in
+# this series:
+#
+# upgradepkg *.t?z  (upgrades already installed packages)
+# installpkg *.t?z  (installs all packages, to make sure new ones are installed)
+#
+# If you upgrade a series like this, afterwards you might need to merge over any
+# required changes in the new config files, which will have the suffix .new.
+# These can be found like this:
+#
+# find / -name "*.new"
+#
+# OK, on with the show!  Enjoy!  :-)
+#
+# Patrick Volkerding <volkerdi@slackware.com>
+
+# Use the existing maketag script to provide a package selection menu:
+sh maketag
+
+# Quick bail if nothing was requested:
+if grep ADD /var/log/setup/tmp/SeTnewtag 1> /dev/null 2> /dev/null ; then
+  true
+else
+  rm -f /var/log/setup/tmp/SeTnewtag
+  exit
+fi
+
+# Install the selected packages:
+for PKG in *.t?z ; do
+  if [ ! "$ROOT" = "" ]; then
+    installpkg -root $ROOT -infobox -tagfile /var/log/setup/tmp/SeTnewtag $PKG
+  else
+    installpkg -infobox -tagfile /var/log/setup/tmp/SeTnewtag $PKG
+  fi
+done
+rm -f /var/log/setup/tmp/SeTnewtag
+echo
+echo "Done installing packages."
