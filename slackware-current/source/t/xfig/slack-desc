@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+    |-----handy-ruler------------------------------------------------------|
+xfig: xfig (interactive drawing tool)
+xfig:
+xfig: This package contains the binary for xfig, an interactive drawing tool
+xfig: under X. Xfig can create fig, epsf, and LaTeX files with various
+xfig: options. You will also need the transfig package so that xfig can
+xfig: export fig files as epsf and LaTeX files. This package also contains
+xfig: a large set of example fig files.
+xfig:
+xfig: Homepage: https://sourceforge.net/projects/mcj/files/
+xfig:
+xfig:

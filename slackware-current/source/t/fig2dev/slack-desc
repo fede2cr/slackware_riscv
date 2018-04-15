@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+fig2dev: fig2dev (transform .fig files)
+fig2dev:
+fig2dev: This package contains the binaries to transform .fig files (created by
+fig2dev: xfig) to some other formats like epsf and LaTeX. If you have installed
+fig2dev: xfig, you should also install this package if you want to use xfig to
+fig2dev: create other files than .fig files, which can then be included in your
+fig2dev: LaTeX documents.
+fig2dev:
+fig2dev: Homepage: https://sourceforge.net/projects/mcj/files/
+fig2dev:
+fig2dev:

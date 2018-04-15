@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+expect: expect (program that talks to other interactive programs)
+expect:
+expect: Expect is a program that talks to other interactive programs according
+expect: to a script. Following the script, Expect knows what can be expected
+expect: from a program and what the correct response should be. An
+expect: interpreted language provides branching and high-level control
+expect: structures to direct the dialogue. 
+expect:
+expect: Expect was written by Don Libes of the National Institute of Standards
+expect: and Technology. Homepage: http://core.tcl.tk/expect
+expect:

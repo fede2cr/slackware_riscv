@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+hfsutils: hfsutils (HFS volume utilities)
+hfsutils:
+hfsutils: hfsutils is a collection of tools for reading and writing Macintosh
+hfsutils: HFS volumes. These utilities can manipulate HFS volumes on nearly any
+hfsutils: medium. Since hfs and xhfs are linked with Tcl/Tk shared libraries,
+hfsutils: the hfsutils package is included here in the TCL software series.
+hfsutils:
+hfsutils: hfsutils was written by Robert Leslie <rob@mars.org>
+hfsutils:
+hfsutils:
+hfsutils:
