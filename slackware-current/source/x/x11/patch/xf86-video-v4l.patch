@@ -1,0 +1,4 @@
+zcat $CWD/patch/xf86-video-v4l/xorg-x11-drv-v4l-support_v4l2_only_drivers.patch.gz \
+  | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+zcat $CWD/patch/xf86-video-v4l/xf86-video-v4l-0.2.0-build-fix.patch.gz \
+  | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+           |-----handy-ruler------------------------------------------------------|
+scim-pinyin: scim-pinyin (smart pinyin IM engine)
+scim-pinyin:
+scim-pinyin: This package provides a smart pinyin IM engine for SCIM. It includes
+scim-pinyin: the plugin modules and the data files to use the smart pinyin input
+scim-pinyin: input method for Chinese.
+scim-pinyin:
+scim-pinyin: Homepage: http://sourceforge.net/projects/scim
+scim-pinyin:
+scim-pinyin:
+scim-pinyin:
+scim-pinyin:

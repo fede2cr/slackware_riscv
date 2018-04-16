@@ -1,0 +1,206 @@
+#!/bin/sh
+
+# Copyright 2006, 2007, 2008, 2009, 2010, 2011, 2013, 2014, 2015, 2016, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=mesa
+VERSION=${VERSION:-$(echo $PKGNAM-1*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+DEMOVERS=${DEMOVERS:-8.4.0}
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:--j7}
+
+# Be sure this list is up-to-date:
+DRI_DRIVERS="i915,i965,nouveau,r200,radeon,swrast"
+GALLIUM_DRIVERS="nouveau,r300,r600,svga,radeonsi,swrast,virgl"
+EGL_PLATFORMS="drm,x11"
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-mesa
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+  # I've heard some reports as of late 2016 that Vulkan has some issues on
+  # 32-bit, but we'll try it anyway and see if anything is reported:
+  VULKAN=" --with-vulkan-drivers=intel,radeon "
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+  VULKAN=" --with-vulkan-drivers=intel,radeon "
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf ${PKGNAM}-${VERSION}
+
+tar xvf $CWD/${PKGNAM}-${VERSION}.tar.xz || exit 1
+cd ${PKGNAM}-$VERSION
+
+# Let's kill the warning about operating on a dangling symlink:
+rm -f src/gallium/state_trackers/d3d1x/w32api
+
+# Make sure ownerships and permissions are sane:
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Apply patches from git (and maybe elsewhere):
+# Patches obtained by:
+#   git checkout origin/17.2
+#   git format-patch 93c2beafc0a7fa2f210b006d22aba61caa71f773 # 17.2.6 release
+if /bin/ls $CWD/patches/*.patch 1> /dev/null 2> /dev/null ; then
+  for patch in $CWD/patches/*.patch ; do
+    patch -p1 < $patch || exit 1 ;
+  done
+fi
+
+# This doesn't fully do the trick.  See below.  ;-)
+#./autogen.sh
+
+# Fix detection of libLLVM when built with CMake
+sed -i 's/LLVM_SO_NAME=.*/LLVM_SO_NAME=LLVM/' configure.ac
+
+# Seems to need this to avoid tripping over a different libtool version:
+autoreconf -fi
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/${PKGNAM}-$VERSION \
+  --with-dri-driverdir=/usr/lib${LIBDIRSUFFIX}/xorg/modules/dri \
+  --with-dri-drivers="$DRI_DRIVERS" \
+  --with-gallium-drivers="$GALLIUM_DRIVERS" \
+  --with-egl-platforms="$EGL_PLATFORMS" \
+  $VULKAN \
+  --enable-llvm \
+  --enable-llvm-shared-libs \
+  --enable-egl \
+  --enable-texture-float \
+  --enable-shared-glapi \
+  --enable-xa \
+  --enable-nine \
+  --enable-osmesa \
+  --enable-dri \
+  --enable-dri3 \
+  --enable-gbm \
+  --enable-glx \
+  --enable-glx-tls \
+  --enable-gles1 \
+  --enable-gles2 \
+  --enable-vdpau \
+  --enable-opencl \
+  --enable-opencl-icd \
+  --build=$ARCH-slackware-linux || exit 1
+
+# This is autodetected anyway:
+#  --enable-va \
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Install /etc/drirc as a .new file:
+mv $PKG/etc/drirc $PKG/etc/drirc.new
+
+# Now build/install a small subset of the demos:
+export CWD SLKCFLAGS NUMJOBS PKG
+( cd $TMP
+  rm -rf mesa-demos-$DEMOVERS
+  tar xvf $CWD/mesa-demos-$DEMOVERS.tar.?z* || exit 1
+  cd mesa-demos-$DEMOVERS
+  chown -R root:root .
+  find . \
+    \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+    -exec chmod 755 {} \; -o \
+    \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+    -exec chmod 644 {} \;
+  CFLAGS="$SLKCFLAGS" \
+  ./configure \
+    --prefix=/usr \
+    --build=$ARCH-slackware-linux || exit 1
+  make $NUMJOBS || exit 1
+  # Install all the demos (including the pointless ones) at first, in a
+  # temporary location:
+  make install DESTDIR=$PKG/cruft
+  # Install gears and glinfo, as well as a few other demos:
+  mkdir -p $PKG/usr/bin
+  for demo in gears glinfo glthreads glxcontexts glxdemo glxgears \
+    glxgears_fbconfig glxheads glxinfo glxpbdemo glxpixmap ; do
+    mv --verbose $PKG/cruft/usr/bin/$demo $PKG/usr/bin
+  done
+  # Remove cruft:
+  rm -rf $PKG/cruft
+) || exit 1
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+
+# Compress info files, if any:
+if [ -d $PKG/usr/info ]; then
+  rm -f $PKG/usr/info/dir
+  gzip -9 $PKG/usr/info/*
+fi
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/html
+cp -a \
+  docs/COPYING* docs/relnotes/relnotes-${VERSION}*.html docs/README* docs/GL* \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a docs/*.html $PKG/usr/doc/$PKGNAM-$VERSION/html
+rm -f $PKG/usr/doc/$PKGNAM-$VERSION/html/relnotes*.html
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-$VERSION-$ARCH-$BUILD.txz
+

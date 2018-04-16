@@ -1,0 +1,181 @@
+#!/bin/sh
+
+# Slackware build script for vulkan-sdk
+
+# Copyright 2016, 2017  Heinz Wiesinger, Amsterdam, The Netherlands
+# Copyright 2016, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=vulkan-sdk
+VERSION=${VERSION:-$(echo Vulkan-LoaderAndValidationLayers-sdk-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:--j7}
+
+# Automatically determine the architecture we're building on:
+MARCH=$( uname -m )
+if [ -z "$ARCH" ]; then
+  case "$MARCH" in
+    i?86)    export ARCH=i586 ;;
+    armv7hl) export ARCH=$MARCH ;;
+    arm*)    export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)       export ARCH=$MARCH ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-vulkan-sdk
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf Vulkan-LoaderAndValidationLayers-sdk-$VERSION
+tar xvf $CWD/Vulkan-LoaderAndValidationLayers-sdk-$VERSION.tar.?z || exit 1
+cd Vulkan-LoaderAndValidationLayers-sdk-$VERSION || exit 1
+
+GLSLANG_VERSION=$(cat external_revisions/glslang_revision | head -n 1)
+SPIRV_HEADERS_VERSION=$(basename SPIRV-Headers-* .tar.?z | rev | cut -d - -f 1 | rev)
+SPIRV_TOOLS_VERSION=$(basename SPIRV-Tools-* .tar.?z | rev | cut -d - -f 1 | rev)
+
+mkdir external
+
+cd external
+  tar xf $CWD/glslang-${GLSLANG_VERSION}.tar.?z || exit 1
+  mv glslang-${GLSLANG_VERSION} glslang
+
+cd glslang/External
+tar xf $CWD/SPIRV-Tools-${SPIRV_TOOLS_VERSION}.tar.?z* || exit 1
+mv SPIRV-Tools-${SPIRV_TOOLS_VERSION} spirv-tools
+
+mkdir -p spirv-tools/external
+cd spirv-tools/external
+  tar xvf $CWD/SPIRV-Headers-${SPIRV_HEADERS_VERSION}.tar.?z* || exit 1
+  mv SPIRV-Headers-${SPIRV_HEADERS_VERSION} spirv-headers
+
+cd $TMP/Vulkan-LoaderAndValidationLayers-sdk-$VERSION
+
+# chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+mkdir -p external/{glslang,spirv-tools}/build
+mkdir -p build
+mkdir -p build-demos
+
+# Fix LIBDIRSUFFIX
+for i in $(find external -name CMakeLists.txt); do
+  sed -i "s|DESTINATION lib|DESTINATION \${CMAKE_INSTALL_LIBDIR}|" "$i"
+done
+
+cd external/glslang/build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+    -DCMAKE_BUILD_TYPE=Release \
+    ..
+
+  make $NUMJOBS VERBOSE=1 || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+
+cd -
+
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+    -DCMAKE_INSTALL_DATADIR=/share \
+    -DCMAKE_SKIP_RPATH=True \
+    -DBUILD_TESTS=Off \
+    -DBUILD_DEMOS=On \
+    -DBUILD_WSI_XLIB_SUPPORT=On \
+    -DBUILD_WSI_XCB_SUPPORT=On \
+    -DBUILD_WSI_WAYLAND_SUPPORT=Off \
+    -DBUILD_WSI_MIR_SUPPORT=Off \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DGLSLANG_VALIDATOR=../external/glslang/build/StandAlone/glslangValidator \
+    ..
+
+  make $NUMJOBS VERBOSE=1 || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+cd -
+
+mkdir -p $PKG/usr/share/vulkan/{explicit,implicit}_layer.d
+
+mv $PKG/etc/vulkan/explicit_layer.d/*.json $PKG/usr/share/vulkan/explicit_layer.d/
+mv $PKG/usr/bin/smoketest $PKG/usr/bin/vulkan-smoketest
+
+# Use headers from spirv-headers as they are newer than the ones installed by glslang
+for i in spirv.h spirv.hpp spirv.hpp11; do
+  install -m 0644 external/glslang/External/spirv-tools/external/spirv-headers/include/spirv/1.2/$i \
+    $PKG/usr/include/SPIRV/
+done
+
+## I don't know why this is here, so I'm commenting it out. ;-)
+#( cd $PKG/usr/include
+#  ln -sf SPIRV spirv
+#)
+
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a *.md LICENSE.txt loader/LoaderAndLayerInterface.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

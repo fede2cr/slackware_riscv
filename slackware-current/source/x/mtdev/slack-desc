@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+     |-----handy-ruler------------------------------------------------------|
+mtdev: mtdev (multitouch device library)
+mtdev:
+mtdev: mtdev is a stand-alone library which transforms all variants of kernel
+mtdev: MT events to the slotted type B protocol. The events put into mtdev
+mtdev: may be from any MT device, specifically type A without contact
+mtdev: tracking, type A with contact tracking, or type B with contact
+mtdev: tracking. The bulk of the mtdev code has been out there since 2008 as
+mtdev: part of the Multitouch X Driver. With this package, finger tracking
+mtdev: and seamless MT protocol handling is available under a free license.
+mtdev:
+mtdev:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+scim-m17n: scim-m17n (bridge IMengine to support m17n input methods in SCIM)
+scim-m17n:
+scim-m17n: SCIM is a developing platform to significantly reduce the difficulty
+scim-m17n: of input method development. scim-m17n is a SCIM IMEngine module
+scim-m17n: which uses the m17n library as the backend.
+scim-m17n:
+scim-m17n: Homepage: http://sourceforge.net/projects/scim
+scim-m17n:
+scim-m17n:
+scim-m17n:
+scim-m17n:

@@ -1,0 +1,29 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH XWMCONFIG 1 "31 May 2002" "Slackware Version 8.1.0"
+.SH NAME
+xwmconfig \- choose a default window manager for X.
+.SH SYNOPSIS
+.B xwmconfig
+.SH DESCRIPTION
+.B xwmconfig
+provides a menu of the window managers available on the machine so that you
+may choose one of them to use when X is started with "startx".  
+
+When run by root,
+it sets the symbolic link /etc/X11/xinit/xinitrc, which selected the default
+system-wide window manager to use for X, and also creates a /root/.xinitrc file
+with the same window manager selected (perhaps suitable to move into /etc/skel/).
+
+When run by a non-root user, xwmconfig writes out a $HOME/.xinitrc file, allowing
+the user to choose their own default window manager (possibly overriding the
+one chosen as a system default).
+.SH AUTHOR
+Patrick J. Volkerding <volkerdi@slackware.com>

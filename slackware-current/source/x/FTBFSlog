@@ -1,0 +1,14 @@
+Sun Mar 11 19:26:12 UTC 2018
+  xpyb: patched to fix build with xcbproto-1.13.
++--------------------------+
+Thu Mar  1 20:16:21 UTC 2018
+  motif: touch AUTHORS and NEWS, or automake-1.16 will fail with an error
++--------------------------+
+Mon Feb 12 20:46:07 UTC 2018
+  Fix all packages that fail to build from source:
+  libxshmfence: patch to handle memfd_create() properly for glibc-2.27+
++--------------------------+
+Thu Feb  1 00:46:34 UTC 2018
+  Fix all packages that fail to build from source:
+  scim: Add to CXXFLAGS: -fpermissive -fno-delete-null-pointer-checks -std=gnu++98
+  scim-anthy: Add to CXXFLAGS: -fpermissive -fno-delete-null-pointer-checks -std=gnu++98

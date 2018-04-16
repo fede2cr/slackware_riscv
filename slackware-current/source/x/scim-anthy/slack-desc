@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler------------------------------------------------------|
+scim-anthy: scim-anthy (a SCIM IMEngine module for anthy)
+scim-anthy:
+scim-anthy: SCIM is Smart Common Input Method platform, it provides a user
+scim-anthy: friendly and full featured user interface and development platform to
+scim-anthy: make input method developer's lives easier. Anthy is a system for
+scim-anthy: Japanese input method. It converts Hiragana text to Kana Kanji
+scim-anthy: mixed text.
+scim-anthy:
+scim-anthy: Homepage: http://scim-imengine.sourceforge.jp/
+scim-anthy:
+scim-anthy:

@@ -1,0 +1,15 @@
+#!/bin/sh
+#BLURB="Choose a default window manager for X"
+TMP=/var/log/setup/tmp
+if [ -r $TMP/SeTT_PX ]; then
+ T_PX="`cat $TMP/SeTT_PX`"
+elif [ ! "$1" = "" ]; then
+ T_PX=$1
+else
+ T_PX=/
+fi
+if [ "$COLOR" = "on" -o -r $TMP/SeTcolor -o "$T_PX" = "/" ]; then # use menus
+  if [ -d $T_PX/etc/X11/xinit ]; then
+    chroot $T_PX /bin/bash /usr/bin/xwmconfig
+  fi
+fi

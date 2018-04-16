@@ -1,0 +1,110 @@
+#!/bin/sh
+
+# Copyright 2008, 2009  Eric Hameleers, Eindhoven, NL
+# Copyright 2008, 2009, 2018  Patrick J. Volkerding, Sebeka, MN  USA
+# All rights reserved.
+#
+#   Permission to use, copy, modify, and distribute this software for
+#   any purpose with or without fee is hereby granted, provided that
+#   the above copyright notice and this permission notice appear in all
+#   copies.
+#
+#   THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+#   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+#   IN NO EVENT SHALL THE AUTHORS AND COPYRIGHT HOLDERS AND THEIR
+#   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+#   USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+#   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+#   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+#   OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+#   SUCH DAMAGE.
+# -----------------------------------------------------------------------------
+#
+# Slackware SlackBuild script 
+# ===========================
+# By:         Eric Hameleers <alien@slackware.com>
+# For:        sazanami-fonts-ttf
+# Descr:      Japanese TrueType Unicode fonts
+# URL:        http://sourceforge.jp/projects/efont/
+#
+# -----------------------------------------------------------------------------
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=sazanami-fonts-ttf
+REALNAM=sazanami
+VERSION=${VERSION:-20040629}
+ARCH=noarch
+BUILD=${BUILD:-1}
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+# Font directory location depends on the X build prefix:
+# Determine what X we're running (the modular X returns the prefix
+# in the next command, while older versions stay silent):
+XPREF=$(pkg-config --variable=prefix x11) || true
+if [ "$XPREF" == "" ]; then
+  XPREF='/usr/X11R6'
+  FONTDIR="$XPREF/lib/X11/fonts/TTF"
+else
+  FONTDIR="/usr/share/fonts/TTF"
+fi
+mkdir -p $PKG$FONTDIR
+
+cd $TMP
+tar -xvf $CWD/${REALNAM}-${VERSION}.tar.bz2 || exit 1
+cd ${REALNAM}-${VERSION} || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Install font:
+cp *.ttf $PKG$FONTDIR/
+
+# Post-install script:
+mkdir -p $PKG/install
+cat << EOT > $PKG/install/doinst.sh
+# There's no need to chroot and do this during initial
+# install, since there is a post-install script that
+# does the same thing, saving time.
+# Update X font indexes and the font cache:
+if [ -x /usr/bin/mkfontdir ]; then
+  /usr/bin/mkfontscale $FONTDIR
+  /usr/bin/mkfontdir $FONTDIR
+fi
+if [ -x /usr/bin/fc-cache ]; then
+  /usr/bin/fc-cache $FONTDIR
+fi
+EOT
+
+# Add documentation:
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a README doc/* $PKG/usr/doc/$PKGNAM-$VERSION
+find $PKG/usr/doc -type f -exec chmod 644 {} \;
+
+# Add a package description:
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-${VERSION}-${ARCH}-${BUILD}.txz
+

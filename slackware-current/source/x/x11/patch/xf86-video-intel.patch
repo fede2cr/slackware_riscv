@@ -1,0 +1,9 @@
+# Disable this patch.  Latest git should support gen9 properly.
+#zcat $CWD/patch/xf86-video-intel/0001-sna-Let-modestting-glamor-handle-gen9.patch.gz \
+#  | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# Some patches from Fedora's SRPM:
+zcat $CWD/patch/xf86-video-intel/0001-Fix-build-on-F28-and-later.patch.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+zcat $CWD/patch/xf86-video-intel/0001-Fix-build-on-i686.patch.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+zcat $CWD/patch/xf86-video-intel/0001-sna-Avoid-clobbering-output-physical-size-with-xf86O.patch.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+zcat $CWD/patch/xf86-video-intel/intel-gcc-pr65873.patch.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }

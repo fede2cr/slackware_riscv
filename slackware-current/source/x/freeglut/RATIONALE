@@ -1,0 +1,14 @@
+From mesa-8.0 git log:
+
+    commit 34a28ccbf459ed5710aafba5e7149e8291cb808c
+    Author: José Fonseca <jose.r.fonseca@gmail.com>
+    Date:   Sat Jul 9 11:07:14 2011 +0100
+    
+        glut: Remove GLUT source.
+    
+        Most distros ship freeglut, and most people don't care one vs the other,
+        and it hasn't been really maintained.
+    
+        So it is better to have Mesa GLUT be revisioned and built separately
+        from Mesa.
+

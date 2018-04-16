@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+x11-skel: x11-skel (Miscellaneous things required for X)
+x11-skel:
+x11-skel: These are some symlinks needed by X11 after moving some files and
+x11-skel: directories to conform with the Linux FHS. For example, the fonts
+x11-skel: are now in the /usr/share/fonts directory, and this package makes
+x11-skel: a symlink to there from /usr/lib/X11/fonts (the default location).
+x11-skel: An /etc/xdg directory (the default for XDG_CONFIG_DIRS in the
+x11-skel: XDG Base Directory Specification) is also contained in this package,
+x11-skel: as well as sample xorg.conf files and other scripts.
+x11-skel:
+x11-skel:

@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+m17n-lib: m17n-lib (application multilingualization library)
+m17n-lib:
+m17n-lib: M17n is an abbreviation of Multilingualization. The m17n library
+m17n-lib: implements multilingualization for many applications. The m17n
+m17n-lib: library supports functions to handle M-texts. This package also
+m17n-lib: contains the m17n database.
+m17n-lib:
+m17n-lib: Homepage: http://m17n.nongnu.org
+m17n-lib:
+m17n-lib:
+m17n-lib:

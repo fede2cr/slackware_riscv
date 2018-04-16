@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+                   |-----handy-ruler------------------------------------------------------|
+tibmachuni-font-ttf: tibmachuni-font-ttf (Tibetan Machine Unicode font)
+tibmachuni-font-ttf:
+tibmachuni-font-ttf: The Tibetan & Himalayan Digital Library's Unicode character based
+tibmachuni-font-ttf: "Tibetan Machine Uni" OpenType font for writing Tibetan, Dzongkha and
+tibmachuni-font-ttf: Ladakhi in dbu can script with full support for the Sanskrit
+tibmachuni-font-ttf: combinations found in chos-skad texts.
+tibmachuni-font-ttf:
+tibmachuni-font-ttf:
+tibmachuni-font-ttf: Homepage: http://thdl.org/
+tibmachuni-font-ttf:
+tibmachuni-font-ttf:

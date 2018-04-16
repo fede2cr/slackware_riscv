@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+ttf-tlwg: ttf-tlwg (Thai TTF Fonts)
+ttf-tlwg:
+ttf-tlwg: Fonts-TLWG (formerly ThaiFonts-Scalable) is a collection of Thai
+ttf-tlwg: scalable fonts available in free licenses. Its goal is to provide
+ttf-tlwg: fonts that conform to existing standards and recommendations, so that
+ttf-tlwg: it can be a reference implementation.
+ttf-tlwg:
+ttf-tlwg: Homepage: https://linux.thai.net/projects/fonts-tlwg
+ttf-tlwg:
+ttf-tlwg:
+ttf-tlwg:

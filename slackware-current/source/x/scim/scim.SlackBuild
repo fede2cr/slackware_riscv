@@ -1,0 +1,258 @@
+#!/bin/sh
+
+# Copyright 2006, 2007, 2008  Eric Hameleers, Eindhoven, NL
+# Copyright 2008, 2009, 2011, 2012, 2013, 2015, 2018  Patrick J. Volkerding, Sebeka, MN  USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# -----------------------------------------------------------------------------
+#
+# Slackware SlackBuild script
+# ===========================
+# By:        Eric Hameleers <alien@slackware.com>
+# For:       scim
+# Descr:     Smart Common Input Method platform
+# URL:       http://www.scim-im.org/
+#
+# -----------------------------------------------------------------------------
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=scim
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586 ;;
+    arm*) readelf /usr/bin/file -A | egrep -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *) ARCH=$(uname -m) ;;
+  esac
+  export ARCH
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "arm" ]; then
+  SLKCFLAGS="-O2 -march=armv4 -mtune=xscale"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armel" ]; then
+  SLKCFLAGS="-O2 -march=armv4t"
+  LIBDIRSUFFIX=""
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf ${PKGNAM}-${VERSION}
+tar xvf $CWD/${PKGNAM}-${VERSION}.tar.?z* || exit 1
+cd ${PKGNAM}-${VERSION} || exit 1
+
+./bootstrap
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+echo Building ...
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS -fpermissive -fno-delete-null-pointer-checks -std=gnu++98" \
+./configure --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --localstatedir=/var \
+  --sysconfdir=/etc \
+  --disable-static \
+  --with-gtk-version=2 \
+  --with-qt4-im-module-dir=/usr/lib${LIBDIRSUFFIX}/qt/plugins/inputmethods \
+  --program-prefix= \
+  --program-suffix= \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make || exit 1
+make DESTDIR=$PKG install || exit 1
+
+# Add a profile script that sets up the environment:
+mkdir -p $PKG/etc/profile.d
+
+cat <<EOT > $PKG/etc/profile.d/scim.sh.new
+#!/bin/sh
+
+# SCIM (Smart Common Input Method platform).  This is used to support the
+# entering of text in non-US-English languages.
+
+# For SCIM to work, you need to use a UTF-8 locale.  Make sure it ends on
+# ".UTF-8", not "utf-8"!  As an example, you would need to use en_US.UTF-8
+# for a US locale (export LANG=en_US.UTF-8), not en_US.
+#
+# The locale (LANG variable) is set in /etc/profile.d/lang.sh.
+
+if [ -x /usr/bin/scim ]; then
+  # Enable legacy X applications to use scim:
+  export XMODIFIERS="@im=SCIM"
+  # Let GTK applications like Firefox/Thunderbird use scim as
+  # default immodule:
+  export GTK_IM_MODULE="scim"
+  # Enable Qt/KDE applications to use scim:
+  export QT_IM_MODULE="scim"
+  # Make scim start automatically if the "magic key" Ctrl-Space is pressed:
+  export XIM_PROGRAM="/usr/bin/scim -d"
+fi
+
+# This ensures scim starts when you logon.
+# This will only work if you login through runlevel 4 (graphical login)!!!
+# Better is to have it start through Ctrl-Space like configured higher up ^^.
+#if [ ! \`ls /tmp/scim-socket*\` ]; then
+#  /usr/bin/scim -d
+#fi
+
+EOT
+
+cat <<EOT > $PKG/etc/profile.d/scim.csh.new
+#!/bin/csh
+
+# SCIM (Smart Common Input Method platform).  This is used to support the
+# entering of text in non-US-English languages.
+
+# For SCIM to work, you need to use a UTF-8 locale.  Make sure it ends on
+# ".UTF-8", not "utf-8"!  As an example, you would need to use en_US.UTF-8
+# for a US locale (setenv LANG en_US.UTF-8), not en_US.
+#
+# The locale (LANG variable) is set in /etc/profile.d/lang.csh.
+
+[ -x /usr/bin/scim ]
+if (\$status == 0) then
+  # Enable legacy X applications to use scim:
+  setenv XMODIFIERS "@im=SCIM"
+  # Let GTK applications like Firefox/Thunderbird use scim as
+  # default immodule:
+  setenv GTK_IM_MODULE "scim"
+  # Enable Qt/KDE applications to use scim (does not work for kde4):
+  setenv QT_IM_MODULE "scim"
+  # Make scim start automatically if the "magic key" Ctrl-Space is pressed:
+  setenv XIM_PROGRAM "/usr/bin/scim -d"
+endif
+
+# This ensures scim starts when you logon.
+# This will only work if you login through runlevel 4 (graphical login)!!!
+# Better is to have it start through Ctrl-Space like configured higher up ^^.
+#[ ! \`ls /tmp/scim-socket*\` ]
+#if (\$status == 0) then
+#  /usr/bin/scim -d
+#endif
+
+EOT
+
+chmod 755 $PKG/etc/profile.d/scim.sh.new
+chmod 755 $PKG/etc/profile.d/scim.csh.new
+
+mkdir -p $PKG/usr/share/applications
+cat $CWD/scim.desktop > $PKG/usr/share/applications/scim.desktop
+cat $CWD/scim-setup.desktop > $PKG/usr/share/applications/scim-setup.desktop
+
+# Protect config files from being overwritten:
+mv $PKG/etc/scim/config{,.new}
+mv $PKG/etc/scim/global{,.new}
+
+# Add this to the doinst.sh
+mkdir -p $PKG/install
+cat <<EOINS >> $PKG/install/doinst.sh
+
+# Handle the incoming configuration files:
+config() {
+  for infile in \$1; do
+    NEW="\$infile"
+    OLD="\`dirname \$NEW\`/\`basename \$NEW .new\`"
+    # If there's no config file by that name, mv it over:
+    if [ ! -r \$OLD ]; then
+      mv \$NEW \$OLD
+    elif [ "\`cat \$OLD | md5sum\`" = "\`cat \$NEW | md5sum\`" ]; then
+      # toss the redundant copy
+      rm \$NEW
+    fi
+    # Otherwise, we leave the .new copy for the admin to consider...
+  done
+}
+
+# Prepare the new configuration files
+for file in etc/scim/config.new etc/scim/global.new etc/profile.d/scim.sh.new etc/profile.d/scim.csh.new ; do
+  if [ -e \$(dirname \$file)/\$(basename \$file .new) -a -x \$(dirname \$file)/\$(basename \$file .new) ]; then
+    chmod 755 \$file
+  else
+    chmod 644 \$file
+  fi
+  config \$file
+done
+
+# Run gtk-query-immodules so that "scim" will appear under Imput Method
+# when you right- click your mouse in a text box.
+if [ -x /usr/bin/update-gtk-immodules ]; then
+  /usr/bin/update-gtk-immodules
+fi
+
+EOINS
+
+# Add documentation:
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/manual/zh_CN/figures
+cp -a \
+  ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+# Install documentation and user manual
+cp -a docs/manual/zh_CN/user-manual.html \
+  $PKG/usr/doc/$PKGNAM-$VERSION/manual/zh_CN/
+cp -a docs/manual/zh_CN/figures/*.png \
+   $PKG/usr/doc/$PKGNAM-$VERSION/manual/zh_CN/figures/
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Add a package description:
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+/sbin/makepkg --prepend --linkadd y --chown n $TMP/${PKGNAM}-${VERSION}-${ARCH}-${BUILD}.txz
+

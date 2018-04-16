@@ -1,0 +1,338 @@
+#!/bin/sh
+# Copyright 2001 BSDi, Inc, Concord, CA.  Written by volkerdi@slackware.com.
+# Copyright 2004 Slackware Linux, Inc., Concord, CA.
+# Copyright 2006 Patrick Volkerding, Sebeka, MN.
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+
+# These functions will spit out code to ask for Keyboard Model/Layout/Variant
+# Options
+# They are pretty much identical, but the text message changes and they parse
+# different parts of the same file.
+dump_keyboard_model()
+{
+    echo -n "dialog --title \"SELECT YOUR KEYBOARD MODEL\" --menu \"It is recomended to choose the default keyboard (\\\"pc101\\\") unless you know your keyboard model and it is present in this list.  Also note the keyboard model is not the same thing as the keyboard layout (the keyboard layout defaults to \\\"pc105\\\" which is usually correct)\" 21 68 10 "
+    CAN_START_PARSING=0
+    while read LINE ; do 
+        if [[ $LINE == "! model" ]]; then
+            CAN_START_PARSING=1
+        elif [[ $CAN_START_PARSING == 1 ]]; then
+            if [[ $LINE =~ "^!.*" ]]; then
+                break
+            fi
+            if ! echo $LINE | grep '^//' 1> /dev/null ; then
+                echo -n $LINE | sed -e's/\s*\([A-Za-z0-9_]\+\)\s\+\(.\+\)$/"\1" "\2" /g'
+            fi
+        fi
+    done < /etc/X11/xkb/rules/xorg.lst
+    echo " 2> \$TMP/keybmodel"
+    echo "return \$?"
+}
+ 
+dump_keyboard_layout()
+{
+    echo -n "dialog --title \"SELECT YOUR $1 KEYBOARD LAYOUT\" --menu \"The keyboard layout supports the language \
+that is normally used on this keyboard.  You would usually select a similar keyboard layout \
+to what you choose for the console. (Defaults to \\\"us\\\")  You can select up to 4 different layouts.\" 21 60 10 "
+    if [ ! $1 = "MAIN" ]; then
+        echo -n \"none\" \"Do not select an additional layout\"" "
+    fi
+    CAN_START_PARSING=0
+    while read LINE ; do 
+        if [[ $LINE == "! layout" ]]; then
+            CAN_START_PARSING=1
+        elif [[ $CAN_START_PARSING == 1 ]]; then
+            if [[ $LINE =~ "^!.*" ]]; then
+                break
+            fi
+            if ! echo $LINE | grep '^//' 1> /dev/null ; then
+                echo -n $LINE | sed -e's/\s*\([A-Za-z0-9_]\+\)\s\+\(.\+\)$/'\''\1'\'' '\''\2'\'' /g'
+            fi
+        fi
+    done < /etc/X11/xkb/rules/xorg.lst
+    echo " 2> \$TMP/keyblayout "
+    echo "return \$?"
+}
+
+# Note: This receives as a parameter the selected layout.
+dump_keyboard_variant()
+{
+    # IMPORTANT: This function only works with X.org 6.9 rules. I haven't
+    # tested it with 7.0+, but it should be the same format, so it should work.
+    # This WILL NOT work with X.org 6.8.x (it just has one variant, anyway).
+    if ! grep "${1}:" /etc/X11/xkb/rules/xorg.lst 1> /dev/null; then
+        # This keyboard layout doesn't have any variants.
+        # Lets dump a dummy script instead.
+        echo "echo none > \$TMP/keybvariant"
+        echo "return 1"
+        return
+    fi
+    echo -n "dialog --title \"SELECT YOUR KEYBOARD LAYOUT VARIANT\" --menu \"There are some variations \
+avaiable for keyboard layout \\\"$1\\\".\nSelect the one your keyboard uses or none if \
+your keyboard doesn't use a layout variant.  If in doubt, select none.  (Defaults to \\\"none\\\")\" 15 67 5 "
+    echo -n \"none\" \"Do not select a layout variant\"" "
+    grep "${1}:" /etc/X11/xkb/rules/xorg.lst | while read LINE ; do 
+        # This may look scary, but it's a simple pattern, the problem is all
+        # those things which need to be escaped...
+        echo -n $LINE | sed -e's/\s*\([A-Za-z0-9_-]\+\)\s\+\('${1}':\)\s\+\(.\+\)$/'\''\1'\'' '\''\3'\'' /g'
+    done
+    echo " 2> \$TMP/keybvariant"
+    echo "return \$?"
+}
+
+dump_keyboard_option()
+{
+    echo -n "dialog --title \"SELECT YOUR KEYBOARD OPTIONS\" --menu \"Select additional keyboard options.  You may continue to select additional options until you select 'none'.\" 18 72 10 "
+    echo -n \"none\" \"Finished: do not select additional options.\"" "
+    CAN_START_PARSING=0
+    while read LINE ; do 
+        if [[ $LINE == "! option" ]]; then
+            CAN_START_PARSING=1
+        elif [[ $CAN_START_PARSING == 1 ]]; then
+            if [[ $LINE =~ "^!.*" ]]; then
+                break
+            fi
+            if ! echo $LINE | grep '^//' 1> /dev/null ; then
+	        if  echo $LINE | grep ':' 1> /dev/null ; then
+		    echo -n $LINE | sed -e's/\s*\([A-Za-z0-9_]\+\)\s\+\(.\+\)$/"\1" "\2" /g'
+		fi    
+            fi
+        fi
+    done < /etc/X11/xkb/rules/xorg.lst
+    echo " 2> \$TMP/keyboption "
+    echo "return \$?"
+}
+
+# If we aren't root, bail:
+if [ "$USER" = "root" ]; then
+  TMP=/var/log/setup/tmp
+else
+  echo "Only root can configure X."
+  exit
+fi
+
+# Now, this wouldn't make much sense either:
+if [ ! -r /usr/X11R6/bin/Xorg ]; then
+  exit
+fi
+
+dialog --title "CONFIGURE X SERVER?" --yesno \
+"If you like, X can attempt to probe for your video hardware and mouse, and \
+write an initial configuration file to /etc/X11/xorg.conf.  Would you like to do \
+this now?" 7 66
+if [ ! $? = 0 ]; then
+  exit
+fi
+
+if [ ! -d $TMP ]; then
+ mkdir -p $TMP
+ chmod 700 $TMP
+fi
+
+# OK, we'll warn the user if there's already an existing xorg.conf:
+CONFIG_EXISTS=false
+for xf86config in /etc/X11/xorg.conf /etc/xorg.conf /usr/X11R6/lib/X11/xorg.conf $HOME/xorg.conf ; do
+  if [ -r $xf86config ]; then
+    CONFIG_EXISTS=$xf86config
+  fi  
+done
+if [ ! "$CONFIG_EXISTS" = "false" ]; then
+  dialog --title "FOUND EXISTING xorg.conf in `dirname $CONFIG_EXISTS`" \
+  --msgbox "A previous X Window System configuration file has been found.  \
+You can now reconfigure X, replacing the file with a new version (and \
+keeping a backup of the old file), or you can abort leaving the existing \
+config file in place.  Hit ENTER to rename the xorg.conf file to \
+xorg.conf.backup and create a new one, or ESC to abort." 9 72
+  if [ ! $? = 0 ]; then
+    exit
+  fi
+fi
+
+# Have the X server create a default config file:
+/usr/X11R6/bin/X -configure
+if [ ! $? = 0 ]; then
+  # failure, bail.
+  exit
+fi
+
+# Move any existing config file(s) aside:
+for xf86config in /etc/X11/xorg.conf /etc/xorg.conf /usr/X11R6/lib/X11/xorg.conf $HOME/xorg.conf ; do
+  if [ -r $xf86config ]; then
+    mv $xf86config ${xf86config}.backup
+  fi  
+done
+
+# OK, so now that we have a default file in $HOME/xorg.conf.new
+# we can set up a default color depth:
+dialog --title "SELECT DEFAULT COLOR DEPTH" \
+  --menu "Now you may select a default color depth for the X server:" 13 70 6 \
+  "24" "24 bit True Color" \
+  "16" "16 bit Pseudo Color" \
+  "8" "8 bit 256 Color" \
+  "4" "4 bit 16 Color" \
+  "1" "1 bit Mono B/W" \
+  "none" "Go with driver default (usually 8-bit)" 2> $TMP/colordepth
+if [ ! $? = 0 ]; then
+  rm -f $TMP/colordepth
+  exit
+fi
+
+if grep Driver $HOME/xorg.conf.new | grep \"kbd\" 1> /dev/null ; then
+    dump_keyboard_model > $TMP/askmodel
+    . $TMP/askmodel
+    # The configuration will continue, using Xorg defaults, when the user
+    # hits ESC or cancel.
+    if [ $? = 0 ]; then
+        KBMODEL=`cat $TMP/keybmodel`
+    fi
+    for i in "MAIN" "SECOND" "THIRD" "FOURTH"; do
+        dump_keyboard_layout $i > $TMP/asklayout
+	. $TMP/asklayout
+	if [ ! $? = 0 ]; then
+	    break
+	else
+	    KBLAYOUT=`cat $TMP/keyblayout`  
+	    if [ $KBLAYOUT = "none" ]; then
+		break
+	    fi	
+	    if [ ! $KBLAYOUTS = "" ]; then
+        	KBLAYOUTS=$KBLAYOUTS,$KBLAYOUT
+	    else
+		KBLAYOUTS=$KBLAYOUT
+	    fi    
+	    dump_keyboard_variant $KBLAYOUT > $TMP/askvariant
+    	    . $TMP/askvariant
+    	    if [ ! $? = 0 ]; then
+        	KBVARIANT="none"
+    	    else
+        	KBVARIANT=`cat $TMP/keybvariant`
+		if [ ! $KBVARIANT = "none" ]; then
+		    KBLAYOUTS="$KBLAYOUTS($KBVARIANT)"
+		fi    
+    	    fi
+	fi
+    done 
+    KBLAYOUT=$KBLAYOUTS
+#    if [ ! $KBLAYOUT = "us" ]; then
+	dump_keyboard_option > $TMP/askoption
+	while [ 1 ]; do
+    	    . $TMP/askoption
+    	    if [ ! $? = 0 ]; then
+        	break
+    	    else
+    		KBOPTION=`cat $TMP/keyboption`
+		if [ $KBOPTION = "none" ]; then
+		    break
+		fi      
+		if [ ! $KBOPTIONS = "" ]; then
+        	    KBOPTIONS=$KBOPTIONS,$KBOPTION
+		else
+		    KBOPTIONS=$KBOPTION
+		fi    
+	    fi
+	done
+#    fi
+    rm -f $TMP/{ask,keyb}{model,layout,variant,option}
+fi
+
+# /* I know this completely hoses the indentation of the xorg.conf file, but
+# really don't know a good way around that.  Shoulda used perl.  ;) */
+# NOTE:  Thanks to Jonathan Woithe for the IFS fix for output formatting!
+START_LOOKING_MONITOR=false
+START_LOOKING_MOUSE=false
+rm -f /etc/X11/xorg.conf
+REAL_IFS=${IFS}
+IFS=""
+cat $HOME/xorg.conf.new | while read LINE ; do
+  IFS=${REAL_IFS}
+  if [ ! "$START_LOOKING_MOUSE" = "true" ]; then
+    # When looking for a mouse entry we want to write before the EndSection
+    # mark.
+    echo "$LINE" >> /etc/X11/xorg.conf
+  fi
+  if echo $LINE | grep Section | grep Screen 1> /dev/null ; then
+    START_LOOKING_MONITOR=true
+  fi
+  if [ "$START_LOOKING_MONITOR" = "true" ]; then
+    if echo $LINE | grep Monitor 1> /dev/null ; then
+      if [ ! "`cat $TMP/colordepth`" = "none" ]; then
+        echo -e "\tDefaultDepth `cat $TMP/colordepth`" >> /etc/X11/xorg.conf
+      fi
+      START_LOOKING_MONITOR=false
+    fi
+  fi
+  if echo $LINE | grep Driver | grep \"kbd\" 1> /dev/null ; then
+      # This is a keyboard, lets add the configuration which might have been
+      # given by the user
+      if [ ! "$KBMODEL" = "" ]; then
+          echo -e "\tOption       \"XkbModel\"  \"$KBMODEL\"" >> /etc/X11/xorg.conf
+      fi
+      if [ ! "$KBLAYOUT" = "" ]; then
+          echo -e "\tOption       \"XkbLayout\"  \"$KBLAYOUT\"" >> /etc/X11/xorg.conf
+# KBVARIANT in KBLAYOUT
+#          if [ ! "$KBVARIANT" = "none" ]; then
+#              echo -e "\tOption       \"XkbVariant\"  \"$KBVARIANT\"" >> /etc/X11/xorg.conf
+#          fi
+      fi
+      if [ ! "$KBOPTIONS" = "" ]; then
+          echo -e "\tOption       \"XkbOptions\"  \"$KBOPTIONS\"" >> /etc/X11/xorg.conf
+      fi
+  elif echo $LINE | grep Driver | grep \"mouse\" 1> /dev/null ; then
+      # This is a mouse, lets take a look and check if X was able to configure
+      # the wheel, otherwize we'll ask the all knowing root.
+      # If there's a mouse and X didn't detect a wheel, then we ask the user if his
+      # mouse has a wheel and enable it if so. This should fix the times when X
+      # doesn't configure the mouse wheel.
+      START_LOOKING_MOUSE=true
+  elif [ "$START_LOOKING_MOUSE" = "true" ]; then
+    if echo $LINE | grep Option | grep \"Device\" 1> /dev/null ; then
+        MOUSE_NAME=`echo $LINE | sed -e's/\s*//' | sed -e's/\s\+/\t/g' | cut -f 3`
+    elif echo $LINE | grep ZAxisMapping 1> /dev/null ; then
+        # X was able to configure the mouse properly, we stop looking for a
+        # mouse.
+        START_LOOKING_MOUSE=false
+    elif echo $LINE | grep EndSection 1> /dev/null ; then
+        # We reached the end of the section, and didn't find a ZAxisMapping,
+        # lets ask the all-knowing user.
+        dialog --title "ADD MOUSE WHEEL SUPPORT" \
+         --yesno "Does your mouse (${MOUSE_NAME}) have a wheel and if so, would you like to have it enabled?" 6 60
+        if [ $? = 0 ]; then
+           echo -e "\tOption      \"ZAxisMapping\" \"4 5\"" >> /etc/X11/xorg.conf
+        fi
+        MOUSE_NAME=
+        START_LOOKING_MOUSE=false
+    fi
+    echo "$LINE" >> /etc/X11/xorg.conf
+  fi
+  IFS=""
+done
+IFS=${REAL_IFS}
+rm -f $TMP/colordepth
+rm -f $HOME/xorg.conf.new
+
+dialog --title "X CONFIGURED" \
+  --msgbox "Your new X configuration file has been saved to /etc/X11/xorg.conf.  \
+You may still need to add or adjust some values in the file to achieve the desired \
+screen resolution.  For example, some monitors would require \"HorizSync 30-55\" in \
+the \"Monitor\" section of the configuration file.  For complete information about \
+making these adjustments, please refer to \"man xorg.conf\"." \
+  11 66
+
