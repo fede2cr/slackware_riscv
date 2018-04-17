@@ -1,0 +1,134 @@
+#!/bin/sh
+
+# Copyright 2008  Robby Workman  Northport, AL, USA
+# Copyright 2012, 2013  Eric Hameleers, Eindhoven, NL
+# Copyright 2012, 2013, 2014, 2015, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+#  This script should build any of the language packs if run with (for example):
+#    PKGLANG=de ./calligra-l10n.SlackBuild
+#  You should be able to build all of them with something like this:
+#    for i in $(cat languages) ; do PKGLANG=$i ./calligra-l10n.SlackBuild ; done
+# If ./languages is missing and this script is called without options, the
+# default is to create an up-to-date ./languages list and build all the
+# language packs.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+if [ ! -r ./languages ]; then
+  for file in calligra-l10n*.xz ; do
+    echo $file | cut -f 3 -d - >> ./languages
+  done
+fi
+
+[ -z $VERSION ] && export VERSION=2.9.11
+[ -z $ARCH ] && export ARCH=noarch
+[ -z $BUILD ] && export BUILD=1
+
+# Use this as CFLAGS and CXXFLAGS:
+if [ -z "$SLKCFLAGS" ]; then
+  if [ "$ARCH" = "i486" ]; then
+    export SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  elif [ "$ARCH" = "i586" ]; then
+    export SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  elif [ "$ARCH" = "s390" ]; then
+    export SLKCFLAGS="-O2"
+  elif [ "$ARCH" = "x86_64" ]; then
+    export SLKCFLAGS="-O2 -fPIC"
+  elif [ "$ARCH" = "armv7hl" ]; then
+    export SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+  fi
+fi
+
+# Get the kde environment variables
+[ -d kdebase ] && . ./kdebase/profile.d/kde.sh
+
+# Set the config option variables if they are not already set:
+[ -r ../KDE.options ] && . ../KDE.options
+
+TMP=${TMP:-/tmp/kde_build}
+
+make_language_pack() {
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf $PKGNAM-$VERSION 
+tar xvf $CWD/$PKGNAM-$VERSION.tar.xz || exit 1
+cd $PKGNAM-$VERSION || exit 1
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DSYSCONF_INSTALL_DIR=/etc/kde \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    ..
+  make || exit 1
+  make install DESTDIR=$PKG || exit 1
+cd -
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+mkdir -p $PKG/install
+cat $CWD/slack-desc/slack-desc.calligra-l10n-$PKGLANG > $PKG/install/slack-desc
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+}
+
+if [ -z $PKGLANG ]; then
+  for PKGLANG in $(cat languages) ; do
+    PKGNAM=calligra-l10n-$PKGLANG
+    # If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+    # the name of the created package would be, and then exit. This information
+    # could be useful to other scripts.
+    if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+      echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+      continue
+    fi
+    PKG=$TMP/package-calligra-l10n-$PKGLANG
+    # The global options may be overridden here (if needed):
+    [ -r ./local.options/$PKGLANG ] && . ./local.options/$PKGLANG
+    make_language_pack;
+  done
+else
+  PKGNAM=calligra-l10n-$PKGLANG
+  # If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+  # the name of the created package would be, and then exit. This information
+  # could be useful to other scripts.
+  if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+    echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+    exit 0
+  fi
+  PKG=$TMP/package-calligra-l10n-$PKGLANG
+  # The global options may be overridden here (if needed):
+  [ -r ./local.options/$PKGLANG ] && . ./local.options/$PKGLANG
+  make_language_pack;
+fi
+
