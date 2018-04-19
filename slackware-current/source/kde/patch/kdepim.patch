@@ -1,0 +1,4 @@
+# Install Kleopatra headers, needed by kopete-cryptography:
+# This used to be fixed?
+zcat $CWD/patch/kdepim/kdepim-install_kleopatra_headers.patch.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+

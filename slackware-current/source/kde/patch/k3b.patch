@@ -1,0 +1,9 @@
+# Patch for GCC 6+:
+zcat $CWD/patch/k3b/k3b.narrowing.diff.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# Patch for ffmpeg3:
+zcat $CWD/patch/k3b/k3b-ffmpeg3.patch.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# Fix error "ISO C++ forbids comparison between pointer and integer [-fpermissive]":
+zcat $CWD/patch/k3b/k3b.pointer.compare.diff.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+

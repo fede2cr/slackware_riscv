@@ -1,0 +1,2 @@
+zcat $CWD/patch/kdevelop-pg-qt/0011-fix-some-warnings.patch.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+zcat $CWD/patch/kdevelop-pg-qt/kdevelop-pg-qt.ftbfs.diff.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }

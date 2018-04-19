@@ -1,0 +1,3 @@
+# Kludge around a strange failure in setting up the unit tests:
+zcat $CWD/patch/libkscreen/libkscreen.broken.test.diff.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+

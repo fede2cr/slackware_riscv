@@ -1,0 +1,11 @@
+mkdir build-python3
+cd build-python3
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+cd -
+
+mkdir build-python2
+cd build-python2
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+cd -

@@ -1,0 +1,19 @@
+Mon Feb 12 13:37:21 UTC 2018
+  All KDE packages tested and found to build properly.
++--------------------------+
+Tue Jan 30 23:45:21 UTC 2018
+  Fix all packages that fail to build from source:
+  Added -fpermissive and -fno-delete-null-pointer-checks to default flags (GCC5 behavior)
+  pykde4: patch to built against sip-4.19.5+
+  kde-workspace: cmake: -DCMAKE_C_STANDARD=99, -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS -Wno-cpp"
+  kdesdk-kioslaves: cmake: -DWITH_SVN=OFF (tries to use a private API that does not exist in 1.9+)
+  kgamma: cmake: add include(CheckIncludeFiles) to CMakeLists.txt
+  smokeqt: cmake: Add -std=c++98 to CXXFLAGS
+  smokekde: cmake: Add -std=c++98 to CXXFLAGS
+  krfb: cmake: Add -std=c++98 to CXXFLAGS
+  print-manager: patch to build against cups-2.2+
+  kdeartwork: cmake: add include(CheckIncludeFiles) to CMakeLists.txt
+  rocs: cmake: Add -std=c++98 to CXXFLAGS
+  kuser: cmake: add include(CheckIncludeFiles) to CMakeLists.txt
+  kdevelop-pg-qt: Fix flex args
+  ktorrent: cmake: Add -std=c++98 to CXXFLAGS

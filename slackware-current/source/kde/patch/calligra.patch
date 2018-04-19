@@ -1,0 +1,6 @@
+# Fix build with mariadb 10.2+:
+zcat $CWD/patch/calligra/calligra.mariadb.diff.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# Patch for boost 1.65.0+:
+zcat $CWD/patch/calligra/boost-1.65.0.patch.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+

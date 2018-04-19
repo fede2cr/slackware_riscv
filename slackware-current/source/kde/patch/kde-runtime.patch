@@ -1,0 +1,2 @@
+zcat $CWD/patch/kde-runtime/kde-runtime-4.14.3.nm.diff.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+

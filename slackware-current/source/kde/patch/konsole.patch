@@ -1,0 +1,5 @@
+# Fix scrollUp behavior:
+zcat $CWD/patch/konsole/konsole.scrollup.diff.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# Set default TERM=konsole:
+zcat $CWD/patch/konsole/konsole.term.is.konsole.diff.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }

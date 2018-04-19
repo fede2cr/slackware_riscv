@@ -1,0 +1,24 @@
+# NOTE: Added -DU_USING_ICU_NAMESPACE=1 to CXXFLAGS, which should be a temporary
+# requirement. See the link below:
+# http://site.icu-project.org/download/61#TOC-Migration-Issues
+
+mkdir build
+cd build
+  cmake \
+    $KDE_OPT_ARGS \
+    -DKDE_PLATFORM_FEATURE_DISABLE_DEPRECATED=TRUE \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS -DU_USING_ICU_NAMESPACE=1" \
+    -DCMAKE_C_FLAGS_RELEASE:STRING="$SLKCFLAGS -DU_USING_ICU_NAMESPACE=1" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS -DU_USING_ICU_NAMESPACE=1" \
+    -DCMAKE_CXX_FLAGS_RELEASE:STRING="$SLKCFLAGS -DU_USING_ICU_NAMESPACE=1" \
+    -DCMAKE_INCLUDE_PATH:STRING="/usr/include/openmj2-2.1" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DSYSCONF_INSTALL_DIR=/etc/kde \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    -DIHAVEPATCHEDQT:BOOL=ON \
+    -DOPENJPEG_INCLUDE_DIR=/usr/include/openmj2-2.1 \
+    -DOPENJPEG_NAMES=openmj2 \
+    ..
+

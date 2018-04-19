@@ -1,0 +1,3 @@
+# Fix compiling with gcc 7:
+zcat $CWD/patch/kopete/kopete-gcc6.patch.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+

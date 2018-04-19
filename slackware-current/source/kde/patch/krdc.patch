@@ -1,0 +1,3 @@
+# Allow for the use of xfreerdp >= 1.1.0:
+zcat $CWD/patch/krdc/krdc_freerdp-1.1.0.patch.gz | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
