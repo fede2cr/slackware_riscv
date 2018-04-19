@@ -1,0 +1,16 @@
+Begin3
+Title:          Seyon
+Version:        2.20c
+Entered-date:   09MAY99
+Description:    Seyon is a complete full-featured telecommunications package
+                for the X Window System. Some of its features are: dialing 
+                directory, scripting language, external file transfer protocol
+                support, zmodem auto-download, configurable keyboard 
+                translation modes.
+Keywords:       communication seyon x11 rs232 serial
+Author:         msaggaf@erl.mit.edu (M. Saggaf)
+Maintained-by:  stevem@chiark.greenend.org.uk (Steve McIntyre)
+Primary-site:   sunsite.unc.edu /pub/Linux/apps/serialcomm/dialout
+                165 KB seyon-2.20c.tar.gz
+Copying-policy: GNU GPL
+End

@@ -1,0 +1,12 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/@LIB@/seamonkey-@VERSION@
+includedir=/usr/include/seamonkey-@VERSION@
+idldir=/usr/share/idl/seamonkey-@VERSION@
+
+Name: XPCOM
+Description: The Mozilla Cross Platform Component Library
+Version: @VERSION@
+Requires: seamonkey-nspr >= 4.7.1
+Libs: -L${libdir} -lxpcom
+Cflags: -I${includedir} -I${includedir}/xpcom -I${includedir}/string

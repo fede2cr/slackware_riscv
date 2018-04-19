@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+rdesktop: rdesktop (Remote Desktop Protocol client)
+rdesktop:
+rdesktop: rdesktop is a client for Remote Desktop Protocol (RDP), used in a
+rdesktop: number of Microsoft products including Windows NT Terminal Server,
+rdesktop: Windows 2000 Server, Windows XP, and Windows 2003 Server.
+rdesktop:
+rdesktop: For more information, see: http://www.rdesktop.org
+rdesktop:
+rdesktop:
+rdesktop:
+rdesktop:

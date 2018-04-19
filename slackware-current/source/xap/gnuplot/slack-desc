@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+       |-----handy-ruler------------------------------------------------------|
+gnuplot: gnuplot (plotting utility)
+gnuplot:
+gnuplot: Gnuplot is a command-line driven interactive function plotting utility
+gnuplot: for UNIX, MSDOS, and VMS platforms. The software is copyrighted but
+gnuplot: freely distributed (i.e., you don't have to pay for it). It was
+gnuplot: originally intended as graphical program which would allow scientists
+gnuplot: and students to visualize mathematical functions and data. Gnuplot
+gnuplot: supports many different types of terminals, plotters, and printers
+gnuplot: (including many color devices, and pseudo-devices like LaTeX) and is
+gnuplot: easily extensible to include new devices.
+gnuplot:

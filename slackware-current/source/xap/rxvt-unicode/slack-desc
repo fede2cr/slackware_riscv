@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+rxvt-unicode: rxvt-unicode (terminal emulator)
+rxvt-unicode:
+rxvt-unicode: rxvt-unicode is a color vt102 terminal emulator based on rxvt.
+rxvt-unicode: Features of rxvt-unicode include international language support
+rxvt-unicode: through Unicode, transparency, the ability to display multiple font
+rxvt-unicode: types and support for Perl extensions.
+rxvt-unicode:
+rxvt-unicode: Homepage: http://software.schmorp.de/pkg/rxvt-unicode.html
+rxvt-unicode:
+rxvt-unicode:
+rxvt-unicode:

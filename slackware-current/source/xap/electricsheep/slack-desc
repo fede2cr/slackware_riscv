@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+             |-----handy-ruler------------------------------------------------------|
+electricsheep: electricsheep (distributed screensaver)
+electricsheep:
+electricsheep: Electric Sheep is an xscreensaver module that displays mpeg video
+electricsheep: of an animated fractal flame. In the background it contributes
+electricsheep: render cycles to the next animation. Periodically it uploades
+electricsheep: completed frames to the server, where they are compressed for
+electricsheep: distribution to all clients.
+electricsheep: This program is recommended only if you have a high bandwidth
+electricsheep: connection to the internet such as DSL or cable modem.
+electricsheep:
+electricsheep: electricsheep home: http://electricsheep.org/

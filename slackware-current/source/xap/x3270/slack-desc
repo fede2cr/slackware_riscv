@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+     |-----handy-ruler------------------------------------------------------|
+x3270: x3270 (IBM host access tool for X)
+x3270:
+x3270: x3270 opens a telnet connection to an IBM host in an X window. Since
+x3270: the window created by x3270 can use its own font for displaying
+x3270: characters, is a fairly accurate representation of an IBM 3278.
+x3270:
+x3270:
+x3270:
+x3270:
+x3270:
+x3270:

@@ -1,0 +1,164 @@
+#!/bin/sh
+
+# Copyright 2010 B. Watson (yalhcru@gmail.com)
+# Copyright 2010, 2015, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Slackware build script for xaos
+
+# Written by B. Watson (yalhcru@gmail.com)
+
+# A few notes:
+#
+# Package really wants to use its own CFLAGS (even checks for them
+# in the configure script). Let it...
+# 
+# SFFE is the user formula evaluator, which allows users to define their
+# own fractals. On x86 platforms, an assembly-language implementation of
+# SFFE is used. On non-x86 platforms, SFFE requires a library called GSL
+# (GNU Scientific Library, available from SBo).
+# 
+# xaos is still interesting and useful without SFFE support (most users
+# probably don't know/care about the math, so they'll never use the SFFE
+# stuff anyway), so we'll just disable it on non-x86 platforms by default.
+# 
+# If you really want to use it, set USE_GSL=yes in the environment before
+# running this script. There's no need to use GSL on x86 platforms, since
+# the asm code is (or should be) faster, but the option is there if you
+# want to use it anyway.
+# 
+# Multilib users also have the option of building on a 32-bit Slackware system
+# (or in a chroot) and the resulting package will run just fine on 64-bit.
+#
+# If the preceding didn't make any sense, here's the bottom line:
+# 
+# - Regular Slackware (x86) users can just run this script and ignore the junk
+#   above.
+#
+# - Everyone else (Slamd64, Bluewhite64, Slackware64, ???) can just
+#   run this script and probably never notice the missing functionality.
+#
+# - If you're not on x86, but you want the formula evaluator, install GSL
+#   and then run this script with USE_GSL=yes in the environment.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=xaos
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    # might as well use i686 since it won't listen to our CFLAGS anyway
+    i?86) ARCH=i686 ;;
+    arm*) ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+USE_GSL=${USE_GSL:-no}
+
+if [ "$USE_GSL" = "yes" ]; then
+	GSL_OPT="yes"
+	SFFE_OPT="yes"
+elif [ "$ARCH" = "i486" -o "$ARCH" = "i686" ]; then
+	GSL_OPT="no"
+	SFFE_OPT="yes"
+else
+	GSL_OPT="no"
+	SFFE_OPT="no"
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z* || exit 1
+cd $PKGNAM-$VERSION || exit 1
+
+zcat $CWD/xaos.x86.registers.diff.gz | patch -p1 --verbose || exit 1
+
+chown -R root:root .
+chmod -R a-s,u+w,go+r-w .
+
+./configure \
+  --prefix=/usr \
+  --docdir=/usr/doc/$PKGNAM-$VERSION \
+  --infodir=/usr/info \
+  --mandir=/usr/man \
+  --with-gsl=$GSL_OPT \
+  --with-sffe=$SFFE_OPT \
+  --with-pthread=yes \
+  --build=$ARCH-slackware-linux
+
+make || exit 1
+# binary already stripped, yay!
+make install DESTDIR=$PKG || exit 1
+
+# Replace bogus manpage:
+zcat $CWD/xaos.6.gz > $PKG/usr/man/man6/xaos.6
+
+gzip -9 $PKG/usr/man/man6/xaos.6
+rm -f $PKG/usr/info/dir
+gzip -9 $PKG/usr/info/*.info*
+
+mkdir -p $PKG/usr/doc
+mv $PKG/usr/share/XaoS/doc $PKG/usr/doc/xaos-$VERSION
+( cd $PKG/usr/share/XaoS ; ln -sf ../../doc/xaos-$VERSION doc )
+
+mkdir -p $PKG/usr/share/applications
+cat $CWD/xaos.desktop > $PKG/usr/share/applications/xaos.desktop
+
+mkdir -p $PKG/usr/share/pixmaps
+cat $CWD/xaos.png > $PKG/usr/share/pixmaps/xaos.png
+
+chmod 644 $PKG/usr/doc/xaos-$VERSION/*
+rm -f $PKG/usr/doc/xaos-$VERSION/ChangeLog.old
+cp -a \
+  AUTHORS COPYING* INSTALL NEWS README* TODO \
+  $PKG/usr/doc/xaos-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=eboard
+GenericName=Chess Game
+Comment=A graphical chess engine frontend
+Exec=eboard
+Icon=/usr/share/pixmaps/chess.png
+Terminal=false
+Type=Application
+Categories=Application;Game;BoardGame

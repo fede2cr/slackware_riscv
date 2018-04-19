@@ -1,0 +1,96 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2015, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=xv
+VERSION=3.10a
+BUILD=${BUILD:-8}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-xv
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf xv-3.10
+tar xvf $CWD/xv-3.10.tar.?z* || exit 1
+cd xv-3.10 || exit 1
+chown -R root:root .
+zcat $CWD/xv-3.10a.patch.gz | patch -p0 --verbose --backup --suffix=.orig || exit 1
+bzcat $CWD/xv-3.10a-jumbo-fix-enh-patch-20070520.txt.bz2 | patch -p1 --verbose --backup --suffix=.orig || exit 1
+bzcat $CWD/xv-3.10a-jumbo-additions.diff.bz2 | patch -p1 --verbose --backup --suffix=.orig || exit 1
+bzcat $CWD/xv-3.10a-enhancements.20070520-20081216.diff.bz2 | patch -p1 --verbose --backup --suffix=.orig || exit 1
+zcat $CWD/xv.prefix.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+if [ "$ARCH" = "x86_64" ]; then
+  zcat $CWD/xv.prefix_x86_64.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+fi
+zcat $CWD/xv.jasper.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+zcat $CWD/xv-libpng-1.5.patch.gz | patch -p0 --verbose --backup --suffix=.orig || exit 1
+make -f Makefile.std || exit 1
+strip --strip-unneeded bggen vdcomp xcmap xv xvpictoppm
+mkdir -p $PKG/usr/bin
+cat bggen > $PKG/usr/bin/bggen
+cat vdcomp > $PKG/usr/bin/vdcomp
+cat xcmap > $PKG/usr/bin/xcmap
+cat xv > $PKG/usr/bin/xv
+cat xvpictoppm > $PKG/usr/bin/xvpictoppm
+chmod 755 $PKG/usr/bin/*
+mkdir -p $PKG/usr/man/man1
+for page in docs/xv.man docs/bggen.man docs/xcmap.man docs/xvp2p.man ; do
+  cat $page | gzip -9c > $PKG/usr/man/man1/`basename $page .man`.1.gz
+done
+mkdir -p $PKG/usr/doc/xv-$VERSION
+cp -a \
+  BUGS IDEAS INSTALL README README.jumbo README.pcd \
+  $PKG/usr/doc/xv-$VERSION
+( cd docs
+  cp -a \
+    penn.policy xv.blurb xv.ann xvdocs.ps \
+    $PKG/usr/doc/xv-$VERSION
+    bzip2 -9 $PKG/usr/doc/xv-$VERSION/xvdocs.ps )
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/xv-$VERSION-$ARCH-$BUILD.txz
+

@@ -1,0 +1,138 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2012, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=x3270
+VERSION=3.3
+TARBVER=${TARBVER:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+VERSION=$(echo $TARBVER | cut -f 1,2 -d .)
+BUILD=${BUILD:-2}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586 ;;
+    arm*) readelf /usr/bin/file -A | egrep -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *) ARCH=$(uname -m) ;;
+  esac
+  export ARCH
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$TARBVER-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i386" ]; then
+  SLKCFLAGS="-O2 -march=i386 -mcpu=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-x3270
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf x3270-$VERSION
+tar xvf $CWD/x3270-$TARBVER.tar.?z* || exit 1
+cd x3270-3.3 || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc/X11 \
+  --build=$ARCH-slackware-linux
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG
+
+mv $PKG/etc/X11/x3270/ibm_hosts $PKG/etc/X11/x3270/ibm_hosts.new
+find $PKG -name fonts.dir -exec rm {} \;
+if [ -d $PKG/usr/lib$LIBDIRSUFFIX/X11/fonts/misc ]; then
+  mkdir -p $PKG/usr/share/fonts
+  mv $PKG/usr/lib$LIBDIRSUFFIX/X11/fonts/misc $PKG/usr/share/fonts
+  rmdir $PKG/usr/lib$LIBDIRSUFFIX/X11/fonts/misc 2> /dev/null
+  rmdir $PKG/usr/lib$LIBDIRSUFFIX/X11/fonts 2> /dev/null
+  rmdir $PKG/usr/lib$LIBDIRSUFFIX/X11 2> /dev/null
+  rmdir $PKG/usr/lib$LIBDIRSUFFIX 2> /dev/null
+fi
+
+mkdir -p $PKG/etc/X11/app-defaults
+cat X3270.xad > $PKG/etc/X11/app-defaults/X3270
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/usr/man/man{1,5}
+for file in x3270-script.man x3270.man x3270if.man ; do
+  cat $file | gzip -9c > $PKG/usr/man/man1/`basename $file .man`.1.gz
+done
+cat ibm_hosts.man | gzip -9c > $PKG/usr/man/man5/ibm_hosts.5.gz
+
+mkdir -p $PKG/usr/doc/x3270-$TARBVER
+cp -a \
+  LICENSE README* Examples html \
+  $PKG/usr/doc/x3270-$TARBVER
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/x3270-$TARBVER-$ARCH-$BUILD.txz
+

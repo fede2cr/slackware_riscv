@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=SeaMonkey Mail
+Comment=Read Mail with SeaMonkey
+Exec=/usr/bin/seamonkey -mail
+Icon=/usr/share/pixmaps/seamonkey-mail-icon.png
+Terminal=0
+Type=Application
+Categories=Application;Network;

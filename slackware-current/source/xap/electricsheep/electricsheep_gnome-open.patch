@@ -1,0 +1,13 @@
+--- electricsheep-20090107/electricsheep-preferences.c.orig	2009-01-07 14:36:30.000000000 +0100
++++ electricsheep-20090107/electricsheep-preferences.c	2009-01-07 17:27:34.000000000 +0100
+@@ -115,8 +115,8 @@
+ }
+ 
+ void on_helpButton_clicked(GtkWidget *widget, gpointer user_data) {
+-    if (system("gnome-open http://electricsheep.org/client/LNX_" VERSION ".html &"))
+-	perror("gnome-open");
++    if (system("xdg-open http://electricsheep.org/client/LNX_" VERSION ".html &"))
++	perror("xdg-open");
+ }
+ 
+ static void tick() {

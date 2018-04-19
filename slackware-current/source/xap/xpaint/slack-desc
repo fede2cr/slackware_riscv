@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+xpaint: xpaint (simple X paint program)
+xpaint:
+xpaint: XPaint is a versatile bitmap/pixmap editing tool with a feature set
+xpaint: similar to MacPaint.
+xpaint:
+xpaint: The short features list:
+xpaint:  Brushes, Spray paint, Pencil, Lines, Arcs, Pattern Fill, Text,
+xpaint:  Boxes, Circles, Polygons.
+xpaint: Works on multiple images simultaneously. Cut/Copy/Paste between all
+xpaint: active images. Fatbits/Zoom on the image windows.
+xpaint:

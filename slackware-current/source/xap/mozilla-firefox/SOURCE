@@ -1,0 +1,13 @@
+The binaries in this directory are made available to you under the Mozilla Public License v.2
+(MPL 2):
+http://www.mozilla.org/MPL/2.0/
+
+The source code used to build these binaries is specified by the following unique URL:
+https://hg.mozilla.org/releases/mozilla-release/rev/239e434d6d2b8e1e2b697c3416d1e96d48fe98e5
+
+    zip: https://hg.mozilla.org/releases/mozilla-release/archive/239e434d6d2b8e1e2b697c3416d1e96d48fe98e5.zip
+    tar.gz: https://hg.mozilla.org/releases/mozilla-release/archive/239e434d6d2b8e1e2b697c3416d1e96d48fe98e5.tar.gz
+    tar.bz2: https://hg.mozilla.org/releases/mozilla-release/archive/239e434d6d2b8e1e2b697c3416d1e96d48fe98e5.tar.bz2
+
+Instructions for downloading and building this source code can be found here:
+https://developer.mozilla.org/en/Mozilla_Source_Code_%28Mercurial%29

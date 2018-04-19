@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/@LIB@/seamonkey-@VERSION@
+includedir=/usr/include/seamonkey-@VERSION@
+
+Name: Mozilla Gtk Embedding Widget
+Description: Mozilla Embedding Widget for Gtk+
+Version: @VERSION@
+Requires: seamonkey-xpcom = @VERSION@
+Libs: -L${libdir} -lgtkembedmoz 
+Cflags: -I${includedir}/gtkembedmoz

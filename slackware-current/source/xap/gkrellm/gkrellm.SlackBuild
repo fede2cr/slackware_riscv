@@ -1,0 +1,158 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2010, 2011, 2016, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=gkrellm
+VERSION=${VERSION:-$(echo $PKGNAM-2*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+PKGVER=$VERSION
+BUILD=${BUILD:-2}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX="64"
+else
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-gkrellm
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf gkrellm-$VERSION
+tar xvf $CWD/gkrellm-$VERSION.tar.?z* || exit 1
+cd gkrellm-$VERSION || exit 1
+# Fix library paths (works for all ARCHs):
+sed -i -e "s#lib/gkrellm2#lib${LIBDIRSUFFIX}/gkrellm2#g" $(grep -lr 'lib/gkrellm2' *)
+# Increase the default width slightly, and don't use the text
+# shadow effect by default (this seems better with Pango font
+# rendering):
+zcat $CWD/gkrellm.theme.defaults.diff.gz | patch -p1 --verbose || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+make \
+  INSTALLROOT=/usr \
+  INSTALLDIR=/usr/bin \
+  INCLUDEDIR=/usr/include \
+  MANDIR=/usr/man/man1 \
+  LOCALEDIR=/usr/share/locale \
+  PKGCONFIGDIR=/usr/lib${LIBDIRSUFFIX}/pkgconfig || exit 1
+
+# We will need this installed to build plugins, so...
+make install \
+  INSTALLROOT=/usr \
+  INSTALLDIR=/usr/bin \
+  INCLUDEDIR=/usr/include \
+  MANDIR=/usr/man/man1 \
+  LOCALEDIR=/usr/share/locale \
+  PKGCONFIGDIR=/usr/lib${LIBDIRSUFFIX}/pkgconfig || exit 1
+
+# Install to the $PKG dir:
+make install \
+  INSTALLROOT=$PKG/usr \
+  INSTALLDIR=$PKG/usr/bin \
+  INCLUDEDIR=$PKG/usr/include \
+  MANDIR=$PKG/usr/man/man1 \
+  LOCALEDIR=$PKG/usr/share/locale \
+  PKGCONFIGDIR=$PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig || exit 1
+
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/gkrellm2/plugins
+
+mkdir -p $PKG/usr/doc/gkrellm-$VERSION
+cp -a \
+  COPYRIGHT CREDITS INSTALL README* Themes.html \
+  $PKG/usr/doc/gkrellm-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/gkrellm-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+gzip -9 $PKG/usr/man/man?/*.?
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Add optional plugin(s):
+# The countdown plugin is needed to track X-Day.  ;-)
+COUNTDOWN=0.1.2
+cd $TMP
+rm -rf gkrellm-countdown
+tar xf $CWD/gkrellm-countdown-$COUNTDOWN.tar.gz || exit 1
+cd gkrellm-countdown || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+make || exit 1
+cp gkrellm-countdown.so $PKG/usr/lib${LIBDIRSUFFIX}/gkrellm2/plugins
+
+mkdir -p $PKG/usr/doc/gkrellm-countdown-$COUNTDOWN
+cp -a \
+  COPYING README \
+  $PKG/usr/doc/gkrellm-countdown-$COUNTDOWN
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/gkrellm-countdown-$COUNTDOWN)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/gkrellm-$PKGVER-$ARCH-$BUILD.txz
+

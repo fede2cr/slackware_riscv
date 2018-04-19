@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+         |-----handy-ruler------------------------------------------------------|
+xlockmore: xlockmore (screen locker for X)
+xlockmore:
+xlockmore: Patrick J. Naughton's xlock screensaver/locker for X, with many
+xlockmore: more modes added by David A. Bagley.
+xlockmore:
+xlockmore: The 'Bob' bitmap has been included especially for Slackware, as well
+xlockmore: as a Linux penguin logo. (NOTE: the image of J. R. "Bob" Dobbs is a
+xlockmore: registered trademark of The Subgenius Foundation, used by permission)
+xlockmore:
+xlockmore: Homepage: http://sillycycle.com/xlockmore.html
+xlockmore:

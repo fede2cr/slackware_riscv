@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+       |-----handy-ruler------------------------------------------------------|
+gparted: gparted (Graphical partition editor)
+gparted:
+gparted: With GParted you can resize, copy, and move partitions without data
+gparted: loss, enabling you to:
+gparted:
+gparted:  * Grow or shrink your C: drive
+gparted:  * Create space for new operating systems
+gparted:  * Attempt data rescue from lost partitions
+gparted:
+gparted: http://gparted.sourceforge.net/
+gparted:

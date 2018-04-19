@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+  |-----handy-ruler------------------------------------------------------|
+xv: xv (John Bradley's interactive image viewer)
+xv:
+xv: xv is an interactive image manipulation program.
+xv:
+xv: NOTICE: This program is unregistered shareware. Please read the 
+xv: license information included.
+xv:
+xv:
+xv:
+xv:
+xv:

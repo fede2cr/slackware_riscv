@@ -1,0 +1,29 @@
+ElectricSheep 2.6.9
+===================
+
+Electricsheep can no longer be configured from within the KDE4 screensaver
+preferences dialog.  Instead, a separate "electricsheep-preferences"
+should be used now.  The KDE4 screensaver file has been updated to reflect
+this change.
+
+The configuration application, "electricsheep-preferences", will now
+display when you push the "setup" button in the screensaver settings in
+KDE4 System Settings.  The sheep also play in the small preview window
+within the System Settings dialog window.
+
+The "test" button does not work correctly.  If you press it, the sheep
+will play, but the window in which the animation runs will not stretch
+to fullscreen.
+
+The sheep will play in full screen as expected when the real screensaver
+activates after the configured period of idle time.  Shake the mouse and
+it stops.
+
+Electricsheep requires MPlayer to display your sheep!  In some cases,
+the mplayer window may not close after stopping the screensaver.  This will
+prevent electricsheep to play new sheep when the screensaver activates again.
+The solution (it is not a real solution I know) is to kill mplayer with
+ksysguard or the commandline "kill".
+
+=============================================================================
+Eric Hameleers <alien@slackware.com> :: 07jan2009

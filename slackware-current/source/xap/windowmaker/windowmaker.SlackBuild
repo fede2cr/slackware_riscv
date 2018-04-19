@@ -1,0 +1,176 @@
+#!/bin/sh
+
+# Copyright 2008, 2009, 2010, 2015, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=windowmaker
+VERSION=${VERSION:-$(echo WindowMaker-0*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-windowmaker
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf WindowMaker-$VERSION
+tar xvf $CWD/WindowMaker-$VERSION.tar.xz || exit 1
+cd WindowMaker-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# This should be non-interactive where possible.
+zcat $CWD/wmaker.inst.diff.gz | patch -p1 --verbose || exit 1
+
+# Get rid of OpenSUSE menu:
+zcat $CWD/WindowMaker.noopensusemenu.diff.gz | patch -p1 --verbose || exit 1
+
+LINGUAS="$(ls po/*.po | sed 's:po/\(.*\)\.po$:\1:' | tr '\012' '\040')" \
+GNUSTEP_LOCAL_ROOT=/usr/lib${LIBDIRSUFFIX}/GNUstep \
+CFLAGS="$SLKCFLAGS" \
+NLSDIR=/usr/share/locale \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man \
+  --sysconfdir=/etc/X11 \
+  --docdir=/usr/doc/WindowMaker-$VERSION \
+  --enable-usermenu \
+  --enable-randr \
+  --enable-xinerama \
+  --disable-static \
+  --disable-magick \
+  --build=$ARCH-slackware-linux || exit 1
+
+# Disabling magick per this LQ thread:
+# http://www.linuxquestions.org/questions/showthread.php?p=5284319#post5284319
+
+# 20170223 bkw: WindowMaker has always been chatty, but starting with
+# v0.95.6 or so, it also logs everything to syslog. In a typical week of
+# running WindowMaker, I end up with 150KB of useless wmaker messages in
+# /var/log/syslog (and 400 bytes of non-wmaker stuff there). Undefining
+# HAVE_SYSLOG stops it from cluttering the log, and whatever it was
+# going to log will still be printed to its stderr.
+sed -i '/HAVE_SYSLOG/s,#define,#undef,' config.h
+
+make $NUMJOBS || make || exit 1
+
+# Change /usr/local/GNUstep to /usr/lib/GNUstep in the WMRootMenu:
+sed -i -e "s#/usr/local/GNUstep/Applications/WPrefs.app/#/usr/lib${LIBDIRSUFFIX}/GNUstep/Applications/WPrefs.app/#" \
+  $(grep -lr '/usr/local/GNUstep/Applications/WPrefs.app/' *)
+
+# Fix hard coded paths in util/wmgenmenu.c for
+#  "Configure Window Maker" root menu entry
+#  Appearance/{Themes, Styles, Icons} entries.
+
+sed -i -e "s#WMCreatePLString(\"WPrefs\")#WMCreatePLString(\"/usr/lib${LIBDIRSUFFIX}/GNUstep/Applications/WPrefs.app/WPrefs\")#" \
+       -e "s#/usr/local/share#/usr/share/#" util/wmgenmenu.c
+
+make install DESTDIR=$PKG || exit 1
+
+mkdir -p $PKG/usr/doc/WindowMaker-$VERSION
+cp -a \
+  AUTHORS BUGFORM BUGS COPYING* FAQ* INSTALL* MIRRORS NEWS README* TODO \ 
+   $PKG/usr/doc/WindowMaker-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+cd $TMP
+rm -rf WindowMaker-extra-0.1
+tar xvf $CWD/WindowMaker-extra-0.1.tar.xz || exit 1
+cd WindowMaker-extra-0.1 || exit 1
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --with-iconsdir=/usr/share/pixmaps \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/etc/X11/xinit
+zcat $CWD/xinitrc.wmaker.gz > $PKG/etc/X11/xinit/xinitrc.wmaker
+chmod 0755 $PKG/etc/X11/xinit/xinitrc.wmaker
+
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/windowmaker-$VERSION-$ARCH-$BUILD.txz
+

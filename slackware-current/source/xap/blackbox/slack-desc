@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in. You must make
+# exactly 11 lines for the formatting to be correct. It's also customary to
+# leave one space after the ':'.
+
+        |-----handy-ruler------------------------------------------------------|
+blackbox: blackbox (Blackbox window manager)
+blackbox:
+blackbox: Blackbox is that fast, light window manager you have been looking for
+blackbox: without all those annoying library dependencies.
+blackbox:
+blackbox: Also included in this package is the bbkeys utility for controlling
+blackbox: keyboard shortcut commands from within Blackbox.
+blackbox:
+blackbox: The Blackbox home page is http://blackboxwm.sourceforge.net
+blackbox:
+blackbox:

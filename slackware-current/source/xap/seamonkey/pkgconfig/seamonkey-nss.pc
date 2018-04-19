@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/@LIB@/seamonkey-@VERSION@
+includedir=/usr/include/seamonkey-@VERSION@
+
+Name: NSS
+Description: Mozilla Network Security Services
+Version: @VERSION@
+Requires: seamonkey-nspr >= 4.7.1
+Libs: -L${libdir} -lnss3 -lsmime3 -lssl3 -lsoftokn3 -lnssutil3
+Cflags: -I${includedir}/nss

@@ -1,0 +1,11 @@
+prefix=/usr
+libdir=/usr/@LIB@/seamonkey-@VERSION@
+includedir=/usr/include/seamonkey-@VERSION@
+idldir=/usr/share/idl/seamonkey-@VERSION@
+
+Name: libxul
+Description: The Mozilla Runtime and Embedding Engine
+Version: @VERSION@
+Requires: seamonkey-nspr >= 4.7.1
+Libs: -L${libdir} -lxul -lxpcom
+Cflags: -I${includedir} -fshort-wchar
