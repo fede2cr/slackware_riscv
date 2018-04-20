@@ -1,3 +1,7 @@
+Fri Apr 20 22:54:58 UTC 2018
+l/ncurses-6.1_20180324-riscv64-1.txz: Ported.
+n/tcp_wrappers-7.6-riscv64-1.txz: Ported.
++--------------------------+
 Sun Apr 15 13:00:05 UTC 2018
 ap/man-db-2.8.3-riscv64-1.txz: Ported.
 n/openssl-1.0.2o-riscv64-1.txz: Ported.
