@@ -3,7 +3,7 @@
 CHROOT=/mnt/chroot/
 SLACK_DIST=/mnt/git/slackware_riscv/slackware-current/
 
-rm -rf $CHROOT
+rm -rf --one-filesystem $CHROOT
 find $SLACK_DIST/slackware/ -type f -name aaa\*txz -exec installpkg --root $CHROOT {} \;
 find $SLACK_DIST/slackware/ -type f -name *txz -exec installpkg --root $CHROOT {} \;
 
