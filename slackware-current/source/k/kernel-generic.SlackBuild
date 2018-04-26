@@ -106,11 +106,17 @@ if [ ! "${KERNEL_CONFIG}" = "${KERNEL_SOURCE}/.config" ]; then
   cp -a --verbose ${KERNEL_CONFIG} ${KERNEL_SOURCE}/.config
 fi
 
+if [ $KERNEL_ARCH = 'riscv64' ]; then
+  IMAGE_FORMAT="vmlinux"
+else
+  IMAGE_FORMAT="bzImage"
+fi
+
 ( cd ${KERNEL_SOURCE}
   echo "Running make oldconfig..."
   make oldconfig
   echo "Building kernel..."
-  make $NUMJOBS bzImage || make bzImage || exit 1
+  make $NUMJOBS ${IMAGE_FORMAT} || make ${IMAGE_FORMAT} || exit 1
   # Output files to a directory, if requested:
   if [ ! -z "${KERNEL_OUTPUT_DIRECTORY}" ]; then
     echo "Copying files to ${KERNEL_OUTPUT_DIRECTORY}..."
@@ -118,14 +124,14 @@ fi
     rm -f ${KERNEL_OUTPUT_DIRECTORY}/*
     cp -a --verbose System.map ${KERNEL_OUTPUT_DIRECTORY}
     cp -a --verbose .config ${KERNEL_OUTPUT_DIRECTORY}/config
-    cp -a --verbose arch/${KERNEL_ARCH}/boot/bzImage ${KERNEL_OUTPUT_DIRECTORY}
+    cp -a --verbose ${IMAGE_FORMAT} ${KERNEL_OUTPUT_DIRECTORY}
     gzip -9 ${KERNEL_OUTPUT_DIRECTORY}/System.map
   fi
   echo "Preparing the package in $PKG..."
   mkdir -p $PKG/boot
   cp -a --verbose System.map $PKG/boot/System.map-${KERNEL_NAME}${LOCALVERSION}-${VERSION}${LOCALVERSION}
   cp -a --verbose .config $PKG/boot/config-${KERNEL_NAME}${LOCALVERSION}-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}
-  cp -a --verbose arch/${KERNEL_ARCH}/boot/bzImage $PKG/boot/vmlinuz-${KERNEL_NAME}${LOCALVERSION}-${VERSION}${LOCALVERSION}
+  cp -a --verbose ${IMAGE_FORMAT} $PKG/boot/vmlinuz-${KERNEL_NAME}${LOCALVERSION}-${VERSION}${LOCALVERSION}
   # Make symlinks:
   ln -sf System.map-${KERNEL_NAME}${LOCALVERSION}-${VERSION}${LOCALVERSION} $PKG/boot/System.map
   ln -sf config-${KERNEL_NAME}${LOCALVERSION}-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX} $PKG/boot/config

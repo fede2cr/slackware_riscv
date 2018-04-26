@@ -1,0 +1,46 @@
+#!/bin/sh
+TMP=/var/log/setup/tmp
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP
+fi
+add() {
+  for package in $* ; do
+    echo "$package: ADD" >> $TMP/SeTnewtag
+  done
+}
+skip() {
+  for package in $* ; do
+    echo "$package: SKP" >> $TMP/SeTnewtag
+  done
+}
+#item   ####description                                      ###on off ###
+cat /dev/null > $TMP/SeTnewtag
+dialog --title "SELECTING SOFTWARE FROM SERIES K (Linux kernel source)" \
+       --checklist "Please confirm the packages you wish to install \
+from series K. Use the UP/DOWN keys to scroll through the list, and \
+the SPACE key to deselect any items you don't want to install. \
+Press ENTER when you are \
+done." 11 70 1 \
+"kernel-source" "Linux 4.14.32 kernel source" "on" \
+2> $TMP/SeTpkgs
+if [ $? = 1 -o $? = 255 ]; then
+ rm -f $TMP/SeTpkgs
+ > $TMP/SeTnewtag
+ for pkg in \
+kernel-source \
+  ; do
+  echo "$pkg: SKP" >> $TMP/SeTnewtag
+ done
+ exit
+fi
+cat /dev/null > $TMP/SeTnewtag
+for PACKAGE in \
+kernel-source \
+ ; do
+ if grep "\(^\| \)$PACKAGE\( \|$\)" $TMP/SeTpkgs 1> /dev/null 2> /dev/null ; then
+  echo "$PACKAGE: ADD" >> $TMP/SeTnewtag
+ else
+  echo "$PACKAGE: SKP" >> $TMP/SeTnewtag
+ fi
+done
+rm -f $TMP/SeTpkgs
