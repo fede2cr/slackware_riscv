@@ -1,0 +1,11 @@
+kernel-source: kernel-source (Linux kernel source)
+kernel-source:
+kernel-source: Source code for Linus Torvalds' Linux kernel.
+kernel-source:
+kernel-source: This is the complete and unmodified source code for the Linux kernel.
+kernel-source:
+kernel-source:
+kernel-source:
+kernel-source:
+kernel-source:
+kernel-source:

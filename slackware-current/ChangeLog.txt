@@ -1,3 +1,6 @@
+Fri Apr 27 02:34:02 UTC 2018
+k/kernel-source-4.16.3_smp-noarch-1.txz: Added.
++--------------------------+
 jue 26 abr 23:42:05 UTC 2018
 source/k: Updated, with riscv64 initial config file.
 a/kernel-modules-smp-4.16.3_smp-riscv64-1.txz: Ported.
