@@ -1,0 +1,11 @@
+libzip: libzip (A library to read, create, and modify Zip archives)
+libzip:
+libzip: This is libzip, a C library for reading, creating, and modifying
+libzip: zip archives. Files can be added from data buffers, files, or
+libzip: compressed data copied directly from other zip archives. Changes
+libzip: made without closing the archive can be reverted.
+libzip:
+libzip: Homepage: http://www.nih.at/libzip/
+libzip:
+libzip:
+libzip:
