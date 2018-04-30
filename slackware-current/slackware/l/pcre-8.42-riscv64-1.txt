@@ -1,0 +1,11 @@
+pcre: pcre (Perl-compatible regular expression library)
+pcre:
+pcre: The PCRE library is a set of functions that implement regular
+pcre: expression pattern matching using the same syntax and semantics as
+pcre: Perl 5, with just a few differences (documented in the man page).
+pcre:
+pcre:
+pcre:
+pcre:
+pcre:
+pcre:
