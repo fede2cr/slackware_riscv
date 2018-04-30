@@ -1,0 +1,11 @@
+pcre2: pcre2 (Perl-compatible regular expression library v2)
+pcre2:
+pcre2: PCRE2 is a re-working of the original PCRE library to provide a
+pcre2: new and improved API.
+pcre2:
+pcre2: Homepage: http://www.pcre.org/
+pcre2:
+pcre2:
+pcre2:
+pcre2:
+pcre2:
