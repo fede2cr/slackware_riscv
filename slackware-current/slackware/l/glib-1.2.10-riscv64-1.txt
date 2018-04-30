@@ -1,0 +1,11 @@
+glib: glib (library of C routines, version 1.x)
+glib:
+glib: GLib is a library which includes support routines for C such as lists,
+glib: trees, hashes, memory allocation, and many other things.
+glib:
+glib: GLib is required by nearly everything that uses GTK+ version 1.x.
+glib:
+glib:
+glib:
+glib:
+glib:

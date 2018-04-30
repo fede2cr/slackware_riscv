@@ -1,0 +1,11 @@
+popt: popt (command line parsing library)
+popt:
+popt: Popt is a C library for parsing command line parameters. Popt was
+popt: heavily influenced by the getopt() and getopt_long() functions, but it
+popt: improves on them by allowing more powerful argument expansion. Popt
+popt: can parse arbitrary argv[] style arrays and automatically set
+popt: variables based on command line arguments. Popt allows command line
+popt: arguments to be aliased via configuration files and includes utility
+popt: functions for parsing arbitrary strings into argv[] arrays using
+popt: shell-like rules.
+popt:
