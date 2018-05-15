@@ -1,0 +1,11 @@
+tcpdump: tcpdump (network monitoring tool)
+tcpdump:
+tcpdump: Tcpdump is a tool for network monitoring and data acquisition. You
+tcpdump: can use it to dump information on all the packets on a network that
+tcpdump: match a boolean expression. Tcpdump uses libpcap, a system
+tcpdump: independent interface for user-level packet capture.
+tcpdump:
+tcpdump: Project homepage: http://www.tcpdump.org
+tcpdump:
+tcpdump:
+tcpdump:
