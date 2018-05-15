@@ -1,3 +1,11 @@
+Tue May 15 23:14:51 UTC 2018
+n/lftp-4.8.3-riscv64-1.txz: Ported.
+n/fetchmail-6.3.26-riscv64-1.txz: Ported.
+n/httpd-2.4.33-riscv64-1.txz: Ported. http2 support disabled until we
+  recompile inside Slackware.
+n/nghttp2-1.31.0-riscv64-1.txz: Ported.
+a/time-1.9-riscv64-1.txz: Ported.
++--------------------------+
 Tue May 15 18:45:34 UTC 2018
 a/tcsh-6.20.00-riscv64-1.txz: Ported.
 n/tcpdump-4.9.2-riscv64-1.txz: Ported.
