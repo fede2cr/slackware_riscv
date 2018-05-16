@@ -1,0 +1,11 @@
+net-tools: net-tools (Linux networking utilities)
+net-tools:
+net-tools: This is a collection of traditional tools such as "ifconfig" and
+net-tools: "route" that were used to configure networking on Linux. While you can
+net-tools: still make use of these tools today, they have been largely superseded
+net-tools: by newer tools such as "ip", "ifrename", and "ethtool".
+net-tools:
+net-tools: The net-tools package was maintained for many years by Phil Blundell
+net-tools: and Bernd Eckenfels.
+net-tools:
+net-tools:

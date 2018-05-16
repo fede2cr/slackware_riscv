@@ -1,0 +1,11 @@
+libmcrypt: libmcrypt (MCrypt encryption library)
+libmcrypt:
+libmcrypt: Libmcrypt is a data encryption library. The library is thread safe
+libmcrypt: and provides encryption and decryption functions. This version of
+libmcrypt: the library supports many encryption algorithms and encryption modes.
+libmcrypt: Some algorithms which are supported: SERPENT, RIJNDAEL, 3DES, GOST,
+libmcrypt: SAFER+, CAST-256, RC2, XTEA, 3WAY, TWOFISH, BLOWFISH, ARCFOUR, WAKE,
+libmcrypt: and more.
+libmcrypt:
+libmcrypt: Homepage: http://mcrypt.sourceforge.net
+libmcrypt:

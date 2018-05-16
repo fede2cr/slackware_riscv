@@ -1,3 +1,12 @@
+Wed May 16 19:34:32 UTC 2018
+n/net-tools-20170208_479bb4a-riscv64-1.txz: Ported.
+l/libmcrypt-2.5.8-riscv64-1.txz: Ported.
+l/libnl-1.1.4-riscv64-1.txz: Ported.
+l/libnl3-3.4.0-riscv64-1.txz: Ported.
+n/iftop-1.0pre4-riscv64-1.txz: Ported.
+n/iw-4.14-riscv64-1.txz: Ported.
+n/nfs-utils-2.3.1-riscv64-1.txz: Ported.
++--------------------------+
 Tue May 15 23:14:51 UTC 2018
 n/lftp-4.8.3-riscv64-1.txz: Ported.
 n/fetchmail-6.3.26-riscv64-1.txz: Ported.
