@@ -1,0 +1,11 @@
+aspell: aspell (spell checker)
+aspell:
+aspell: GNU Aspell is a spell checker designed to eventually replace Ispell.
+aspell: It can either be used as a library or as an independent spell checker.
+aspell:
+aspell:
+aspell:
+aspell:
+aspell:
+aspell:
+aspell:

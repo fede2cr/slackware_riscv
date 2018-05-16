@@ -1,3 +1,20 @@
+Wed May 16 23:05:13 UTC 2018
+d/cscope-15.8b-riscv64-1.txz
+d/cvs-1.11.23-riscv64-1.txz
+d/gnucobol-2.2-riscv64-1.txz
+d/gperf-3.1-riscv64-1.txz
+d/help2man-1.47.6-riscv64-1.txz
+d/mercurial-4.5.3-riscv64-1.txz
+d/p2c-1.21alpha2-riscv64-1.txz
+d/patchelf-0.9-riscv64-1.txz
+l/aalib-1.4rc5-riscv64-1.txz
+l/apr-1.6.3-riscv64-1.txz
+l/apr-util-1.6.1-riscv64-1.txz
+l/aspell-0.60.6.1-riscv64-1.txz
+l/libjpeg-turbo-1.5.3-riscv64-1.txz
+l/libsodium-1.0.16-riscv64-1.txz
+l/libtiff-4.0.9-riscv64-1.txz
++--------------------------+
 Wed May 16 19:34:32 UTC 2018
 n/net-tools-20170208_479bb4a-riscv64-1.txz: Ported.
 l/libmcrypt-2.5.8-riscv64-1.txz: Ported.

@@ -1,0 +1,11 @@
+gperf: gperf (a perfect hash function generator)
+gperf:
+gperf: gperf is a perfect hash function generator written in C++.
+gperf: It transforms an n element user-specified keyword set W into a
+gperf: perfect hash function F. gperf currently generates the reserved
+gperf: keyword recognizer for lexical analyzers in several production and
+gperf: research compilers and language processing tools, including GNU C,
+gperf: GNU C++, GNU Java, GNU Pascal, GNU Modula 3, and GNU indent.
+gperf:
+gperf: gperf was written by by Douglas C. Schmidt and Bruno Haible.
+gperf:

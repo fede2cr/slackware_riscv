@@ -1,0 +1,11 @@
+libtiff: libtiff (a library for reading and writing TIFF files)
+libtiff:
+libtiff: This package provides support for the Tag Image File Format (TIFF),
+libtiff: a widely used format for storing image data. Included is the libtiff
+libtiff: library (for reading and writing TIFF files), and a collection of
+libtiff: tools for working with TIFF images.
+libtiff:
+libtiff: Homepage: http://www.simplesystems.org/libtiff
+libtiff:
+libtiff:
+libtiff:

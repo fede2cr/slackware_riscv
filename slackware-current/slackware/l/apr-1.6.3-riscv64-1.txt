@@ -1,0 +1,11 @@
+apr: apr (Apache Portable Runtime)
+apr:
+apr: The mission of the Apache Portable Runtime (APR) is to provide a
+apr: free library of C data structures and routines, forming a system
+apr: portability layer to as many operating systems as possible.
+apr:
+apr:
+apr:
+apr:
+apr:
+apr:

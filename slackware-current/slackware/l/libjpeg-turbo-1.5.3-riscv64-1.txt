@@ -1,0 +1,11 @@
+libjpeg-turbo: libjpeg-turbo (high-speed version of libjpeg)
+libjpeg-turbo:
+libjpeg-turbo: libjpeg-turbo is a high-speed version of libjpeg for x86 and x86-64
+libjpeg-turbo: processors which uses SIMD instructions to accelerate baseline JPEG
+libjpeg-turbo: compression and decompression. libjpeg-turbo is generally 2-4x as
+libjpeg-turbo: fast as the unmodified version of libjpeg, all else being equal.
+libjpeg-turbo:
+libjpeg-turbo: Homepage: https://libjpeg-turbo.org
+libjpeg-turbo:
+libjpeg-turbo:
+libjpeg-turbo:

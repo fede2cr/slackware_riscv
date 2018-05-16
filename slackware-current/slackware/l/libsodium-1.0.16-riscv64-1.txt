@@ -1,0 +1,11 @@
+libsodium: libsodium (Sodium crypto library)
+libsodium:
+libsodium: Sodium is a library for encryption, decryption, signatures, password
+libsodium: hashing and more. It is a portable, cross-compilable, installable,
+libsodium: packageable fork of NaCl, with a compatible API, and an extended API
+libsodium: to improve usability even further.
+libsodium:
+libsodium: Its goal is to provide all of the core operations needed to build
+libsodium: higher-level cryptographic tools.
+libsodium:
+libsodium: Homepage: https://libsodium.org
