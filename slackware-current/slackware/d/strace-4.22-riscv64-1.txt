@@ -1,0 +1,11 @@
+strace: strace (trace system calls and signals)
+strace:
+strace: Strace allows you to trace the execution of a command. It runs the
+strace: specified command until it exits, intercepting signals and system
+strace: calls and dumping the information to the standard error. System
+strace: administrators, diagnosticians and trouble-shooters will find it
+strace: invaluable for solving problems with programs for which the source
+strace: is not readily available since they do not need to be recompiled in
+strace: order to trace them. 
+strace:
+strace:

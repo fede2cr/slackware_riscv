@@ -1,19 +1,35 @@
+Thu May 17 05:38:00 UTC 2018
+a/bin-11.1-riscv64-1.txz: Ported.
+a/btrfs-progs-v4.15.1-riscv64-1.txz: Ported.
+d/gettext-tools-0.19.8.1-riscv64-1.txz: Ported.
+d/indent-2.2.10-riscv64-1.txz: Ported.
+d/pkg-config-0.29.2-riscv64-1.txz: Ported.
+d/pmake-1.111-riscv64-1.txz: Ported.
+d/python-setuptools-39.0.1-riscv64-1.txz: Ported.
+d/rcs-5.9.4-riscv64-1.txz: Ported.
+d/re2c-1.0.3-riscv64-1.txz: Ported.
+d/ruby-2.5.1-riscv64-1.txz: Ported.
+d/scons-3.0.1-riscv64-1.txz: Ported.
+d/slacktrack-2.18-riscv64-1.txz: Ported.
+d/strace-4.22-riscv64-1.txz: Ported.
+d/subversion-1.9.7-riscv64-1.txz: Ported.
++--------------------------+
 Wed May 16 23:05:13 UTC 2018
-d/cscope-15.8b-riscv64-1.txz
-d/cvs-1.11.23-riscv64-1.txz
-d/gnucobol-2.2-riscv64-1.txz
-d/gperf-3.1-riscv64-1.txz
-d/help2man-1.47.6-riscv64-1.txz
-d/mercurial-4.5.3-riscv64-1.txz
-d/p2c-1.21alpha2-riscv64-1.txz
-d/patchelf-0.9-riscv64-1.txz
-l/aalib-1.4rc5-riscv64-1.txz
-l/apr-1.6.3-riscv64-1.txz
-l/apr-util-1.6.1-riscv64-1.txz
-l/aspell-0.60.6.1-riscv64-1.txz
-l/libjpeg-turbo-1.5.3-riscv64-1.txz
-l/libsodium-1.0.16-riscv64-1.txz
-l/libtiff-4.0.9-riscv64-1.txz
+d/cscope-15.8b-riscv64-1.txz: Ported.
+d/cvs-1.11.23-riscv64-1.txz: Ported.
+d/gnucobol-2.2-riscv64-1.txz: Ported.
+d/gperf-3.1-riscv64-1.txz: Ported.
+d/help2man-1.47.6-riscv64-1.txz: Ported.
+d/mercurial-4.5.3-riscv64-1.txz: Ported.
+d/p2c-1.21alpha2-riscv64-1.txz: Ported.
+d/patchelf-0.9-riscv64-1.txz: Ported.
+l/aalib-1.4rc5-riscv64-1.txz: Ported.
+l/apr-1.6.3-riscv64-1.txz: Ported.
+l/apr-util-1.6.1-riscv64-1.txz: Ported.
+l/aspell-0.60.6.1-riscv64-1.txz: Ported.
+l/libjpeg-turbo-1.5.3-riscv64-1.txz: Ported.
+l/libsodium-1.0.16-riscv64-1.txz: Ported.
+l/libtiff-4.0.9-riscv64-1.txz: Ported.
 +--------------------------+
 Wed May 16 19:34:32 UTC 2018
 n/net-tools-20170208_479bb4a-riscv64-1.txz: Ported.
