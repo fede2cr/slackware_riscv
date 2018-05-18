@@ -1,3 +1,9 @@
+Fri May 18 04:46:42 UTC 2018
+a/findutils-git20180517-riscv64-1.txz: Upgraded to git to remove glib
+  problems.
+a/sysfsutils-2.1.0-riscv64-1.txz: Ported.
+d/gcc-7.3.0-riscv64-2.txz: Rebuilt to remove ISL.
++--------------------------+
 Thu May 17 05:38:00 UTC 2018
 a/bin-11.1-riscv64-1.txz: Ported.
 a/btrfs-progs-v4.15.1-riscv64-1.txz: Ported.
