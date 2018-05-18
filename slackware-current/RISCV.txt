@@ -1,10 +1,13 @@
 Some of the changes with the main Slackware distribution
 --------------------------------------------------------
 
-- In GCC, support for Ada is not ready yet, to there is not gcc-gnats package. Same for Go and Fortran.
-  Some speed issues might arise from this warning while compiling GCC (needs research):
+- In GCC, support for Ada is not ready yet, to there is not gcc-gnats package.
+  Same for Go and Fortran.
+  Some speed issues might arise from this warning while compiling GCC (needs 
+  research):
   "configure: WARNING: No native atomic operations are provided for this platform.
    configure: WARNING: They will be faked using a mutex.
    configure: WARNING: Performance of certain classes will degrade as a result"
 - Rust is in early stages of port, so no rust package for the moment.
-
+- Findutils in versions 2.4.2 and 2.6.0 present a glib problem, documented in
+  bug #2. While I find/make a patch, we'll use a version from Git.

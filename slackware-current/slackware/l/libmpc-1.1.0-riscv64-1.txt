@@ -1,0 +1,11 @@
+libmpc: libmpc (Multiple Precision Complex Library)
+libmpc:
+libmpc: mpc is a complex floating-point library with exact rounding. It is
+libmpc: based on the GNU MPFR floating-point library (http://www.mpfr.org/),
+libmpc: which is itself based on the GNU MP library (http://gmplib.org/).
+libmpc:
+libmpc: Homepage: http://www.multiprecision.org
+libmpc:
+libmpc:
+libmpc:
+libmpc:

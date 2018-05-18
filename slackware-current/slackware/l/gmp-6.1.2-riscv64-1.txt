@@ -1,0 +1,11 @@
+gmp: gmp (GNU multiple precision arithmetic library)
+gmp:
+gmp: GNU MP is a library for arbitrary precision arithmetic, operating on
+gmp: signed integers, rational numbers, and floating point numbers. It has
+gmp: a rich set of functions, and the functions have a regular interface.
+gmp:
+gmp:
+gmp:
+gmp:
+gmp:
+gmp:
