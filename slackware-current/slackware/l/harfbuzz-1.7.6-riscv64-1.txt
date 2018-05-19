@@ -1,0 +1,11 @@
+harfbuzz: harfbuzz (OpenType text shaping engine)
+harfbuzz:
+harfbuzz: HarfBuzz is an OpenType text shaping engine.
+harfbuzz:
+harfbuzz: http://www.freedesktop.org/software/harfbuzz/release
+harfbuzz:
+harfbuzz:
+harfbuzz:
+harfbuzz:
+harfbuzz:
+harfbuzz:

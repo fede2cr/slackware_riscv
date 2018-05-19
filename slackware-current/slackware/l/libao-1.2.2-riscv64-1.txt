@@ -1,0 +1,11 @@
+libao: libao (Audio Output library)
+libao:
+libao: Libao is a cross-platform audio library, and is required by many
+libao: programs and other libraries that use audio (some examples include
+libao: ogg123, GAIM, and the Ogg Vorbis libraries). This package provides
+libao: plugins for OSS, ESD, aRts, and ALSA. You will need to install the
+libao: supporting libraries for any plugins you want to use.
+libao:
+libao:
+libao:
+libao:

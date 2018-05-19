@@ -1,3 +1,11 @@
+Sat May 19 03:30:03 UTC 2018
+l/expat-2.2.5-riscv64-1.txz: Ported.
+l/harfbuzz-1.7.6-riscv64-1.txz: Ported.
+l/libaio-0.3.111-riscv64-1.txz: Ported.
+l/libao-1.2.2-riscv64-1.txz: Ported.
+l/libsigsegv-2.12-riscv64-1.txz: Ported.
+l/libtasn1-4.13-riscv64-1.txz: Ported.
++--------------------------+
 Fri May 18 22:35:46 UTC 2018
 a/aaa_elflibs-14.2-riscv64-1.txz: Rebuilt to (for the moment) include
   libselinux from Fedora to have a workable Chroot. This will be removed
