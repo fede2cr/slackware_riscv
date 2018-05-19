@@ -1,3 +1,15 @@
+Sat May 19 23:25:29 UTC 2018
+l/GConf-3.2.6-riscv64-1.txz: Ported.
+l/LibRaw-0.18.8-riscv64-1.txz: Ported.
+l/Mako-1.0.7-riscv64-1.txz: Ported.
+l/atk-2.28.1-riscv64-1.txz: Ported.
+l/atkmm-2.24.2-riscv64-1.txz: Ported.
+l/gsl-2.4-riscv64-1.txz: Ported.
+l/hunspell-1.6.2-riscv64-1.txz: Ported.
+l/libsoup-2.62.0-riscv64-1.txz: Ported.
+l/libspectre-0.2.8-riscv64-1.txz: Ported.
+l/openjpeg-2.3.0-riscv64-1.txz: Ported.
++--------------------------+
 Sat May 19 03:30:03 UTC 2018
 l/expat-2.2.5-riscv64-1.txz: Ported.
 l/harfbuzz-1.7.6-riscv64-1.txz: Ported.

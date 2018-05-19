@@ -1,0 +1,11 @@
+Mako: Mako (template library written in Python)
+Mako:
+Mako: Mako is a template library written in Python. It provides a familiar,
+Mako: non-XML syntax which compiles into Python modules for maximum
+Mako: performance. Mako's syntax and API borrows from the best ideas of many
+Mako: others, including Django and Jinja2 templates, Cheetah, Myghty, and
+Mako: Genshi. Conceptually, Mako is an embedded Python language.
+Mako:
+Mako: Homepage: http://www.makotemplates.org
+Mako:
+Mako:

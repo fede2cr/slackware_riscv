@@ -1,0 +1,11 @@
+GConf: GConf (GNOME configuration library)
+GConf: 
+GConf: GConf is a configuration database system designed for the GNOME project
+GConf: and applications based on GTK+. It is conceptually similar to the
+GConf: Windows registry.
+GConf:
+GConf: For information, see: http://projects.gnome.org/gconf/
+GConf: 
+GConf: 
+GConf: 
+GConf: 

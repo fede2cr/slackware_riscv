@@ -1,0 +1,11 @@
+atk: atk (accessibility functions library)
+atk:
+atk: atk is a library of accessibility functions that is used by the
+atk: GTK+-2 toolkit.
+atk:
+atk:
+atk:
+atk:
+atk:
+atk:
+atk:

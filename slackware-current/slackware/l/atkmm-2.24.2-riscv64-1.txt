@@ -1,0 +1,11 @@
+atkmm: atkmm (C++ bindings for ATK)
+atkmm:
+atkmm: atkmm is the C++ binding for the ATK library.
+atkmm: This module is part of the GNOME C++ bindings effort.
+atkmm:
+atkmm: Homepage: http://www.gtkmm.org/
+atkmm:
+atkmm:
+atkmm:
+atkmm:
+atkmm:

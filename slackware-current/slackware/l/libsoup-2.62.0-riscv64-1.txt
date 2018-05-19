@@ -1,0 +1,11 @@
+libsoup: libsoup (an HTTP client/server library)
+libsoup:
+libsoup: Soup is an HTTP client/server library implementation in C. It uses
+libsoup: GObjects and the glib main loop to integrate well with GTK+
+libsoup: applications, and has a synchronous API suitable for use in threaded
+libsoup: applications.
+libsoup:
+libsoup:
+libsoup:
+libsoup:
+libsoup:
