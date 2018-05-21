@@ -1,0 +1,11 @@
+speexdsp: SpeexDSP (DSP library)
+speexdsp:
+speexdsp: SpeexDSP is a patent-free, Open Source/Free Software DSP library.
+speexdsp:
+speexdsp: Homepage: http://www.speex.org/
+speexdsp:
+speexdsp:
+speexdsp:
+speexdsp:
+speexdsp:
+speexdsp:

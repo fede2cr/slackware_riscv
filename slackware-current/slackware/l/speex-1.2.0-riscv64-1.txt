@@ -1,0 +1,11 @@
+speex: speex (low-bitrate voice audio codec)
+speex:
+speex: Speex is a patent-free, Open Source/Free Software voice codec. Unlike
+speex: other codecs like MP3 and Ogg Vorbis, Speex is designed to compress
+speex: voice at bitrates in the 2-45 kbps range. Possible applications
+speex: include VoIP, internet audio streaming, archiving of speech data
+speex: (e.g. voice mail), and audio books. It is meant to be complementary
+speex: to the Ogg Vorbis codec.
+speex:
+speex: Homepage: https://www.speex.org/
+speex:

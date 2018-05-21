@@ -1,3 +1,14 @@
+Mon May 21 02:12:57 UTC 2018
+l/a52dec-0.7.5-cvs-riscv64-1.txz: Upgraded to version from cvs.
+l/icu4c-61.1-riscv64-1.txz: Ported.
+l/libogg-1.3.3-riscv64-1.txz: Ported.
+l/liboggz-1.1.1-riscv64-1.txz: Ported.
+l/liboil-0.3.17-riscv64-1.txz: Ported.
+l/libwebp-0.6.1-riscv64-1.txz: Ported.
+l/libyaml-0.1.7-riscv64-1.txz: Ported.
+l/speex-1.2.0-riscv64-1.txz: Ported.
+l/speexdsp-1.2rc3-riscv64-1.txz: Ported.
++--------------------------+
 Sat May 19 23:25:29 UTC 2018
 l/GConf-3.2.6-riscv64-1.txz: Ported.
 l/LibRaw-0.18.8-riscv64-1.txz: Ported.
