@@ -1,0 +1,11 @@
+vlan: vlan (VLAN (802.1q) configuration program)
+vlan:
+vlan: The vlan package contains the vconfig program, which allows you to
+vlan: create and remove VLAN devices on a VLAN enabled kernel. VLAN
+vlan: devices are virtual Ethernet devices which represent virtual LANs on
+vlan: the physical LAN.
+vlan:
+vlan: vlan is primarily the work of Alex Zeffertt, Cambridge Broadband Ltd,
+vlan: extensively rewritten by Ben Greear.
+vlan:
+vlan:

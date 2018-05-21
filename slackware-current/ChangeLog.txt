@@ -1,3 +1,20 @@
+Mon May 21 22:58:13 UTC 2018
+l/alsa-lib-1.1.6-riscv64-1.txz: Ported.
+l/alsa-plugins-1.1.6-riscv64-1.txz: Ported.
+l/audiofile-0.3.6-riscv64-1.txz: Ported.
+l/babl-0.1.38-riscv64-1.txz: Ported.
+l/clucene-2.3.3.4-riscv64-1.txz: Ported.
+l/db42-4.2.52-riscv64-1.txz: Ported.
+l/db48-4.8.30-riscv64-1.txz: Ported.
+l/libarchive-3.3.2-riscv64-1.txz: Ported.
+l/libart_lgpl-2.3.21-riscv64-1.txz: Ported.
+l/libevent-2.1.8-riscv64-1.txz: Ported.
+l/libieee1284-0.2.11-riscv64-1.txz: Ported.
+l/libsigc++-2.10.0-riscv64-1.txz: Ported.
+n/ethtool-4.15-riscv64-1.txz: Ported.
+n/libtirpc-1.0.3-riscv64-1.txz: Ported.
+n/vlan-1.9-riscv64-1.txz: Ported.
++--------------------------+
 Mon May 21 02:12:57 UTC 2018
 l/a52dec-0.7.5-cvs-riscv64-1.txz: Upgraded to version from cvs.
 l/icu4c-61.1-riscv64-1.txz: Ported.

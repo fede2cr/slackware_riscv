@@ -1,0 +1,11 @@
+libieee1284: libieee1284 (parallel port library)
+libieee1284:
+libieee1284: This library is intended to be used by applications that need to
+libieee1284: communicate with (or at least identify) devices that are attached via
+libieee1284: a parallel port. For example, SANE uses it to identify scanners.
+libieee1284:
+libieee1284:
+libieee1284:
+libieee1284:
+libieee1284:
+libieee1284:

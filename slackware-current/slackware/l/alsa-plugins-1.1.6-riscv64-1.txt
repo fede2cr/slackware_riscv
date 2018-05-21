@@ -1,0 +1,11 @@
+alsa-plugins: alsa-plugins (Advanced Linux Sound Architecture Plugins)
+alsa-plugins:
+alsa-plugins: The Advanced Linux Sound Architecture (ALSA) provides audio and MIDI
+alsa-plugins: functionality to the Linux operating system.
+alsa-plugins: This package includes plugins for ALSA.
+alsa-plugins:
+alsa-plugins: Website: http://www.alsa-project.org
+alsa-plugins:
+alsa-plugins:
+alsa-plugins:
+alsa-plugins:

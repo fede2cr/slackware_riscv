@@ -1,0 +1,11 @@
+audiofile: audiofile (audio support library)
+audiofile:
+audiofile: Audiofile is a library to handle various audio file formats, and is
+audiofile: used by the esound daemon. You can also use it to develop your own
+audiofile: audiofile applications.
+audiofile:
+audiofile:
+audiofile:
+audiofile:
+audiofile:
+audiofile:

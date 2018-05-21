@@ -1,0 +1,11 @@
+alsa-lib: alsa-lib (Advanced Linux Sound Architecture library)
+alsa-lib:
+alsa-lib: The Advanced Linux Sound Architecture (ALSA) provides audio and MIDI
+alsa-lib: functionality to the Linux operating system. This is the ALSA library
+alsa-lib: (libasound) which is used by audio applications.
+alsa-lib:
+alsa-lib: For more information, see http://alsa-project.org
+alsa-lib:
+alsa-lib:
+alsa-lib:
+alsa-lib:

@@ -1,0 +1,11 @@
+babl: babl (pixel format translation library)
+babl: 
+babl: babl is a dynamic, any to any, pixel format translation library.
+babl: 
+babl: It allows converting between different methods of storing pixels known
+babl: as pixel formats that have with different bitdepths and other data
+babl: representations, color models and component permutations.
+babl: 
+babl: A vocabulary to formulate new pixel formats from existing primitives is
+babl: provided as well as the framework to add new color models and data types.
+babl: 

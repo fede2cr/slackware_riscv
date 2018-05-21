@@ -1,0 +1,11 @@
+libtirpc: libtirpc (Transport-Independent RPC library)
+libtirpc:
+libtirpc: Libtirpc is a port of Sun's Transport-Independent RPC library to
+libtirpc: Linux. It is being developed by Bull GNU/Linux NFSv4 project.
+libtirpc:
+libtirpc: You will need this library if you plan to use RPC with a GLIBC
+libtirpc: version newer than 2.13, because the RPC stack has been removed
+libtirpc: from GLIBC versions newer than 2.13. The library is required
+libtirpc: by the 'rpcbind' package.
+libtirpc:
+libtirpc: http://sourceforge.net/projects/libtirpc/

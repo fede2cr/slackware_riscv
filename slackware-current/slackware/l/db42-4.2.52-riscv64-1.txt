@@ -1,0 +1,11 @@
+db42: db42 (Berkeley database library version 4.2.x)
+db42:
+db42: The Berkeley Database (Berkeley DB) library provides embedded database
+db42: support for both traditional and client/server applications.
+db42:
+db42: This package should be installed if compatibility is needed with
+db42: databases created with the Berkeley DB version 4.2.x.
+db42:
+db42:
+db42:
+db42:
