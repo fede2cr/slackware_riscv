@@ -1,0 +1,11 @@
+boost: boost (Boost C++ Libraries)
+boost:
+boost: Boost provides free peer-reviewed portable C++ source libraries.
+boost: The emphasis is on libraries that work well with the C++ Standard
+boost: Library. One goal is to establish "existing practice" and provide
+boost: reference implementations so that the Boost libraries are suitable
+boost: for eventual standardization.
+boost:
+boost: Homepage: http://www.boost.org/
+boost:
+boost:

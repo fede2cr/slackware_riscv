@@ -1,3 +1,11 @@
+Tue May 22 20:08:16 UTC 2018
+e/emacs-25.3-riscv64-1.txz: Ported.
+l/boost-1.66.0-riscv64-1.txz: Ported.
+l/db44-4.4.20-riscv64-1.txz: Ported.
+l/gvfs-1.36.0-riscv64-1.txz: Ported.
+l/talloc-2.1.11-riscv64-1.txz: Ported.
+l/vte-0.52.0-riscv64-1.txz: Ported.
++--------------------------+
 Mon May 21 22:58:13 UTC 2018
 l/alsa-lib-1.1.6-riscv64-1.txz: Ported.
 l/alsa-plugins-1.1.6-riscv64-1.txz: Ported.

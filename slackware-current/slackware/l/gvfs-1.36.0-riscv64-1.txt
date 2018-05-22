@@ -1,0 +1,11 @@
+gvfs: gvfs (glib virtual filesystems)
+gvfs:
+gvfs: gvfs is a userspace virtual filesystem designed to work with the I/O
+gvfs: abstractions of libgio (a library included in the glib2 package).
+gvfs: It installs several modules that are automatically used by applications
+gvfs: that use the libgio API. There is also fuse support that allows
+gvfs: applications not using gio to access the gvfs filesystems.
+gvfs:
+gvfs:
+gvfs:
+gvfs:

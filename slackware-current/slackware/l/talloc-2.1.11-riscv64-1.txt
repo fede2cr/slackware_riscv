@@ -1,0 +1,11 @@
+talloc: talloc (memory pool system library)
+talloc:
+talloc: Talloc is a hierarchical, reference counted memory pool system with
+talloc: destructors. It is the core memory allocator used in Samba.
+talloc:
+talloc: Homepage: https://talloc.samba.org
+talloc:
+talloc:
+talloc:
+talloc:
+talloc:
