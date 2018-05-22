@@ -1,0 +1,11 @@
+expect: expect (program that talks to other interactive programs)
+expect:
+expect: Expect is a program that talks to other interactive programs according
+expect: to a script.  Following the script, Expect knows what can be expected
+expect: from a program and what the correct response should be.  An
+expect: interpreted language provides branching and high-level control
+expect: structures to direct the dialogue. 
+expect:
+expect: Expect was written by Don Libes of the National Institute of Standards
+expect: and Technology. Homepage: http://core.tcl.tk/expect
+expect:

@@ -1,0 +1,11 @@
+tclx: tclx (Extended Tcl)
+tclx:
+tclx: Extended Tcl (TclX), is a set of extensions to Tcl, the Tool Command
+tclx: Language invented by Dr. John Ousterhout. Extended Tcl is oriented
+tclx: towards Unix system programming tasks and large application
+tclx: development. Many additional interfaces to the Unix operating system
+tclx: are provided. Extended Tcl was designed and implemented by Karl
+tclx: Lehenbauer (karl@NeoSoft.com) and Mark Diekhans (markd@Grizzly.com),
+tclx: with help in the early stages from Peter da Silva (peter@NeoSoft.com).
+tclx:
+tclx:

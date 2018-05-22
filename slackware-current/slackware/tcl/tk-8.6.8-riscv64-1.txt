@@ -1,0 +1,11 @@
+tk: tk (Tk toolkit for Tcl)
+tk:
+tk: Tk is an extension to Tcl that allows you to quickly and easily build
+tk: X11 applications that have the look and feel of Motif apps.
+tk:
+tk:
+tk:
+tk:
+tk:
+tk:
+tk:

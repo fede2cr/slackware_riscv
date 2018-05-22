@@ -1,0 +1,11 @@
+hfsutils: hfsutils (HFS volume utilities)
+hfsutils:
+hfsutils: hfsutils is a collection of tools for reading and writing Macintosh
+hfsutils: HFS volumes.  These utilities can manipulate HFS volumes on nearly any
+hfsutils: medium.  Since hfs and xhfs are linked with Tcl/Tk shared libraries,
+hfsutils: the hfsutils package is included here in the TCL software series.
+hfsutils:
+hfsutils: hfsutils was written by Robert Leslie <rob@mars.org>
+hfsutils:
+hfsutils:
+hfsutils:
