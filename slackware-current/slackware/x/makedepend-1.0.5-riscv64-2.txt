@@ -1,0 +1,11 @@
+makedepend: makedepend (create dependencies in makefiles)
+makedepend:
+makedepend: makedepend is part of X11.
+makedepend:
+makedepend: For more information about the X.Org Foundation (the providers of the
+makedepend: X.Org implementation of the X Window System), see their website:
+makedepend:
+makedepend: http://www.x.org
+makedepend:
+makedepend:
+makedepend:

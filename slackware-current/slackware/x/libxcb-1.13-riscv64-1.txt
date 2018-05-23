@@ -1,0 +1,11 @@
+libxcb: libxcb (X protocol C-language Binding)
+libxcb:
+libxcb: The XCB library provides an interface to the X Window System protocol
+libxcb: which is fully capable of replacing Xlib. In fact, libX11 makes use
+libxcb: of libxcb as much as possible. :-) Porting to XCB has several
+libxcb: advantages such as a smaller memory footprint, latency hiding, direct
+libxcb: protocol access, and improved thread support.
+libxcb:
+libxcb:
+libxcb:
+libxcb:

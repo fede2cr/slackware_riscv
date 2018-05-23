@@ -1,0 +1,11 @@
+imake: imake (C preprocessor interface to the make utility)
+imake:
+imake: The imake package contains the imake utility, plus the following
+imake: support programs: ccmakedep, mergelib, revpath, mkdirhier, makeg,
+imake: cleanlinks, mkhtmlindex, xmkmf
+imake:
+imake:
+imake:
+imake:
+imake:
+imake:

@@ -1,0 +1,11 @@
+xorg-cf-files: xorg-cf-files (X11 config files for imake)
+xorg-cf-files:
+xorg-cf-files: The xorg-cf-files package contains the data files for the imake
+xorg-cf-files: utility, defining the known settings for a wide variety of platforms
+xorg-cf-files: (many of which have not been verified or tested in over a decade) and
+xorg-cf-files: for many of the libraries formerly delivered in the X.Org monolithic
+xorg-cf-files: releases.
+xorg-cf-files:
+xorg-cf-files:
+xorg-cf-files:
+xorg-cf-files:

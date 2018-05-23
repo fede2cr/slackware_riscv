@@ -1,0 +1,11 @@
+xcb-util: xcb-util (utility libraries for X protocol C-language Binding)
+xcb-util:
+xcb-util: xcb-util is part of X11.
+xcb-util:
+xcb-util: For more information about the X.Org Foundation (the providers of the
+xcb-util: X.Org implementation of the X Window System), see their website:
+xcb-util:
+xcb-util: http://www.x.org
+xcb-util:
+xcb-util:
+xcb-util:

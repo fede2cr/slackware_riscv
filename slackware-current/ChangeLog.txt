@@ -1,3 +1,19 @@
+Wed May 23 15:06:31 UTC 2018
+a/tree-1.7.0-riscv64-1.txz: Ported.
+a/xfsprogs-4.15.1-riscv64-1.txz: Ported.
+a/zoo-2.10_22-riscv64-1.txz: Ported.
+ap/ghostscript-9.23-riscv64-1.txz: Ported.
+ap/groff-1.22.3-riscv64-1.txz: Ported.
+ap/ispell-3.4.00-riscv64-1.txz: Ported.
+x/imake-1.0.7-riscv64-2.txz: Ported.
+x/libxcb-1.13-riscv64-1.txz: Ported.
+x/lndir-1.0.3-riscv64-2.txz: Ported.
+x/makedepend-1.0.5-riscv64-2.txz: Ported.
+x/xcb-proto-1.13-riscv64-1.txz: Ported.
+x/xcb-util-0.4.0-riscv64-2.txz: Ported.
+x/xorg-cf-files-1.0.6-riscv64-2.txz: Ported.
+ap/gphoto2-2.5.15-riscv64-1.txz: Ported.
++--------------------------+
 Wed May 23 05:49:32 UTC 2018
 ap/cups-2.2.7-riscv64-1.txz: Ported.
 ap/ddrescue-1.23-riscv64-1.txz: Ported.
