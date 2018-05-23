@@ -1,0 +1,11 @@
+ttf-tlwg: ttf-tlwg (Thai TTF Fonts)
+ttf-tlwg:
+ttf-tlwg: Fonts-TLWG (formerly ThaiFonts-Scalable) is a collection of Thai
+ttf-tlwg: scalable fonts available in free licenses. Its goal is to provide
+ttf-tlwg: fonts that conform to existing standards and recommendations, so that
+ttf-tlwg: it can be a reference implementation.
+ttf-tlwg:
+ttf-tlwg: Homepage: https://linux.thai.net/projects/fonts-tlwg
+ttf-tlwg:
+ttf-tlwg:
+ttf-tlwg:

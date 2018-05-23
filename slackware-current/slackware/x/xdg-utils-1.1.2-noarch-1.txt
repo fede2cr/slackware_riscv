@@ -1,0 +1,11 @@
+xdg-utils: xdg-utils (command line tools that assist applications)
+xdg-utils: 
+xdg-utils: Xdg-utils is a set of command line tools that assist applications
+xdg-utils: with a variety of desktop integration tasks.  About half of the
+xdg-utils: tools focus on tasks commonly required during the installation of
+xdg-utils: a desktop application and the other half focuses on integration
+xdg-utils: with the desktop environment while the application is running.
+xdg-utils:
+xdg-utils: Homepage:  http://portland.freedesktop.org/wiki/
+xdg-utils:
+xdg-utils:

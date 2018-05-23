@@ -1,0 +1,11 @@
+font-winitzki-cyrillic: font-winitzki-cyrillic
+font-winitzki-cyrillic:
+font-winitzki-cyrillic: font-winitzki-cyrillic is part of X11.
+font-winitzki-cyrillic:
+font-winitzki-cyrillic: For more information about the X.Org Foundation (the providers of the
+font-winitzki-cyrillic: X.Org implementation of the X Window System), see their website:
+font-winitzki-cyrillic:
+font-winitzki-cyrillic: http://www.x.org
+font-winitzki-cyrillic:
+font-winitzki-cyrillic:
+font-winitzki-cyrillic:

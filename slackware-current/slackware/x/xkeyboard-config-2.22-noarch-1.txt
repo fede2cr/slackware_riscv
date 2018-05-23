@@ -1,0 +1,11 @@
+xkeyboard-config: xkeyboard-config (X Keyboard Extension config files)
+xkeyboard-config:
+xkeyboard-config: The X Keyboard Extension essentially replaces the core protocol
+xkeyboard-config: definition of keyboard. The extension makes possible to clearly and
+xkeyboard-config: explicitly specify most aspects of keyboard behaviour on per-key
+xkeyboard-config: basis and to more closely track the logical and physical state of the
+xkeyboard-config: keyboard. It also includes a number of keyboard controls designed to
+xkeyboard-config: make keyboards more accessible to people with physical impairments.
+xkeyboard-config:
+xkeyboard-config:
+xkeyboard-config:

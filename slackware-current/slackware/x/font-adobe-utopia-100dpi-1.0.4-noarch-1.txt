@@ -1,0 +1,11 @@
+font-adobe-utopia-100dpi: font-adobe-utopia-100dpi
+font-adobe-utopia-100dpi:
+font-adobe-utopia-100dpi: font-adobe-utopia-100dpi is part of X11.
+font-adobe-utopia-100dpi:
+font-adobe-utopia-100dpi: For more information about the X.Org Foundation (the providers of the
+font-adobe-utopia-100dpi: X.Org implementation of the X Window System), see their website:
+font-adobe-utopia-100dpi:
+font-adobe-utopia-100dpi: http://www.x.org
+font-adobe-utopia-100dpi:
+font-adobe-utopia-100dpi:
+font-adobe-utopia-100dpi:

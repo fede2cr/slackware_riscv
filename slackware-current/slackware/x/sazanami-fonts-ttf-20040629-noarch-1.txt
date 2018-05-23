@@ -1,0 +1,11 @@
+sazanami-fonts-ttf: sazanami-fonts-ttf (Japanese TrueType Unicode fonts)
+sazanami-fonts-ttf:
+sazanami-fonts-ttf: The Sazanami fonts contain Hiragana, Katakana, and Kanji/Han
+sazanami-fonts-ttf: Ideographs.
+sazanami-fonts-ttf:
+sazanami-fonts-ttf: Homepage of efont: http://sourceforge.jp/projects/efont/
+sazanami-fonts-ttf:
+sazanami-fonts-ttf:
+sazanami-fonts-ttf:
+sazanami-fonts-ttf:
+sazanami-fonts-ttf:

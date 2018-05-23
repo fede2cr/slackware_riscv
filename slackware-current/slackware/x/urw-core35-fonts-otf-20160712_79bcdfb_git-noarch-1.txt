@@ -1,0 +1,11 @@
+urw-core35-fonts-otf: urw-core35-fonts-otf (URW++ core35 fonts in OpenType Format)
+urw-core35-fonts-otf:
+urw-core35-fonts-otf: These are the 35 standard URW++ PostScript fonts used by Ghostscript
+urw-core35-fonts-otf: but provided in OpenType Format (OTF) for programs such as LibreOffice
+urw-core35-fonts-otf: which no longer support the Postscript Type 1 font format.
+urw-core35-fonts-otf:
+urw-core35-fonts-otf:
+urw-core35-fonts-otf:
+urw-core35-fonts-otf:
+urw-core35-fonts-otf:
+urw-core35-fonts-otf:

@@ -1,0 +1,11 @@
+font-sun-misc: font-sun-misc
+font-sun-misc:
+font-sun-misc: font-sun-misc is part of X11.
+font-sun-misc:
+font-sun-misc: For more information about the X.Org Foundation (the providers of the
+font-sun-misc: X.Org implementation of the X Window System), see their website:
+font-sun-misc:
+font-sun-misc: http://www.x.org
+font-sun-misc:
+font-sun-misc:
+font-sun-misc:

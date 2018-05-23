@@ -1,0 +1,11 @@
+font-alias: font-alias
+font-alias:
+font-alias: font-alias is part of X11.
+font-alias:
+font-alias: For more information about the X.Org Foundation (the providers of the
+font-alias: X.Org implementation of the X Window System), see their website:
+font-alias:
+font-alias: http://www.x.org
+font-alias:
+font-alias:
+font-alias:

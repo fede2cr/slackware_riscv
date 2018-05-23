@@ -1,0 +1,11 @@
+xbitmaps: xbitmaps (miscellaneous X bitmap files)
+xbitmaps:
+xbitmaps: xbitmaps is part of X11.
+xbitmaps:
+xbitmaps: For more information about the X.Org Foundation (the providers of the
+xbitmaps: X.Org implementation of the X Window System), see their website:
+xbitmaps:
+xbitmaps: http://www.x.org
+xbitmaps:
+xbitmaps:
+xbitmaps:

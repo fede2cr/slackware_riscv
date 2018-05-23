@@ -1,0 +1,11 @@
+xorgproto: xorgproto (X11 protocol headers)
+xorgproto:
+xorgproto: xorgproto is part of X11.
+xorgproto:
+xorgproto: For more information about the X.Org Foundation (the providers of the
+xorgproto: X.Org implementation of the X Window System), see their website:
+xorgproto:
+xorgproto: http://www.x.org
+xorgproto:
+xorgproto:
+xorgproto:

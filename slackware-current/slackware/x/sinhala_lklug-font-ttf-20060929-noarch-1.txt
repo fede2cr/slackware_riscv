@@ -1,0 +1,11 @@
+sinhala_lklug-font-ttf: sinhala_lklug-font-ttf (Sinhala Unicode TrueType font)
+sinhala_lklug-font-ttf:
+sinhala_lklug-font-ttf: This is a free Sri Lankan 'Sinhala' Unicode font.  Its development was
+sinhala_lklug-font-ttf: initiated by the LK LUG in 2003.
+sinhala_lklug-font-ttf:
+sinhala_lklug-font-ttf: Development home: http://sinhala.sourceforge.net/
+sinhala_lklug-font-ttf:
+sinhala_lklug-font-ttf:
+sinhala_lklug-font-ttf:
+sinhala_lklug-font-ttf:
+sinhala_lklug-font-ttf:

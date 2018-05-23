@@ -1,0 +1,11 @@
+cups: CUPS (Common UNIX Printing System)
+cups:
+cups: The Common UNIX Printing System provides a portable printing layer for
+cups: UNIX(R)-like operating systems. It has been developed by Easy Software
+cups: Products to promote a standard printing solution for all UNIX vendors
+cups: and users. CUPS uses the Internet Printing Protocol ("IPP") as the
+cups: basis for managing print jobs and queues. The CUPS package includes
+cups: System V and Berkeley command-line interfaces, a PostScript RIP
+cups: package for supporting non-PostScript printer drivers, and tools for
+cups: creating additional printer drivers and other CUPS services.
+cups:

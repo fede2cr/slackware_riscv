@@ -1,0 +1,11 @@
+dejavu-fonts-ttf: dejavu-fonts-ttf (DejaVu fonts)
+dejavu-fonts-ttf:
+dejavu-fonts-ttf: The DejaVu fonts are a font family based on the Bitstream Vera Fonts.
+dejavu-fonts-ttf: Its purpose is to provide a wider range of characters while
+dejavu-fonts-ttf: maintaining the original look and feel.
+dejavu-fonts-ttf:
+dejavu-fonts-ttf: Homepage:  http://dejavu-fonts.github.io
+dejavu-fonts-ttf:
+dejavu-fonts-ttf:
+dejavu-fonts-ttf:
+dejavu-fonts-ttf:

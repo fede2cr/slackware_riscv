@@ -1,0 +1,11 @@
+libnih: libnih (lightweight library of C functions)
+libnih:
+libnih: libnih is a lightweight "standard library" of C functions to ease the
+libnih: development of other libraries and applications.
+libnih:
+libnih: libnih was written by Scott James Remnant <scott@netsplit.com>.
+libnih:
+libnih: Homepage: https://github.com/keybuk/libnih
+libnih:
+libnih:
+libnih:

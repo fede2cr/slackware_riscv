@@ -1,0 +1,11 @@
+xorg-docs: xorg-docs (documentation for X11)
+xorg-docs:
+xorg-docs: This package provides miscellaneous documentation for the X Window
+xorg-docs: System that doesn't better fit into other packages.
+xorg-docs:
+xorg-docs: The preferred documentation format for these documents is DocBook XML.
+xorg-docs:
+xorg-docs:
+xorg-docs:
+xorg-docs:
+xorg-docs:

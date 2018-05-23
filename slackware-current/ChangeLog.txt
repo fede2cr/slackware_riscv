@@ -1,20 +1,83 @@
+ap/cups-2.2.7-riscv64-1.txz: Ported.
+ap/ddrescue-1.23-riscv64-1.txz: Ported.
+ap/dmidecode-3.1-riscv64-1.txz: Ported.
+ap/enscript-1.6.6-riscv64-1.txz: Ported.
+l/libnih-1.0.3-riscv64-1.txz: Ported.
+x/dejavu-fonts-ttf-2.37-noarch-2.txz: Added.
+x/encodings-1.0.4-noarch-1.txz: Added.
+x/font-adobe-100dpi-1.0.3-noarch-1.txz: Added.
+x/font-adobe-75dpi-1.0.3-noarch-1.txz: Added.
+x/font-adobe-utopia-100dpi-1.0.4-noarch-1.txz: Added.
+x/font-adobe-utopia-75dpi-1.0.4-noarch-1.txz: Added.
+x/font-adobe-utopia-type1-1.0.4-noarch-1.txz: Added.
+x/font-alias-1.0.3-noarch-1.txz: Added.
+x/font-arabic-misc-1.0.3-noarch-1.txz: Added.
+x/font-bh-100dpi-1.0.3-noarch-1.txz: Added.
+x/font-bh-75dpi-1.0.3-noarch-1.txz: Added.
+x/font-bh-lucidatypewriter-100dpi-1.0.3-noarch-1.txz: Added.
+x/font-bh-lucidatypewriter-75dpi-1.0.3-noarch-1.txz: Added.
+x/font-bh-ttf-1.0.3-noarch-1.txz: Added.
+x/font-bh-type1-1.0.3-noarch-1.txz: Added.
+x/font-bitstream-100dpi-1.0.3-noarch-1.txz: Added.
+x/font-bitstream-75dpi-1.0.3-noarch-1.txz: Added.
+x/font-bitstream-speedo-1.0.2-noarch-1.txz: Added.
+x/font-bitstream-type1-1.0.3-noarch-1.txz: Added.
+x/font-cronyx-cyrillic-1.0.3-noarch-1.txz: Added.
+x/font-cursor-misc-1.0.3-noarch-1.txz: Added.
+x/font-daewoo-misc-1.0.3-noarch-1.txz: Added.
+x/font-dec-misc-1.0.3-noarch-1.txz: Added.
+x/font-ibm-type1-1.0.3-noarch-1.txz: Added.
+x/font-isas-misc-1.0.3-noarch-1.txz: Added.
+x/font-jis-misc-1.0.3-noarch-1.txz: Added.
+x/font-micro-misc-1.0.3-noarch-1.txz: Added.
+x/font-misc-cyrillic-1.0.3-noarch-1.txz: Added.
+x/font-misc-ethiopic-1.0.3-noarch-1.txz: Added.
+x/font-misc-meltho-1.0.3-noarch-1.txz: Added.
+x/font-misc-misc-1.1.2-noarch-1.txz: Added.
+x/font-mutt-misc-1.0.3-noarch-1.txz: Added.
+x/font-schumacher-misc-1.1.2-noarch-1.txz: Added.
+x/font-screen-cyrillic-1.0.4-noarch-1.txz: Added.
+x/font-sony-misc-1.0.3-noarch-1.txz: Added.
+x/font-sun-misc-1.0.3-noarch-1.txz: Added.
+x/font-winitzki-cyrillic-1.0.3-noarch-1.txz: Added.
+x/font-xfree86-type1-1.0.4-noarch-1.txz: Added.
+x/gccmakedep-1.0.3-noarch-1.txz: Added.
+x/liberation-fonts-ttf-2.00.1-noarch-1.txz: Added.
+x/libpthread-stubs-0.4-noarch-1.txz: Added.
+x/mkfontdir-1.0.7-noarch-1.txz: Added.
+x/sazanami-fonts-ttf-20040629-noarch-1.txz: Added.
+x/sinhala_lklug-font-ttf-20060929-noarch-1.txz: Added.
+x/tibmachuni-font-ttf-1.901b-noarch-1.txz: Added.
+x/ttf-indic-fonts-0.5.14-noarch-1.txz: Added.
+x/ttf-tlwg-0.6.4-noarch-1.txz: Added.
+x/urw-core35-fonts-otf-20160712_79bcdfb_git-noarch-1.txz: Added.
+x/util-macros-1.19.2-noarch-1.txz: Added.
+x/wqy-zenhei-font-ttf-0.8.38_1-noarch-4.txz: Added.
+x/xbitmaps-1.1.2-riscv64-1.txz: Ported.
+x/xcursor-themes-1.0.5-noarch-1.txz: Added.
+x/xdg-utils-1.1.2-noarch-1.txz: Added.
+x/xkeyboard-config-2.22-noarch-1.txz: Added.
+x/xorg-docs-1.7.1-noarch-1.txz: Added.
+x/xorgproto-2018.4-riscv64-2.txz: Ported.
+x/xtrans-1.3.5-noarch-1.txz: Added.
++--------------------------+
 Tue May 22 23:28:30 UTC 2018
-ap/a2ps-4.14-riscv64-1.txz
-ap/acct-6.6.4-riscv64-1.txz
-ap/alsa-utils-1.1.6-riscv64-1.txz
-ap/amp-0.7.6-riscv64-1.txz
-ap/bc-1.07.1-riscv64-1.txz
-ap/bpe-2.01.00-riscv64-1.txz
-ap/cdparanoia-III_10.2-riscv64-1.txz
-ap/cdrdao-1.2.3-riscv64-1.txz
-ap/diffstat-1.61-riscv64-1.txz
-ap/diffutils-3.6-riscv64-1.txz
-ap/flac-1.3.2-riscv64-1.txz
-tcl/expect-5.45.4-riscv64-1.txz
-tcl/hfsutils-3.2.6-riscv64-1.txz
-tcl/tcl-8.6.8-riscv64-1.txz
-tcl/tclx-8.4.1-riscv64-1.txz
-tcl/tk-8.6.8-riscv64-1.txz
+ap/a2ps-4.14-riscv64-1.txz: Ported.
+ap/acct-6.6.4-riscv64-1.txz: Ported.
+ap/alsa-utils-1.1.6-riscv64-1.txz: Ported.
+ap/amp-0.7.6-riscv64-1.txz: Ported.
+ap/bc-1.07.1-riscv64-1.txz: Ported.
+ap/bpe-2.01.00-riscv64-1.txz: Ported.
+ap/cdparanoia-III_10.2-riscv64-1.txz: Ported.
+ap/cdrdao-1.2.3-riscv64-1.txz: Ported.
+ap/diffstat-1.61-riscv64-1.txz: Ported.
+ap/diffutils-3.6-riscv64-1.txz: Ported.
+ap/flac-1.3.2-riscv64-1.txz: Ported.
+tcl/expect-5.45.4-riscv64-1.txz: Ported.
+tcl/hfsutils-3.2.6-riscv64-1.txz: Ported.
+tcl/tcl-8.6.8-riscv64-1.txz: Ported.
+tcl/tclx-8.4.1-riscv64-1.txz: Ported.
+tcl/tk-8.6.8-riscv64-1.txz: Ported.
 +--------------------------+
 Tue May 22 20:08:16 UTC 2018
 e/emacs-25.3-riscv64-1.txz: Ported.

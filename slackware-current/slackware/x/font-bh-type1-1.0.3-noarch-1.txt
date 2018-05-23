@@ -1,0 +1,11 @@
+font-bh-type1: font-bh-type1
+font-bh-type1:
+font-bh-type1: font-bh-type1 is part of X11.
+font-bh-type1:
+font-bh-type1: For more information about the X.Org Foundation (the providers of the
+font-bh-type1: X.Org implementation of the X Window System), see their website:
+font-bh-type1:
+font-bh-type1: http://www.x.org
+font-bh-type1:
+font-bh-type1:
+font-bh-type1:

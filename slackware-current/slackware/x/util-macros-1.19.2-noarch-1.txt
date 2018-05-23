@@ -1,0 +1,11 @@
+util-macros: util-macros (autoconf support for X11)
+util-macros:
+util-macros: This is a set of autoconf macros used by the configure.ac scripts in
+util-macros: other Xorg modular packages, and is needed to generate new versions
+util-macros: of their configure scripts with autoconf.
+util-macros:
+util-macros:
+util-macros:
+util-macros:
+util-macros:
+util-macros:

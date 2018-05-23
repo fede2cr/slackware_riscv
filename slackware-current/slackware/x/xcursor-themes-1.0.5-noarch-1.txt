@@ -1,0 +1,11 @@
+xcursor-themes: xcursor-themes (X11 cursor themes)
+xcursor-themes:
+xcursor-themes: This is a default set of cursor themes for use with libXcursor,
+xcursor-themes: originally created for the XFree86 Project, and now shipped as part
+xcursor-themes: of the X.Org software distribution.
+xcursor-themes:
+xcursor-themes:
+xcursor-themes:
+xcursor-themes:
+xcursor-themes:
+xcursor-themes:
