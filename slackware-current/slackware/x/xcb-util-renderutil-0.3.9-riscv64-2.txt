@@ -1,0 +1,11 @@
+xcb-util-renderutil: xcb-util-renderutil (XCB renderutil library)
+xcb-util-renderutil:
+xcb-util-renderutil: xcb-util-renderutil provides the XCB renderutil library, which
+xcb-util-renderutil: includes some convenience functions for the Render extension.
+xcb-util-renderutil:
+xcb-util-renderutil:
+xcb-util-renderutil:
+xcb-util-renderutil:
+xcb-util-renderutil:
+xcb-util-renderutil:
+xcb-util-renderutil:

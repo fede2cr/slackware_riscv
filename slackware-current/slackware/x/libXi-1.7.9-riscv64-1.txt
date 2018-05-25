@@ -1,0 +1,11 @@
+libXi: libXi (library for the X Input Extension)
+libXi:
+libXi: libXi is part of X11.
+libXi:
+libXi: For more information about the X.Org Foundation (the providers of the
+libXi: X.Org implementation of the X Window System), see their website:
+libXi:
+libXi: http://www.x.org
+libXi:
+libXi:
+libXi:

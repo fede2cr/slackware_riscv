@@ -1,0 +1,11 @@
+xrdb: xrdb (X server resource database utility)
+xrdb:
+xrdb: xrdb is part of X11.
+xrdb:
+xrdb: For more information about the X.Org Foundation (the providers of the
+xrdb: X.Org implementation of the X Window System), see their website:
+xrdb:
+xrdb: http://www.x.org
+xrdb:
+xrdb:
+xrdb:

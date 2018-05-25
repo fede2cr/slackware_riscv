@@ -1,0 +1,11 @@
+xcb-util-cursor: xcb-util-cursor (XCB cursor management library)
+xcb-util-cursor:
+xcb-util-cursor: The xcb-util-cursor module implements the XCB cursor library, which
+xcb-util-cursor: is the XCB replacement for libXcursor.
+xcb-util-cursor:
+xcb-util-cursor:
+xcb-util-cursor:
+xcb-util-cursor:
+xcb-util-cursor:
+xcb-util-cursor:
+xcb-util-cursor:

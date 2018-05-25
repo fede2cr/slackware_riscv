@@ -1,0 +1,11 @@
+xlsfonts: xlsfonts (X11 font utility to list available fonts)
+xlsfonts:
+xlsfonts: xlsfonts lists fonts available from an X server via the X11 core
+xlsfonts: protocol.
+xlsfonts:
+xlsfonts:
+xlsfonts:
+xlsfonts:
+xlsfonts:
+xlsfonts:
+xlsfonts:

@@ -1,0 +1,11 @@
+mkcomposecache: mkcomposecache (creates global (system-wide) Compose cache files)
+mkcomposecache:
+mkcomposecache: mkcomposecache is part of X11.
+mkcomposecache:
+mkcomposecache: For more information about the X.Org Foundation (the providers of the
+mkcomposecache: X.Org implementation of the X Window System), see their website:
+mkcomposecache:
+mkcomposecache: http://www.x.org
+mkcomposecache:
+mkcomposecache:
+mkcomposecache:

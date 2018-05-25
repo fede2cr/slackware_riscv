@@ -1,0 +1,11 @@
+libXevie: libXevie (X Event Interception Extension (XEvIE) library)
+libXevie:
+libXevie: libXevie is part of X11.
+libXevie:
+libXevie: For more information about the X.Org Foundation (the providers of the
+libXevie: X.Org implementation of the X Window System), see their website:
+libXevie:
+libXevie: http://www.x.org
+libXevie:
+libXevie:
+libXevie:

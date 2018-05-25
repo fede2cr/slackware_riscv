@@ -1,0 +1,11 @@
+libXdamage: libXdamage (client library for the X Damage Extension)
+libXdamage:
+libXdamage: libXdamage is part of X11.
+libXdamage:
+libXdamage: For more information about the X.Org Foundation (the providers of the
+libXdamage: X.Org implementation of the X Window System), see their website:
+libXdamage:
+libXdamage: http://www.x.org
+libXdamage:
+libXdamage:
+libXdamage:

@@ -1,0 +1,11 @@
+libXau: libXau (Sample Authorization Protocol for X)
+libXau:
+libXau: This is a very simple mechanism for providing individual access to 
+libXau: an X Window System display.It uses existing core protocol and library 
+libXau: hooks for specifying authorization data in the connection setup block 
+libXau: to restrict use of the display to only those clients that show that 
+libXau: they know a server-specific key called a "magic cookie."
+libXau:
+libXau:
+libXau:
+libXau:

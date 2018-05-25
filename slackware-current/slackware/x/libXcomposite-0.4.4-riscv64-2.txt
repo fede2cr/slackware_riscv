@@ -1,0 +1,11 @@
+libXcomposite: libXcomposite (client library for the X Composite extension)
+libXcomposite:
+libXcomposite: libXcomposite is part of X11.
+libXcomposite:
+libXcomposite: For more information about the X.Org Foundation (the providers of the
+libXcomposite: X.Org implementation of the X Window System), see their website:
+libXcomposite:
+libXcomposite: http://www.x.org
+libXcomposite:
+libXcomposite:
+libXcomposite:

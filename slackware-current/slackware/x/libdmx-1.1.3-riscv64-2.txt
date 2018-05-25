@@ -1,0 +1,11 @@
+libdmx: libdmx (DMX (Distributed Multihead X) extension library)
+libdmx:
+libdmx: libdmx is part of X11.
+libdmx:
+libdmx: For more information about the X.Org Foundation (the providers of the
+libdmx: X.Org implementation of the X Window System), see their website:
+libdmx:
+libdmx: http://www.x.org
+libdmx:
+libdmx:
+libdmx:

@@ -1,0 +1,11 @@
+appres: appres (X resource inspection utility)
+appres:
+appres: The appres program prints the resources seen by an application
+appres: (or subhierarchy of an application) with the specified class and
+appres: instance names. It can be used to determine which resources a
+appres: particular program will load.
+appres:
+appres:
+appres:
+appres:
+appres:

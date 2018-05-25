@@ -1,0 +1,11 @@
+libXrender: libXrender (library for the Render Extension to the X11 protocol)
+libXrender:
+libXrender: libXrender is part of X11.
+libXrender:
+libXrender: For more information about the X.Org Foundation (the providers of the
+libXrender: X.Org implementation of the X Window System), see their website:
+libXrender:
+libXrender: http://www.x.org
+libXrender:
+libXrender:
+libXrender:

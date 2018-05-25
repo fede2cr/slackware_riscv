@@ -1,0 +1,11 @@
+xdbedizzy: xdbedizzy (X11 test utility)
+xdbedizzy:
+xdbedizzy: xdbedizzy is a demo of the X11 Double Buffer Extension (DBE) creating
+xdbedizzy: a double buffered spinning scene.
+xdbedizzy:
+xdbedizzy:
+xdbedizzy:
+xdbedizzy:
+xdbedizzy:
+xdbedizzy:
+xdbedizzy:

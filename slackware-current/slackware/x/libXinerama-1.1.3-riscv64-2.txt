@@ -1,0 +1,11 @@
+libXinerama: libXinerama (library for Xinerama extension to X11 Protocol)
+libXinerama:
+libXinerama: libXinerama is part of X11.
+libXinerama:
+libXinerama: For more information about the X.Org Foundation (the providers of the
+libXinerama: X.Org implementation of the X Window System), see their website:
+libXinerama:
+libXinerama: http://www.x.org
+libXinerama:
+libXinerama:
+libXinerama:

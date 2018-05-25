@@ -1,0 +1,11 @@
+libXfontcache: libXfontcache (X-TrueType font cache extension client library)
+libXfontcache:
+libXfontcache: libXfontcache is part of X11.
+libXfontcache:
+libXfontcache: For more information about the X.Org Foundation (the providers of the
+libXfontcache: X.Org implementation of the X Window System), see their website:
+libXfontcache:
+libXfontcache: http://www.x.org
+libXfontcache:
+libXfontcache:
+libXfontcache:

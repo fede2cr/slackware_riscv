@@ -1,0 +1,11 @@
+showfont: showfont (displays data about a font from an X font server)
+showfont:
+showfont: The information shown includes font information, font properties,
+showfont: character metrics, and character bitmaps.
+showfont:
+showfont:
+showfont:
+showfont:
+showfont:
+showfont:
+showfont:

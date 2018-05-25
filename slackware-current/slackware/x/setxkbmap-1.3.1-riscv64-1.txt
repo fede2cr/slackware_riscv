@@ -1,0 +1,11 @@
+setxkbmap: setxkbmap (change X11 keyboard layout)
+setxkbmap:
+setxkbmap: setxkbmap is part of X11.
+setxkbmap:
+setxkbmap: For more information about the X.Org Foundation (the providers of the
+setxkbmap: X.Org implementation of the X Window System), see their website:
+setxkbmap:
+setxkbmap: http://www.x.org
+setxkbmap:
+setxkbmap:
+setxkbmap:

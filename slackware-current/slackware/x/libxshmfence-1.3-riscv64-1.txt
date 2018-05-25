@@ -1,0 +1,11 @@
+libxshmfence: libxshmfence (The X Shared Memory Fence Library)
+libxshmfence:
+libxshmfence: libxshmfence is part of X11.
+libxshmfence:
+libxshmfence: For more information about the X.Org Foundation (the providers of the
+libxshmfence: X.Org implementation of the X Window System), see their website:
+libxshmfence:
+libxshmfence: http://www.x.org
+libxshmfence:
+libxshmfence:
+libxshmfence:

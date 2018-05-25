@@ -1,0 +1,11 @@
+xscope: xscope (program to monitor X11/Client conversations)
+xscope:
+xscope: xscope is part of X11.
+xscope:
+xscope: For more information about the X.Org Foundation (the providers of the
+xscope: X.Org implementation of the X Window System), see their website:
+xscope:
+xscope: http://www.x.org
+xscope:
+xscope:
+xscope:

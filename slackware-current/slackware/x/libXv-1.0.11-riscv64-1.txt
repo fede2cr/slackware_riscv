@@ -1,0 +1,11 @@
+libXv: libXv (library for the X Video (Xv) extension to the X Window System)
+libXv:
+libXv: libXv is part of X11.
+libXv:
+libXv: For more information about the X.Org Foundation (the providers of the
+libXv: X.Org implementation of the X Window System), see their website:
+libXv:
+libXv: http://www.x.org
+libXv:
+libXv:
+libXv:

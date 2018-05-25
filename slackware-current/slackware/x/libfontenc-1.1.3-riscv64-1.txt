@@ -1,0 +1,11 @@
+libfontenc: libfontenc (font encoding library)
+libfontenc:
+libfontenc: libfontenc is part of X11.
+libfontenc:
+libfontenc: For more information about the X.Org Foundation (the providers of the
+libfontenc: X.Org implementation of the X Window System), see their website:
+libfontenc:
+libfontenc: http://www.x.org
+libfontenc:
+libfontenc:
+libfontenc:

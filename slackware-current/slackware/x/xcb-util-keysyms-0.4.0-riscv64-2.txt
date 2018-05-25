@@ -1,0 +1,11 @@
+xcb-util-keysyms: xcb-util-keysyms (keysyms library for XCB)
+xcb-util-keysyms:
+xcb-util-keysyms: xcb-util-keysyms provides the keysyms library, which handles
+xcb-util-keysyms: standard X key constants and conversion to/from keycodes.
+xcb-util-keysyms:
+xcb-util-keysyms:
+xcb-util-keysyms:
+xcb-util-keysyms:
+xcb-util-keysyms:
+xcb-util-keysyms:
+xcb-util-keysyms:

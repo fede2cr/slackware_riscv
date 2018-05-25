@@ -1,0 +1,11 @@
+xinput: xinput (utility to configure and test X11 input devices)
+xinput:
+xinput: xinput is a utility to configure and test XInput devices. It wasn't
+xinput: originally designed to be the primary tool for doing this but it's
+xinput: still pretty much the only program out there for doing it. :-)
+xinput:
+xinput: For more information about the X.Org Foundation (the providers of the
+xinput: X.Org implementation of the X Window System), see their website:
+xinput: http://www.x.org
+xinput:
+xinput:

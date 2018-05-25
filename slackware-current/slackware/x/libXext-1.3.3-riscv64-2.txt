@@ -1,0 +1,11 @@
+libXext: libXext (library for common extensions to the X11 protocol)
+libXext:
+libXext: libXext is part of X11.
+libXext:
+libXext: For more information about the X.Org Foundation (the providers of the
+libXext: X.Org implementation of the X Window System), see their website:
+libXext:
+libXext: http://www.x.org
+libXext:
+libXext:
+libXext:

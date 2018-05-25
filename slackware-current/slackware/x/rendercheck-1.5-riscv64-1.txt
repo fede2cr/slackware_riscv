@@ -1,0 +1,11 @@
+rendercheck: rendercheck (test X11 Render support)
+rendercheck:
+rendercheck: rendercheck is a program to test a Render extension implementation
+rendercheck: against separate calculations of expected output.
+rendercheck:
+rendercheck:
+rendercheck:
+rendercheck:
+rendercheck:
+rendercheck:
+rendercheck:

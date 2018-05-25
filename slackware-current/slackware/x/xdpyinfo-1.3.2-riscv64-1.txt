@@ -1,0 +1,11 @@
+xdpyinfo: xdpyinfo (utility for displaying information about an X server)
+xdpyinfo:
+xdpyinfo: xdpyinfo is part of X11.
+xdpyinfo:
+xdpyinfo: For more information about the X.Org Foundation (the providers of the
+xdpyinfo: X.Org implementation of the X Window System), see their website:
+xdpyinfo:
+xdpyinfo: http://www.x.org
+xdpyinfo:
+xdpyinfo:
+xdpyinfo:

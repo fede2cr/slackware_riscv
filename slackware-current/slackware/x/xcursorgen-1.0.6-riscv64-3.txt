@@ -1,0 +1,11 @@
+xcursorgen: xcursorgen (prepares X11 cursor sets for use with libXcursor)
+xcursorgen:
+xcursorgen: xcursorgen is part of X11.
+xcursorgen:
+xcursorgen: For more information about the X.Org Foundation (the providers of the
+xcursorgen: X.Org implementation of the X Window System), see their website:
+xcursorgen:
+xcursorgen: http://www.x.org
+xcursorgen:
+xcursorgen:
+xcursorgen:

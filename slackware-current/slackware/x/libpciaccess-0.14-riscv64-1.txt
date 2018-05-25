@@ -1,0 +1,11 @@
+libpciaccess: libpciaccess (Generic PCI access library)
+libpciaccess:
+libpciaccess: libpciaccess is part of X11.
+libpciaccess:
+libpciaccess: For more information about the X.Org Foundation (the providers of the
+libpciaccess: X.Org implementation of the X Window System), see their website:
+libpciaccess:
+libpciaccess: http://www.x.org
+libpciaccess:
+libpciaccess:
+libpciaccess:

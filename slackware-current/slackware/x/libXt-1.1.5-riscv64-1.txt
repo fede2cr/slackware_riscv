@@ -1,0 +1,11 @@
+libXt: libXt (X Toolkit Intrinsics library)
+libXt:
+libXt: libXt is part of X11.
+libXt:
+libXt: For more information about the X.Org Foundation (the providers of the
+libXt: X.Org implementation of the X Window System), see their website:
+libXt:
+libXt: http://www.x.org
+libXt:
+libXt:
+libXt:

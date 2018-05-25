@@ -1,0 +1,11 @@
+xset: xset (get and set various preferences and properties)
+xset:
+xset: xset is a command line utility to get and set various preferences
+xset: and properties for the current session.
+xset:
+xset:
+xset:
+xset:
+xset:
+xset:
+xset:

@@ -1,0 +1,11 @@
+xrefresh: xrefresh (refresh all or part of an X screen)
+xrefresh:
+xrefresh: xrefresh is part of X11.
+xrefresh:
+xrefresh: For more information about the X.Org Foundation (the providers of the
+xrefresh: X.Org implementation of the X Window System), see their website:
+xrefresh:
+xrefresh: http://www.x.org
+xrefresh:
+xrefresh:
+xrefresh:

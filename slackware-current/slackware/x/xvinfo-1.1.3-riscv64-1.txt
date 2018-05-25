@@ -1,0 +1,11 @@
+xvinfo: xvinfo (X11 X-Video utility)
+xvinfo:
+xvinfo: xvinfo prints out the capabilities of any video adaptors associated
+xvinfo: with the display that are accessible through the X-Video extension.
+xvinfo:
+xvinfo:
+xvinfo:
+xvinfo:
+xvinfo:
+xvinfo:
+xvinfo:

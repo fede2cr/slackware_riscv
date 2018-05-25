@@ -1,0 +1,11 @@
+xwud: xwud (X screen dump viewer)
+xwud:
+xwud: xwud allows X users to display in a window an image saved in a
+xwud: specially formatted dump file, such as produced by xwd.
+xwud:
+xwud:
+xwud:
+xwud:
+xwud:
+xwud:
+xwud:

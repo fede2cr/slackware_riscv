@@ -1,0 +1,11 @@
+libXxf86misc: libXxf86misc (Extension library for the XFree86-Misc X extension)
+libXxf86misc:
+libXxf86misc: libXxf86misc is part of X11.
+libXxf86misc:
+libXxf86misc: For more information about the X.Org Foundation (the providers of the
+libXxf86misc: X.Org implementation of the X Window System), see their website:
+libXxf86misc:
+libXxf86misc: http://www.x.org
+libXxf86misc:
+libXxf86misc:
+libXxf86misc:

@@ -1,0 +1,11 @@
+bdftopcf: bdftopcf (font compiler for the X server and font server)
+bdftopcf:
+bdftopcf: Fonts in Portable Compiled Format can be read by any architecture,
+bdftopcf: although the file is structured to allow one particular architecture
+bdftopcf: to read them directly without reformatting.  This allows fast reading
+bdftopcf: on the appropriate machine, but the files are still portable (but
+bdftopcf: read more slowly) on other machines.
+bdftopcf:
+bdftopcf:
+bdftopcf:
+bdftopcf:

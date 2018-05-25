@@ -1,0 +1,11 @@
+oclock: oclock (X11 on-screen clock)
+oclock:
+oclock: oclock is a simple analog clock using the SHAPE extension to make a
+oclock: round (possibly transparent) window.
+oclock:
+oclock:
+oclock:
+oclock:
+oclock:
+oclock:
+oclock:

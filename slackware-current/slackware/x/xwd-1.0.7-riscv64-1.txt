@@ -1,0 +1,11 @@
+xwd: xwd (dump an image of an X window)
+xwd:
+xwd: xwd is part of X11.
+xwd:
+xwd: For more information about the X.Org Foundation (the providers of the
+xwd: X.Org implementation of the X Window System), see their website:
+xwd:
+xwd: http://www.x.org
+xwd:
+xwd:
+xwd:

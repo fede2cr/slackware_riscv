@@ -1,0 +1,11 @@
+libXtst: libXtst (client library for the XTEST & RECORD extensions)
+libXtst:
+libXtst: libXtst is part of X11.
+libXtst:
+libXtst: For more information about the X.Org Foundation (the providers of the
+libXtst: X.Org implementation of the X Window System), see their website:
+libXtst:
+libXtst: http://www.x.org
+libXtst:
+libXtst:
+libXtst:

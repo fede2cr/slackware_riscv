@@ -1,0 +1,11 @@
+libXpresent: libXpresent (library for the Present extension to the X11 protocol)
+libXpresent:
+libXpresent: libXpresent is part of X11.
+libXpresent:
+libXpresent: For more information about the X.Org Foundation (the providers of the
+libXpresent: X.Org implementation of the X Window System), see their website:
+libXpresent:
+libXpresent: http://www.x.org
+libXpresent:
+libXpresent:
+libXpresent:

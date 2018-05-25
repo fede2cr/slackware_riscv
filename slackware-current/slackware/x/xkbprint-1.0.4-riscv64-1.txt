@@ -1,0 +1,11 @@
+xkbprint: xkbprint (X11 keyboard utility)
+xkbprint:
+xkbprint: xkbprint generates a printable or encapsulated PostScript description
+xkbprint: of an XKB keyboard description.
+xkbprint:
+xkbprint:
+xkbprint:
+xkbprint:
+xkbprint:
+xkbprint:
+xkbprint:

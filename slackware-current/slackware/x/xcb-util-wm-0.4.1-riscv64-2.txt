@@ -1,0 +1,11 @@
+xcb-util-wm: xcb-util-wm (XCB libraries for EWMH and ICCCM)
+xcb-util-wm:
+xcb-util-wm: xcb-util-wm provides the XCB ewmh and iccm libraries, which include
+xcb-util-wm: client and window manager helpers for EWMH and ICCCM.
+xcb-util-wm:
+xcb-util-wm:
+xcb-util-wm:
+xcb-util-wm:
+xcb-util-wm:
+xcb-util-wm:
+xcb-util-wm:

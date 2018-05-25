@@ -1,0 +1,11 @@
+libXxf86vm: libXxf86vm (library for the XFree86-VidMode X extension)
+libXxf86vm:
+libXxf86vm: libXxf86vm is part of X11.
+libXxf86vm:
+libXxf86vm: For more information about the X.Org Foundation (the providers of the
+libXxf86vm: X.Org implementation of the X Window System), see their website:
+libXxf86vm:
+libXxf86vm: http://www.x.org
+libXxf86vm:
+libXxf86vm:
+libXxf86vm:

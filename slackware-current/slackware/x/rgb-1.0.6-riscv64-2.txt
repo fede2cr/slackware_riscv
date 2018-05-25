@@ -1,0 +1,11 @@
+rgb: rgb (X color name database)
+rgb:
+rgb: rgb is part of X11.
+rgb:
+rgb: For more information about the X.Org Foundation (the providers of the
+rgb: X.Org implementation of the X Window System), see their website:
+rgb:
+rgb: http://www.x.org
+rgb:
+rgb:
+rgb:

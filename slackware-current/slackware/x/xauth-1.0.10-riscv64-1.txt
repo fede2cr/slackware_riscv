@@ -1,0 +1,11 @@
+xauth: xauth (X11 authorization utility)
+xauth:
+xauth: The xauth program is used to edit and display the authorization
+xauth: information used in connecting to the X server.
+xauth:
+xauth:
+xauth:
+xauth:
+xauth:
+xauth:
+xauth:

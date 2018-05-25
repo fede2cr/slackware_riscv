@@ -1,0 +1,11 @@
+xfsinfo: xfsinfo (X11 font server utility)
+xfsinfo:
+xfsinfo: xfsinfo is a utility for displaying information about an X font server.
+xfsinfo: It is used to examine the capabilities of a server, the predefined
+xfsinfo: values for various parameters used in communicating between clients
+xfsinfo: and the server, and the font catalogues and alternate servers that
+xfsinfo: are available.
+xfsinfo:
+xfsinfo:
+xfsinfo:
+xfsinfo:

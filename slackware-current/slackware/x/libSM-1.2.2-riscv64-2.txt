@@ -1,0 +1,11 @@
+libSM: libSM (X Session Management Library)
+libSM:
+libSM: libSM is part of X11.
+libSM:
+libSM: For more information about the X.Org Foundation (the providers of the
+libSM: X.Org implementation of the X Window System), see their website:
+libSM:
+libSM: http://www.x.org
+libSM:
+libSM:
+libSM:

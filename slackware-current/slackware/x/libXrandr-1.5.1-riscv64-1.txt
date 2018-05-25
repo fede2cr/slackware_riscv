@@ -1,0 +1,11 @@
+libXrandr: libXrandr (X Resize, Rotate and Reflection extension library)
+libXrandr:
+libXrandr: libXrandr is part of X11.
+libXrandr:
+libXrandr: For more information about the X.Org Foundation (the providers of the
+libXrandr: X.Org implementation of the X Window System), see their website:
+libXrandr:
+libXrandr: http://www.x.org
+libXrandr:
+libXrandr:
+libXrandr:

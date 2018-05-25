@@ -1,0 +1,11 @@
+xbacklight: xbacklight (adjust the backlight brightness where supported)
+xbacklight:
+xbacklight: It uses the RandR extension to find all outputs on the X server
+xbacklight: supporting backlight brightness control and changes them all in the
+xbacklight: same way.
+xbacklight:
+xbacklight:
+xbacklight:
+xbacklight:
+xbacklight:
+xbacklight:

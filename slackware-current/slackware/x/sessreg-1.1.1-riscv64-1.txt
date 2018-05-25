@@ -1,0 +1,11 @@
+sessreg: sessreg (simple program for managing utmp/wtmp entries for X sessions)
+sessreg:
+sessreg: sessreg was originally written for use with xdm, but it may also be 
+sessreg: used with other display managers such as gdm or kdm.
+sessreg:
+sessreg:
+sessreg:
+sessreg:
+sessreg:
+sessreg:
+sessreg:

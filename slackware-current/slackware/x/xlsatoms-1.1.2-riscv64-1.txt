@@ -1,0 +1,11 @@
+xlsatoms: xlsatoms (lists the interned atoms defined on an X11 server)
+xlsatoms:
+xlsatoms: xlsatoms is part of X11.
+xlsatoms:
+xlsatoms: For more information about the X.Org Foundation (the providers of the
+xlsatoms: X.Org implementation of the X Window System), see their website:
+xlsatoms:
+xlsatoms: http://www.x.org
+xlsatoms:
+xlsatoms:
+xlsatoms:

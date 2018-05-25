@@ -1,0 +1,11 @@
+xstdcmap: xstdcmap (X11 color utility)
+xstdcmap:
+xstdcmap: The xstdcmap utility can be used to selectively define standard
+xstdcmap: colormap properties.  It is intended to be run from a user's X
+xstdcmap: startup script to create standard colormap definitions in order to
+xstdcmap: facilitate sharing of scarce colormap resources among clients using
+xstdcmap: PseudoColor visuals.
+xstdcmap:
+xstdcmap:
+xstdcmap:
+xstdcmap:

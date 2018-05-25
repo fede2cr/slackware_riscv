@@ -1,0 +1,11 @@
+xcmsdb: xcmsdb (X11 color utility)
+xcmsdb:
+xcmsdb: xcmsdb is used to load, query, or remove Device Color Characterization
+xcmsdb: data stored in properties on the root window of a screen as specified
+xcmsdb: in section 7, Device Color Characterization, of the X11 Inter-Client
+xcmsdb: Communication Conventions Manual (ICCCM).
+xcmsdb:
+xcmsdb:
+xcmsdb:
+xcmsdb:
+xcmsdb:

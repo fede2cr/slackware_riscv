@@ -1,0 +1,11 @@
+xkbevd: xkbevd (X11 keyboard event daemon)
+xkbevd:
+xkbevd: xkbevd is part of X11.
+xkbevd:
+xkbevd: For more information about the X.Org Foundation (the providers of the
+xkbevd: X.Org implementation of the X Window System), see their website:
+xkbevd:
+xkbevd: http://www.x.org
+xkbevd:
+xkbevd:
+xkbevd:

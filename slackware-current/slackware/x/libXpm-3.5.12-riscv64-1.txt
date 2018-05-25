@@ -1,0 +1,11 @@
+libXpm: libXpm (X Pixmap (XPM) image file format library)
+libXpm:
+libXpm: libXpm is part of X11.
+libXpm:
+libXpm: For more information about the X.Org Foundation (the providers of the
+libXpm: X.Org implementation of the X Window System), see their website:
+libXpm:
+libXpm: http://www.x.org
+libXpm:
+libXpm:
+libXpm:

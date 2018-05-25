@@ -1,0 +1,11 @@
+fonttosfnt: fonttosfnt (utility to wrap a bitmap font in a sfnt wrapper)
+fonttosfnt:
+fonttosfnt: fonttosfnt is part of X11.
+fonttosfnt:
+fonttosfnt: For more information about the X.Org Foundation (the providers of the
+fonttosfnt: X.Org implementation of the X Window System), see their website:
+fonttosfnt:
+fonttosfnt: http://www.x.org
+fonttosfnt:
+fonttosfnt:
+fonttosfnt:

@@ -1,0 +1,11 @@
+xkbcomp: xkbcomp (X Keyboard Extension)
+xkbcomp:
+xkbcomp: xkbcomp is part of X11.
+xkbcomp:
+xkbcomp: For more information about the X.Org Foundation (the providers of the
+xkbcomp: X.Org implementation of the X Window System), see their website:
+xkbcomp:
+xkbcomp: http://www.x.org
+xkbcomp:
+xkbcomp:
+xkbcomp:

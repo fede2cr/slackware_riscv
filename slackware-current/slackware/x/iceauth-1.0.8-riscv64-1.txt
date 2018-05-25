@@ -1,0 +1,11 @@
+iceauth: iceauth (display/edit ICE authorization information)
+iceauth:
+iceauth: The iceauth program is used to edit and display the authorization
+iceauth: information used in connecting with ICE. It operates very much like
+iceauth: the xauth program for X11 connection authentication records.
+iceauth:
+iceauth:
+iceauth:
+iceauth:
+iceauth:
+iceauth:

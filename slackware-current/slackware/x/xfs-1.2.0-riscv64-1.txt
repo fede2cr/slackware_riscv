@@ -1,0 +1,11 @@
+xfs: xfs (font server for X11)
+xfs:
+xfs: xfs is part of X11.
+xfs:
+xfs: For more information about the X.Org Foundation (the providers of the
+xfs: X.Org implementation of the X Window System), see their website:
+xfs:
+xfs: http://www.x.org
+xfs:
+xfs:
+xfs:

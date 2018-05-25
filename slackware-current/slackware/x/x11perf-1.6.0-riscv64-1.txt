@@ -1,0 +1,11 @@
+x11perf: x11perf (X11 server performance test program)
+x11perf:
+x11perf: x11perf is part of X11.
+x11perf:
+x11perf: For more information about the X.Org Foundation (the providers of the
+x11perf: X.Org implementation of the X Window System), see their website:
+x11perf:
+x11perf: http://www.x.org
+x11perf:
+x11perf:
+x11perf:

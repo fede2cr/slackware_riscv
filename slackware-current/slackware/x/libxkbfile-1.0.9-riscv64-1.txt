@@ -1,0 +1,11 @@
+libxkbfile: libxkbfile (X11 keyboard file manipulation library)
+libxkbfile:
+libxkbfile: libxkbfile is part of X11.
+libxkbfile:
+libxkbfile: For more information about the X.Org Foundation (the providers of the
+libxkbfile: X.Org implementation of the X Window System), see their website:
+libxkbfile:
+libxkbfile: http://www.x.org
+libxkbfile:
+libxkbfile:
+libxkbfile:

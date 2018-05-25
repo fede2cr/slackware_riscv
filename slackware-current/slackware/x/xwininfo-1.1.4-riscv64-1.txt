@@ -1,0 +1,11 @@
+xwininfo: xwininfo (prints information about windows on an X server)
+xwininfo:
+xwininfo: Various information is displayed depending on which options are
+xwininfo: selected.
+xwininfo:
+xwininfo:
+xwininfo:
+xwininfo:
+xwininfo:
+xwininfo:
+xwininfo:

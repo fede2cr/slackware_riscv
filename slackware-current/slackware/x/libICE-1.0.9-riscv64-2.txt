@@ -1,0 +1,11 @@
+libICE: libICE (X Inter-Client Exchange Library)
+libICE:
+libICE: libICE is part of X11.
+libICE:
+libICE: For more information about the X.Org Foundation (the providers of the
+libICE: X.Org implementation of the X Window System), see their website:
+libICE:
+libICE: http://www.x.org
+libICE:
+libICE:
+libICE:

@@ -1,0 +1,11 @@
+libXdmcp: libXdmcp (X Display Manager Control Protocol library)
+libXdmcp:
+libXdmcp: libXdmcp is part of X11.
+libXdmcp:
+libXdmcp: For more information about the X.Org Foundation (the providers of the
+libXdmcp: X.Org implementation of the X Window System), see their website:
+libXdmcp:
+libXdmcp: http://www.x.org
+libXdmcp:
+libXdmcp:
+libXdmcp:

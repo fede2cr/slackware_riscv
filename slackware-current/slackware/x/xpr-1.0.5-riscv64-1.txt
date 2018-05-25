@@ -1,0 +1,11 @@
+xpr: xpr (dump an X window directly to a printer)
+xpr:
+xpr: xpr takes as input a window dump file produced by xwd and formats it
+xpr: for output on various types of printers.
+xpr:
+xpr:
+xpr:
+xpr:
+xpr:
+xpr:
+xpr:

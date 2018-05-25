@@ -1,0 +1,11 @@
+libXres: libXres (X-Resource extension client library)
+libXres:
+libXres: libXres is part of X11.
+libXres:
+libXres: For more information about the X.Org Foundation (the providers of the
+libXres: X.Org implementation of the X Window System), see their website:
+libXres:
+libXres: http://www.x.org
+libXres:
+libXres:
+libXres:

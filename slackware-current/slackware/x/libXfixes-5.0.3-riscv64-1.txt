@@ -1,0 +1,11 @@
+libXfixes: libXfixes (client library for the Xfixes extension)
+libXfixes:
+libXfixes: libXfixes is part of X11.
+libXfixes:
+libXfixes: For more information about the X.Org Foundation (the providers of the
+libXfixes: X.Org implementation of the X Window System), see their website:
+libXfixes:
+libXfixes: http://www.x.org
+libXfixes:
+libXfixes:
+libXfixes:

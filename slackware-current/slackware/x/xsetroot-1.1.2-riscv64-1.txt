@@ -1,0 +1,11 @@
+xsetroot: xsetroot (root window parameter setting utility for X)
+xsetroot:
+xsetroot: xsetroot is part of X11.
+xsetroot:
+xsetroot: For more information about the X.Org Foundation (the providers of the
+xsetroot: X.Org implementation of the X Window System), see their website:
+xsetroot:
+xsetroot: http://www.x.org
+xsetroot:
+xsetroot:
+xsetroot:

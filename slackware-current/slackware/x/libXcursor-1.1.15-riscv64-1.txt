@@ -1,0 +1,11 @@
+libXcursor: libXcursor (X Window System Cursor management library)
+libXcursor:
+libXcursor: libXcursor is part of X11.
+libXcursor:
+libXcursor: For more information about the X.Org Foundation (the providers of the
+libXcursor: X.Org implementation of the X Window System), see their website:
+libXcursor:
+libXcursor: http://www.x.org
+libXcursor:
+libXcursor:
+libXcursor:

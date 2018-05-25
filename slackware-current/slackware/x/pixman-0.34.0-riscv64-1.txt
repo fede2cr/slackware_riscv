@@ -1,0 +1,11 @@
+pixman: pixman (pixel manipulation library)
+pixman:
+pixman: pixman contains low-level pixel manipulation routines and is used by
+pixman: both xorg and cairo.
+pixman:
+pixman: For more information about the X.Org Foundation (the providers of the
+pixman: X.Org implementation of the X Window System), see their website:
+pixman:
+pixman: http://www.x.org
+pixman:
+pixman:

@@ -1,0 +1,11 @@
+libXp: libXp (X Print Client Library)
+libXp:
+libXp: libXp is part of X11.
+libXp:
+libXp: For more information about the X.Org Foundation (the providers of the
+libXp: X.Org implementation of the X Window System), see their website:
+libXp:
+libXp: http://www.x.org
+libXp:
+libXp:
+libXp:

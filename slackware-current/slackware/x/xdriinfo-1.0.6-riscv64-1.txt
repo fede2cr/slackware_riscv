@@ -1,0 +1,11 @@
+xdriinfo: xdriinfo (query configuration information of X11 DRI drivers)
+xdriinfo:
+xdriinfo: xdriinfo is part of X11.
+xdriinfo:
+xdriinfo: For more information about the X.Org Foundation (the providers of the
+xdriinfo: X.Org implementation of the X Window System), see their website:
+xdriinfo:
+xdriinfo: http://www.x.org
+xdriinfo:
+xdriinfo:
+xdriinfo:

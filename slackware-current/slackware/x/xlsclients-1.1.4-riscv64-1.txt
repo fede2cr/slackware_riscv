@@ -1,0 +1,11 @@
+xlsclients: xlsclients (X11 utility for listing X client info)
+xlsclients:
+xlsclients: xlsclients is a utility for listing information about the client
+xlsclients: applications running on a X11 server.
+xlsclients:
+xlsclients:
+xlsclients:
+xlsclients:
+xlsclients:
+xlsclients:
+xlsclients:

@@ -1,0 +1,11 @@
+libXft: libXft (X FreeType library)
+libXft:
+libXft: libXft is part of X11.
+libXft:
+libXft: For more information about the X.Org Foundation (the providers of the
+libXft: X.Org implementation of the X Window System), see their website:
+libXft:
+libXft: http://www.x.org
+libXft:
+libXft:
+libXft:
