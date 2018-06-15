@@ -1,0 +1,11 @@
+xcalc: xcalc (X11 calculator)
+xcalc:
+xcalc: xcalc is a scientific calculator X11 client that can emulate a TI-30
+xcalc: or an HP-10C.
+xcalc:
+xcalc:
+xcalc:
+xcalc:
+xcalc:
+xcalc:
+xcalc:

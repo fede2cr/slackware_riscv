@@ -1,0 +1,11 @@
+editres: editres (X11 resource editor)
+editres:
+editres: editres is part of X11.
+editres:
+editres: For more information about the X.Org Foundation (the providers of the
+editres: X.Org implementation of the X Window System), see their website:
+editres:
+editres: http://www.x.org
+editres:
+editres:
+editres:

@@ -1,0 +1,11 @@
+bitmap: bitmap (X bitmap (XBM) editor and converter utilities)
+bitmap:
+bitmap: The bitmap package includes the bitmap, bmtoa, and atobm programs.
+bitmap:
+bitmap:
+bitmap:
+bitmap:
+bitmap:
+bitmap:
+bitmap:
+bitmap:

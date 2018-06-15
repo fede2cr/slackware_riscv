@@ -1,0 +1,11 @@
+xcm: xcm (X color management tools)
+xcm:
+xcm: Tools based on libXcm, a library for colour management on X.
+xcm: xcmddc requests EDID from a monitor over the i2c bus.
+xcm: xcmedid is for parsing EDID data blocks. 
+xcm: xcmevents observes X11 colour management events.
+xcm:
+xcm:
+xcm:
+xcm:
+xcm:

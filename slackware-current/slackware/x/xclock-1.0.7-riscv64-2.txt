@@ -1,0 +1,11 @@
+xclock: xclock (X11 on-screen clock)
+xclock:
+xclock: xclock is the classic X Window System clock utility.  It displays the
+xclock: time in analog or digital form, continuously updated at a frequency
+xclock: which may be specified by the user.
+xclock:
+xclock:
+xclock:
+xclock:
+xclock:
+xclock:

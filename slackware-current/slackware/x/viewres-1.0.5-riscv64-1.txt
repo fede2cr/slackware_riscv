@@ -1,0 +1,11 @@
+viewres: viewres (view widget class hierarchy of the Athena Widget Set)
+viewres:
+viewres: viewres is part of X11.
+viewres:
+viewres: For more information about the X.Org Foundation (the providers of the
+viewres: X.Org implementation of the X Window System), see their website:
+viewres:
+viewres: http://www.x.org
+viewres:
+viewres:
+viewres:

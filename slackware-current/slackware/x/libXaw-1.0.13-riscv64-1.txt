@@ -1,0 +1,11 @@
+libXaw: libXaw (client library for the X Athena Widget Set)
+libXaw:
+libXaw: Xaw is a widget set based on the X Toolkit Intrinsics (Xt) Library.
+libXaw:
+libXaw:
+libXaw:
+libXaw:
+libXaw:
+libXaw:
+libXaw:
+libXaw:

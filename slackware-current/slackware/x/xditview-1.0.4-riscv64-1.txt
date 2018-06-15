@@ -1,0 +1,11 @@
+xditview: xditview (displays ditroff output on an X display)
+xditview:
+xditview: xditview is part of X11.
+xditview:
+xditview: For more information about the X.Org Foundation (the providers of the
+xditview: X.Org implementation of the X Window System), see their website:
+xditview:
+xditview: http://www.x.org
+xditview:
+xditview:
+xditview:

@@ -1,0 +1,11 @@
+libXaw3d: libXaw3d (3D enhanced version of the MIT Athena widget set)
+libXaw3d:
+libXaw3d: Xaw3d is an enhanced version of the MIT Athena Widget set for
+libXaw3d: the X Window System.  Xaw3d adds a three-dimensional look to
+libXaw3d: applications with minimal or no source code changes.
+libXaw3d:
+libXaw3d: You should install Xaw3d if you are using applications which 
+libXaw3d: incorporate the MIT Athena widget set and you'd like to 
+libXaw3d: incorporate a 3D look into those applications.
+libXaw3d:
+libXaw3d:

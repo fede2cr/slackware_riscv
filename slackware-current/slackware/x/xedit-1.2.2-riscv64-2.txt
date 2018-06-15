@@ -1,0 +1,11 @@
+xedit: xedit (simple text editor for X)
+xedit:
+xedit: xedit is part of X11.
+xedit:
+xedit: For more information about the X.Org Foundation (the providers of the
+xedit: X.Org implementation of the X Window System), see their website:
+xedit:
+xedit: http://www.x.org
+xedit:
+xedit:
+xedit:

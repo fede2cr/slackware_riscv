@@ -1,0 +1,11 @@
+xclipboard: xclipboard (X11 clipboard utility)
+xclipboard:
+xclipboard: xclipboard is used to collect and display text selections that are
+xclipboard: sent to the CLIPBOARD by other clients.  It is typically used to
+xclipboard: save CLIPBOARD selections for later use.  It stores each CLIPBOARD
+xclipboard: selection as a separate string, each of which can be selected.
+xclipboard:
+xclipboard:
+xclipboard:
+xclipboard:
+xclipboard:
