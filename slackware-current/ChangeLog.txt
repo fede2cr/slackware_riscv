@@ -1,3 +1,12 @@
+Sun Jun 17 14:49:42 UTC 2018
+ap/powertop-2.8-riscv64-2.txz: Ported.
+ap/qpdf-8.0.2-riscv64-1.txz: Ported.
+ap/radeontool-1.6.3-riscv64-2.txz: Ported.
+ap/rpm-4.14.1-riscv64-1.txz: Ported.
+ap/rzip-2.1-riscv64-1.txz: Ported.
+ap/sox-14.4.2-riscv64-1.txz: Ported.
+ap/sqlite-3.23.0-riscv64-1.txz: Ported.
++--------------------------+
 Sun Jun 17 07:07:20 UTC 2018
 a/devs-2.3.1-noarch-25.txz: Re-imported from Slackware. It was imported in a
   corrupted state from a local mirror.
