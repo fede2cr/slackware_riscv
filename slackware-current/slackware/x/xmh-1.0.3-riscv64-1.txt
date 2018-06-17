@@ -1,0 +1,11 @@
+xmh: xmh (X11 mail handler)
+xmh:
+xmh: The xmh program provides a graphical user interface to the MH Message
+xmh: Handling System.  To actually do things with your mail, it makes
+xmh: calls to the MH package.
+xmh:
+xmh:
+xmh:
+xmh:
+xmh:
+xmh:

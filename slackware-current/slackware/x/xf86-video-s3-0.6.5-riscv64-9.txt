@@ -1,0 +1,11 @@
+xf86-video-s3: xf86-video-s3 (Xorg driver for S3 chipsets other than ViRGE or Savage)
+xf86-video-s3:
+xf86-video-s3: xf86-video-s3 is part of X11.
+xf86-video-s3:
+xf86-video-s3: For more information about the X.Org Foundation (the providers of the
+xf86-video-s3: X.Org implementation of the X Window System), see their website:
+xf86-video-s3:
+xf86-video-s3: http://www.x.org
+xf86-video-s3:
+xf86-video-s3:
+xf86-video-s3:

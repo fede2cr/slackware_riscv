@@ -1,0 +1,11 @@
+xf86-input-synaptics: xf86-input-synaptics (Synaptics touchpad driver for X.Org)
+xf86-input-synaptics:
+xf86-input-synaptics: xf86-input-synaptics is part of X11.
+xf86-input-synaptics:
+xf86-input-synaptics: For more information about the X.Org Foundation (the providers of the
+xf86-input-synaptics: X.Org implementation of the X Window System), see their website:
+xf86-input-synaptics:
+xf86-input-synaptics: http://www.x.org
+xf86-input-synaptics:
+xf86-input-synaptics:
+xf86-input-synaptics:

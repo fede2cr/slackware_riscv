@@ -1,0 +1,11 @@
+xf86-video-trident: xf86-video-trident (Trident video driver for the Xorg X server)
+xf86-video-trident:
+xf86-video-trident: xf86-video-trident is part of X11.
+xf86-video-trident:
+xf86-video-trident: For more information about the X.Org Foundation (the providers of the
+xf86-video-trident: X.Org implementation of the X Window System), see their website:
+xf86-video-trident:
+xf86-video-trident: http://www.x.org
+xf86-video-trident:
+xf86-video-trident:
+xf86-video-trident:

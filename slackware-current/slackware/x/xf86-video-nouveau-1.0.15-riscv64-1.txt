@@ -1,0 +1,11 @@
+xf86-video-nouveau: xf86-video-nouveau (accelerated open source driver for nVidia cards)
+xf86-video-nouveau:
+xf86-video-nouveau: xf86-video-nouveau is part of X11.
+xf86-video-nouveau:
+xf86-video-nouveau: For more information about the X.Org Foundation (the providers of the
+xf86-video-nouveau: X.Org implementation of the X Window System), see their website:
+xf86-video-nouveau:
+xf86-video-nouveau: http://www.x.org
+xf86-video-nouveau:
+xf86-video-nouveau:
+xf86-video-nouveau:

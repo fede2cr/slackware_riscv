@@ -1,0 +1,11 @@
+xlogo: xlogo (displays the X Window System logo)
+xlogo:
+xlogo: xlogo is part of X11.
+xlogo:
+xlogo: For more information about the X.Org Foundation (the providers of the
+xlogo: X.Org implementation of the X Window System), see their website:
+xlogo:
+xlogo: http://www.x.org
+xlogo:
+xlogo:
+xlogo:

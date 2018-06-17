@@ -1,0 +1,11 @@
+xsm: xsm (X11 Session Manager)
+xsm:
+xsm: xsm is part of X11.
+xsm:
+xsm: For more information about the X.Org Foundation (the providers of the
+xsm: X.Org implementation of the X Window System), see their website:
+xsm:
+xsm: http://www.x.org
+xsm:
+xsm:
+xsm:

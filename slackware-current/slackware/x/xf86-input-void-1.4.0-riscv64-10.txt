@@ -1,0 +1,11 @@
+xf86-input-void: xf86-input-void (null input driver for Xorg server)
+xf86-input-void:
+xf86-input-void: xf86-input-void is part of X11.
+xf86-input-void:
+xf86-input-void: For more information about the X.Org Foundation (the providers of the
+xf86-input-void: X.Org implementation of the X Window System), see their website:
+xf86-input-void:
+xf86-input-void: http://www.x.org
+xf86-input-void:
+xf86-input-void:
+xf86-input-void:

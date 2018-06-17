@@ -1,0 +1,11 @@
+xf86-video-glint: xf86-video-glint (GLINT/Permedia video driver for the Xorg X server)
+xf86-video-glint:
+xf86-video-glint: xf86-video-glint is part of X11.
+xf86-video-glint:
+xf86-video-glint: For more information about the X.Org Foundation (the providers of the
+xf86-video-glint: X.Org implementation of the X Window System), see their website:
+xf86-video-glint:
+xf86-video-glint: http://www.x.org
+xf86-video-glint:
+xf86-video-glint:
+xf86-video-glint:

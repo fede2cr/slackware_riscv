@@ -1,0 +1,11 @@
+xf86-video-vboxvideo: xf86-video-vboxvideo (VirtualBox virtual video card driver)
+xf86-video-vboxvideo:
+xf86-video-vboxvideo: xf86-video-vboxvideo is part of X11.
+xf86-video-vboxvideo:
+xf86-video-vboxvideo: For more information about the X.Org Foundation (the providers of the
+xf86-video-vboxvideo: X.Org implementation of the X Window System), see their website:
+xf86-video-vboxvideo:
+xf86-video-vboxvideo: http://www.x.org
+xf86-video-vboxvideo:
+xf86-video-vboxvideo:
+xf86-video-vboxvideo:

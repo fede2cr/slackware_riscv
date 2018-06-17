@@ -1,0 +1,11 @@
+xf86-input-keyboard: kbd (Keyboard input driver for the Xorg X server)
+xf86-input-keyboard:
+xf86-input-keyboard: This is the non-evdev keyboard driver for X.  Most Linux systems
+xf86-input-keyboard: should be using the evdev driver to handle input devices such as
+xf86-input-keyboard: keyboards and mice, but this driver may be useful as a fallback.
+xf86-input-keyboard:
+xf86-input-keyboard:
+xf86-input-keyboard:
+xf86-input-keyboard:
+xf86-input-keyboard:
+xf86-input-keyboard:

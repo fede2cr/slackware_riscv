@@ -1,0 +1,11 @@
+xf86-input-penmount: xf86-input-penmount (PenMount input driver for the Xorg X server)
+xf86-input-penmount:
+xf86-input-penmount: xf86-input-penmount is part of X11.
+xf86-input-penmount:
+xf86-input-penmount: For more information about the X.Org Foundation (the providers of the
+xf86-input-penmount: X.Org implementation of the X Window System), see their website:
+xf86-input-penmount:
+xf86-input-penmount: http://www.x.org
+xf86-input-penmount:
+xf86-input-penmount:
+xf86-input-penmount:

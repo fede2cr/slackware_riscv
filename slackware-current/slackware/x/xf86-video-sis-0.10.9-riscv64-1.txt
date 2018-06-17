@@ -1,0 +1,11 @@
+xf86-video-sis: xf86-video-sis (SiS and XGI video driver for the Xorg X server)
+xf86-video-sis:
+xf86-video-sis: xf86-video-sis is part of X11.
+xf86-video-sis:
+xf86-video-sis: For more information about the X.Org Foundation (the providers of the
+xf86-video-sis: X.Org implementation of the X Window System), see their website:
+xf86-video-sis:
+xf86-video-sis: http://www.x.org
+xf86-video-sis:
+xf86-video-sis:
+xf86-video-sis:

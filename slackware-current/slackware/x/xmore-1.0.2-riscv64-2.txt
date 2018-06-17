@@ -1,0 +1,11 @@
+xmore: xmore (plain text display program for the X Window System)
+xmore:
+xmore: xmore is part of X11.
+xmore:
+xmore: For more information about the X.Org Foundation (the providers of the
+xmore: X.Org implementation of the X Window System), see their website:
+xmore:
+xmore: http://www.x.org
+xmore:
+xmore:
+xmore:

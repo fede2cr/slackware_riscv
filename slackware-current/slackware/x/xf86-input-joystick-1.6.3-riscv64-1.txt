@@ -1,0 +1,11 @@
+xf86-input-joystick: xf86-input-joystick (Joystick input driver for the Xorg X server)
+xf86-input-joystick:
+xf86-input-joystick: xf86-input-joystick is part of X11.
+xf86-input-joystick:
+xf86-input-joystick: For more information about the X.Org Foundation (the providers of the
+xf86-input-joystick: X.Org implementation of the X Window System), see their website:
+xf86-input-joystick:
+xf86-input-joystick: http://www.x.org
+xf86-input-joystick:
+xf86-input-joystick:
+xf86-input-joystick:

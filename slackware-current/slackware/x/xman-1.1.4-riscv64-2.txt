@@ -1,0 +1,11 @@
+xman: xman (graphical manual page browser using the Xaw toolkit)
+xman:
+xman: xman is part of X11.
+xman:
+xman: For more information about the X.Org Foundation (the providers of the
+xman: X.Org implementation of the X Window System), see their website:
+xman:
+xman: http://www.x.org
+xman:
+xman:
+xman:

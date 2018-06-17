@@ -1,0 +1,11 @@
+xf86-input-mouse: xf86-input-mouse (Mouse Support for X)
+xf86-input-mouse:
+xf86-input-mouse: This is the non-evdev mouse driver for X.  Most Linux systems should
+xf86-input-mouse: be using the evdev driver to handle input devices such as keyboards
+xf86-input-mouse: and mice, but this driver may be useful as a fallback.
+xf86-input-mouse:
+xf86-input-mouse:
+xf86-input-mouse:
+xf86-input-mouse:
+xf86-input-mouse:
+xf86-input-mouse:

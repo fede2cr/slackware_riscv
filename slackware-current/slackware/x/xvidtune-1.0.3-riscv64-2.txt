@@ -1,0 +1,11 @@
+xvidtune: xvidtune (X11 video utility)
+xvidtune:
+xvidtune: xvidtune is a client interface to the X server video mode extension
+xvidtune: (XFree86-VidModeExtension).
+xvidtune:
+xvidtune:
+xvidtune:
+xvidtune:
+xvidtune:
+xvidtune:
+xvidtune:

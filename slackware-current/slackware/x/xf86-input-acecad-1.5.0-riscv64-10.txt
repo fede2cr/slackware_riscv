@@ -1,0 +1,11 @@
+xf86-input-acecad: xf86-input-acecad (Acecad Flair input driver for the Xorg X server)
+xf86-input-acecad:
+xf86-input-acecad: xf86-input-acecad is part of X11.
+xf86-input-acecad:
+xf86-input-acecad: For more information about the X.Org Foundation (the providers of the
+xf86-input-acecad: X.Org implementation of the X Window System), see their website:
+xf86-input-acecad:
+xf86-input-acecad: http://www.x.org
+xf86-input-acecad:
+xf86-input-acecad:
+xf86-input-acecad:

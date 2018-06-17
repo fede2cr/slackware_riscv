@@ -1,0 +1,11 @@
+xload: xload (displays a histogram of the system load average)
+xload:
+xload: xload is part of X11.
+xload:
+xload: For more information about the X.Org Foundation (the providers of the
+xload: X.Org implementation of the X Window System), see their website:
+xload:
+xload: http://www.x.org
+xload:
+xload:
+xload:

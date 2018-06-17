@@ -1,0 +1,11 @@
+xf86-video-tga: xf86-video-tga (DEC21030/TGA video driver for the Xorg X server)
+xf86-video-tga:
+xf86-video-tga: xf86-video-tga is part of X11.
+xf86-video-tga:
+xf86-video-tga: For more information about the X.Org Foundation (the providers of the
+xf86-video-tga: X.Org implementation of the X Window System), see their website:
+xf86-video-tga:
+xf86-video-tga: http://www.x.org
+xf86-video-tga:
+xf86-video-tga:
+xf86-video-tga:

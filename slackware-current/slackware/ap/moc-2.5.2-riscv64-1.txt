@@ -1,0 +1,11 @@
+moc: moc (console audio player)
+moc:
+moc: MOC is a console audio player with a simple ncurses interface.
+moc: It supports OGG, FLAC, WAV, and MP3 formats. Just run mocp, go to some
+moc: directory using the menu, select a file, and press enter to play it.
+moc: MOC will continue playing the rest of the files in the directory.
+moc:
+moc: MOC was written by Damian Pietras.
+moc:
+moc: Homepage: http://moc.daper.net
+moc:

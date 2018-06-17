@@ -1,0 +1,11 @@
+xmessage: xmessage (displays a message or query in a window)
+xmessage:
+xmessage: The user can click on an "okay" button to dismiss it or can select
+xmessage: one of several buttons to answer a question. xmessage can also exit
+xmessage: after a specified time.
+xmessage:
+xmessage:
+xmessage:
+xmessage:
+xmessage:
+xmessage:

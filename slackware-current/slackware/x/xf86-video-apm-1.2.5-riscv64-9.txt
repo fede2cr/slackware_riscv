@@ -1,0 +1,11 @@
+xf86-video-apm: xf86-video-apm (driver for Alliance Promotion graphics chipsets)
+xf86-video-apm:
+xf86-video-apm: xf86-video-apm is part of X11.
+xf86-video-apm:
+xf86-video-apm: For more information about the X.Org Foundation (the providers of the
+xf86-video-apm: X.Org implementation of the X Window System), see their website:
+xf86-video-apm:
+xf86-video-apm: http://www.x.org
+xf86-video-apm:
+xf86-video-apm:
+xf86-video-apm:

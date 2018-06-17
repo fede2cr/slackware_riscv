@@ -1,0 +1,11 @@
+xf86-video-r128: xf86-video-r128 (ATI Rage 128 video driver for the Xorg X server)
+xf86-video-r128:
+xf86-video-r128: xf86-video-r128 is part of X11.
+xf86-video-r128:
+xf86-video-r128: For more information about the X.Org Foundation (the providers of the
+xf86-video-r128: X.Org implementation of the X Window System), see their website:
+xf86-video-r128:
+xf86-video-r128: http://www.x.org
+xf86-video-r128:
+xf86-video-r128:
+xf86-video-r128:

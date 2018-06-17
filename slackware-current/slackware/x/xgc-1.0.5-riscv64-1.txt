@@ -1,0 +1,11 @@
+xgc: xgc (X11 demo client)
+xgc:
+xgc: xgc is an X11 graphics demo that shows various features of the X11
+xgc: core protocol graphics primitives.
+xgc:
+xgc:
+xgc:
+xgc:
+xgc:
+xgc:
+xgc:

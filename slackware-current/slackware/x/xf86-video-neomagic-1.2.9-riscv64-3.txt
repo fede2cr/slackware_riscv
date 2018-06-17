@@ -1,0 +1,11 @@
+xf86-video-neomagic: xf86-video-neomagic (NeoMagic video driver for the Xorg X server)
+xf86-video-neomagic:
+xf86-video-neomagic: xf86-video-neomagic is part of X11.
+xf86-video-neomagic:
+xf86-video-neomagic: For more information about the X.Org Foundation (the providers of the
+xf86-video-neomagic: X.Org implementation of the X Window System), see their website:
+xf86-video-neomagic:
+xf86-video-neomagic: http://www.x.org
+xf86-video-neomagic:
+xf86-video-neomagic:
+xf86-video-neomagic:

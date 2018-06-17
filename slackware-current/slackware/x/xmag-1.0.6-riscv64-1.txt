@@ -1,0 +1,11 @@
+xmag: xmag (X11 accessibility utility)
+xmag:
+xmag: xmag displays a magnified snapshot of a portion of an X11 screen.
+xmag:
+xmag:
+xmag:
+xmag:
+xmag:
+xmag:
+xmag:
+xmag:

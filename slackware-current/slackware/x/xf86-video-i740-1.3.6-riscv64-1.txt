@@ -1,0 +1,11 @@
+xf86-video-i740: xf86-video-i740 (Intel i740 video driver for the Xorg X server)
+xf86-video-i740:
+xf86-video-i740: xf86-video-i740 is part of X11.
+xf86-video-i740:
+xf86-video-i740: For more information about the X.Org Foundation (the providers of the
+xf86-video-i740: X.Org implementation of the X Window System), see their website:
+xf86-video-i740:
+xf86-video-i740: http://www.x.org
+xf86-video-i740:
+xf86-video-i740:
+xf86-video-i740:

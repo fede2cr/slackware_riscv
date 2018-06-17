@@ -1,0 +1,11 @@
+xf86-video-sisusb: xf86-video-sisusb (SiS Net2280-based USB video driver for Xorg)
+xf86-video-sisusb:
+xf86-video-sisusb: xf86-video-sisusb is part of X11.
+xf86-video-sisusb:
+xf86-video-sisusb: For more information about the X.Org Foundation (the providers of the
+xf86-video-sisusb: X.Org implementation of the X Window System), see their website:
+xf86-video-sisusb:
+xf86-video-sisusb: http://www.x.org
+xf86-video-sisusb:
+xf86-video-sisusb:
+xf86-video-sisusb:
