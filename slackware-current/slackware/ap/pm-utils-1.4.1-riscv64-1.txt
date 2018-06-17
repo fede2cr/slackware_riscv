@@ -1,0 +1,11 @@
+pm-utils: pm-utils (Power Management Utilities)
+pm-utils:
+pm-utils: The pm-utils package provides simple shell command line tools to
+pm-utils: suspend and hibernate computers that can be used to run vendor or
+pm-utils: distribution supplied scripts on suspend and resume.
+pm-utils:
+pm-utils: Homepage: http://pm-utils.freedesktop.org/
+pm-utils:
+pm-utils:
+pm-utils:
+pm-utils:

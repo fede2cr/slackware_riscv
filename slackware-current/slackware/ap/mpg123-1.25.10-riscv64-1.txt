@@ -1,0 +1,11 @@
+mpg123: mpg123 (a command-line mp3 player)
+mpg123:
+mpg123: mpg123 is a real time MPEG 1.0/2.0/2.5 audio player/decoder for 
+mpg123: layers 1, 2, and 3 (MPEG 1.0 layer 3 aka MP3 most commonly tested). 
+mpg123:
+mpg123: It is free software licensed under LGPL 2.1.
+mpg123:
+mpg123: Homepage: http://mpg123.org/
+mpg123:
+mpg123:
+mpg123:

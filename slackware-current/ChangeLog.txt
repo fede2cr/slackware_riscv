@@ -1,3 +1,14 @@
+Sun Jun 17 07:07:20 UTC 2018
+a/devs-2.3.1-noarch-25.txz: Re-imported from Slackware. It was imported in a
+  corrupted state from a local mirror.
+ap/mc-4.8.20-riscv64-2.txz: Rebuilt to fix profile scripts, as imported in a
+  corrupted state from a local mirror.
+ap/most-5.0.0a-riscv64-2.txz: Ported.
+ap/mpg123-1.25.10-riscv64-1.txz: Ported.
+ap/normalize-0.7.7-riscv64-2.txz: Ported.
+ap/opus-tools-0.1.10-riscv64-1.txz: Ported.
+ap/pm-utils-1.4.1-riscv64-1.txz: Ported.
++--------------------------+
 Sun Jun 17 01:46:54 UTC 2018
 ap/itstool-2.0.4-riscv64-1.txz: Ported.
 ap/jed-0.99_19-riscv64-1.txz: Ported.
