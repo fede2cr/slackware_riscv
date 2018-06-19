@@ -1,0 +1,11 @@
+splitvt: splitvt (run multiple shells in a single window)
+splitvt:
+splitvt: This program splits the screen into two windows, one above the other,
+splitvt: and runs a shell in each one.
+splitvt:
+splitvt: Splitvt was written by Sam Lantinga.
+splitvt:
+splitvt: Homepage: https://slouken.libsdl.org/projects/splitvt/
+splitvt:
+splitvt:
+splitvt:

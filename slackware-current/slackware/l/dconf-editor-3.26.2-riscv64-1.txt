@@ -1,0 +1,11 @@
+dconf-editor: dconf-editor (graphical editor for dconf)
+dconf-editor:
+dconf-editor: The dconf-editor program provides a graphical interface for editing
+dconf-editor: settings that are stored in the dconf database. The gsettings utility
+dconf-editor: provides similar functionality on the command line.
+dconf-editor:
+dconf-editor:
+dconf-editor:
+dconf-editor:
+dconf-editor:
+dconf-editor:

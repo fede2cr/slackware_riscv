@@ -1,0 +1,11 @@
+at-spi2-core: at-spi2-core (Assistive Technology Service Provider Interface core) 
+at-spi2-core:
+at-spi2-core: The At-Spi2 Core package is a part of the GNOME Accessibility
+at-spi2-core: Project. It provides a service provider interface for the 
+at-spi2-core: assistive technologies available on the GNOME platform and a
+at-spi2-core: library against which applications can be linked. 
+at-spi2-core:
+at-spi2-core:
+at-spi2-core:
+at-spi2-core:
+at-spi2-core:

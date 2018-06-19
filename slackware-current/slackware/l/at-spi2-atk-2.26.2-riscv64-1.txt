@@ -1,0 +1,11 @@
+at-spi2-atk: at-spi2-atk (AT-SPI2 bridge to ATK)
+at-spi2-atk:
+at-spi2-atk: The At-Spi2 Atk package contains a library that bridges ATK to the
+at-spi2-atk: At-Spi2 D-Bus service.
+at-spi2-atk:
+at-spi2-atk:
+at-spi2-atk:
+at-spi2-atk:
+at-spi2-atk:
+at-spi2-atk:
+at-spi2-atk:

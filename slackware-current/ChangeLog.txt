@@ -1,3 +1,39 @@
+Tue Jun 19 02:54:32 UTC 2018
+a/eudev-3.2.5-riscv64-1.txz: Ported.
+a/genpower-1.0.5-riscv64-1.txz: Ported.
+a/gpm-1.20.7-riscv64-1.txz: Ported.
+a/hdparm-9.56-riscv64-1.txz: Ported.
+a/inotify-tools-3.14-riscv64-1.txz: Ported.
+a/kbd-1.15.3-riscv64-1.txz: Ported.
+a/lrzip-0.631-riscv64-1.txz: Ported.
+a/ntfs-3g-2017.3.23-riscv64-1.txz: Ported.
+a/os-prober-1.76-riscv64-1.txz: Ported.
+a/pciutils-3.5.6-riscv64-1.txz: Ported.
+a/pcmciautils-018-riscv64-1.txz: Ported.
+a/rpm2tgz-1.2.2-riscv64-1.txz: Ported.
+a/sdparm-1.10-riscv64-1.txz: Ported.
+a/smartmontools-6.6-riscv64-1.txz: Ported.
+a/splitvt-1.6.6-riscv64-1.txz: Ported.
+a/unarj-265-riscv64-1.txz: Ported.
+a/usb_modeswitch-2.5.1-riscv64-1.txz: Ported.
+a/utempter-1.1.6-riscv64-1.txz: Ported.
+ap/sysstat-11.6.2-riscv64-1.txz: Ported.
+ap/texinfo-6.5-riscv64-1.txz: Ported.
+ap/tmux-2.6-riscv64-1.txz: Ported.
+ap/usbmuxd-1.1.0-riscv64-1.txz: Ported.
+ap/zsh-5.4.2-riscv64-1.txz: Ported.
+l/at-spi2-atk-2.26.2-riscv64-1.txz: Ported.
+l/at-spi2-core-2.28.0-riscv64-1.txz: Ported.
+l/dbus-glib-0.110-riscv64-1.txz: Ported.
+l/dbus-python-1.2.6-riscv64-1.txz: Ported.
+l/dconf-editor-3.26.2-riscv64-1.txz: Ported.
+l/desktop-file-utils-0.23-riscv64-1.txz: Ported.
+l/ebook-tools-0.2.2-riscv64-1.txz: Ported.
+l/eigen2-2.0.17-riscv64-1.txz: Ported.
+l/eigen3-3.2.10-riscv64-1.txz: Ported.
+xfce/libxfce4util-4.12.1-riscv64-1.txz: Ported.
+xfce/xfce4-dev-tools-4.12.0-riscv64-1.txz: Ported.
++--------------------------+
 Sun Jun 17 14:49:42 UTC 2018
 ap/powertop-2.8-riscv64-2.txz: Ported.
 ap/qpdf-8.0.2-riscv64-1.txz: Ported.

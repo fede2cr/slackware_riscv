@@ -1,0 +1,11 @@
+dbus-glib: dbus-glib (Glib bindings for dbus)
+dbus-glib:
+dbus-glib: This package includes the glib bindings for the dbus IPC library.
+dbus-glib:
+dbus-glib:
+dbus-glib:
+dbus-glib:
+dbus-glib:
+dbus-glib:
+dbus-glib:
+dbus-glib:

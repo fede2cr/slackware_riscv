@@ -1,0 +1,11 @@
+unarj: unarj (a command-line utility for decompressing .arj archives)
+unarj:
+unarj: This is a simple command-line tool for decompressing .arj files.
+unarj: Thanks to Haruhiko Okumura and ARJ Software, Inc. for providing this
+unarj: source code free of charge.
+unarj:
+unarj: UNARJ software and manual copyright (c) 1990-2002 ARJ Software, Inc.
+unarj: All rights reserved.
+unarj:
+unarj:
+unarj:

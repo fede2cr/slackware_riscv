@@ -1,0 +1,11 @@
+lrzip: lrzip (Long Range ZIP)
+lrzip:
+lrzip: LRZIP is a file compression program designed to do particularly well
+lrzip: on very large files containing long distance redundancy. The larger
+lrzip: the file and the more memory you have, the better the compression
+lrzip: advantage this will provide. A variety of compression options allow
+lrzip: optimizing for size or speed.
+lrzip:
+lrzip: Homepage: http://ck.kolivas.org/apps/lrzip/
+lrzip:
+lrzip:

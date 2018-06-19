@@ -1,0 +1,11 @@
+smartmontools: smartmontools (hard drive monitoring utilities)
+smartmontools:
+smartmontools: SMARTMONTOOLS contains utilities that control and monitor storage
+smartmontools: devices using the Self-Monitoring, Analysis, and Reporting Technology
+smartmontools: (S.M.A.R.T.) system build into ATA and SCSI Hard Drives. This is used
+smartmontools: to check the reliability of the hard drive and to predict drive
+smartmontools: failures.
+smartmontools:
+smartmontools: Homepage: https://www.smartmontools.org/
+smartmontools:
+smartmontools:
