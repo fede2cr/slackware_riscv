@@ -1,0 +1,11 @@
+djvulibre: djvulibre (web-centric document and image format)
+djvulibre:
+djvulibre: DjVu is a web-centric format and software platform for distributing
+djvulibre: documents and images. DjVu content downloads faster, displays and 
+djvulibre: renders faster, looks nicer on a screen, and consume less client 
+djvulibre: resources than competing formats. DjVu was originally developed at
+djvulibre: AT&T Labs-Research by Leon Bottou, Yann LeCun, Patrick Haffner, and
+djvulibre: many others.
+djvulibre:
+djvulibre: Homepage: http://djvu.sourceforge.net
+djvulibre:

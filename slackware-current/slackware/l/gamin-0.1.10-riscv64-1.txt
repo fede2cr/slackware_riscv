@@ -1,0 +1,11 @@
+gamin: gamin (A minimalist FAM replacement)
+gamin:
+gamin: Gamin is a file and directory monitoring system defined to be a subset
+gamin: of the FAM (File Alteration Monitor) system.
+gamin:
+gamin: The homepage for Gamin is: http://www.gnome.org/~veillard/gamin/ 
+gamin:
+gamin:
+gamin:
+gamin:
+gamin:

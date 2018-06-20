@@ -1,0 +1,11 @@
+gcr: gcr (crypto library and ui for gnome-keyring)
+gcr:
+gcr: GCR is a library for displaying certificates and crypto UI accessing
+gcr: key stores. It also provides the viewer for crypto files on the GNOME
+gcr: desktop.
+gcr:
+gcr: GCK is a library for accessing PKCS#11 modules like smart cards, in a
+gcr: (G)object oriented way.
+gcr:
+gcr:
+gcr:

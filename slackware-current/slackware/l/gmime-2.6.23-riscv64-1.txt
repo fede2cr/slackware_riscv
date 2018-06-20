@@ -1,0 +1,11 @@
+gmime: gmime (MIME parsing library)
+gmime:
+gmime: GMime is a set of utilities for parsing and creating messages using
+gmime: the Multipurpose Internet Mail Extension (MIME) as defined by many
+gmime: Internet RFCs.
+gmime:
+gmime: Jeffrey Stedfast is the author of GMime.
+gmime:
+gmime:
+gmime:
+gmime:

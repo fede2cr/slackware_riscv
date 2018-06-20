@@ -1,0 +1,11 @@
+gobject-introspection: gobject-introspection (GObject interface introspection library)
+gobject-introspection:
+gobject-introspection: GObject Introspection is a project for providing machine readable
+gobject-introspection: introspection data of the API of C libraries. This introspection data
+gobject-introspection: can be used for automatic code generation for bindings, API
+gobject-introspection: verification, and documentation generation.
+gobject-introspection:
+gobject-introspection: For more information, check out:
+gobject-introspection:  http://live.gnome.org/GObjectIntrospection
+gobject-introspection:
+gobject-introspection:

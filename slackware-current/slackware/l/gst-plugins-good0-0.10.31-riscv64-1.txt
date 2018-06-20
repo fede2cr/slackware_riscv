@@ -1,0 +1,11 @@
+gst-plugins-good0: gst-plugins-good (good set of GStreamer plugins, v0)
+gst-plugins-good0:
+gst-plugins-good0: GStreamer Good Plug-ins is a set of plug-ins that have good
+gst-plugins-good0: quality code, correct functionality, and a good license
+gst-plugins-good0: (LGPL for the plug-in code, LGPL or LGPL-compatible for the
+gst-plugins-good0: supporting library).
+gst-plugins-good0:
+gst-plugins-good0:
+gst-plugins-good0:
+gst-plugins-good0:
+gst-plugins-good0:

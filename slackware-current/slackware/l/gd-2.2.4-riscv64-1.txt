@@ -1,0 +1,11 @@
+gd: gd (a graphics library)
+gd:
+gd: gd is a graphics library. It allows your code to quickly draw images
+gd: complete with lines, arcs, text, multiple colors, cut and paste from
+gd: other images, and flood fills, and write out the result as a PNG or
+gd: JPEG file. This is particularly useful in web applications, where
+gd: PNG and JPEG are two of the formats accepted for inline images by
+gd: most browsers. The gd library was written by Thomas Boutell.
+gd:
+gd: Homepage: https://www.libgd.org
+gd:

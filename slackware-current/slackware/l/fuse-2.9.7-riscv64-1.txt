@@ -1,0 +1,11 @@
+fuse: FUSE (Filesystem in Userspace)
+fuse: 
+fuse: FUSE is a simple interface for userspace programs to export a virtual
+fuse: filesystem to the Linux kernel. FUSE also aims to provide a secure
+fuse: method for non privileged users to create and mount their own
+fuse: filesystem implementations.
+fuse:
+fuse: The FUSE web site can be found here: http://fuse.sourceforge.net
+fuse:
+fuse:
+fuse:

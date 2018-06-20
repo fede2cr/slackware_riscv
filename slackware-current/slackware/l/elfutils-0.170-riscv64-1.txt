@@ -1,0 +1,11 @@
+elfutils: elfutils (ELF object file access library and utilities)
+elfutils:
+elfutils: Elfutils is a collection of utilities, including stack (to show
+elfutils: backtraces), nm (for listing symbols from object files), size
+elfutils: (for listing the section sizes of an object or archive file),
+elfutils: strip (for discarding symbols), readelf (to see the raw ELF file
+elfutils: structures), and elflint (to check for well-formed ELF files).
+elfutils:
+elfutils: Project home: ftp://sourceware.org/pub/elfutils/
+elfutils:
+elfutils:

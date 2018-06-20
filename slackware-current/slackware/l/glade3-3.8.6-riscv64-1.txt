@@ -1,0 +1,11 @@
+glade3: glade3 (Glade UI Designer version 3)
+glade3:
+glade3: Glade is a RAD tool to enable quick and easy development of user
+glade3: interfaces for the GTK+ toolkit and the GNOME desktop environment.
+glade3: The user interfaces designed in Glade are saved as XML, and by using
+glade3: the GtkBuilder GTK+ object these can be loaded by applications
+glade3: dynamically as needed.
+glade3:
+glade3: Homepage: http://glade.gnome.org/
+glade3:
+glade3:

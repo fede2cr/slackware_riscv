@@ -1,0 +1,11 @@
+gnome-themes-standard: gnome-themes-standard (default icons used by GTK+)
+gnome-themes-standard:
+gnome-themes-standard: A set of default icons used by many GTK+ applications.
+gnome-themes-standard:
+gnome-themes-standard:
+gnome-themes-standard:
+gnome-themes-standard:
+gnome-themes-standard:
+gnome-themes-standard:
+gnome-themes-standard:
+gnome-themes-standard:

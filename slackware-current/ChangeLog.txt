@@ -1,3 +1,28 @@
+Wed Jun 20 03:38:40 UTC 2018
+l/cairo-1.15.10-riscv64-1.txz: Ported.
+l/djvulibre-3.5.27-riscv64-1.txz: Ported.
+l/elfutils-0.170-riscv64-1.txz: Ported.
+l/enchant-1.6.1-riscv64-1.txz: Ported.
+l/exiv2-0.26-riscv64-1.txz: Ported.
+l/fluidsynth-1.1.10-riscv64-1.txz: Ported.
+l/freetype-2.9-riscv64-1.txz: Ported.
+l/fribidi-0.19.7-riscv64-1.txz: Ported.
+l/fuse-2.9.7-riscv64-1.txz: Ported.
+l/gamin-0.1.10-riscv64-1.txz: Ported.
+l/gcr-3.28.0-riscv64-1.txz: Ported.
+l/gd-2.2.4-riscv64-1.txz: Ported.
+l/gdbm-1.13-riscv64-1.txz: Ported.
+l/gdk-pixbuf2-2.36.11-riscv64-1.txz: Ported.
+l/glade3-3.8.6-riscv64-1.txz: Ported.
+l/glibmm-2.54.1-riscv64-1.txz: Ported.
+l/gmime-2.6.23-riscv64-1.txz: Ported.
+l/gnome-themes-standard-3.22.3-riscv64-1.txz: Ported.
+l/gobject-introspection-1.56.0-riscv64-1.txz: Ported.
+l/gsettings-desktop-schemas-3.28.0-riscv64-1.txz: Ported.
+l/gst-plugins-base-1.14.0-riscv64-1.txz: Ported.
+l/gst-plugins-base0-0.10.36-riscv64-1.txz: Ported.
+l/gst-plugins-good0-0.10.31-riscv64-1.txz: Ported.
++--------------------------+
 Tue Jun 19 02:54:32 UTC 2018
 a/eudev-3.2.5-riscv64-1.txz: Ported.
 a/genpower-1.0.5-riscv64-1.txz: Ported.

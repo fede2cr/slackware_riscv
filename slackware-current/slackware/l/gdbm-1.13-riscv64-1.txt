@@ -1,0 +1,11 @@
+gdbm: gdbm (GNU database routines)
+gdbm:
+gdbm: GNU dbm is a set of database routines that work similar to the
+gdbm: standard UNIX dbm routines.
+gdbm:
+gdbm:
+gdbm:
+gdbm:
+gdbm:
+gdbm:
+gdbm:

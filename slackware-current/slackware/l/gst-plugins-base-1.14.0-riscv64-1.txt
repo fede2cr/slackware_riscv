@@ -1,0 +1,11 @@
+gst-plugins-base: gst-plugins-base (base set of GStreamer plugins)
+gst-plugins-base:
+gst-plugins-base: GStreamer Base Plug-ins is a well-groomed and well-maintained 
+gst-plugins-base: collection of GStreamer plug-ins and elements, spanning the 
+gst-plugins-base: range of possible types of elements one would want to write 
+gst-plugins-base: for GStreamer. It also contains helper libraries and base 
+gst-plugins-base: classes useful for writing elements. A wide range of video 
+gst-plugins-base: and audio decoders, encoders, and filters are included.
+gst-plugins-base:
+gst-plugins-base:
+gst-plugins-base:

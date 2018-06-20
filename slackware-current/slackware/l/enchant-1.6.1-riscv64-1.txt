@@ -1,0 +1,11 @@
+enchant: Enchant (a wrapper for spellcheck libraries)
+enchant:
+enchant: Enchant supports:
+enchant:  * Aspell/Pspell
+enchant:  * Ispell
+enchant:  * MySpell/HunSpell
+enchant:  * Uspell (Yiddish, Hebrew and Eastern European languages)
+enchant:  * Hspell (Hebrew) and others
+enchant:
+enchant: http://www.abisource.com/projects/enchant/
+enchant:
