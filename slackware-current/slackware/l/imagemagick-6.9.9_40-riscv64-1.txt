@@ -1,0 +1,11 @@
+imagemagick: imagemagick (a robust collection of image processing tools)
+imagemagick:
+imagemagick: ImageMagick is a collection of tools for manipulating and displaying
+imagemagick: digital images. It can merge images, transform image dimensions,
+imagemagick: do screen captures, create animation sequences, and convert between
+imagemagick: many different image formats. 
+imagemagick:
+imagemagick: ImageMagick was written by John Cristy of ImageMagick Studio.
+imagemagick:
+imagemagick: Home page: http://www.imagemagick.org/
+imagemagick:

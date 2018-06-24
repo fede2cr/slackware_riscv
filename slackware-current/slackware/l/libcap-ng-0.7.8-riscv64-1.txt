@@ -1,0 +1,11 @@
+libcap-ng: libcap-ng (capabilities library and utilities)
+libcap-ng:
+libcap-ng: The libcap-ng library is intended to make programming with POSIX
+libcap-ng: capabilities easier. The package also includes utilities to help
+libcap-ng: analyze a system for programs that may have too much privilege.
+libcap-ng:
+libcap-ng: libcap-ng was written and is maintained by Steve Grubb.
+libcap-ng:
+libcap-ng: Homepage: https://people.redhat.com/sgrubb/libcap-ng/
+libcap-ng:
+libcap-ng:

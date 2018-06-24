@@ -1,0 +1,11 @@
+gtk+: gtk+ (graphical user interface toolkit, version 1.x)
+gtk+:
+gtk+: GTK+, which stands for the Gimp ToolKit, is a library for creating
+gtk+: graphical user interfaces for the X Window System.
+gtk+:
+gtk+: This library has been largely replaced by GTK+ version 2, but there
+gtk+: are still some good programs that require it.
+gtk+:
+gtk+:
+gtk+:
+gtk+:

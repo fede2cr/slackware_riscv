@@ -1,0 +1,11 @@
+lcms2: lcms2 (little cms engine, version 2)
+lcms2:
+lcms2: Little cms is a small, speed optimized color management engine.
+lcms2:
+lcms2: lcms was written by Marti Maria <marti@littlecms.com>.
+lcms2:
+lcms2: Homepage: http://www.littlecms.com
+lcms2:
+lcms2:
+lcms2:
+lcms2:

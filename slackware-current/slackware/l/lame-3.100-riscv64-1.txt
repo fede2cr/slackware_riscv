@@ -1,0 +1,11 @@
+lame: lame (LAME is an MP3 audio encoder)
+lame:
+lame: LAME is a library and application which can be used to create
+lame: compressed MP3 audio files. These audio files can be played back by
+lame: popular MP3 players such as mpg123 or madplay.
+lame:
+lame: Homepage: http://lame.sourceforge.net
+lame:
+lame:
+lame:
+lame:

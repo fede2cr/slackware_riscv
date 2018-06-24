@@ -1,0 +1,11 @@
+libexif: libexif (Exchangeable Image File Format library)
+libexif:
+libexif: EXIF stands for Exchangeable Image File Format, which is a format used
+libexif: to store extra information in images such as the JPEG files produced
+libexif: by digital cameras. The libexif library allows programs such as 
+libexif: gthumb to parse, edit, and save EXIF data.
+libexif:
+libexif:
+libexif:
+libexif:
+libexif:

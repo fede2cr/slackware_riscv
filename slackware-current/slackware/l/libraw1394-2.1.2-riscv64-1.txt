@@ -1,0 +1,11 @@
+libraw1394: libraw1394 (user space IEEE 1394 driver)
+libraw1394:
+libraw1394: libraw1394 provides direct access to the IEEE 1394 bus through
+libraw1394: the Linux 1394 subsystem's raw1394 user space interface.
+libraw1394:
+libraw1394: Homepage: http://www.kernel.org/pub/linux/libs/ieee1394/
+libraw1394:
+libraw1394:
+libraw1394:
+libraw1394:
+libraw1394:

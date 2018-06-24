@@ -1,0 +1,11 @@
+libcddb: libcddb (An online CD database library)
+libcddb:
+libcddb: Libcddb is a library that implements the different protocols (CDDBP,
+libcddb: HTTP, SMTP) to access data on a CDDB server (http://freedb.org).
+libcddb:
+libcddb: Visit the project at: http://libcddb.sourceforge.net/
+libcddb:
+libcddb:
+libcddb:
+libcddb:
+libcddb:

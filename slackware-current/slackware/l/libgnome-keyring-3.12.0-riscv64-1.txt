@@ -1,0 +1,11 @@
+libgnome-keyring: libgnome-keyring (gnome-keyring library)
+libgnome-keyring:
+libgnome-keyring: gnome-keyring is a program that keep password and other secrets
+libgnome-keyring: for users. The library libgnome-keyring is used by applications
+libgnome-keyring: to integrate with the gnome keyring system.
+libgnome-keyring:
+libgnome-keyring:
+libgnome-keyring:
+libgnome-keyring:
+libgnome-keyring:
+libgnome-keyring:

@@ -1,0 +1,11 @@
+libodfgen: libodfgen (Library for generating documents in Open Document Format)
+libodfgen:
+libodfgen: ilibodfgen is an ODF export library for projects using librevenge.
+libodfgen:
+libodfgen:
+libodfgen:
+libodfgen:
+libodfgen:
+libodfgen:
+libodfgen: Homepage: http://sourceforge.net/p/libwpd/wiki/libodfgen/
+libodfgen:

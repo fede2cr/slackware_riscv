@@ -1,0 +1,11 @@
+libcanberra: libcanberra (XDG Sound Theme and Name Spec implementation)
+libcanberra:
+libcanberra: libcanberra is an implementation of the XDG Sound Theme and Name 
+libcanberra: Specifications, for generating event sounds on free desktops. 
+libcanberra: It comes with several backends for several audio systems and is
+libcanberra: designed to be portable.
+libcanberra:
+libcanberra: Homepage: http://0pointer.de/lennart/projects/libcanberra/
+libcanberra:
+libcanberra:
+libcanberra:

@@ -1,0 +1,11 @@
+libkarma: libkarma (library for accessing the Rio Karma music player)
+libkarma:
+libkarma: This is a library for accessing the Rio Karma, a small media player
+libkarma: which supports the music formats ogg vorbis, flac, mp3, wave and wma.
+libkarma:
+libkarma: libkarma was mostly written by Frank Zschockelt.
+libkarma:
+libkarma:
+libkarma:
+libkarma:
+libkarma:

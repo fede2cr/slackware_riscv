@@ -1,0 +1,11 @@
+libcdio-paranoia: libcdio-paranoia (CD paranoia libraries from libcdio)
+libcdio-paranoia:
+libcdio-paranoia: This CDDA reader distribution ('libcdio-cdparanoia') reads audio from
+libcdio-paranoia: the CDROM directly as data, with no analog step between, and writes
+libcdio-paranoia: the data to a file or pipe as .wav, .aifc or as raw 16 bit linear
+libcdio-paranoia: PCM.
+libcdio-paranoia:
+libcdio-paranoia:
+libcdio-paranoia:
+libcdio-paranoia:
+libcdio-paranoia:

@@ -1,0 +1,11 @@
+libiodbc: libiodbc (Independent Open DataBase Connectivity)
+libiodbc:
+libiodbc: iODBC is the acronym for Independent Open DataBase Connectivity,
+libiodbc: an Open Source platform independent implementation of both the ODBC
+libiodbc: and X/Open specifications. It allows for developing solutions
+libiodbc: that are language, platform and database independent.
+libiodbc:
+libiodbc:
+libiodbc:
+libiodbc: Homepage: http://www.iodbc.org/dataspace/iodbc/wiki/iODBC/
+libiodbc:

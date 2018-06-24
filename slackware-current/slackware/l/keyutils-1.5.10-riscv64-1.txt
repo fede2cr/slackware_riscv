@@ -1,0 +1,11 @@
+keyutils: keyutils (Kernel key management utilities)
+keyutils:
+keyutils: This package contains tools and a wrapper library to control the
+keyutils: Linux kernel key management facility and to provide a mechanism by
+keyutils: which the kernel can call back to user space to get a key
+keyutils: instantiated.
+keyutils:
+keyutils: Homepage: http://people.redhat.com/~dhowells/keyutils/
+keyutils:
+keyutils:
+keyutils:

@@ -1,0 +1,11 @@
+libbluray: libbluray (Blu-Ray Disc playback library)
+libbluray:
+libbluray: libbluray is an open-source library designed for Blu-Ray Discs
+libbluray: playback for media players, like VLC or MPlayer.
+libbluray:
+libbluray: Homepage: http://www.videolan.org/developers/libbluray.html
+libbluray:
+libbluray:
+libbluray:
+libbluray:
+libbluray:

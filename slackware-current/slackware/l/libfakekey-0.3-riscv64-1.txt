@@ -1,0 +1,11 @@
+libfakekey: libfakekey (X Virtual Keyboard Library)
+libfakekey:
+libfakekey: X virtual keyboard library of the Matchbox WM project.
+libfakekey:
+libfakekey: Homepage: http://git.yoctoproject.org/cgit.cgi/libfakekey/
+libfakekey: 
+libfakekey: 
+libfakekey: 
+libfakekey: 
+libfakekey: 
+libfakekey: 

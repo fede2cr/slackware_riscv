@@ -1,0 +1,11 @@
+libid3tag: libid3tag (ID3 tag manipulation library)
+libid3tag:
+libid3tag: libid3tag is a library for reading and (eventually) writing ID3 tags,
+libid3tag: both ID3v1 and the various versions of ID3v2.
+libid3tag:
+libid3tag: libid3tag was written by Robert Leslie.
+libid3tag:
+libid3tag:
+libid3tag:
+libid3tag:
+libid3tag:

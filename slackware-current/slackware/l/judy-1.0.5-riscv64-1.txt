@@ -1,0 +1,11 @@
+judy: judy (sparse dynamic array library)
+judy:
+judy: Judy is a C library that provides a state-of-the-art core technology
+judy: that implements a sparse dynamic array. A Judy array consumes memory
+judy: only when it is populated, yet can grow to take advantage of all
+judy: available memory if desired. Judy's key benefits are scalability,
+judy: high performance, and memory efficiency.
+judy:
+judy: homepage: http://judy.sourceforge.net
+judy:
+judy:

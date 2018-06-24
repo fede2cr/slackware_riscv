@@ -1,0 +1,11 @@
+libgpod: libgpod (A library for connecting to some sort of media device ;-)
+libgpod:
+libgpod: libgpod for accessing iPod content. It provides an easy to use way
+libgpod: to retrieve the list of files and playlist stored on an iPod, to
+libgpod: modify them and to save them back to the iPod.
+libgpod:
+libgpod: If you decide to make improvements please contact us so we can work
+libgpod: together. Just drop a mail to: Gtkpod-devel@lists.sourceforge.net
+libgpod: (you may ask to be CC in the answer).
+libgpod:
+libgpod:

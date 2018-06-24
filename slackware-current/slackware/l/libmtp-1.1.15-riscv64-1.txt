@@ -1,0 +1,11 @@
+libmtp: libmtp (A library for MTP media devices)
+libmtp:
+libmtp: libmtp is a library that attempts to support Microsoft's Media
+libmtp: Transfer Protocol (MTP). It was initially based on the great libptp2
+libmtp: library by Mariusz Woloszyn now maintained by Marcus Meissners, and
+libmtp: Hubert Figuere's libgphoto2 work based on libptp2 (or is libptp2
+libmtp: based on libgphoto?). It is like a master DJ has remixed all of
+libmtp: these tracks and then added a new API adapted for portable media
+libmtp: players. :-)
+libmtp:
+libmtp: Homepage: http://libmtp.sourceforge.net

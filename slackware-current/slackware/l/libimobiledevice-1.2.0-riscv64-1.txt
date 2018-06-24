@@ -1,0 +1,11 @@
+libimobiledevice: libimobiledevice (iOS device communication library) 
+libimobiledevice:
+libimobiledevice: A library to communicate with services of Apple iOS devices using native
+libimobiledevice: protocols.
+libimobiledevice:
+libimobiledevice: The libimobiledevice homepage: http://www.libimobiledevice.org/
+libimobiledevice:
+libimobiledevice:
+libimobiledevice:
+libimobiledevice:
+libimobiledevice:

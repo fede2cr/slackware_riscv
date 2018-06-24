@@ -1,0 +1,11 @@
+libpng: libpng (Portable Network Graphics library)
+libpng:
+libpng: PNG (Portable Network Graphics) is an extensible file format for the
+libpng: lossless, portable, well-compressed storage of raster images. PNG
+libpng: provides a patent-free replacement for GIF and can also replace many
+libpng: common uses of TIFF. Indexed-color, grayscale, and truecolor images
+libpng: are supported, plus an optional alpha channel. Sample depths range
+libpng: from 1 to 16 bits.
+libpng:
+libpng:
+libpng:

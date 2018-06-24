@@ -1,0 +1,11 @@
+jansson: jansson (JSON data handling library)
+jansson:
+jansson: Jansson is a C library for encoding, decoding and manipulating JSON
+jansson: data. It features a simple and intuitive API and data model, includes
+jansson: full Unicode support, and has no dependencies on other libraries
+jansson: (except for glibc).
+jansson:
+jansson:
+jansson: Homepage: http://www.digip.org/jansson/
+jansson:
+jansson:

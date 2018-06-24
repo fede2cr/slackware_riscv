@@ -1,0 +1,11 @@
+ilmbase: ilmbase (Industrial Light & Magic base libraries)
+ilmbase:
+ilmbase: ilmbase currently includes:
+ilmbase:
+ilmbase: IlmThread - a thread abstraction library
+ilmbase: Imath - a math function library
+ilmbase: Iex - an exception-handling library
+ilmbase: Half - Ilm's 16 bit floating point format library
+ilmbase:
+ilmbase: Homepage: http://www.openexr.org/
+ilmbase:
