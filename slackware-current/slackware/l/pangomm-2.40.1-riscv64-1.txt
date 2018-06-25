@@ -1,0 +1,11 @@
+pangomm: pangomm (C++ API for Pango)
+pangomm:
+pangomm: Pangomm is a C++ API for Pango.
+pangomm:
+pangomm: Homepage: http://gtkmm.org
+pangomm:
+pangomm:
+pangomm:
+pangomm:
+pangomm:
+pangomm:

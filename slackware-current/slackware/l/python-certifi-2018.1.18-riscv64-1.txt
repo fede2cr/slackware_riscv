@@ -1,0 +1,11 @@
+python-certifi: python-certifi (Python package for providing Mozilla's CA Bundle)
+python-certifi:
+python-certifi: Certifi is a carefully curated collection of Root Certificates for
+python-certifi: validating the trustworthiness of SSL certificates while verifying
+python-certifi: the identity of TLS hosts.
+python-certifi:
+python-certifi: Homepage: http://certifi.io/
+python-certifi:
+python-certifi:
+python-certifi:
+python-certifi:

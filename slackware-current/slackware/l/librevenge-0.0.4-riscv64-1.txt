@@ -1,0 +1,11 @@
+librevenge: librevenge (Library for REVerse ENGineered formats filters)
+librevenge:
+librevenge: librevenge is a base library for writing document import filters.
+librevenge: It has interfaces for text documents, vector graphics, spreadsheets,
+librevenge: and presentations.
+librevenge:
+librevenge: Homepage: http://sourceforge.net/p/libwpd/wiki/librevenge/
+librevenge:
+librevenge:
+librevenge:
+librevenge:

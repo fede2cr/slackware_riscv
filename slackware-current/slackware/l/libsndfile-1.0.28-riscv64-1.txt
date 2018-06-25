@@ -1,0 +1,11 @@
+libsndfile: libsndfile (C library for reading and writing wav files)
+libsndfile:
+libsndfile: Libsndfile is a C library for reading and writing files containing
+libsndfile: sampled sound (such as MS Windows WAV and Apple/SGI AIFF format).
+libsndfile:
+libsndfile: Homepage: http://www.mega-nerd.com/libsndfile/
+libsndfile:
+libsndfile:
+libsndfile:
+libsndfile:
+libsndfile:

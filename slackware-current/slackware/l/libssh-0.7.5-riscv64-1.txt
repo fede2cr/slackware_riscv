@@ -1,0 +1,11 @@
+libssh: libssh (library implementing ssh protocols)
+libssh: 
+libssh: libssh is a mulitplatform C library implementing the SSHv2 and SSHv1
+libssh: protocol on client and server side. With libssh, you can remotely
+libssh: execute programs, transfer files, and use a secure and transparent
+libssh: tunnel for your remote applications.
+libssh:
+libssh: Homepage: http://www.libssh.org/
+libssh:
+libssh:
+libssh:

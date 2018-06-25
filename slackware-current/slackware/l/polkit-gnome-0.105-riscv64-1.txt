@@ -1,0 +1,11 @@
+polkit-gnome: polkit-gnome (GTK+ authentication agent for polkit)
+polkit-gnome:
+polkit-gnome: polkit-gnome provides a GTK+ based authentication agent for polkit.
+polkit-gnome: It can be used by any desktop environment that follows the XDG
+polkit-gnome: Base Directory Specification.
+polkit-gnome:
+polkit-gnome:
+polkit-gnome:
+polkit-gnome:
+polkit-gnome:
+polkit-gnome:

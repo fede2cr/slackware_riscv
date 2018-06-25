@@ -1,0 +1,11 @@
+libusbmuxd: libusbmuxd (iOS USB connection library) 
+libusbmuxd:
+libusbmuxd: A client library to multiplex connections from and to iOS devices.
+libusbmuxd: It is used by libgpod.
+libusbmuxd:
+libusbmuxd: The libusbmuxd homepage: http://www.libimobiledevice.org/
+libusbmuxd:
+libusbmuxd:
+libusbmuxd:
+libusbmuxd:
+libusbmuxd:

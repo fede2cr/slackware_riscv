@@ -1,0 +1,11 @@
+python-requests: python-requests (HTTP request library for python)
+python-requests:
+python-requests: Requests allows you to send organic, grass-fed HTTP/1.1 requests,
+python-requests: without the need for manual labor. There's no need to manually add
+python-requests: query strings to your URLs, or to form-encode your POST data.
+python-requests: Keep-alive and HTTP connection pooling are 100% automatic, powered by
+python-requests: urllib3, which is embedded within Requests.
+python-requests:
+python-requests: Homepage: http://docs.python-requests.org/en/master/
+python-requests:
+python-requests:

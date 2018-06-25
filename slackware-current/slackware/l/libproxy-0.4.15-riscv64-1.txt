@@ -1,0 +1,11 @@
+libproxy: libproxy (proxy configuration library)
+libproxy:
+libproxy: libproxy exists to answer the question: Given a network resource, 
+libproxy: how do I reach it? It handles all the details, enabling you to get 
+libproxy: back to programming. Just ask libproxy what proxy to use: you get
+libproxy: simple code and your users get correct, consistent behavior and 
+libproxy: broad infrastructure compatibility. 
+libproxy:
+libproxy: Homepage: https://github.com/libproxy/libproxy
+libproxy:
+libproxy:

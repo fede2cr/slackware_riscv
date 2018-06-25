@@ -1,0 +1,11 @@
+libvisio: libvisio (Visio document format library)
+libvisio:
+libvisio: Libvisio is a library that parses the file format of Microsoft Visio
+libvisio: documents of all versions.
+libvisio:
+libvisio: Homepage: https://wiki.documentfoundation.org/DLP/Libraries/libvisio
+libvisio:
+libvisio:
+libvisio:
+libvisio:
+libvisio:

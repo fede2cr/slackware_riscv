@@ -1,0 +1,11 @@
+pygtk: pygtk (GTK+ bindings for Python)
+pygtk:
+pygtk: PyGTK provides a convenient wrapper for the GTK+ library for use in
+pygtk: Python programs, taking care of many of the boring details such as
+pygtk: managing memory and type casting.
+pygtk:
+pygtk: PyGTK's web page: http://www.pygtk.org/
+pygtk:
+pygtk:
+pygtk:
+pygtk:

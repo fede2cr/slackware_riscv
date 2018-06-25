@@ -1,0 +1,11 @@
+opus: opus (efficient, low-latency audio codec)
+opus:
+opus: Opus is a totally open, royalty-free, highly versatile audio codec.
+opus: Opus is unmatched for interactive speech and music transmission over
+opus: the Internet, but is also intended for storage and streaming
+opus: applications. It is standardized by the Internet Engineering Task
+opus: Force (IETF) as RFC 6716 which incorporated technology from Skype's
+opus: SILK codec and Xiph.Org's CELT codec.
+opus:
+opus: Homepage: https://opus-codec.org/
+opus:

@@ -1,0 +1,11 @@
+pygobject3: pygobject3 (GObject bindings for Python3)
+pygobject3:
+pygobject3: This archive contains bindings for the GObject, to be used in Python.
+pygobject3: It is a fairly complete set of bindings, it's already rather useful,
+pygobject3: and is usable to write moderately complex programs.
+pygobject3:
+pygobject3: Homepage: https://live.gnome.org/PyGObject
+pygobject3:
+pygobject3:
+pygobject3:
+pygobject3:

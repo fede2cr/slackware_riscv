@@ -1,0 +1,11 @@
+python-urllib3: python-urllib3 (Powerful, sanity-friendly HTTP client for Python)
+python-urllib3:
+python-urllib3: urllib3 is a powerful, sanity-friendly HTTP client for Python. Much
+python-urllib3: of the Python ecosystem already uses urllib3 and you should too.
+python-urllib3:
+python-urllib3: Homepage: https://urllib3.readthedocs.io/
+python-urllib3:
+python-urllib3:
+python-urllib3:
+python-urllib3:
+python-urllib3:

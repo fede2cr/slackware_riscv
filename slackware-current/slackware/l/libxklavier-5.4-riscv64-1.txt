@@ -1,0 +1,11 @@
+libxklavier: libxklavier (XKB Library)
+libxklavier:
+libxklavier: libxklavier is a utility library to make XKB stuff easier.
+libxklavier:
+libxklavier: Homepage: http://www.freedesktop.org/wiki/Software/LibXklavier
+libxklavier:
+libxklavier:
+libxklavier:
+libxklavier:
+libxklavier:
+libxklavier:

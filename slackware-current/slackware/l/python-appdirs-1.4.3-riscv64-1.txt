@@ -1,0 +1,11 @@
+python-appdirs: python-appdirs (Python module for determining platform-specific dirs)
+python-appdirs:
+python-appdirs: A small Python module for determining appropriate platform-specific
+python-appdirs: dirs, e.g. a "user data dir".
+python-appdirs:
+python-appdirs: Homepage: https://github.com/ActiveState/appdirs
+python-appdirs:
+python-appdirs:
+python-appdirs:
+python-appdirs:
+python-appdirs:

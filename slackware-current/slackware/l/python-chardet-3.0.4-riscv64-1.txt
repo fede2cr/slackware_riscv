@@ -1,0 +1,11 @@
+python-chardet: python-chardet (Universal encoding detector for Python 2 and 3)
+python-chardet:
+python-chardet: Character encoding auto-detection in Python. As smart as your
+python-chardet: browser. Open source.
+python-chardet:
+python-chardet: Homepage: https://chardet.readthedocs.io
+python-chardet:
+python-chardet:
+python-chardet:
+python-chardet:
+python-chardet:

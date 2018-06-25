@@ -1,0 +1,11 @@
+libvpx: libvpx (VP8/VP9 video codec)
+libvpx:
+libvpx: VP8 is an open video codec, originally developed by On2 and released
+libvpx: as open source by Google Inc. It is the successor of the VP3 codec,
+libvpx: on which the Theora codec was based.
+libvpx:
+libvpx: VP9 is an open and royalty free video compression standard developed
+libvpx: by Google Inc and successor to VP8.
+libvpx:
+libvpx: Homepage: http://www.webmproject.org/
+libvpx:

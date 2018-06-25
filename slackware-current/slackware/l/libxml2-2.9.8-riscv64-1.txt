@@ -1,0 +1,11 @@
+libxml2: libxml2 (XML parser library)
+libxml2:
+libxml2: Libxml2 is the XML C parser library and toolkit. XML itself is a
+libxml2: metalanguage to design markup languages  - i.e. a text language where
+libxml2: structures are added to the content using extra "markup" information
+libxml2: enclosed between angle brackets. HTML is the most well-known markup
+libxml2: language. Though the library is written in C, a variety of language
+libxml2: bindings make it available in other environments.
+libxml2:
+libxml2:
+libxml2:

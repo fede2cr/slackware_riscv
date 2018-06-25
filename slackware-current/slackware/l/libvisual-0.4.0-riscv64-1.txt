@@ -1,0 +1,11 @@
+libvisual: libvisual (audio visualization library)
+libvisual:
+libvisual: Libvisual is an audio visualization library that acts as a middle
+libvisual: layer between audio visualization plugins and applications. Any
+libvisual: application written with libvisual support included will be able to
+libvisual: make use of all the plugins that are written for libvisual.
+libvisual: Libvisual also contains a whole set of facilities to ease the
+libvisual: development of plugins.
+libvisual:
+libvisual: Libvisual was written by Dennis Smit.
+libvisual:

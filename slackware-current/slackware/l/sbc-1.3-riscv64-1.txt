@@ -1,0 +1,11 @@
+sbc: sbc (Sub Band Codec for bluetooth audio output)
+sbc:
+sbc: SBC (Sub Band Codec) is a low-complexity audio codec used in the
+sbc: Advanced Audio Distribution Profile (A2DP) bluetooth standard, but can
+sbc: also be used standalone. It uses 4 or 8 subbands, an adaptive bit
+sbc: allocation algorithm, and adaptive block PCM quantizers.
+sbc:
+sbc: Homepage: http://www.kernel.org/pub/linux/bluetooth
+sbc:
+sbc:
+sbc:

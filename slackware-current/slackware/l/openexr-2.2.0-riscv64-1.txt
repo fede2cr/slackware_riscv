@@ -1,0 +1,11 @@
+openexr: openexr (HDR Image File Format & Library)
+openexr:
+openexr: OpenEXR is an image file format and library developed by Industrial
+openexr: Light & Magic, and later released to the public. It provides support
+openexr: for high dynamic range and a 16-bit floating point "half" data type
+openexr: which is compatible with the half data type in the Cg programming
+openexr: language.
+openexr:
+openexr: Homepage: http://www.openexr.org/
+openexr:
+openexr:

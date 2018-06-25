@@ -1,0 +1,11 @@
+python-docutils: python-docutils (Python Documentation Utilities)
+python-docutils:
+python-docutils: Docutils is an open-source text processing system for processing
+python-docutils: plaintext documentation into useful formats, such as HTML, LaTeX,
+python-docutils: man-pages, open-document or XML. It includes reStructuredText, the
+python-docutils: easy to read, easy to use, what-you-see-is-what-you-get plaintext
+python-docutils: markup language.
+python-docutils:
+python-docutils: Homepage: http://docutils.sourceforge.net/
+python-docutils:
+python-docutils:

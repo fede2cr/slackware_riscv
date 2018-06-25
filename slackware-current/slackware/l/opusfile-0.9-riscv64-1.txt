@@ -1,0 +1,11 @@
+opusfile: opusfile (Opus file handling libraries)
+opusfile:
+opusfile: The opusfile and opusurl libraries provide a high-level API for
+opusfile: decoding and seeking within .opus files on disk or over http(s).
+opusfile:
+opusfile: Programming documentation is available in tree and online at:
+opusfile: https://opus-codec.org/docs/
+opusfile:
+opusfile: Homepage: https://opus-codec.org/
+opusfile:
+opusfile:

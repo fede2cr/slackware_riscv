@@ -1,0 +1,11 @@
+loudmouth: loudmouth (XMPP C programming library)
+loudmouth:
+loudmouth: Loudmouth is a lightweight and easy-to-use C library for programming
+loudmouth: with the Jabber protocol. It is designed to be easy to get started
+loudmouth: with, and yet extensible enough to allow you to do anything that the
+loudmouth: Jabber protocol allows.
+loudmouth:
+loudmouth: loudmouth home: https://github.com/mcabber/loudmouth
+loudmouth:
+loudmouth:
+loudmouth:

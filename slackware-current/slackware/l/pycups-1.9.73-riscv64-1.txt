@@ -1,0 +1,11 @@
+pycups: pycups (Python bindings for the CUPS API)
+pycups:
+pycups: These Python bindings are intended to wrap the CUPS API.
+pycups:
+pycups: Homepage: http://cyberelk.net/tim/software/pycups/
+pycups:
+pycups:
+pycups:
+pycups:
+pycups:
+pycups:

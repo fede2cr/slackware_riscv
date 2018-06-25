@@ -1,0 +1,11 @@
+pilot-link: pilot-link (library for communicating with PalmOS devices)
+pilot-link:
+pilot-link: This is a library for communicating with Palm Computing, Inc. Palm
+pilot-link: Devices as well as the Handspring Visor,  TRGPro,  and other devices
+pilot-link: which conform to this standard (PalmOS licensed devices).
+pilot-link:
+pilot-link: pilot-link is used by KPilot.
+pilot-link:
+pilot-link:
+pilot-link:
+pilot-link:

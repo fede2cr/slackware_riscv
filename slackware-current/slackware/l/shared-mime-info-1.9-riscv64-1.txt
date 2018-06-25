@@ -1,0 +1,11 @@
+shared-mime-info: shared-mime-info (MIME database)
+shared-mime-info:
+shared-mime-info: This package contains:
+shared-mime-info:
+shared-mime-info: The freedesktop.org shared MIME database spec.
+shared-mime-info: The merged GNOME and KDE databases, in the new format.
+shared-mime-info: The update-mime-database command, used to install new MIME data.
+shared-mime-info:
+shared-mime-info: Homepage: https://freedesktop.org/wiki/Software/shared-mime-info/
+shared-mime-info:
+shared-mime-info:

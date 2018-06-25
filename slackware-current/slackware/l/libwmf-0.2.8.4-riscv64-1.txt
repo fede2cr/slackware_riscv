@@ -1,0 +1,11 @@
+libwmf: libwmf (WMF graphics format library)
+libwmf:
+libwmf: libwmf is a library for interpreting metafile images and either
+libwmf: displaying them using X or converting them to standard formats such
+libwmf: as PNG, JPEG, PS, EPS and SVG.
+libwmf:
+libwmf:
+libwmf:
+libwmf:
+libwmf:
+libwmf:

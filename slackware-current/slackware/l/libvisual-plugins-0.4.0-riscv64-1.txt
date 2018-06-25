@@ -1,0 +1,11 @@
+libvisual-plugins: libvisual-plugins (plugins for the libvisual library)
+libvisual-plugins:
+libvisual-plugins: By itself, libvisual only provides a framework to build upon. The
+libvisual-plugins: plugins in this package are designed to work with libvisual to allow
+libvisual-plugins: it to actually do all sorts of interesting visualizations based on
+libvisual-plugins: metrics gathered as players process audio information data. Plugins
+libvisual-plugins: can be mixed (more than one run at a time), or morphed from one to
+libvisual-plugins: another. Other special effects are possible as well.
+libvisual-plugins:
+libvisual-plugins: Several authors have contributed libvisual-plugins under the GPL.
+libvisual-plugins:
