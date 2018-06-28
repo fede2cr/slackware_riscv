@@ -1,0 +1,11 @@
+tdb: tdb (a trivial database library)
+tdb:
+tdb: Tdb is a simple database API. It was inspired by the realisation that
+tdb: in Samba there were several ad-hoc bits of code that essentially
+tdb: implement small databases for sharing structures.
+tdb:
+tdb: Homepage: https://tdb.samba.org
+tdb:
+tdb:
+tdb:
+tdb:

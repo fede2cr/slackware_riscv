@@ -1,0 +1,11 @@
+dhcpcd: dhcpcd (DHCP client daemon)
+dhcpcd:
+dhcpcd: The DHCP client program dhcpcd is used to connect to a network by
+dhcpcd: contacting a DHCP server. dhcpcd gets an IP address and other
+dhcpcd: information from a corresponding DHCP server, configures the network
+dhcpcd: interface automatically, and tries to renew the lease time according
+dhcpcd: to RFC2131 or RFC1541 depending on the command line option.
+dhcpcd:
+dhcpcd: Homepage: https://roy.marples.name/projects/dhcpcd
+dhcpcd:
+dhcpcd:

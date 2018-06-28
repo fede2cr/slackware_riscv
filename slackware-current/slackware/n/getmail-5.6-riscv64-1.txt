@@ -1,0 +1,11 @@
+getmail: getmail (POP3 mail retriever)
+getmail:
+getmail: getmail is a POP3 mail retriever, with support for both ordinary and
+getmail: domain (or multidrop) POP3 mailboxes. It is written in Python, and
+getmail: licensed under the GNU General Public License version 2.
+getmail:
+getmail: getmail was written by Charles Cazabon.
+getmail:
+getmail:
+getmail:
+getmail:

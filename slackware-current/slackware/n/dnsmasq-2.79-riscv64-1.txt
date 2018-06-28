@@ -1,0 +1,11 @@
+dnsmasq: dnsmasq (small DNS and DHCP server)
+dnsmasq:
+dnsmasq: Dnsmasq is a lightweight, easy to configure DNS forwarder and DHCP
+dnsmasq: server. It is designed to provide DNS (and optionally DHCP) to a
+dnsmasq: small network, and can serve the names of local machines which are not
+dnsmasq: in the global DNS. 
+dnsmasq:
+dnsmasq: Dnsmasq was written by Simon Kelley.
+dnsmasq:
+dnsmasq: Homepage: http://www.thekelleys.org.uk/dnsmasq/
+dnsmasq:

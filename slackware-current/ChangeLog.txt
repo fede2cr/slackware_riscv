@@ -1,3 +1,34 @@
+Thu Jun 28 04:38:27 UTC 2018
+l/sip-4.19.8-riscv64-1.txz: Ported.
+l/slang-2.3.2-riscv64-1.txz: Ported.
+l/slang1-1.4.9-riscv64-1.txz: Ported.
+l/startup-notification-0.12-riscv64-1.txz: Ported.
+l/strigi-0.7.8-riscv64-1.txz: Ported.
+l/taglib-1.11.1-riscv64-1.txz: Ported.
+l/taglib-extras-1.0.1-riscv64-1.txz: Ported.
+l/tdb-1.3.15-riscv64-1.txz: Ported.
+l/urwid-1.0.3-riscv64-1.txz: Ported.
+l/wavpack-5.1.0-riscv64-1.txz: Ported.
+l/xapian-core-1.4.5-riscv64-1.txz: Ported.
+n/alpine-2.21-riscv64-1.txz: Ported.
+n/autofs-5.1.4-riscv64-1.txz: Ported.
+n/biff+comsat-0.17-riscv64-1.txz: Ported.
+n/bind-9.11.3-riscv64-1.txz: Ported.
+n/bluez-5.49-riscv64-1.txz: Ported.
+n/bluez-firmware-1.2-riscv64-1.txz: Ported.
+n/bootp-2.4.3-riscv64-1.txz: Ported.
+n/bridge-utils-1.5-riscv64-1.txz: Ported.
+n/bsd-finger-0.17-riscv64-1.txz: Ported.
+n/cifs-utils-6.7-riscv64-1.txz: Ported.
+n/curl-7.59.0-riscv64-1.txz: Ported.
+n/dhcpcd-7.0.2-riscv64-1.txz: Ported.
+n/dnsmasq-2.79-riscv64-1.txz: Ported.
+n/ebtables-2.0.10-riscv64-1.txz: Ported.
+n/getmail-5.6-riscv64-1.txz: Ported.
+n/gnutls-3.6.2-riscv64-1.txz: Ported.
+n/gpgme-1.10.0-riscv64-1.txz: Ported.
+n/htdig-3.2.0b6-riscv64-1.txz: Ported.
++--------------------------+
 Mon Jun 25 02:04:11 UTC 2018
 l/libproxy-0.4.15-riscv64-1.txz: Ported.
 l/librevenge-0.0.4-riscv64-1.txz: Ported.

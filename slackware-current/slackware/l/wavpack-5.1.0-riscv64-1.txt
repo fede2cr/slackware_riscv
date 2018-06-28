@@ -1,0 +1,11 @@
+wavpack: wavpack (A lossless WAV file compressor)
+wavpack:
+wavpack: Wavpack is a hybrid lossless wavefile compressor. Wavfile is
+wavpack: Copyright (c) 1998 - 2006 Conifer Software. All Rights Reserved.
+wavpack:
+wavpack: Wavpack is distributed under the BSD Software License.
+wavpack:
+wavpack: Visit the wavpack project online: http://www.wavpack.com
+wavpack:
+wavpack:
+wavpack:

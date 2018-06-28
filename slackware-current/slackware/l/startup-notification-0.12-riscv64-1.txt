@@ -1,0 +1,11 @@
+startup-notification: startup-notification ("busy" cursors support)
+startup-notification:
+startup-notification: Adds support for applications to use "busy" cursors while starting up.
+startup-notification:
+startup-notification:
+startup-notification:
+startup-notification:
+startup-notification:
+startup-notification:
+startup-notification:
+startup-notification:

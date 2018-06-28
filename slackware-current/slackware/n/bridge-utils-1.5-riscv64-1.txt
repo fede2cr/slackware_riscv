@@ -1,0 +1,11 @@
+bridge-utils: bridge-utils (network Ethernet bridging utilities)
+bridge-utils:
+bridge-utils: This package contains utilities for configuring Linux Ethernet
+bridge-utils: bridges. The Linux Ethernet bridge can be used for connecting
+bridge-utils: multiple Ethernet devices together. The connecting is fully
+bridge-utils: transparent. Hosts connected to one Ethernet device see hosts
+bridge-utils: connected through a bridge to the other Ethernet devices directly.
+bridge-utils:
+bridge-utils: bridge-utils was written by Stephen Hemminger and Lennert Buytenhek.
+bridge-utils:
+bridge-utils:

@@ -1,0 +1,11 @@
+slang: slang (S-Lang interpreter version 2)
+slang:
+slang: S-Lang is an interpreted language that was designed from the start
+slang: to be easily embedded into a program to provide it with a powerful
+slang: extension language. S-Lang is also a programmer's library that
+slang: permits a programmer to develop sophisticated platform-independent
+slang: software. In addition to providing the S-Lang extension language,
+slang: the library provides facilities for screen management, keymaps,
+slang: and low-level terminal I/O.
+slang:
+slang: Homepage: http://www.jedsoft.org/slang/

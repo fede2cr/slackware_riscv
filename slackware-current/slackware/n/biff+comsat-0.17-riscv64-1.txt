@@ -1,0 +1,11 @@
+biff+comsat: biff+comsat (mail arrival notification daemon)
+biff+comsat:
+biff+comsat: Comsat is the server process which receives reports of incoming mail
+biff+comsat: and notifies users if they have requested this service. "biff" is
+biff+comsat: the program that requests comsat service "biff y", and may be placed
+biff+comsat: in a user's startup file if they'd like to hear a beep and trash
+biff+comsat: their console with each new piece of junk mail. ;-)
+biff+comsat:
+biff+comsat: Biff was the name of Heidi Stettner's dog, who barked when the
+biff+comsat: mailman came. Biff was well known to many of the early BSD developers
+biff+comsat: living in Evans Hall at U.C. Berkeley.

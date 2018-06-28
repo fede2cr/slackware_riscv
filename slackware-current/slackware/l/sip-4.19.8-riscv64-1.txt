@@ -1,0 +1,11 @@
+sip: SIP (a tool for generating Python bindings)
+sip:
+sip: SIP is a tool that makes it very easy to create Python bindings for
+sip: C and C++ libraries. It was originally developed to create PyQt,
+sip: the Python bindings for the Qt toolkit, but can be used to create
+sip: bindings for any C or C++ library.
+sip:
+sip: Homepage: http://www.riverbankcomputing.co.uk/software/sip/
+sip:
+sip:
+sip:

@@ -1,0 +1,11 @@
+urwid: urwid (python console UI module)
+urwid:
+urwid: Urwid is a console user interface library for Python. It is released
+urwid: under the GNU Lesser General Public License and includes many
+urwid: (too many to list) features useful for text console application
+urwid: developers.
+urwid:
+urwid: Urwid was written by Ian Ward.
+urwid:
+urwid: More info at: http://excess.org/urwid
+urwid:

@@ -1,0 +1,11 @@
+strigi: strigi (fast and light desktop search engine)
+strigi:
+strigi: Strigi is a fast and light desktop search engine. It can handle a 
+strigi: large range of file formats such as emails, office documents, media
+strigi: files, and file archives. It can index files that are embedded in 
+strigi: other files. This means email attachments and files in zip files
+strigi: are searchable as if they were normal files on your harddisk. 
+strigi:
+strigi: Homepage: http://strigi.sourceforge.net/
+strigi:
+strigi:

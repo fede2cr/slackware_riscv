@@ -1,0 +1,11 @@
+autofs: autofs (kernel-based automounter)
+autofs:
+autofs: autofs is a kernel-based automounter for Linux. It performs a job
+autofs: similar to amd(8) but relies on a small stub of kernel code instead of
+autofs: pretending to be an NFS server. The result is simpler code, better
+autofs: reliability, and much faster operation in the common case (everything
+autofs: already mounted.)
+autofs:
+autofs:
+autofs:
+autofs:

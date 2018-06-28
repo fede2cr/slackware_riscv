@@ -1,0 +1,11 @@
+bsd-finger: bsd-finger (user information lookup program)
+bsd-finger:
+bsd-finger: The finger displays information about the system users. Finger
+bsd-finger: displays the user's login name, real name, terminal name and write
+bsd-finger: status (as a ``*'' after the terminal name if write permission is
+bsd-finger: denied), idle time, login time, office location and office phone
+bsd-finger: number.
+bsd-finger:
+bsd-finger: As fingerd leaks semi-private information about your machine's
+bsd-finger: usernames and other data, fingerd should be used with caution.
+bsd-finger: Allow machines on a need-to-know basis.

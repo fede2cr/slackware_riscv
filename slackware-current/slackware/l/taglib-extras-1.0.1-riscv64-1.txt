@@ -1,0 +1,11 @@
+taglib-extras: taglib-extras (taglib support for other formats)
+taglib-extras:
+taglib-extras: Taglib file type plugins which were split off from Amarok
+taglib-extras: to allow others to use and help maintain them.
+taglib-extras: Taglib-extras delivers support for reading and editing
+taglib-extras: meta-data of audio formats not supported by taglib, including:
+taglib-extras: asf, mp4v2, rmff, wav.
+taglib-extras:
+taglib-extras:
+taglib-extras: The taglib-extras are part of kdesupport: http://www.kde.org
+taglib-extras:

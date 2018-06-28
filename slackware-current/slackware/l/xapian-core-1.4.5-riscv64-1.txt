@@ -1,0 +1,11 @@
+xapian-core: xapian-core (Search Engine Library)
+xapian-core:
+xapian-core: Xapian is an Open Source Probabilistic Information Retrieval
+xapian-core: Library. It offers a highly adaptable toolkit that allows
+xapian-core: developers to easily add advanced indexing and search facilities
+xapian-core: to applications.
+xapian-core:
+xapian-core:
+xapian-core:
+xapian-core: xapian home: http://www.xapian.org/
+xapian-core:
