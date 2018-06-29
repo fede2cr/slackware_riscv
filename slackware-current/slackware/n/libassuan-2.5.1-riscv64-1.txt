@@ -1,0 +1,11 @@
+libassuan: libassuan (Interprocess Communication Library for GPG)
+libassuan:
+libassuan: This is the IPC library used by GnuPG 2.x, GPGME and a few other
+libassuan: packages. 
+libassuan:
+libassuan:
+libassuan:
+libassuan:
+libassuan:
+libassuan:
+libassuan:

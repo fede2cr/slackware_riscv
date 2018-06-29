@@ -1,0 +1,11 @@
+netkit-ntalk: netkit-ntalk (talk client and talkd daemon)
+netkit-ntalk:
+netkit-ntalk: talk and talkd are the BSD communication client server system for
+netkit-ntalk: the command line. "talk" is the client that asks another user to
+netkit-ntalk: respond; and "in.talkd" is the server that notifies a user that
+netkit-ntalk: someone else wants to initiate a conversation.
+netkit-ntalk:
+netkit-ntalk: The talk command appeared in 4.2BSD.
+netkit-ntalk:
+netkit-ntalk:
+netkit-ntalk:

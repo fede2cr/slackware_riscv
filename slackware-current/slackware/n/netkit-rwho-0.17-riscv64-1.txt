@@ -1,0 +1,11 @@
+netkit-rwho: netkit-rwho (who is logged in on local machines)
+netkit-rwho:
+netkit-rwho: The rwho command produces output similar to who, but for all machines
+netkit-rwho: on the local network. If no report has been received from a machine
+netkit-rwho: for 11 minutes then rwho assumes the machine is down, and does not
+netkit-rwho: report users last known to be logged into that machine. If a users
+netkit-rwho: hasn't typed to the system for a minute or more, then rwho reports
+netkit-rwho: this idle time. If a user hasn't typed to the system for an hour or
+netkit-rwho: more, then the user will be omitted from the output of rwho unless
+netkit-rwho: the -a flag is given.
+netkit-rwho:

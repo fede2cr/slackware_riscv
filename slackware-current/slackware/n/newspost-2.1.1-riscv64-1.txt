@@ -1,0 +1,11 @@
+newspost: newspost (binary posting utility)
+newspost:
+newspost: Newspost is a usenet binary autoposter. It will uuencode or yencode
+newspost: files and post them to usenet newsgroups. In addition, it can
+newspost: automatically generate and post .SFV checksum files and .PAR parity
+newspost: files.
+newspost:
+newspost: Newspost was mostly  written by Jim Faulkner, with some help from
+newspost: William McBrine. Portions borrowed from cksfv by Bryan Call, and
+newspost: parchive by Willem Monsuwe.
+newspost:

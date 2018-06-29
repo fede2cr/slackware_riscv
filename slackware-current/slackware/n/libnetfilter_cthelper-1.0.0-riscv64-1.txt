@@ -1,0 +1,11 @@
+libnetfilter_cthelper: libnetfilter_cthelper (userspace infrastructure for conntrack helpers)
+libnetfilter_cthelper:
+libnetfilter_cthelper: Connection tracking helpers allows you to filter multi-flow protocols
+libnetfilter_cthelper: that usually separate control and data traffic into different flows.
+libnetfilter_cthelper: This is the case of application protocols like FTP, SIP and H.323 that
+libnetfilter_cthelper: are already supported by Netfilter. These helpers are implemented in
+libnetfilter_cthelper: kernel-space.
+libnetfilter_cthelper:
+libnetfilter_cthelper:
+libnetfilter_cthelper:
+libnetfilter_cthelper:

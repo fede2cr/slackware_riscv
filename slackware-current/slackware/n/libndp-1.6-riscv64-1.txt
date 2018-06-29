@@ -1,0 +1,11 @@
+libndp: libndp (library for Neighbor Discovery Protocol)
+libndp:
+libndp: libndp contains a library which provides a wrapper for IPv6 Neighbor
+libndp: Discovery Protocol. It also provides a tool named ndptool for sending
+libndp: and receiving NDP messages.
+libndp:
+libndp: Homepage: http://libndp.org/
+libndp:
+libndp:
+libndp:
+libndp:

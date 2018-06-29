@@ -1,0 +1,11 @@
+libnfnetlink: libnfnetlink (library for netfilter kernel/userspace comm)
+libnfnetlink: 
+libnfnetlink: libnfnetlink is the low-level library for netfilter related 
+libnfnetlink: kernel/userspace communication. It provides a generic messaging
+libnfnetlink: infrastructure for in-kernel netfilter subsystems (such as 
+libnfnetlink: nfnetlink_log, nfnetlink_queue, nfnetlink_conntrack) and their 
+libnfnetlink: respective users and/or management tools in userspace.
+libnfnetlink:
+libnfnetlink:
+libnfnetlink:
+libnfnetlink:

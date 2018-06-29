@@ -1,0 +1,11 @@
+netdate: netdate (simple network time utility)
+netdate:
+netdate: Netdate takes a list of names of Internet hosts as arguments, selects
+netdate: the one which supplies the best time, and sets the system time
+netdate: accordingly. The invoker must be the super-user for the time to be
+netdate: set. Protocol names (either udp or tcp) may be interspersed with the
+netdate: host names, and determine the protocol which will be used to connect
+netdate: to the hosts whose names follow, up to the next protocol name or the
+netdate: end of the arguments. The default protocol is udp.
+netdate:
+netdate: These days, "ntpdate" is probably a better choice.

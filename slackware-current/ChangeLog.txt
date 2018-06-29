@@ -1,3 +1,43 @@
+Fri Jun 29 05:23:44 UTC 2018
+n/icmpinfo-1.11-riscv64-1.txz: Ported.
+n/iptraf-ng-1.1.4-riscv64-1.txz: Ported.
+n/irssi-1.1.1-riscv64-1.txz: Ported.
+n/libassuan-2.5.1-riscv64-1.txz: Ported.
+n/libgcrypt-1.8.2-riscv64-1.txz: Ported.
+n/libgpg-error-1.27-riscv64-1.txz: Ported.
+n/libksba-1.3.5-riscv64-1.txz: Ported.
+n/libmbim-1.16.0-riscv64-1.txz: Ported.
+n/libmilter-8.15.2-riscv64-1.txz: Ported.
+n/libmnl-1.0.4-riscv64-1.txz: Ported.
+n/libndp-1.6-riscv64-1.txz: Ported.
+n/libnetfilter_acct-1.0.3-riscv64-1.txz: Ported.
+n/libnetfilter_conntrack-1.0.6-riscv64-1.txz: Ported.
+n/libnetfilter_cthelper-1.0.0-riscv64-1.txz: Ported.
+n/libnetfilter_cttimeout-1.0.0-riscv64-1.txz: Ported.
+n/libnetfilter_log-1.0.1-riscv64-1.txz: Ported.
+n/libnetfilter_queue-1.0.3-riscv64-1.txz: Ported.
+n/libnfnetlink-1.0.1-riscv64-1.txz: Ported.
+n/libnftnl-1.0.9-riscv64-1.txz: Ported.
+n/libqmi-1.20.0-riscv64-1.txz: Ported.
+n/links-2.14-riscv64-1.txz: Ported.
+n/mcabber-1.0.5-riscv64-1.txz: Ported.
+n/metamail-2.7-riscv64-1.txz: Ported.
+n/mobile-broadband-provider-info-20170310-riscv64-1.txz: Ported.
+n/mtr-0.92-riscv64-1.txz: Ported.
+n/mutt-1.9.4-riscv64-1.txz: Ported.
+n/nc-1.10-riscv64-1.txz: Ported.
+n/ncftp-3.2.6-riscv64-1.txz: Ported.
+n/netdate-bsd4-riscv64-1.txz: Ported.
+n/netkit-ftp-0.17-riscv64-1.txz: Ported.
+n/netkit-ntalk-0.17-riscv64-1.txz: Ported.
+n/netkit-rwho-0.17-riscv64-1.txz: Ported.
+n/netkit-timed-0.17-riscv64-1.txz: Ported.
+n/netpipes-4.2-riscv64-1.txz: Ported.
+n/nettle-3.4-riscv64-1.txz: Ported.
+n/netwatch-1.3.1_2-riscv64-1.txz: Ported.
+n/netwrite-0.17-riscv64-1.txz: Ported.
+n/newspost-2.1.1-riscv64-1.txz: Ported.
++--------------------------+
 Thu Jun 28 04:38:27 UTC 2018
 l/sip-4.19.8-riscv64-1.txz: Ported.
 l/slang-2.3.2-riscv64-1.txz: Ported.

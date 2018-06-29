@@ -1,0 +1,11 @@
+iptraf-ng: iptraf-ng (console-based network monitoring program)
+iptraf-ng:
+iptraf-ng: IPTraf is a console-based network monitoring program for Linux that
+iptraf-ng: displays information about IP traffic such as:
+iptraf-ng:
+iptraf-ng:  Current TCP connections, types of IP packets, packet and byte
+iptraf-ng:  counts, TCP/UDP counts by ports, packet counts by packet sizes,
+iptraf-ng:  packet and byte counts by IP address, interface activity, flag
+iptraf-ng:  statuses on TCP packets, and other LAN station statistics.
+iptraf-ng:
+iptraf-ng: iptraf-ng was written by Gerard Paul Java.

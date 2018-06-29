@@ -1,0 +1,11 @@
+libmilter: libmilter (sendmail Mail Filter API)
+libmilter:
+libmilter: The sendmail Mail Filter API (Milter) is designed to allow third
+libmilter: party programs access to mail messages as they are being processed 
+libmilter: in order to filter meta-information and content. 
+libmilter:
+libmilter:
+libmilter:
+libmilter:
+libmilter:
+libmilter:

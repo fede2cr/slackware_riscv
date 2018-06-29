@@ -1,0 +1,11 @@
+ncftp: ncftp (ftp client)
+ncftp:
+ncftp: NcFTP is a user interface to the Internet standard File Transfer
+ncftp: Protocol. This program allows a user to transfer files to and from a
+ncftp: remote network site, and offers additional features that are not found
+ncftp: in the standard interface for ftp.
+ncftp:
+ncftp: Homepage: http://www.ncftp.com/ncftp/
+ncftp:
+ncftp:
+ncftp:

@@ -1,0 +1,11 @@
+libmnl: libmnl (user-space library oriented to Netlink developers)
+libmnl:
+libmnl: libmnl is a minimalistic user-space library oriented to Netlink
+libmnl: developers. There are a lot of common tasks in parsing, validating,
+libmnl: constructing of both the Netlink header and TLVs that are repetitive
+libmnl: and easy to get wrong. This library aims to provide simple helpers
+libmnl: that allows you to re-use code and to avoid re-inventing the wheel.
+libmnl:
+libmnl: Homepage: http://www.netfilter.org/projects/libmnl/
+libmnl:
+libmnl:

@@ -1,0 +1,11 @@
+netwrite: netwrite (in.writed daemon for accepting network "write")
+netwrite:
+netwrite: Writed implements a very simple protocol that allows a write(1)
+netwrite: program on one host to connect up to one on another host, allowing
+netwrite: communications across the network. Writed is meant to be run from
+netwrite: inetd(8) listening for TCP requests on port 811. No attempt is made
+netwrite: to determine the authenticity of users sending messages. This
+netwrite: program should probably not be deployed on insecure networks.
+netwrite:
+netwrite:
+netwrite:

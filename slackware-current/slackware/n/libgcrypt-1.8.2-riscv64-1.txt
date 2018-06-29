@@ -1,0 +1,11 @@
+libgcrypt: libgcrypt (General purpose crypto library)
+libgcrypt:
+libgcrypt: Libgcrypt is a general purpose crypto library based on the code 
+libgcrypt: used in GnuPG. 
+libgcrypt:
+libgcrypt:
+libgcrypt:
+libgcrypt:
+libgcrypt:
+libgcrypt:
+libgcrypt:
