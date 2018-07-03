@@ -1,0 +1,11 @@
+libwacom: libwacom (Wacom tablet library)
+libwacom:
+libwacom: libwacom is a library to identify Wacom tablets and their model
+libwacom: specific features. It provides easy access to information such as
+libwacom: "is this a built-in on-screen tablet", "what is the size of this
+libwacom: model", etc.
+libwacom:
+libwacom: Homepage: https://github.com/linuxwacom
+libwacom:
+libwacom:
+libwacom:

@@ -1,0 +1,11 @@
+glu: glu (Mesa OpenGL utility library)
+glu:
+glu: glu is the Mesa OpenGL utility library (libGLU).
+glu:
+glu:
+glu:
+glu:
+glu:
+glu:
+glu:
+glu:

@@ -1,0 +1,11 @@
+libXaw3dXft: libXaw3dXft (3D enhanced version of the MIT Athena widget set)
+libXaw3dXft:
+libXaw3dXft: Xaw3dXft is an enhanced version of the MIT Athena Widget set for
+libXaw3dXft: the X Window System.  Xaw3dXft adds a three-dimensional look to
+libXaw3dXft: applications with minimal or no source code changes.
+libXaw3dXft:
+libXaw3dXft: You should install Xaw3dXft if you are using applications which 
+libXaw3dXft: incorporate the MIT Athena widget set and you'd like to 
+libXaw3dXft: incorporate a 3D look into those applications.
+libXaw3dXft:
+libXaw3dXft:

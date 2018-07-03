@@ -1,0 +1,11 @@
+libinput: libinput (GUI input library)
+libinput:
+libinput: libinput is a library to handle input devices in Wayland compositors 
+libinput: and to provide a generic X.Org input driver. It provides device 
+libinput: detection, device handling, input device event processing and 
+libinput: abstraction so minimize the amount of custom input code compositors 
+libinput: need to provide the common set of functionality that users expect.
+libinput:
+libinput: Homepage: http://www.freedesktop.org/wiki/Software/libinput/
+libinput:
+libinput:

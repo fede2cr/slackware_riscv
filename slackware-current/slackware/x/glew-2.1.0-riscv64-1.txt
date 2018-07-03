@@ -1,0 +1,11 @@
+glew: glew (the OpenGL Extension Wrangler Library)
+glew:
+glew: The OpenGL Extension Wrangler Library (GLEW) is a cross-platform 
+glew: open-source C/C++ extension loading library. GLEW provides efficient 
+glew: run-time mechanisms for determining which OpenGL extensions are 
+glew: supported on the target platform.
+glew:
+glew: Homepage: http://glew.sourceforge.net/
+glew:
+glew:
+glew:

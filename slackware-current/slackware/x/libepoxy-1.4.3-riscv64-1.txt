@@ -1,0 +1,11 @@
+libepoxy: libepoxy (OpenGL function pointer management library)
+libepoxy:
+libepoxy: Epoxy is a library for handling OpenGL function pointer management.
+libepoxy:
+libepoxy: Homepage: https://github.com/anholt/libepoxy
+libepoxy:
+libepoxy:
+libepoxy:
+libepoxy:
+libepoxy:
+libepoxy:

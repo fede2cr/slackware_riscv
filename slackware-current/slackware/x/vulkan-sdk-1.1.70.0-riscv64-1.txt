@@ -1,0 +1,11 @@
+vulkan-sdk: vulkan-sdk (Vulkan ICD Loader and Validation Layers)
+vulkan-sdk:
+vulkan-sdk: Vulkan supports multiple GPUs and multiple global contexts
+vulkan-sdk: (VkInstance). The ICD loader is necessary to support multiple GPUs
+vulkan-sdk: and the VkInstance level Vulkan commands. Additionally, the loader
+vulkan-sdk: manages inserting Vulkan layer libraries, including validation layers
+vulkan-sdk: between the application and the ICD.
+vulkan-sdk:
+vulkan-sdk: Homepage: https://www.khronos.org/vulkan/
+vulkan-sdk:
+vulkan-sdk:

@@ -1,0 +1,11 @@
+freeglut: freeglut (alternative GLUT library)
+freeglut:
+freeglut: freeglut is a completely OpenSourced alternative to the OpenGL 
+freeglut: Utility Toolkit (GLUT) library.  GLUT (and hence freeglut) allows 
+freeglut: the user to create and manage windows containing OpenGL contexts 
+freeglut: on a wide range of platforms and also read the mouse, keyboard, and 
+freeglut: joystick functions.
+freeglut:
+freeglut: Homepage: http://freeglut.sourceforge.net/
+freeglut:
+freeglut:

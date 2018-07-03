@@ -1,0 +1,11 @@
+libdrm: libdrm (A library to support Direct Rendering)
+libdrm:
+libdrm: This library implements an interface to the kernel's DRM services.
+libdrm: It is used to support hardware accelerated 3D rendering.
+libdrm:
+libdrm:
+libdrm:
+libdrm:
+libdrm:
+libdrm:
+libdrm:

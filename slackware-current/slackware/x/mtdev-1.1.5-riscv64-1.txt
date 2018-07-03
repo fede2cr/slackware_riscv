@@ -1,0 +1,11 @@
+mtdev: mtdev (multitouch device library)
+mtdev:
+mtdev: mtdev is a stand-alone library which transforms all variants of
+mtdev: kernel MT events to the slotted type B protocol.  The events put
+mtdev: into mtdev may be from any MT device, specifically type A without
+mtdev: contact tracking, type A with contact tracking, or type B with
+mtdev: contact tracking.
+mtdev: The bulk of the mtdev code has been out there since 2008 as part of
+mtdev: the Multitouch X Driver.  With this package, finger tracking and 
+mtdev: seamless MT protocol handling is available under a free license. 
+mtdev:
