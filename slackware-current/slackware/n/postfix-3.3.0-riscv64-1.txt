@@ -1,0 +1,11 @@
+postfix: postfix (mail transport and submission agent)
+postfix:
+postfix: Postfix attempts to be fast, easy to administer, and secure, while at
+postfix: the same time being sendmail compatible enough to not upset existing
+postfix: users. Thus, the outside has a sendmail-ish flavor, but the inside is
+postfix: completely different.
+postfix:
+postfix: Homepage: http://www.postfix.org
+postfix:
+postfix:
+postfix:

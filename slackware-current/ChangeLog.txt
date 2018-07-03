@@ -1,3 +1,33 @@
+Tue Jul  3 03:24:09 UTC 2018
+n/npth-1.5-riscv64-1.txz: Ported.
+n/ntp-4.2.8p11-riscv64-1.txz: Ported.
+n/openldap-client-2.4.46-riscv64-1.txz: Ported.
+n/openobex-1.7.2-riscv64-1.txz: Ported.
+n/openvpn-2.4.5-riscv64-1.txz: Ported.
+n/p11-kit-0.23.10-riscv64-1.txz: Ported.
+n/pinentry-1.1.0-riscv64-1.txz: Ported.
+n/popa3d-1.0.3-riscv64-1.txz: Ported.
+n/postfix-3.3.0-riscv64-1.txz: Ported.
+n/procmail-3.22-riscv64-1.txz: Ported.
+n/proftpd-1.3.6-riscv64-1.txz: Ported.
+n/pssh-2.3.1-riscv64-1.txz: Ported.
+n/rdist-6.1.5-riscv64-1.txz: Ported.
+n/rpcbind-0.2.4-riscv64-1.txz: Ported.
+n/slrn-1.0.2-riscv64-1.txz: Ported.
+n/sshfs-2.10-riscv64-1.txz: Ported.
+n/stunnel-5.44-riscv64-1.txz: Ported.
+n/telnet-0.17-riscv64-1.txz: Ported.
+n/tftp-hpa-5.2-riscv64-1.txz: Ported.
+n/tin-2.4.2-riscv64-1.txz: Ported.
+n/traceroute-2.1.0-riscv64-1.txz: Ported.
+n/ulogd-2.0.5-riscv64-1.txz: Ported.
+n/uucp-1.07-riscv64-1.txz: Ported.
+n/wget-1.19.4-riscv64-1.txz: Ported.
+n/wireless_tools-29-riscv64-1.txz: Ported.
+n/ytalk-3.3.0-riscv64-1.txz: Ported.
+t/fig2dev-3.2.6a-riscv64-1.txz: Ported.
+t/xfig-3.2.6a-riscv64-1.txz: Ported.
++--------------------------+
 Fri Jun 29 05:23:44 UTC 2018
 n/icmpinfo-1.11-riscv64-1.txz: Ported.
 n/iptraf-ng-1.1.4-riscv64-1.txz: Ported.

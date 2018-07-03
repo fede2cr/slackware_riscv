@@ -1,0 +1,11 @@
+ytalk: ytalk (multi-user chat program)
+ytalk:
+ytalk: YTalk is a multi-user chat program. It works almost exactly like the
+ytalk: UNIX talk program and even communicates with the same talk daemon, but
+ytalk: YTalk allows for multiple connections.
+ytalk:
+ytalk:
+ytalk:
+ytalk:
+ytalk:
+ytalk:

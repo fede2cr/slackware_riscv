@@ -1,0 +1,11 @@
+openobex: openobex (Object Exchange protocol library)
+openobex:
+openobex: OpenOBEX is a free open source implementation of the Object Exchange
+openobex: (OBEX) protocol. OBEX is a session protocol and can best be
+openobex: described as a binary HTTP protocol. OBEX is optimised for ad-hoc
+openobex: wireless links and can be used to exchange all kinds of objects like
+openobex: files, pictures, calendar entries (vCal) and business cards (vCard).
+openobex:
+openobex: Visit the project here: http://www.openobex.org
+openobex:
+openobex:

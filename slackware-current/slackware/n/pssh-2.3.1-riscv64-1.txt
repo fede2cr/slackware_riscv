@@ -1,0 +1,11 @@
+pssh: pssh (tools for collective remote system management)
+pssh:
+pssh: Pssh, a.k.a. "parallel ssh", are Python-written wrapper scripts for
+pssh: OpenSSH and rsync tools. They are useful for simultaneous control
+pssh: of large number of machines, using parallel ssh sessions. Included
+pssh: are parallel versions of ssh, scp, and rsync, as well as a parallel
+pssh: kill command.
+pssh:
+pssh: Pssh has been written by Brent Chun <bnc at theether.org>, and is
+pssh: currently maintained by Andrew McNabb <amcnabb at mcnabbs.org>.
+pssh: Homepage: https://code.google.com/archive/p/parallel-ssh/

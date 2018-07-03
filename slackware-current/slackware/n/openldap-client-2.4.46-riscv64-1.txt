@@ -1,0 +1,11 @@
+openldap-client: openldap-client (OpenLDAP client programs)
+openldap-client:
+openldap-client: OpenLDAP is an open source implementation of the Lightweight
+openldap-client: Directory Access Protocol. LDAP is a alternative to the X.500
+openldap-client: Directory Access Protocol (DAP). It uses the TCP/IP stack versus
+openldap-client: the overly complex OSI stack.
+openldap-client:
+openldap-client: LDAP is often used to provide authentication (such as for email).
+openldap-client:
+openldap-client: The OpenLDAP homepage is http://www.openldap.org/
+openldap-client:

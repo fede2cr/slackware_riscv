@@ -1,0 +1,11 @@
+telnet: telnet (the telnet client and daemon)
+telnet:
+telnet: telnet supports the original DARPA telnet interactive communication
+telnet: protocol. As connecting to a telnetd server transmits your password
+telnet: over the network in cleartext, telnet's use as a login protocol has
+telnet: been mostly superseded by the use of ssh and sshd. However, the
+telnet: telnet client is still a very handy tool, and telnetd may still have
+telnet: some uses on networks that are known to be secure.
+telnet:
+telnet: telnet and telnetd were ported from BSD.
+telnet:

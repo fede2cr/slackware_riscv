@@ -1,0 +1,11 @@
+tin: tin (the Tin newsreader)
+tin:
+tin: Tin is a full-screen, easy-to-use Netnews reader. It can read news
+tin: locally (i.e. /var/spool/news) or remotely (rtin or tin -r option)
+tin: via a NNTP (Network News Transport Protocol) server. It will
+tin: automatically utilize NOV (news overview) style index files if
+tin: available locally or via the nntp xover command.
+tin:
+tin: Tin was written by Iain Lea <iain@ecrc.de> and is currently
+tin: maintained by Urs Janssen <urs@tin.org>.
+tin:

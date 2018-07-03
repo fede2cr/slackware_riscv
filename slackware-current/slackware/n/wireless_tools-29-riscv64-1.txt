@@ -1,0 +1,11 @@
+wireless_tools: wireless_tools (utilities for wireless networking)
+wireless_tools:
+wireless_tools: This package contains tools and a library used for configuring
+wireless_tools: wireless networking interfaces:
+wireless_tools:  iwconfig (the main wireless tool),  iwlist (display more detailed
+wireless_tools:  information than iwconfig),  iwspy (get stats per MAC address and
+wireless_tools:  more),  iwpriv (set driver private ioctls),  iwgetid (show the
+wireless_tools:  ESSID or NWID of a device),  iwevent (display wireless events),
+wireless_tools:  ifrename (rename a network interface).
+wireless_tools:
+wireless_tools: The wireless_tools were written by Jean Tourrilhes.

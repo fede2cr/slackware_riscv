@@ -1,0 +1,11 @@
+uucp: uucp (Taylor UUCP)
+uucp:
+uucp: Ian Taylor's Unix to Unix copy: mail and news over modem lines. 
+uucp: This is the standard UUCP package of the Free Software Foundation.
+uucp:
+uucp: Configured to use HoneyDanBer and/or Taylor configuration files.
+uucp:
+uucp:
+uucp:
+uucp:
+uucp:

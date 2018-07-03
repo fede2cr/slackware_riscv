@@ -1,0 +1,11 @@
+stunnel: stunnel (Universal SSL tunnel)
+stunnel:
+stunnel: The stunnel program is designed to work as an SSL encryption wrapper
+stunnel: between remote client and local (inetd-startable) or remote servers.
+stunnel: The goal is to facilitate SSL encryption and authentication for
+stunnel: non-SSL-aware programs.
+stunnel:
+stunnel: stunnel can be used to add SSL functionality to commonly used inetd
+stunnel: daemons like POP-2, POP-3 and IMAP servers without any changes in the
+stunnel: programs' code.
+stunnel:

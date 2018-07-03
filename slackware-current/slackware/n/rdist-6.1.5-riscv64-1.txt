@@ -1,0 +1,11 @@
+rdist: rdist (remote file distribution program)
+rdist:
+rdist: Rdist is a remote file distribution program. It is used to maintain
+rdist: identical copies of files over multiple network hosts. It preserves
+rdist: the owner, group, mode, and mtime of files if possible and can update
+rdist: programs that are executing.
+rdist:
+rdist:
+rdist:
+rdist:
+rdist:

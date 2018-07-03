@@ -1,0 +1,11 @@
+procmail: procmail (mail processing and local delivery program)
+procmail:
+procmail: Can be used to create mail-servers, mailing lists, sort your incoming
+procmail: mail into separate folders/files (real convenient when subscribing to
+procmail: one or more mailing lists or for prioritizing your mail), preprocess
+procmail: your mail, start any programs upon mail arrival (e.g. to generate
+procmail: different chimes on your workstation for different types of mail) or
+procmail: selectively forward certain incoming mail automatically to someone.
+procmail: Procmail is required by sendmail to deliver the local mail.
+procmail: The author of procmail is Stephen R. van den Berg.
+procmail:

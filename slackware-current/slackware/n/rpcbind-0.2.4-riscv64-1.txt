@@ -1,0 +1,11 @@
+rpcbind: rpcbind (a daemon to manage RPC connections)
+rpcbind:
+rpcbind: This is a network daemon used to manage connections to RPC services.
+rpcbind: It is meant as a replacement for the 'rpc.portmap' server from the
+rpcbind: 'portmap' package. Daemons that offer RPC services (such as the
+rpcbind: daemons for NFS) tell the rpcbind on what port they listen.
+rpcbind: RPC network port numbers may change each time the system is booted.
+rpcbind:
+rpcbind: This package is required to use NFS or other RPC services.
+rpcbind:
+rpcbind: Homepage: http://sourceforge.net/projects/rpcbind/

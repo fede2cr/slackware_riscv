@@ -1,0 +1,11 @@
+xfig: xfig (interactive drawing tool)
+xfig:
+xfig: This package contains the binary for xfig, an interactive drawing tool
+xfig: under X. Xfig can create fig, epsf, and LaTeX files with various
+xfig: options. You will also need the transfig package so that xfig can
+xfig: export fig files as epsf and LaTeX files. This package also contains
+xfig: a large set of example fig files.
+xfig:
+xfig: Homepage: https://sourceforge.net/projects/mcj/files/
+xfig:
+xfig:
