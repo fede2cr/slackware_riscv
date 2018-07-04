@@ -1,0 +1,11 @@
+sane: sane (Scanner Access Now Easy)
+sane:
+sane: SANE is a universal scanner interface that provides standardized
+sane: access to any raster image scanner hardware, such as flatbed scanners,
+sane: hand-held scanners, video and still cameras, frame-grabbers, and other
+sane: similar devices.
+sane:
+sane:
+sane:
+sane:
+sane:

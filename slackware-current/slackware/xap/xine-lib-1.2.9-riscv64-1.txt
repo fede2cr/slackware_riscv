@@ -1,0 +1,11 @@
+xine-lib: xine-lib (xine multimedia playback engine libraries)
+xine-lib:
+xine-lib: xine-lib is a free (GPL licensed) high-performance multimedia
+xine-lib: playback engine.  The xine shared libraries are used by xine-ui (and
+xine-lib: other media players and multimedia applications) for smooth video
+xine-lib: processing and playback of multimedia streams such as movies, radio
+xine-lib: and TV network streams, DVDs, and VCDs.
+xine-lib:
+xine-lib: Homepage:  https://www.xine-project.org/home
+xine-lib:
+xine-lib:

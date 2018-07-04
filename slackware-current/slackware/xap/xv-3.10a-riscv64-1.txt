@@ -1,0 +1,11 @@
+xv: xv (John Bradley's interactive image viewer)
+xv:
+xv: xv is an interactive image manipulation program.
+xv:
+xv: NOTICE:  This program is unregistered shareware.  Please read the 
+xv: license information included.
+xv:
+xv:
+xv:
+xv:
+xv:

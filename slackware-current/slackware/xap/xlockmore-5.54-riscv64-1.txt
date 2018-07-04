@@ -1,0 +1,11 @@
+xlockmore: xlockmore (screen locker for X)
+xlockmore:
+xlockmore: Patrick J. Naughton's xlock screensaver/locker for X, with many
+xlockmore: more modes added by David A. Bagley.
+xlockmore:
+xlockmore: The 'Bob' bitmap has been included especially for Slackware, as well
+xlockmore: as a Linux penguin logo.  (NOTE: the image of J. R. "Bob" Dobbs is a
+xlockmore: registered trademark of The Subgenius Foundation, used by permission)
+xlockmore:
+xlockmore: Homepage:  http://sillycycle.com/xlockmore.html
+xlockmore:

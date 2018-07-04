@@ -1,0 +1,11 @@
+xfractint: xfractint (fractal generation program)
+xfractint:
+xfractint: Xfractint draws a wide variety of fractals. Xfractint is a port of the
+xfractint: DOS program Fractint.  
+xfractint:
+xfractint: The primary original authors of Fractint are Bert Tyler, Timothy
+xfractint: Wegner, Mark Peterson, and Pieter Branderhorst.  Fractint was ported
+xfractint: to X by Ken Shirriff.
+xfractint:
+xfractint:
+xfractint:

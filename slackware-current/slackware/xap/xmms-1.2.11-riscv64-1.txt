@@ -1,0 +1,11 @@
+xmms: xmms (X Multimedia System)
+xmms:
+xmms: XMMS is the X Multimedia System.  It is used to play audio and other
+xmms: kinds of media files.  By default XMMS can play MPEG audio, Ogg
+xmms: Vorbis, RIFF wav, most module formats, and a few other formats.  XMMS
+xmms: can be extended through plugins to play a number of other audio and
+xmms: video formats.
+xmms:
+xmms:
+xmms:
+xmms:

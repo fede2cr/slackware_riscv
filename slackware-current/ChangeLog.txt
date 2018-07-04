@@ -1,3 +1,19 @@
+Wed Jul  4 19:36:04 UTC 2018
+n/samba-4.7.6-riscv64-1.txz: Ported.
+xap/network-manager-applet-1.8.10-riscv64-1.txz: Ported.
+xap/pan-0.143-riscv64-1.txz: Ported.
+xap/sane-1.0.27-riscv64-1.txz: Ported.
+xap/vim-gvim-8.0.1655-riscv64-1.txz: Ported.
+xap/windowmaker-0.95.8-riscv64-1.txz: Ported.
+xap/xaos-3.6-riscv64-1.txz: Ported.
+xap/xfractint-20.04p13-riscv64-1.txz: Ported.
+xap/xine-lib-1.2.9-riscv64-1.txz: Ported.
+xap/xlockmore-5.54-riscv64-1.txz: Ported.
+xap/xmms-1.2.11-riscv64-1.txz: Ported.
+xap/xpdf-4.00-riscv64-1.txz: Ported.
+xap/xsane-0.999-riscv64-1.txz: Ported.
+xap/xv-3.10a-riscv64-1.txz: Ported.
++--------------------------+
 Wed Jul  4 03:30:00 UTC 2018
 xap/audacious-3.9-riscv64-1.txz: Ported.
 xap/blackbox-0.70.1-riscv64-1.txz: Ported.
