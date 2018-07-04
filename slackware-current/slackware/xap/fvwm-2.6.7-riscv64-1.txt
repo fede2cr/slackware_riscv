@@ -1,0 +1,11 @@
+fvwm: fvwm (a small and fast virtual window manager for X)
+fvwm:
+fvwm: Fvwm is the classic highly-configurable virtual window manager for
+fvwm: X11.  It is a derivative of twm, redesigned to minimize memory
+fvwm: consumption, provide a 3-D look to window frames, and provide a simple
+fvwm: virtual desktop.
+fvwm:
+fvwm: Homepage:  http://www.fvwm.org
+fvwm: Development:  https://github.com/fvwmorg/fvwm
+fvwm:
+fvwm:

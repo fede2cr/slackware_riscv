@@ -1,0 +1,11 @@
+gkrellm: gkrellm (GNU Krell Monitors)
+gkrellm:
+gkrellm: GKrellM charts SMP CPU, load, Disk, and all active net interfaces
+gkrellm: automatically. An on/off button and online timer for the PPP interface
+gkrellm: is provided. Monitors for memory and swap usage, file system, internet
+gkrellm: connections, APM laptop battery, mbox style mailboxes, and cpu temps.
+gkrellm: Also includes an uptime monitor, hostname label, and clock/calendar.
+gkrellm:
+gkrellm: Bill Wilson is the author of GKrellM.
+gkrellm:
+gkrellm:

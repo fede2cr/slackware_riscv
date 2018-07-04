@@ -1,3 +1,19 @@
+Wed Jul  4 03:30:00 UTC 2018
+xap/audacious-3.9-riscv64-1.txz: Ported.
+xap/blackbox-0.70.1-riscv64-1.txz: Ported.
+xap/blueman-2.0.5-riscv64-1.txz: Ported.
+xap/ddd-3.3.12-riscv64-1.txz: Ported.
+xap/easytag-2.4.2-riscv64-1.txz: Ported.
+xap/fluxbox-1.3.7-riscv64-1.txz: Ported.
+xap/fvwm-2.6.7-riscv64-1.txz: Ported.
+xap/geeqie-1.4-riscv64-1.txz: Ported.
+xap/gkrellm-2.3.10-riscv64-1.txz: Ported.
+xap/gnuchess-6.2.5-riscv64-1.txz: Ported.
+xap/gnuplot-5.2.2-riscv64-1.txz: Ported.
+xap/gucharmap-10.0.3-riscv64-1.txz: Ported.
+xap/gv-3.7.4-riscv64-1.txz: Ported.
+xap/pavucontrol-3.0-riscv64-1.txz: Ported.
++--------------------------+
 Tue Jul  3 16:59:20 UTC 2018
 x/anthy-9100h-riscv64-1.txz: Ported.
 x/freeglut-3.0.0-riscv64-1.txz: Ported.

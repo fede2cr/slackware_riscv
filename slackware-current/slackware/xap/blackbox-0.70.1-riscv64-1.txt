@@ -1,0 +1,11 @@
+blackbox: blackbox (Blackbox window manager)
+blackbox:
+blackbox: Blackbox is that fast, light window manager you have been looking for
+blackbox: without all those annoying library dependencies.
+blackbox:
+blackbox: Also included in this package is the bbkeys utility for controlling
+blackbox: keyboard shortcut commands from within Blackbox.
+blackbox:
+blackbox: The Blackbox home page is http://blackboxwm.sourceforge.net
+blackbox:
+blackbox:

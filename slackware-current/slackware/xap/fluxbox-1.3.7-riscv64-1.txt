@@ -1,0 +1,11 @@
+fluxbox: fluxbox (Fluxbox window manager)
+fluxbox:
+fluxbox: Fluxbox is yet another windowmanager for X that is based on blackbox
+fluxbox: but with many new features.
+fluxbox:
+fluxbox:
+fluxbox:
+fluxbox:
+fluxbox:
+fluxbox:
+fluxbox:
