@@ -9,6 +9,7 @@ This is my port of the Slackware Distribution for the RISCV ISA, following the s
 ## Status
 
 Packages in repo: 815
+
 Chroot size: 4.4G
 
 The bulk of the package building for all package series is done, with a small porcentage of packages which had compile error or are missing support completely, managed as issues on github. This is mostly a TODO to keep track of failed builds, but also to encourage anyone to contribute to the project.
@@ -36,5 +37,4 @@ Feel free to submit any issues of parches/pull requests, excluding any binaries 
 
 -- 
 *Alvaro Figueroa*
-
 [Greencore Solutions](https://www.greencore.co.cr)
