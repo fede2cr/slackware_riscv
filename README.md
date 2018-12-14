@@ -2,9 +2,11 @@
 
 This is my port of the Slackware Distribution for the RISCV ISA, following the slackware-current tree as close as posible.
 
-# Hardware needed
+## Sponsoring
 
-**Important**: The project is looking for riscv64 hardware to test kernel packages and installer. For the moment we can only test on qemu-riscv envirmonment.
+[Greencore Solutions](https://www.greencore.co.cr/) is providing a dedicated Xeon server to run Qemu, an off-hours 100-node Xeon cluster for massive compilation, as well as a HiFive Unleashed Development Kit to be used as the main developing platform.
+
+Since several attempts to ask SiFive for hardware where sadly ignored, we are providing this resources for other Risc-V projects or developers in Costa Rica that need the resources. If you do, please contact me.
 
 ## Status
 
@@ -38,4 +40,3 @@ Feel free to submit any issues of parches/pull requests, excluding any binaries 
 -- 
 *Alvaro Figueroa*
 
-[Greencore Solutions](https://www.greencore.co.cr)
