@@ -1,0 +1,11 @@
+libunistring: libunistring (GNU Unicode string library)
+libunistring:
+libunistring: This library provides functions for manipulating Unicode strings and
+libunistring: for manipulating C strings according to the Unicode standard.
+libunistring:
+libunistring: Homepage: http://www.gnu.org/s/libunistring
+libunistring:
+libunistring:
+libunistring:
+libunistring:
+libunistring:

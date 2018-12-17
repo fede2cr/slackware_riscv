@@ -1,3 +1,12 @@
+Mon Dec 17 21:59:08 UTC 2018
+a/findutils-4.6.0-riscv64-1.txz: Added gnulib fix, and downgraded from git
+  version.
+a/gzip-1.9-riscv64-1.txz: Added gnulib fix.
+a/sharutils-4.15.2-riscv64-1.txz: Added gnulib fix.
+ap/dc3dd-7.2.646-riscv64-1.txz: Added gnulib patch from Slackware.
+d/bison-3.2.2-riscv64-1.txz: Upgraded.
+l/libunistring-0.9.9-riscv64-1.txz: Added gnulib fix.
++--------------------------+
 Mon Dec 17 17:37:24 UTC 2018
 d/m4-1.4.18-riscv64-1.txz: Fixed gnulib problem thanks to suggestion by
   @DannyThomas. Fix is similar to patch applied to coreutils, so I might
