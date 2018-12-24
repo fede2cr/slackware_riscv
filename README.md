@@ -10,7 +10,7 @@ Since several attempts to ask SiFive for hardware where sadly ignored, we are pr
 
 ## Status
 
-Packages in repo: 815
+Packages in repo: 822
 
 Chroot size: 4.4G
 

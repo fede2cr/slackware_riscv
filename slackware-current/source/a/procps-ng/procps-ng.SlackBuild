@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright 2005-2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
@@ -23,11 +23,11 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=procps-ng
-VERSION=${VERSION:-3.3.13}
-PSMISCVER=${PSMISCVER:-22.21}
+VERSION=${VERSION:-3.3.15}
+PSMISCVER=${PSMISCVER:-23.1}
 PROCINFONGVER=${PROCINFONGVER:-2.0.304}
 PROCINFOVER=${PROCINFOVER:-18}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -45,7 +45,7 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
   exit 0
 fi
 
-NUMJOBS=${NUMJOBS:-" -j7 "}
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
 
 TMP=${TMP:-/tmp}
 PKG=$TMP/package-$PKGNAM
@@ -57,6 +57,9 @@ elif [ "$ARCH" = "i686" ]; then
   SLKCFLAGS="-O2 -march=i686 -mtune=i686"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "riscv64" ]; then
   SLKCFLAGS="-O2 -fPIC"
   LIBDIRSUFFIX="64"
 else
@@ -155,9 +158,6 @@ ln -sf /bin/ps $PKG/usr/bin/ps
 mkdir -p $PKG/etc/sysctl.d
 
 cd psmisc-$PSMISCVER || exit 1
-
-# Fix fuser -s:
-zcat $CWD/psmisc.3638cc55b4d08851faba46635d737b24d016665b.diff.gz | patch -p1 --verbose || exit 1
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
