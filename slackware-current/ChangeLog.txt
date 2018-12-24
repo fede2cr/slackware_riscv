@@ -1,3 +1,7 @@
+Mon Dec 24 17:21:32 UTC 2018
+a/e2fsprogs-1.44.1-riscv64-1.txz: Upgraded.
+sources/: Started uploading fixes sources.
++--------------------------+
 Mon Dec 17 21:59:08 UTC 2018
 a/findutils-4.6.0-riscv64-1.txz: Added gnulib fix, and downgraded from git
   version.
