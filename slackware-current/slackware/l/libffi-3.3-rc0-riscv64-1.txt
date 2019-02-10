@@ -1,0 +1,11 @@
+libffi: libffi (A Portable Foreign Function Interface Library)
+libffi:
+libffi: FFI stands for Foreign Function Interface. A foreign function 
+libffi: interface is the popular name for the interface that allows code 
+libffi: written in one language to call code written in another language. 
+libffi: The libffi library really only provides the lowest, machine dependent 
+libffi: layer of a fully featured foreign function interface. 
+libffi:
+libffi: Homepage: http://sourceware.org/libffi/
+libffi:
+libffi:
