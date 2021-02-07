@@ -24,5 +24,5 @@ jobs:
         sudo chroot riscv64-chroot/ qemu-riscv64-static /bin/true
     - name: Basic test
       run: |
-        find riscv64-chroot/
-        du -shc riscv64-chroot/
+        sudo find riscv64-chroot/
+        sudo du -shc riscv64-chroot/
