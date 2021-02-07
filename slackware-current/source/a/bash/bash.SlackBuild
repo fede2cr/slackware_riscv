@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-# Copyright 2005-2015  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# Copyright 2005-2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -30,7 +30,7 @@ fi
 PKG=$TMP/package-bash
 
 PKGNAM=bash
-VERSION=${VERSION:-$(echo bash-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+VERSION=${VERSION:-$(echo bash-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 BUILD=${BUILD:-2}
 
 # Automatically determine the architecture we're building on:
@@ -45,25 +45,30 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-NUMJOBS=${NUMJOBS:-" -j7 "}
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
 
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mcpu=i686"
+  LIBDIRSUFFIX=""
 elif [ "$ARCH" = "i586" ]; then
   SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
 elif [ "$ARCH" = "s390" ]; then
   SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
 elif [ "$ARCH" = "armv7hl" ]; then
   SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
 else
   SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
 fi
 
 case "$ARCH" in
     arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
-    riscv64) TARGET=$ARCH-unknown-elf ;;
     *)    TARGET=$ARCH-slackware-linux ;;
 esac
 
@@ -74,7 +79,7 @@ rm -rf $PKG
 mkdir -p $PKG
 
 # Determine bash patchlevel:
-PATCHLEVEL="$( cd $CWD/bash-${VERSION}-patches ; /bin/ls bash4?-??? | tail -1 | cut -f 2 -d - 2> /dev/null )"
+PATCHLEVEL="$( cd $CWD/bash-${VERSION}-patches ; /bin/ls bash5?-??? 2> /dev/null | tail -1 | cut -f 2 -d -)"
 if [ "$PATCHLEVEL" = "" ]; then
   PATCHLEVEL=000
 fi
@@ -89,18 +94,18 @@ fi
 
 cd $TMP
 rm -rf bash-$VERSION
-tar xvf $CWD/bash-$VERSION.tar.?z* || exit 1
+tar xvf $CWD/bash-$VERSION.tar.?z || exit 1
 cd bash-$VERSION || exit 1
 chown -R root:root .
 find . -perm 664 | xargs chmod 644
 find . -perm 775 | xargs chmod 755
 
-if [ -d $CWD/bash-${VERSION}-patches ]; then
-  ( cd $CWD/bash-${VERSION}-patches ; cat bash4?-??? ) | patch -p0 --verbose || exit 1
-fi
-
 # Fix .so errors in manpages (needed for strict implementations such as mandoc):
 zcat $CWD/bash_manpages.patch.gz | patch -p1 --verbose || exit 1
+
+if [ -d $CWD/bash-${VERSION}-patches ]; then
+  ( cd $CWD/bash-${VERSION}-patches ; cat bash5?-??? ) | patch -p0 --verbose || exit 1
+fi
 
 # End of preparations
 if echo "$*" | grep -qw -- --prep ; then
@@ -110,6 +115,7 @@ fi
 CFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
   --mandir=/usr/man \
   --infodir=/usr/info \
   --docdir=/usr/doc/bash-$VERSION \
@@ -118,7 +124,7 @@ CFLAGS="$SLKCFLAGS" \
 make $NUMJOBS || make || exit 1
 make install DESTDIR=$PKG || exit 1
 mkdir -p $PKG/bin
-mv $PKG/usr/bin/bash $PKG/bin/bash4.new
+mv $PKG/usr/bin/bash $PKG/bin/bash5.new
 # We don't include the "bashbug" script.
 rm -rf $PKG/usr/bin $PKG/usr/man/man1/bashbug.1
 

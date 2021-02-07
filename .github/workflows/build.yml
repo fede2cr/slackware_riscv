@@ -31,8 +31,8 @@ jobs:
         sudo cp $(which qemu-riscv64-static) $chroot/usr/bin
     - name: Basic test of Slackware-riscv64 Chroot
       run: |
-        echo "Packages in repo: $(find slackware/ -type f -name *txz|wc -l)"
-        echo "Chroot size: $(du -sh slackware-riscv64-chroot | awk '{print $1}' )"
+        echo "Packages in repo: $(sudo find slackware-current/ -type f -name *txz|wc -l)"
+        echo "Chroot size: $(sudo du -sh slackware-riscv64-chroot | awk '{print $1}' )"
         sudo chroot slackware-riscv64-chroot qemu-riscv64-static /bin/true
         sudo chroot slackware-riscv64-chroot qemu-riscv64-static /bin/bash --version
         sudo chroot slackware-riscv64-chroot qemu-riscv64-static /usr/bin/gcc --version
