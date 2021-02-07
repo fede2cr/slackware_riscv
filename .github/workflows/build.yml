@@ -33,9 +33,9 @@ jobs:
       run: |
         echo "Packages in repo: $(sudo find slackware-current/ -type f -name *txz|wc -l)"
         echo "Chroot size: $(sudo du -sh slackware-riscv64-chroot | awk '{print $1}' )"
-        export LD_LIBRARY_PATH=/lib:/lib64/:/lib64/lp64d/:/usr/lib:/usr/lib64/
         sudo chroot slackware-riscv64-chroot qemu-riscv64-static /bin/true
-        #sudo chroot slackware-riscv64-chroot qemu-riscv64-static /bin/bash --version
+        sudo ln -s /lib64/libtinfo.so.6 slackware-riscv64-chroot/usr/lib
+        sudo chroot slackware-riscv64-chroot qemu-riscv64-static /bin/bash --version
         sudo chroot slackware-riscv64-chroot qemu-riscv64-static /usr/bin/gcc --version
         sudo chroot slackware-riscv64-chroot qemu-riscv64-static /bin/gawk --version
         sudo chroot slackware-riscv64-chroot qemu-riscv64-static /sbin/ldconfig -v
