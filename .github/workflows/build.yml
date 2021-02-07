@@ -12,10 +12,10 @@ jobs:
   chroot-testing:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-        submodules: recursive
+#    - uses: actions/checkout@v2
+#      with:
+#        fetch-depth: 0
+#        submodules: recursive
     - name: Installs qemu-riscv64-static
       run: |
         sudo apt-get install -q debootstrap qemu-user-static binfmt-support debian-ports-archive-keyring
