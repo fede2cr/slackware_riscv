@@ -12,17 +12,31 @@ jobs:
   chroot-testing:
     runs-on: ubuntu-20.04
     steps:
-#    - uses: actions/checkout@v2
-#      with:
-#        fetch-depth: 0
-#        submodules: recursive
     - name: Installs qemu-riscv64-static
       run: |
         sudo apt-get install -q debootstrap qemu-user-static binfmt-support debian-ports-archive-keyring
-        sudo debootstrap --arch=riscv64 --keyring /usr/share/keyrings/debian-ports-archive-keyring.gpg --include=debian-ports-archive-keyring unstable riscv64-chroot http://deb.debian.org/debian-ports
-        sudo cp $(which qemu-riscv64-static) riscv64-chroot/usr/bin
-        sudo chroot riscv64-chroot/ qemu-riscv64-static /bin/true
-    - name: Basic test
+#    - name: Builds a Debian Chroot
+#        sudo debootstrap --arch=riscv64 --keyring /usr/share/keyrings/debian-ports-archive-keyring.gpg --include=debian-ports-archive-keyring unstable debian-riscv64-chroot http://deb.debian.org/debian-ports
+#        sudo cp $(which qemu-riscv64-static) debian-riscv64-chroot/usr/bin
+#    - name: Basic test of Debian Chroot
+#      run: |
+#        sudo chroot debian-riscv64-chroot/ qemu-riscv64-static /bin/true
+#        sudo find debian-riscv64-chroot/
+#        sudo du -shc debian-riscv64-chroot/
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        submodules: recursive
+    - name: Builds a Slackware-riscv64 Chroot
       run: |
-        sudo find riscv64-chroot/
-        sudo du -shc riscv64-chroot/
+        ls
+        mkdir slackware-riscv64-chroot
+        find slackware/ -type f -name aaa\*txz -exec installpkg --root slackware-riscv64-chroot {} \;
+        find $SLACK_DIST/slackware/ -type f -name *txz -exec installpkg --root slackware-riscv64-chroot {} \;
+    - name: Basic test of Slackware-riscv64 Chroot
+      run: |
+        sudo chroot slackware-riscv64-chroot qemu-riscv64-static /bin/true
+        sudo find slackware-riscv64-chroot
+        sudo du -shc slackware-riscv64-chroot
+        echo "Packages in repo: $(find slackware/ -type f -name *txz|wc -l)"
+        echo "Chroot size: $(du -sh slackware-riscv64-chroot | awk '{print $1}' )"
