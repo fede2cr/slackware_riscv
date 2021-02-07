@@ -30,7 +30,7 @@ jobs:
     - name: Builds a Slackware-riscv64 Chroot
       run: |
         chroot=slackware-riscv64-chroot
-        mkdir $chroot
+        mkdir -p $chroot/sbin
         tar xfvJ slackware-current/slackware/a/pkgtools-15.0-noarch-6.txz sbin/installpkg
         mv sbin/installpkg $chroot/sbin/
         rmdir sbin/
