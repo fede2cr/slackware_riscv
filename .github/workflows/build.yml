@@ -31,7 +31,7 @@ jobs:
       run: |
         ls
         mkdir slackware-riscv64-chroot
-        tar xfvz slackware-current/slackware/a/pkgtools-15.0-noarch-6.txz sbin/installpkg
+        tar xfvJ slackware-current/slackware/a/pkgtools-15.0-noarch-6.txz sbin/installpkg
         mv sbin/installpkg slackware-riscv64/chroot/sbin/
         rmdir sbin/
         find slackware-current/slackware/ -type f -name aaa\*txz -exec installpkg --root slackware-riscv64-chroot {} \;
