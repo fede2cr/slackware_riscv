@@ -1,0 +1,28 @@
+name: Build CI
+
+on:
+  push:
+  pull_request:
+  release:
+    types: [published]
+  check_suite:
+    type: [rerequested]
+
+jobs:
+  alfresco-testing:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        submodules: recursive
+    - name: Installs qemu-riscv64-static
+      run: |
+        sudo apt-get install debootstrap qemu-user-static binfmt-support debian-ports-archive-keyring
+        sudo debootstrap --arch=riscv64 --keyring /usr/share/keyrings/debian-ports-archive-keyring.gpg --include=debian-ports-archive-keyring unstable riscv64-chroot http://deb.debian.org/debian-ports
+        cp $(which qemu-riscv64-static) chroot/usr/bin
+        chroot riscv64-chroot/ qemu-riscv64-static /bin/true
+    - name: Basic test
+      run: |
+        find riscv64-chroot/
+        du -shc riscv64-chroot/
