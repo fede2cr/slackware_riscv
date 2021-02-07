@@ -32,7 +32,7 @@ jobs:
         chroot=slackware-riscv64-chroot
         mkdir -p $chroot/sbin
         tar xfvJ slackware-current/slackware/a/pkgtools-15.0-noarch-6.txz sbin/installpkg
-        mv sbin/installpkg $chroot/sbin/
+        mv sbin/installpkg /sbin/
         rmdir sbin/
         find slackware-current/slackware/ -type f -name aaa\*txz -exec installpkg --root $chroot {} \;
         find slackware-current/slackware/ -type f -name *txz -exec installpkg --root $chroot {} \;
