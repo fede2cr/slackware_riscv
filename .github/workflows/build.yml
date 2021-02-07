@@ -31,8 +31,8 @@ jobs:
       run: |
         ls
         mkdir slackware-riscv64-chroot
-        find slackware/ -type f -name aaa\*txz -exec installpkg --root slackware-riscv64-chroot {} \;
-        find $SLACK_DIST/slackware/ -type f -name *txz -exec installpkg --root slackware-riscv64-chroot {} \;
+        find slackware-current/slackware/ -type f -name aaa\*txz -exec installpkg --root slackware-riscv64-chroot {} \;
+        find slackware-current/slackware/ -type f -name *txz -exec installpkg --root slackware-riscv64-chroot {} \;
     - name: Basic test of Slackware-riscv64 Chroot
       run: |
         sudo chroot slackware-riscv64-chroot qemu-riscv64-static /bin/true
