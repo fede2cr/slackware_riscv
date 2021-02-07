@@ -38,3 +38,4 @@ jobs:
         #sudo chroot slackware-riscv64-chroot qemu-riscv64-static /bin/bash --version
         sudo chroot slackware-riscv64-chroot qemu-riscv64-static /usr/bin/gcc --version
         sudo chroot slackware-riscv64-chroot qemu-riscv64-static /bin/gawk --version
+        sudo chroot slackware-riscv64-chroot qemu-riscv64-static /sbin/ldconfig -v
