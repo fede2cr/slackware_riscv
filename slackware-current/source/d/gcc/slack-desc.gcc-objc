@@ -6,14 +6,14 @@
 # leave one space after the ':'.
 
         |-----handy-ruler------------------------------------------------------|
-gcc-objc: gcc-objc (Objective-C support for GCC)
+gcc-objc: gcc-objc (Objective-C/C++ support for GCC)
 gcc-objc:
-gcc-objc: Objective-C support for the GNU Compiler Collection.
+gcc-objc: Objective-C/C++ support for the GNU Compiler Collection.
 gcc-objc:
 gcc-objc: This package contains those parts of the compiler collection needed to
-gcc-objc: compile code written in Objective-C. Objective-C was originally
-gcc-objc: developed to add object-oriented extensions to the C language, and is
-gcc-objc: best known as the native language of the NeXT computer.
+gcc-objc: compile code written in Objective-C and Objective-C++. Objective-C was
+gcc-objc: originally developed to add object-oriented extensions to the C
+gcc-objc: language, and is best known as the native language of the NeXT
+gcc-objc: computer.
 gcc-objc:
-gcc-objc: The base gcc package is also required.
 gcc-objc:

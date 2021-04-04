@@ -1,0 +1,11 @@
+isl: isl (Integer Set Library)
+isl:
+isl: isl is a thread-safe C library for manipulating sets and relations
+isl: of integer points bounded by affine constraints. The descriptions of
+isl: the sets and relations may involve both parameters and existentially
+isl: quantified variables. All computations are performed in exact integer
+isl: arithmetic using GMP.
+isl:
+isl: Homepage: http://isl.gforge.inria.fr
+isl:
+isl:

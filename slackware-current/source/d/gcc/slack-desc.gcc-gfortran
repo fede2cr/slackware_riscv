@@ -15,5 +15,5 @@ gcc-gfortran: GNU Fortran also contains many standard and extensions and can be
 gcc-gfortran: used to run real-world programs.
 gcc-gfortran:
 gcc-gfortran: This package contains those parts of the compiler collection
-gcc-gfortran: needed to compile Fortran code. The gcc package is also required.
+gcc-gfortran: needed to compile Fortran code.
 gcc-gfortran:

@@ -11,8 +11,8 @@ gcc:
 gcc: GCC is the GNU Compiler Collection.
 gcc:
 gcc: This package contains those parts of the compiler collection needed to
-gcc: compile C code. Other packages add Ada, C++, Fortran, Go,
-gcc: Objective-C, and Java support to the compiler core.
+gcc: compile C code. Other packages add Ada, C++, D, Fortran, Go,
+gcc: Objective-C, and BRIG support to the compiler core.
 gcc:
 gcc:
 gcc:

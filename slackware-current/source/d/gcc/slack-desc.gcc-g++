@@ -11,7 +11,7 @@ gcc-g++:
 gcc-g++: C++ support for the GNU Compiler Collection.
 gcc-g++:
 gcc-g++: This package contains those parts of the compiler collection needed to
-gcc-g++: compile C++ code. The base gcc package is also required.
+gcc-g++: compile C++ code.
 gcc-g++:
 gcc-g++:
 gcc-g++:
