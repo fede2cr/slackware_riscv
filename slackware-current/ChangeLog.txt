@@ -1,3 +1,7 @@
+mar 06 abr 2021 04:29:05 UTC
+d/cmake-3.20.0-riscv64-1.txz: Added.
+ap/nano-5.6.1-riscv64-1.txz: Upgraded.
++--------------------------+
 dom abr  4 17:23:11 UTC 2021
 d/gcc-10.2.1-riscv64-1.txz: Upgraded gcc from Debian sources. I'll be backporting
   the patch later, as well as adding objc.

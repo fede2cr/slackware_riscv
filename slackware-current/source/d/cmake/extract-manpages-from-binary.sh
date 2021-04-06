@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright 2017  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# Copyright 2017, 2021  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -25,9 +25,9 @@
 
 rm -rf tmp-manpages
 mkdir tmp-manpages
-tar xf cmake-*-Linux-x86_64.tar.?z
-mv cmake-*-Linux-x86_64/man tmp-manpages
-rm -r cmake-*-Linux-x86_64
+tar xf cmake-*-?inux-x86_64.tar.?z
+mv cmake-*-?inux-x86_64/man tmp-manpages
+rm -r cmake-*-?inux-x86_64
 mkdir tmp-manpages/usr
 mv tmp-manpages/man tmp-manpages/usr
 chown -R root:root tmp-manpages
